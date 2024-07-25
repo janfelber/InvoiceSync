@@ -1,0 +1,5 @@
+button {
+    display: flex;
+    text-align: left; /* Ensure text inside the button is aligned to the left */
+    justify-content: flex-start; /* Ensure icons and text are aligned to the left */
+}

@@ -1,0 +1,49 @@
+import { HttpClient, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class InvoiceService {
+  private server = 'http://localhost:8080'
+
+  constructor(private http: HttpClient) { 
+  }
+
+    //define a method to fetch imports based on company id
+    fetchImports(companyId: number): Observable<any[]> {
+      return this.http.get<any[]>(`${this.server}/api/v1/import/user/1/company/${companyId}`);
+    }
+
+    //fetch all invoices for current user
+    fetchAllImports(userId: number): Observable<any[]> {
+      return this.http.get<any[]>(`${this.server}/api/v1/import/user/1`);
+    }
+
+    //fetch company for current user
+    fetchCompany() : Observable<any> {
+      return this.http.get<any>( `${this.server}/api/v1/company/user/1
+      `);
+      }
+
+    // Fetch XML content by import ID
+  getXmlContent(importId: number): Observable<string> {
+    return this.http.get(`${this.server}/file/get/xmlContent/${importId}`, { responseType: 'text' });
+  }
+
+  // downloadZip( import_id: number, company_id: number,): Observable<string> {
+  //   return this.http.get(`${this.server}/file/download-zip/${import_id}/${company_id}`, { responseType: 'text' });
+  // }
+
+  getZipFile(importId: number): Observable<Blob> {
+    const url = `${this.server}/file/generateZip/${importId}`;
+    return this.http.get(url, {
+      responseType: 'blob'
+    });
+  }
+
+
+
+
+}
