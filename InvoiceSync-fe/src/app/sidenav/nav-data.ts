@@ -1,13 +1,12 @@
 export const navbarData = [
-    {
-      routerLink: 'invoices',
-      icon: 'fal fa-receipt',
-      label: 'Faktury'
-    },
-    {
-      routerLink: 'test',
-      icon: 'fal fa-mobile',
-      label: 'REX'
-    }
-  ];
-  
+  {
+    routerLink: 'invoices',
+    icon: 'assets/Receipt.svg', // cesta k SVG súboru
+    label: 'Faktury'
+  },
+  {
+    routerLink: 'test',
+    icon: 'assets/phone.svg',
+    label: 'Rex'
+  }
+];
