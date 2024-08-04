@@ -1,24 +1,7 @@
-<div class="head" [ngClass]="getHeadClass()">
-    <div class="head-content">
-        <div class="head-content-left">
-            <div class="sreach-container">
-                <div class="normal-search">
-                    <input type="search" class="search-input" placeholder="Search">
-                        <i class="far fa-search search-icon"></i>
-                </div>
-            </div>
-        </div>
-        <div class="head-content-right">
-            <div class="head-menu">
-                <div class="head-menu-item">
-
-                </div>
-            </div>
-            <div class="head-user-avatar-container">
-                <div class="head-user-avatar">
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<mat-toolbar class="head" [ngClass]="getHeadClass()">
+    <div class="avatar-container">
+        <mat-icon>account_circle</mat-icon>
+        <span class="username"> Ekon Consult S.R.O</span>
+      </div>
+  </mat-toolbar>
+  
