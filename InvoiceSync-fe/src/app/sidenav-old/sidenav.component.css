@@ -4,19 +4,13 @@
     position: fixed;
     z-index: 1;
     top: 0;
-    width: 7rem;
+    width: 5rem;
     height: 100vh;
     border-right: 1px solid #F0F1F3;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
 
     .logo-container {
         display: flex;
         align-items: center;
-        justify-content: center;
         padding: 0.938rem 0.938rem 0 0.938rem;
         width: 100%;
 
@@ -36,7 +30,7 @@
         .logo-text {
             font-size: 24px;
             font-weight: 700;
-            color: #000;
+            color: #000
         }
 
         .btn-close {
@@ -65,7 +59,7 @@
     padding: 0.938rem;
     margin: 0;
     display: flex;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     flex-direction: column;
     align-items: center;
     height: calc(100% - 3.65rem);
@@ -77,44 +71,44 @@
 
         .sidenav-nav-link {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 4rem;
+            height: 3rem;
             color: #667085;
             text-decoration: none;
             border-radius: 0.625rem;
             transition: all .3s ease;
-            font-size: 16px;
+
 
             .sidenav-link-icon {
                 font-size: 22px;
                 width: 2rem;
                 min-width: 2rem;
-                height: 2.5rem; /* Add this */
+                margin: 0 0.5rem;
                 text-align: center;
             }
-
+    
             .sidenav-link-text {
-                font-weight: 560;
+                font-weight: 600;
                 font-family: 'Inter', sans-serif;
-                margin-top: 0.2rem;
-                text-align: center;
             }
         }
     }
 
     .sidenav-nav-item:hover {
         .sidenav-nav-link {
-            color: #1EB386;
+            background-color: #1EB386;
+            color: white;
+
         }
     }
 }
 
 .active {
+    background-color: #1EB386;
+
     .sidenav-link-icon,
     .sidenav-link-text {
-        color: #1EB386;
+        color: white;
     }
 }
 
