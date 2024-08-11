@@ -1,0 +1,36 @@
+
+.card-ocr-warning {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    background-color: #FFF7FA;
+    margin: 1.25rem 0;
+    margin-left: 6rem;
+    width: 25rem;
+    height: auto;
+    border: 2px solid #FAAAA4;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.text {
+    display: flex;
+    align-items: center; /* Vertically center the icon and text */
+    color: #76504D;
+    font-weight: 900;
+    font-size: 16px;
+    font-family: 'Inter';
+}
+
+.text mat-icon {
+    color: #F24E1E; /* Optional: match the icon color with border color */
+    margin-right: 0.5rem; /* Space between icon and text */
+}
+
+.warning-description {
+    font-size: 12px;
+    color: #6F4E4A; /* Optional: adjust color to fit your design */
+    margin-left: 2rem; /* Align with the text in the .text class */
+}

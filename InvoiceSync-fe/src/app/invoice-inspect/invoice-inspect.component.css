@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    justify-content: space-between; /* Oddeľuje komponenty rovnakým priestorom */
+    align-items: flex-start; /* Zarovná komponenty na horný okraj */
+  }
+  
+  app-invoice-inspect-display,
+  app-invoice-inspect-ocr-warning {
+    flex: 1; /* Flexibilné šírky komponentov */
+  }
