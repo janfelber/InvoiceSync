@@ -29,7 +29,17 @@ public class UserCredential {
   @Column(name = "USERNAME")
   private String username;
 
-  //TODO - Issue IC-34 - Create InvoiceImport entity
+  @OneToMany(mappedBy = "userCredential", fetch = FetchType.LAZY)
+  @JsonIgnoreProperties("userCredential")
+  private List<InvoiceImport> invoiceImports;
+
+  public List<InvoiceImport> getInvoiceImports() {
+    return invoiceImports;
+  }
+
+  public void setInvoiceImports(final List<InvoiceImport> invoiceImports) {
+    this.invoiceImports = invoiceImports;
+  }
 
   public int getId() {
     return id;
