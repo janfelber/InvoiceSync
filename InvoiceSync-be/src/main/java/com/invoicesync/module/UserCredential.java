@@ -1,13 +1,20 @@
 package com.invoicesync.module;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import com.invoicesync.module.InvoiceImport;
 
 @Entity
 @Table(name = "USER_CREADENTIAL", schema = "invoice_sync")
@@ -23,7 +30,17 @@ public class UserCredential {
   @Column(name = "USERNAME")
   private String username;
 
-  //TODO - Issue IC-34 - Create InvoiceImport entity
+  @OneToMany(mappedBy = "userCredential", fetch = FetchType.LAZY)
+  @JsonIgnoreProperties("userCredential")
+  private List<InvoiceImport> invoiceImports;
+
+  public List<InvoiceImport> getInvoiceImports() {
+    return invoiceImports;
+  }
+
+  public void setInvoiceImports(final List<InvoiceImport> invoiceImports) {
+    this.invoiceImports = invoiceImports;
+  }
 
   public int getId() {
     return id;
