@@ -9,6 +9,8 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.TextAnnotation;
 import com.google.protobuf.ByteString;
+import com.invoicesync.ocr.service.regex.RegexPatterns;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class OCRService {
@@ -74,4 +78,28 @@ public class OCRService {
     }
     return fullText.toString();
   }
+
+  public String findDueDate(String ocrText) {
+    String regex = "Dátum splatnosti:" + RegexPatterns.DATE_DD_MM_YYYY;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Dátum splatnosti nebol nájdený.";
+  }
+
+  public String findIssueDate(String ocrText) {
+    String regex = "Dátum vystavenia:" + RegexPatterns.DATE_DD_MM_YYYY;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Dátum splatnosti nebol nájdený.";
+  }
 }
+
+

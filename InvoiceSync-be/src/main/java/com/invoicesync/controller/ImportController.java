@@ -122,7 +122,10 @@ public class ImportController {
     @GetMapping("/extract-text")
     public String extractText(@RequestParam String pdfPath) {
         try {
-            return ocrService.extractTextFromPDF(pdfPath);
+            String ocrText = ocrService.extractTextFromPDF(pdfPath);
+            String dateDue = ocrService.findDueDate(ocrText);
+            String dateIssue = ocrService.findIssueDate(ocrText);
+            return dateDue + "\n" + dateIssue;
         } catch (IOException e) {
             return "Error occurred: " + e.getMessage();
         }
