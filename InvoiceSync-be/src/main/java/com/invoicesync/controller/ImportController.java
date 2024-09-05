@@ -125,7 +125,13 @@ public class ImportController {
             String ocrText = ocrService.extractTextFromPDF(pdfPath);
             String dateDue = ocrService.findDueDate(ocrText);
             String dateIssue = ocrService.findIssueDate(ocrText);
-            return dateDue + "\n" + dateIssue;
+            String deliveryDate = ocrService.findDeliveryDate(ocrText);
+            String variableSymbol = ocrService.findVariableSymbol(ocrText);
+            String vatId = ocrService.findVatId(ocrText);
+            String iban = ocrService.findIban(ocrText);
+            String ico = ocrService.findIco(ocrText);
+            String dic = ocrService.findDic(ocrText);
+            return iban + "\n" +ico + "\n" + dic;
         } catch (IOException e) {
             return "Error occurred: " + e.getMessage();
         }
