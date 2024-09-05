@@ -2,8 +2,11 @@ package com.invoicesync.controller;
 
 
 import com.invoicesync.module.Import;
+import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
 import com.invoicesync.service.ImportService;
+import com.invoicesync.service.InvoiceImportService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +40,15 @@ public class ImportController {
     private final OCRService ocrService;
 
     @Autowired
-    public ImportController(ImportService importService, JdbcTemplate jdbcTemplate, OCRService ocrService) {
+    private InvoiceImportService invoiceImportService;
+
+    @Autowired
+    public ImportController(final ImportService importService, final JdbcTemplate jdbcTemplate,
+        final OCRService ocrService, final InvoiceImportService invoiceImportService) {
         this.importService = importService;
         this.jdbcTemplate = jdbcTemplate;
         this.ocrService = ocrService;
+        this.invoiceImportService = invoiceImportService;
     }
 
     //get all imports
@@ -130,4 +141,23 @@ public class ImportController {
             return "Error occurred: " + e.getMessage();
         }
     }
+
+  @PostMapping("/import-invoice")
+  public String importInvoice(@RequestParam final String pdfPath) {
+    final InvoiceImport invoice = new InvoiceImport();
+    try {
+      final String ocrText = ocrService.extractTextFromPDF(pdfPath);
+      final String dueDateStr = ocrService.findDueDate(ocrText);
+      final String issueDateStr = ocrService.findIssueDate(ocrText);
+
+      invoice.setInvoiceDueDate(dueDateStr);
+      invoice.setInvoiceIssueDate(issueDateStr);
+      invoice.setInvoiceStatus("UNPROCESSED");
+
+      invoiceImportService.saveInvoice(invoice);
+      return "Invoice successfully imported!";
+    } catch (IOException e) {
+      return "Error occurred: " + e.getMessage();
+    }
+  }
 }
