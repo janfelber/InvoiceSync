@@ -1,273 +1,255 @@
-package com.invoicesync.module;
+  package com.invoicesync.module;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Date;
+  import java.math.BigDecimal;
+  import java.math.BigInteger;
+  import java.util.Date;
 
-import com.invoicesync.module.UserCredential;
+  import com.invoicesync.module.UserCredential;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+  import jakarta.persistence.Column;
+  import jakarta.persistence.Entity;
+  import jakarta.persistence.GeneratedValue;
+  import jakarta.persistence.GenerationType;
+  import jakarta.persistence.Id;
+  import jakarta.persistence.JoinColumn;
+  import jakarta.persistence.ManyToOne;
+  import jakarta.persistence.Table;
+  import jakarta.validation.constraints.NotEmpty;
+  import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "INVOICE_IMPORT", schema = "invoice_sync")
-public class InvoiceImport {
+  @Entity
+  @Table(name = "\"INVOICE_IMPORT\"", schema = "invoice_sync")
+  public class InvoiceImport {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID")
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"ID\"")
+    private int id;
 
-  @ManyToOne()
-  @JoinColumn(name = "CREDENTIAL_ID")
-  private UserCredential userCredential;
+    @ManyToOne()
+    @JoinColumn(name = "\"USER_ID\"")
+    private UserCredential userCredential;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_NUMBER")
-  private String invoiceNumber;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_IMPORT_DATE")
-  private Date invoiceImportDate;
+    @Column(name = "\"INVOICE_NUMBER\"")
+    private String invoiceNumber;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_ISSUE_DATE")
-  private Date invoiceIssueDate;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_DELIVERY_DATE")
-  private Date invoiceDeliveryDate;
+    @Column(name = "\"INVOICE_IMPORT_DATE\"")
+    private Date invoiceImportDate;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_DUE_DATE")
-  private Date invoiceDueDate;
+    @Column(name = "\"INVOICE_ISSUE_DATE\"")
+    private String invoiceIssueDate;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_VARIABLE_SYMBOL")
-  private BigInteger invoiceVariableSymbol;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_AMOUNT")
-  private BigDecimal invoiceAmount;
+    @Column(name = "\"INVOICE_DELIVERY_DATE\"")
+    private Date invoiceDeliveryDate;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_NAME")
-  private String companyName;
+    @Column(name = "\"INVOICE_DUE_DATE\"")
+    private String invoiceDueDate;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_CITY")
-  private String companyCity;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_ADDRESS")
-  private String companyAddress;
+    @Column(name = "\"INVOICE_VARIABLE_SYMBOL\"")
+    private BigInteger invoiceVariableSymbol;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_POSTAL_CODE")
-  private String companyPostalCode;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_VAT_NUMBER")
-  private BigInteger companyVatNumber;
+    @Column(name = "\"INVOICE_TOTAL_AMOUNT\"")
+    private BigDecimal invoiceAmount;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_IBAN")
-  private BigInteger companyIban;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_REGISTRATION_NUMBER")
-  private BigInteger companyRegistrationNumber;
+    @Column(name = "\"COMPANY_NAME\"")
+    private String companyName;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "COMPANY_TAX_NUMBER")
-  private BigInteger companyTaxNumber;
 
-  @NotNull
-  @NotEmpty
-  @Column(name = "INVOICE_STATUS")
-  private String invoiceStatus;
+    @Column(name = "\"COMPANY_CITY\"")
+    private String companyCity;
 
-  public int getId() {
-    return id;
+
+    @Column(name = "\"COMPANY_ADDRESS\"")
+    private String companyAddress;
+
+
+    @Column(name = "\"COMPANY_POSTAL_CODE\"")
+    private String companyPostalCode;
+
+
+    @Column(name = "\"COMPANY_VAT_NUMBER\"")
+    private BigInteger companyVatNumber;
+
+
+    @Column(name = "\"COMPANY_IBAN\"")
+    private BigInteger companyIban;
+
+
+    @Column(name = "\"COMPANY_REGISTRATION_NUMBER\"")
+    private BigInteger companyRegistrationNumber;
+
+
+    @Column(name = "\"COMPANY_TAX_NUMBER\"")
+    private BigInteger companyTaxNumber;
+
+
+    @Column(name = "\"INVOICE_STATUS\"")
+    private String invoiceStatus;
+
+    public int getId() {
+      return id;
+    }
+
+    public void setId(final int id) {
+      this.id = id;
+    }
+
+    public UserCredential getUserCredential() {
+      return userCredential;
+    }
+
+    public void setUserCredential(final UserCredential userCredential) {
+      this.userCredential = userCredential;
+    }
+
+    public String getInvoiceNumber() {
+      return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(
+        final  String invoiceNumber) {
+      this.invoiceNumber = invoiceNumber;
+    }
+
+    public Date getInvoiceImportDate() {
+      return invoiceImportDate;
+    }
+
+    public void setInvoiceImportDate(
+        final Date invoiceImportDate) {
+      this.invoiceImportDate = invoiceImportDate;
+    }
+
+    public  String getInvoiceIssueDate() {
+      return invoiceIssueDate;
+    }
+
+    public void setInvoiceIssueDate(
+        final  String invoiceIssueDate) {
+      this.invoiceIssueDate = invoiceIssueDate;
+    }
+
+    public  Date getInvoiceDeliveryDate() {
+      return invoiceDeliveryDate;
+    }
+
+    public void setInvoiceDeliveryDate(
+        final  Date invoiceDeliveryDate) {
+      this.invoiceDeliveryDate = invoiceDeliveryDate;
+    }
+
+    public String getInvoiceDueDate() {
+      return invoiceDueDate;
+    }
+
+    public void setInvoiceDueDate(
+        final String invoiceDueDate) {
+      this.invoiceDueDate = invoiceDueDate;
+    }
+
+    public  BigInteger getInvoiceVariableSymbol() {
+      return invoiceVariableSymbol;
+    }
+
+    public void setInvoiceVariableSymbol(
+        final  BigInteger invoiceVariableSymbol) {
+      this.invoiceVariableSymbol = invoiceVariableSymbol;
+    }
+
+    public  BigDecimal getInvoiceAmount() {
+      return invoiceAmount;
+    }
+
+    public void setInvoiceAmount(
+        final   BigDecimal invoiceAmount) {
+      this.invoiceAmount = invoiceAmount;
+    }
+
+    public   String getCompanyName() {
+      return companyName;
+    }
+
+    public void setCompanyName(
+        final   String companyName) {
+      this.companyName = companyName;
+    }
+
+    public   String getCompanyCity() {
+      return companyCity;
+    }
+
+    public void setCompanyCity(
+        final   String companyCity) {
+      this.companyCity = companyCity;
+    }
+
+    public   String getCompanyAddress() {
+      return companyAddress;
+    }
+
+    public void setCompanyAddress(
+        final   String companyAddress) {
+      this.companyAddress = companyAddress;
+    }
+
+    public   String getCompanyPostalCode() {
+      return companyPostalCode;
+    }
+
+    public void setCompanyPostalCode(
+        final   String companyPostalCode) {
+      this.companyPostalCode = companyPostalCode;
+    }
+
+    public  BigInteger getCompanyVatNumber() {
+      return companyVatNumber;
+    }
+
+    public void setCompanyVatNumber(
+        final   BigInteger companyVatNumber) {
+      this.companyVatNumber = companyVatNumber;
+    }
+
+    public BigInteger getCompanyIban() {
+      return companyIban;
+    }
+
+    public void setCompanyIban(
+        final  BigInteger companyIban) {
+      this.companyIban = companyIban;
+    }
+
+    public  BigInteger getCompanyRegistrationNumber() {
+      return companyRegistrationNumber;
+    }
+
+    public void setCompanyRegistrationNumber(
+        final  BigInteger companyRegistrationNumber) {
+      this.companyRegistrationNumber = companyRegistrationNumber;
+    }
+
+    public  BigInteger getCompanyTaxNumber() {
+      return companyTaxNumber;
+    }
+
+    public void setCompanyTaxNumber(
+        final  BigInteger companyTaxNumber) {
+      this.companyTaxNumber = companyTaxNumber;
+    }
+
+    public  String getInvoiceStatus() {
+      return invoiceStatus;
+    }
+
+    public void setInvoiceStatus(
+        final   String invoiceStatus) {
+      this.invoiceStatus = invoiceStatus;
+    }
+
   }
-
-  public void setId(final int id) {
-    this.id = id;
-  }
-
-  public UserCredential getUserCredential() {
-    return userCredential;
-  }
-
-  public void setUserCredential(final UserCredential userCredential) {
-    this.userCredential = userCredential;
-  }
-
-  public @NotNull @NotEmpty String getInvoiceNumber() {
-    return invoiceNumber;
-  }
-
-  public void setInvoiceNumber(
-      final @NotNull @NotEmpty String invoiceNumber) {
-    this.invoiceNumber = invoiceNumber;
-  }
-
-  public @NotNull @NotEmpty Date getInvoiceImportDate() {
-    return invoiceImportDate;
-  }
-
-  public void setInvoiceImportDate(
-      final @NotNull @NotEmpty Date invoiceImportDate) {
-    this.invoiceImportDate = invoiceImportDate;
-  }
-
-  public @NotNull @NotEmpty Date getInvoiceIssueDate() {
-    return invoiceIssueDate;
-  }
-
-  public void setInvoiceIssueDate(
-      final @NotNull @NotEmpty Date invoiceIssueDate) {
-    this.invoiceIssueDate = invoiceIssueDate;
-  }
-
-  public @NotNull @NotEmpty Date getInvoiceDeliveryDate() {
-    return invoiceDeliveryDate;
-  }
-
-  public void setInvoiceDeliveryDate(
-      final @NotNull @NotEmpty Date invoiceDeliveryDate) {
-    this.invoiceDeliveryDate = invoiceDeliveryDate;
-  }
-
-  public @NotNull @NotEmpty Date getInvoiceDueDate() {
-    return invoiceDueDate;
-  }
-
-  public void setInvoiceDueDate(
-      final @NotNull @NotEmpty Date invoiceDueDate) {
-    this.invoiceDueDate = invoiceDueDate;
-  }
-
-  public @NotNull @NotEmpty BigInteger getInvoiceVariableSymbol() {
-    return invoiceVariableSymbol;
-  }
-
-  public void setInvoiceVariableSymbol(
-      final @NotNull @NotEmpty BigInteger invoiceVariableSymbol) {
-    this.invoiceVariableSymbol = invoiceVariableSymbol;
-  }
-
-  public @NotNull @NotEmpty BigDecimal getInvoiceAmount() {
-    return invoiceAmount;
-  }
-
-  public void setInvoiceAmount(
-      final @NotNull @NotEmpty BigDecimal invoiceAmount) {
-    this.invoiceAmount = invoiceAmount;
-  }
-
-  public @NotNull @NotEmpty String getCompanyName() {
-    return companyName;
-  }
-
-  public void setCompanyName(
-      final @NotNull @NotEmpty String companyName) {
-    this.companyName = companyName;
-  }
-
-  public @NotNull @NotEmpty String getCompanyCity() {
-    return companyCity;
-  }
-
-  public void setCompanyCity(
-      final @NotNull @NotEmpty String companyCity) {
-    this.companyCity = companyCity;
-  }
-
-  public @NotNull @NotEmpty String getCompanyAddress() {
-    return companyAddress;
-  }
-
-  public void setCompanyAddress(
-      final @NotNull @NotEmpty String companyAddress) {
-    this.companyAddress = companyAddress;
-  }
-
-  public @NotNull @NotEmpty String getCompanyPostalCode() {
-    return companyPostalCode;
-  }
-
-  public void setCompanyPostalCode(
-      final @NotNull @NotEmpty String companyPostalCode) {
-    this.companyPostalCode = companyPostalCode;
-  }
-
-  public @NotNull @NotEmpty BigInteger getCompanyVatNumber() {
-    return companyVatNumber;
-  }
-
-  public void setCompanyVatNumber(
-      final @NotNull @NotEmpty BigInteger companyVatNumber) {
-    this.companyVatNumber = companyVatNumber;
-  }
-
-  public @NotNull @NotEmpty BigInteger getCompanyIban() {
-    return companyIban;
-  }
-
-  public void setCompanyIban(
-      final @NotNull @NotEmpty BigInteger companyIban) {
-    this.companyIban = companyIban;
-  }
-
-  public @NotNull @NotEmpty BigInteger getCompanyRegistrationNumber() {
-    return companyRegistrationNumber;
-  }
-
-  public void setCompanyRegistrationNumber(
-      final @NotNull @NotEmpty BigInteger companyRegistrationNumber) {
-    this.companyRegistrationNumber = companyRegistrationNumber;
-  }
-
-  public @NotNull @NotEmpty BigInteger getCompanyTaxNumber() {
-    return companyTaxNumber;
-  }
-
-  public void setCompanyTaxNumber(
-      final @NotNull @NotEmpty BigInteger companyTaxNumber) {
-    this.companyTaxNumber = companyTaxNumber;
-  }
-
-  public @NotNull @NotEmpty String getInvoiceStatus() {
-    return invoiceStatus;
-  }
-
-  public void setInvoiceStatus(
-      final @NotNull @NotEmpty String invoiceStatus) {
-    this.invoiceStatus = invoiceStatus;
-  }
-
-}
