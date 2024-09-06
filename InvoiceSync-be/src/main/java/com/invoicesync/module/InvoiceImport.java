@@ -43,14 +43,14 @@
 
 
     @Column(name = "\"INVOICE_DELIVERY_DATE\"")
-    private Date invoiceDeliveryDate;
+    private String invoiceDeliveryDate;
 
     @Column(name = "\"INVOICE_DUE_DATE\"")
     private String invoiceDueDate;
 
 
     @Column(name = "\"INVOICE_VARIABLE_SYMBOL\"")
-    private BigInteger invoiceVariableSymbol;
+    private String invoiceVariableSymbol;
 
 
     @Column(name = "\"INVOICE_TOTAL_AMOUNT\"")
@@ -74,19 +74,19 @@
 
 
     @Column(name = "\"COMPANY_VAT_NUMBER\"")
-    private BigInteger companyVatNumber;
+    private String companyVatNumber;
 
 
     @Column(name = "\"COMPANY_IBAN\"")
-    private BigInteger companyIban;
+    private String companyIban;
 
 
     @Column(name = "\"COMPANY_REGISTRATION_NUMBER\"")
-    private BigInteger companyRegistrationNumber;
+    private String companyRegistrationNumber;
 
 
     @Column(name = "\"COMPANY_TAX_NUMBER\"")
-    private BigInteger companyTaxNumber;
+    private String companyTaxNumber;
 
 
     @Column(name = "\"INVOICE_STATUS\"")
@@ -135,12 +135,12 @@
       this.invoiceIssueDate = invoiceIssueDate;
     }
 
-    public  Date getInvoiceDeliveryDate() {
+    public  String getInvoiceDeliveryDate() {
       return invoiceDeliveryDate;
     }
 
     public void setInvoiceDeliveryDate(
-        final  Date invoiceDeliveryDate) {
+        final  String invoiceDeliveryDate) {
       this.invoiceDeliveryDate = invoiceDeliveryDate;
     }
 
@@ -153,12 +153,12 @@
       this.invoiceDueDate = invoiceDueDate;
     }
 
-    public  BigInteger getInvoiceVariableSymbol() {
+    public  String getInvoiceVariableSymbol() {
       return invoiceVariableSymbol;
     }
 
     public void setInvoiceVariableSymbol(
-        final  BigInteger invoiceVariableSymbol) {
+        final  String invoiceVariableSymbol) {
       this.invoiceVariableSymbol = invoiceVariableSymbol;
     }
 
@@ -207,39 +207,39 @@
       this.companyPostalCode = companyPostalCode;
     }
 
-    public  BigInteger getCompanyVatNumber() {
+    public  String getCompanyVatNumber() {
       return companyVatNumber;
     }
 
     public void setCompanyVatNumber(
-        final   BigInteger companyVatNumber) {
+        final String companyVatNumber) {
       this.companyVatNumber = companyVatNumber;
     }
 
-    public BigInteger getCompanyIban() {
+    public String getCompanyIban() {
       return companyIban;
     }
 
     public void setCompanyIban(
-        final  BigInteger companyIban) {
+        final  String companyIban) {
       this.companyIban = companyIban;
     }
 
-    public  BigInteger getCompanyRegistrationNumber() {
+    public  String getCompanyRegistrationNumber() {
       return companyRegistrationNumber;
     }
 
     public void setCompanyRegistrationNumber(
-        final  BigInteger companyRegistrationNumber) {
+        final  String companyRegistrationNumber) {
       this.companyRegistrationNumber = companyRegistrationNumber;
     }
 
-    public  BigInteger getCompanyTaxNumber() {
+    public  String getCompanyTaxNumber() {
       return companyTaxNumber;
     }
 
     public void setCompanyTaxNumber(
-        final  BigInteger companyTaxNumber) {
+        final  String companyTaxNumber) {
       this.companyTaxNumber = companyTaxNumber;
     }
 

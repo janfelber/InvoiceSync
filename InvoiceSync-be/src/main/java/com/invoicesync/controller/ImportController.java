@@ -8,7 +8,6 @@ import com.invoicesync.service.ImportService;
 import com.invoicesync.service.InvoiceImportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import autovalue.shaded.kotlinx.metadata.internal.protobuf.ByteString;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -138,10 +130,10 @@ public class ImportController {
             String dateIssue = ocrService.findIssueDate(ocrText);
             String deliveryDate = ocrService.findDeliveryDate(ocrText);
             String variableSymbol = ocrService.findVariableSymbol(ocrText);
-            String vatId = ocrService.findVatId(ocrText);
+            String vatId = ocrService.findVatNumber(ocrText);
             String iban = ocrService.findIban(ocrText);
             String ico = ocrService.findIco(ocrText);
-            String dic = ocrService.findDic(ocrText);
+            String dic = ocrService.findTaxNumber(ocrText);
             return iban + "\n" +ico + "\n" + dic;
         } catch (IOException e) {
             return "Error occurred: " + e.getMessage();
@@ -151,19 +143,27 @@ public class ImportController {
   @PostMapping("/import-invoice")
   public String importInvoice(@RequestParam final String pdfPath) {
     final InvoiceImport invoice = new InvoiceImport();
-    try {
-      final String ocrText = ocrService.extractTextFromPDF(pdfPath);
-      final String dueDateStr = ocrService.findDueDate(ocrText);
-      final String issueDateStr = ocrService.findIssueDate(ocrText);
+    // final String ocrText = ocrService.extractTextFromPDF(pdfPath);
+    // final String issueDateStr = ocrService.findIssueDate(ocrText);
+    final String deliveryDateStr = "14.03.2024";
+    final String variableSymbol = "31623417232";
+    final String vatNumber = "SK31623417232";
+    final String iban = "SK0309000000000738865342";
+    final String registrationNumber = "2163512";
+    final String taxNumber = "2163512";
+    // final String dueDateStr = ocrService.findDueDate(ocrText);
 
-      invoice.setInvoiceDueDate(dueDateStr);
-      invoice.setInvoiceIssueDate(issueDateStr);
-      invoice.setInvoiceStatus("UNPROCESSED");
+    // invoice.setInvoiceIssueDate(issueDateStr);
+    // invoice.setInvoiceDueDate(dueDateStr);
+    invoice.setInvoiceDeliveryDate(deliveryDateStr);
+    invoice.setInvoiceVariableSymbol(variableSymbol);
+    invoice.setCompanyVatNumber(vatNumber);
+    invoice.setCompanyIban(iban);
+    invoice.setCompanyRegistrationNumber(registrationNumber);
+    invoice.setCompanyTaxNumber(taxNumber);
+    invoice.setInvoiceStatus("UNPROCESSED");
 
-      invoiceImportService.saveInvoice(invoice);
-      return "Invoice successfully imported!";
-    } catch (IOException e) {
-      return "Error occurred: " + e.getMessage();
-    }
+    invoiceImportService.saveInvoice(invoice);
+    return "Invoice successfully imported!";
   }
 }

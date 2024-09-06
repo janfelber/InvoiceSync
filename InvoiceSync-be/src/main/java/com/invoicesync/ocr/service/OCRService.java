@@ -128,8 +128,8 @@ public class OCRService {
   }
 
   // VAT_ID
-  public String findVatId(String ocrText) {
-    String regex = "IČDPH:" + RegexPatterns.VAT_ID; // Zachytí IČ DPH pre rôzne krajiny
+  public String findVatNumber(String ocrText) {
+    String regex = "IČDPH:" + RegexPatterns.VAT_NUMBER;
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(ocrText);
 
@@ -166,8 +166,8 @@ public class OCRService {
 
 
   // DIC
-  public String findDic (final String ocrText) {
-    String regex = "DIČ:" + RegexPatterns.TAX_ID;
+  public String findTaxNumber(final String ocrText) {
+    String regex = "DIČ:" + RegexPatterns.TAX_NUMBER;
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(ocrText);
 
