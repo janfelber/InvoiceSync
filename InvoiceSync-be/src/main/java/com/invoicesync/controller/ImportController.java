@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -152,6 +155,8 @@ public class ImportController {
     final String registrationNumber = "2163512";
     final String taxNumber = "2163512";
     // final String dueDateStr = ocrService.findDueDate(ocrText);
+   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+   LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
     // invoice.setInvoiceIssueDate(issueDateStr);
     // invoice.setInvoiceDueDate(dueDateStr);
@@ -161,6 +166,7 @@ public class ImportController {
     invoice.setCompanyIban(iban);
     invoice.setCompanyRegistrationNumber(registrationNumber);
     invoice.setCompanyTaxNumber(taxNumber);
+    invoice.setInvoiceImportDate(now);
     invoice.setInvoiceStatus("UNPROCESSED");
 
     invoiceImportService.saveInvoice(invoice);

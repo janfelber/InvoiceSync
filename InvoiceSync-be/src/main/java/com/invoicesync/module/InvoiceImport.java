@@ -2,6 +2,7 @@
 
   import java.math.BigDecimal;
   import java.math.BigInteger;
+  import java.time.LocalDateTime;
   import java.util.Date;
 
   import com.invoicesync.module.UserCredential;
@@ -36,7 +37,7 @@
 
 
     @Column(name = "\"INVOICE_IMPORT_DATE\"")
-    private Date invoiceImportDate;
+    private LocalDateTime invoiceImportDate;
 
     @Column(name = "\"INVOICE_ISSUE_DATE\"")
     private String invoiceIssueDate;
@@ -117,12 +118,12 @@
       this.invoiceNumber = invoiceNumber;
     }
 
-    public Date getInvoiceImportDate() {
+    public LocalDateTime getInvoiceImportDate() {
       return invoiceImportDate;
     }
 
     public void setInvoiceImportDate(
-        final Date invoiceImportDate) {
+        final LocalDateTime invoiceImportDate) {
       this.invoiceImportDate = invoiceImportDate;
     }
 
