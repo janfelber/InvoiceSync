@@ -15,48 +15,35 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import com.invoicesync.module.InvoiceImport;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 @Entity
-@Table(name = "USER_CREADENTIAL", schema = "invoice_sync")
+@Table(name = "\"USER_CREDENTIAL\"", schema = "invoice_sync")
 public class UserCredential {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "ID")
-  private int id;
+    @Column(name = "\"ID\"", nullable = false)
+  private Long id;
 
+  @NotNull@NotEmpty
   @NotNull
-  @NotEmpty
-  @Column(name = "USERNAME")
+  @Column(name = "\"USERNAME\"", nullable = false)
   private String username;
+
+
+  @Column(name = "\"PASSWORD\"", nullable = false)
+  private String password;
+
+  @Column(name = "\"LOGIN\"", nullable = false)
+  private String login;
 
   @OneToMany(mappedBy = "userCredential", fetch = FetchType.LAZY)
   @JsonIgnoreProperties("userCredential")
   private List<InvoiceImport> invoiceImports;
-
-  public List<InvoiceImport> getInvoiceImports() {
-    return invoiceImports;
-  }
-
-  public void setInvoiceImports(final List<InvoiceImport> invoiceImports) {
-    this.invoiceImports = invoiceImports;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(final int id) {
-    this.id = id;
-  }
-
-  public @NotNull @NotEmpty String getUsername() {
-    return username;
-  }
-
-  public void setUsername(
-      final @NotNull @NotEmpty String username) {
-    this.username = username;
-  }
 
 }
