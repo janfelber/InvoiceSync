@@ -7,13 +7,14 @@ import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/htt
 import saveAs from 'file-saver';
 import { InvoiceService } from './invoice.service';
 import { MatTableModule } from '@angular/material/table';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatListModule} from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AxiosService } from '../../axios.service';
 
 
 
@@ -37,13 +38,102 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrls: ['./grid-invoices.component.css']
 })
 export class GridInvoicesComponent {
-  filenames: string[] = [];
-  fileStatus = { status: '', requestType: '', percentage: 0 };
-  
+  protected filenames: string[] = [];
+
+  protected fileStatus = { status: '', requestType: '', percentage: 0 };
+
+  protected imports: string[] = [];
+
+  protected companies: any[] = [];
+
+  protected isLoading: boolean = true;
+
+  protected displayedColumn: string[] = ['filename', "username", 'created_at', "download"];
+
+  protected dataSource: any[] = [];
+
+  protected selectedCompanyId: any;
+
+  protected selectedCompanyName: string = '';
+
+  protected schema_name: string = '';
+
+  constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) { }
 
 
-  constructor(private fileService: FileService, private invoiceService: InvoiceService) {}
+  ngOnInit(): void {
+    this.onFetchAllImports();
+  }
 
+  onFetchAllImports(): void {
+    this.axiosService.request(
+      "GET",
+      "api/v1/import/user/1",
+      null
+    ).then(
+      (imports) => {
+        this.imports = imports.data
+        this.dataSource = imports.data;
+        this.isLoading = false;
+        console.log(imports.data);
+      }
+    )
+  }
+
+  /**
+  * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+  */
+  onFetchImports(): void {
+    this.isLoading = true;
+    this.invoiceService.fetchImports(this.selectedCompanyId).subscribe(
+      imports => {
+        this.imports = imports;
+        this.isLoading = false;
+        this.dataSource = imports;
+        console.table(imports);
+      },
+      error => {
+        console.log(error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  /**
+ * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+ */
+  onFetchCompanies(): void {
+    this.invoiceService.fetchCompany().subscribe(
+      companies => {
+        this.companies = companies;
+        console.table(companies);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  downloadFile(importId: number) {
+    this.axiosService.request('GET', `/file/generateZip/${importId}`, null, { responseType: 'blob' })
+      .then((response) => {
+        console.log(response);
+        const blob = new Blob([response.data]);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'output.zip';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Download error:', error);
+      });
+  }
+
+    /**
+ * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+ */
   public onUploadFiles(files: File[]): void {
     const formData = new FormData();
     for (const file of files) { formData.append('file', file, file.name); }
@@ -59,7 +149,7 @@ export class GridInvoicesComponent {
   }
 
   private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
-    switch(httpEvent.type) {
+    switch (httpEvent.type) {
       case HttpEventType.UploadProgress:
         this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Uploading... ');
         break;
@@ -76,26 +166,22 @@ export class GridInvoicesComponent {
             this.filenames.unshift(filename);
           }
         } else {
-          saveAs(new File([httpEvent.body!], httpEvent.headers.get('File-Name')!, 
-                  {type: `${httpEvent.headers.get('Content-Type')};charset=utf-8`}));
+          saveAs(new File([httpEvent.body!], httpEvent.headers.get('File-Name')!,
+            { type: `${httpEvent.headers.get('Content-Type')};charset=utf-8` }));
         }
         this.fileStatus.status = 'done';
         break;
-        default:
-          console.log(httpEvent);
-          break;
-      
+      default:
+        console.log(httpEvent);
+        break;
+
     }
   }
 
-  private updateStatus(loaded: number, total: number , requestType: string) {
+  private updateStatus(loaded: number, total: number, requestType: string) {
     this.fileStatus.status = 'progress';
     this.fileStatus.requestType = requestType;
     this.fileStatus.percentage = Math.round(100 * loaded / total);
-  }
-
-  public test() {
-    alert('test');
   }
 
   openFileDialog() {
@@ -114,104 +200,20 @@ export class GridInvoicesComponent {
     });
   }
 
-  
-  imports: any[] = [];
-  companies: any[] = [];
-
-  isLoading: boolean = true;
-  public displayedColumn: string[] = [ 'filename', "username", 'created_at',"download" ];
-  public dataSource: any[] = [];
-ngOnInit(): void {
-      this.onFetchAllImports();
-      this.onFetchCompanies()
-  }
-
-  selectedCompanyId: any ;
-  selectedCompanyName: string = '';
-  schema_name: string = '';
-  
   onCompanyChange(company: any) {
     this.selectedCompanyId = company.company_id;
     this.selectedCompanyName = company.name;
     this.schema_name = company.schema_name;
-    
+
     // Zavolanie funkcie na získanie importov
     this.onFetchImports();
   }
-  
-  onFetchImports(): void {
-    this.isLoading = true;
-    this.invoiceService.fetchImports(this.selectedCompanyId).subscribe(
-      imports => {
-        this.imports = imports;
-        this.isLoading = false;
-        this.dataSource = imports;
-        console.table(imports);
-      },
-      error => {
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
-  }
 
-  onFetchAllImports(): void {
-    this.invoiceService.fetchAllImports(1).subscribe(
-      imports => {
-        this.imports = imports;
-        this.isLoading = false;
-        this.dataSource = imports;
-        console.table(imports);
-      },
-      error => {
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
-  }
 
   reloadImports() {
     this.onFetchImports();
   }
 
-  onFetchCompanies() : void {
-    this.invoiceService.fetchCompany().subscribe(
-      companies => {
-        this.companies = companies;
-        console.table(companies);
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }
 
-  downloadFile(importId: number) {
-    this.invoiceService.getZipFile(importId).subscribe(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'output.zip'; // Set default file name
-      a.click();
-      window.URL.revokeObjectURL(url);
-    }, error => {
-      console.error('Download error:', error);
-    });
-  }
-
-
-  }
-
-  // downloadZip(import_id: number, company_id: number) {
-  //   this.invoiceService.downloadZip(import_id, company_id, ).subscribe((zipContent) => {
-  //     console.log(zipContent); // Vypíše hodnotu zip_content do konzoly
-  //   });
-  // }
-
-  // // click on element
-  // onClickElement(element: any) {
-  //   console.log(element);
-  // }
-
-  
+}
 
