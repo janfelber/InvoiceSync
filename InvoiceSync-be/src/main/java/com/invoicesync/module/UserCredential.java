@@ -27,7 +27,7 @@ public class UserCredential {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "\"ID\"", nullable = false)
+  @Column(name = "\"ID\"", nullable = false)
   private Long id;
 
   @NotNull@NotEmpty

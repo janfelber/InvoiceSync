@@ -1,5 +1,4 @@
-package com.invoicesync.dto;
-
+package com.invoicesync.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,15 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UserCredenialDto {
+public class AuthenticationRequest {
 
-    private Long id;
-    private String username;
-    private String password;
     private String login;
-    private String token;
-
+    private String password;
 }
