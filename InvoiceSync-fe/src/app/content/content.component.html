@@ -1,12 +1,5 @@
 <div>
-    <app-buttons
-    (loginEvent)="showComponent('login')"
-    (logoutEvent)="showComponent('welcome')"
-  />
-
-    <app-welcome-content *ngIf="componentToShow == 'welcome'"/>
-	<app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)"/>
-	<app-header *ngIf="componentToShow == 'invoices'"/>
-  <app-sidenav *ngIf="componentToShow == 'invoices'"/>
-  <app-body *ngIf="componentToShow == 'invoices'"/>
+	<!-- <app-header /> -->
+  <app-sidenav />
+  <app-body />
 </div>
