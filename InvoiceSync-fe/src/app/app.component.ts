@@ -23,7 +23,6 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { BodyComponent } from './body/body.component';
 import { HeaderComponent } from './header/header.component';
 import { Invoices } from './invoices/invoices.component';
-import { AuthContentComponent } from './auth-content/auth-content.component'
 import { ContentComponent } from './content/content.component';
 
 interface SideNavToggle {
@@ -42,7 +41,6 @@ interface SideNavToggle {
   BodyComponent,
   HeaderComponent,
   Invoices,
-AuthContentComponent,
 ContentComponent],
 })
 
