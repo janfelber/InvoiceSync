@@ -3,6 +3,9 @@ package com.invoicesync.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.config.JwtService;
 import com.invoicesync.repository.UserCredentialRepository;
+import com.invoicesync.token.Token;
+import com.invoicesync.token.TokenRepository;
+import com.invoicesync.token.TokenType;
 import com.invoicesync.user.Role;
 import com.invoicesync.user.UserDemo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +28,8 @@ public class AuthenticationService {
 
     private final UserCredentialRepository repository;
 
+    private final TokenRepository tokenRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
@@ -38,8 +43,11 @@ public class AuthenticationService {
                 .login(request.getLogin())
                 .role(Role.USER)
                 .build();
-        repository.save(user);
+        var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
+
+        saveUserToken(savedUser, jwtToken);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
@@ -53,8 +61,40 @@ public class AuthenticationService {
         var user = repository.findByLogin(request.getLogin())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
+        revokeAllUsersTokens(user);
+        saveUserToken(user,jwtToken);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
     }
+
+
+    private void revokeAllUsersTokens(UserDemo user) {
+        var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+
+    private void saveUserToken(UserDemo user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .revoked(false)
+                .expired(false)
+                .build();
+
+        tokenRepository.save(token);
+    }
+
+
+
 }
