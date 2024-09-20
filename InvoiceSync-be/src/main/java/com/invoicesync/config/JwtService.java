@@ -18,11 +18,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret-key}")
-    private  String secretKey;
 
-    @Value("${jwt.expiration}")
-    private Long jwtExpiration;
+    private  String secretKey = "3a403e356638404254274a2d383c787d62367c663b467b3235286a736f";
+
+
 
     public String extractLogin(final String token) {
         return extractClaim(token, Claims::getSubject);
@@ -41,20 +40,19 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+        return buildToken(extraClaims, userDetails);
     }
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
-            Long expiration
+            UserDetails userDetails
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(getSignInKeY(), SignatureAlgorithm.HS256)
                 .compact();
     }
