@@ -1,22 +1,19 @@
 <div class="sidenav">
     <div class="logo-container">
-        <button class="logo"><i class="fas fa-sync"></i></button>
+      <button class="logo"><i class="fas fa-sync"></i></button>
     </div>
-    <div class="spacer"></div> <!-- Spacer div to push the nav items down -->
+    <div class="spacer"></div>
     <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="data.routerLink" 
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}"
-            >
-            <img *ngIf="data.icon.endsWith('.svg')" [src]="data.icon" class="svg-icon" />
-            <i *ngIf="!data.icon.endsWith('.svg')" class="sidenav-link-icon" [class]="data.icon"></i>
-                <span class="sidenav-link-text">
-                    {{ data.label }}
-                </span>
-            </a>
-        </li>
-        
+      <li class="sidenav-nav-item" *ngFor="let data of navData">
+        <a class="sidenav-nav-link" [routerLink]="data.routerLink" 
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <i class="sidenav-link-icon" [class]="data.icon"></i>
+            <span class="sidenav-link-text">
+                {{ data.label }}
+            </span>
+        </a>
+      </li>
     </ul>
   </div>
   

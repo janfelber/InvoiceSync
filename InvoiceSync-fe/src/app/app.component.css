@@ -1,52 +1,17 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: 300px 1fr; /* Adjust the sidebar width as needed */
-  height: 100vh;
-  margin-top: 40px;
-}
-
-body {
-  overflow-y: hidden;
-  font-family: 'Roboto', sans-serif;
-}
-
-.sidebar {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Align items to the start (top) */
-  background-color: white;
-  padding: 10px;
-  padding-top: 40px; /* Add padding to create space from the top */
-}
-
-.button-container {
+.body {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Add space between buttons */
-  margin-right: 5px; /* Add margin to the right */
+  height: 100vh; /* Výška celej obrazovky */
 }
 
-::ng-deep mat-nav-list app-custom-button button {
-  display: block; /* Ensure buttons are block-level elements */
-  width: 180px; /* Make buttons take the full width of the parent container */
-  text-align: left; /* Align text to the left */
-  justify-content: flex-start; /* Ensure icons and text are aligned to the left */
+.content {
+  display: flex; /* Horizontálne rozloženie pre obsah */
+  flex-grow: 1; /* Vyplniť zvyšok priestoru */
 }
 
-tool-bar {
-  height: 200px; /* Make toolbar bigger to the bottom */
+.main {
+  flex-grow: 1; /* Vyplniť zvyšok priestoru vedľa sidenavu */
+  background: #f8f9fa; /* Pozadie pre main obsah */
+  height: 100%; /* Zabezpeč, že main bude mať 100% výšku */
+  padding-left: 200px;
 }
-
-.tool-bar {
-  width: 100%; /* Make the toolbar extend across the full width of its container */
-  background-color: white;
-}
-
-.app-version {
-  margin-top: auto;
-  padding-top: 10px;
-  font-size: 14px;
-  color: gray;
-}
-
-

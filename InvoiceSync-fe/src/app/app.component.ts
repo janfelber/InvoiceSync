@@ -41,7 +41,11 @@ interface SideNavToggle {
   BodyComponent,
   HeaderComponent,
   Invoices,
-ContentComponent],
+ContentComponent,
+CommonModule,
+RouterOutlet,
+GridInvoicesComponent
+],
 })
 
 export class AppComponent  {
