@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,17 +20,12 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String token;
 
-
     @Enumerated(EnumType.STRING)
-
     private TokenType tokenType;
 
-
     private boolean expired;
-
 
     private boolean revoked;
 
