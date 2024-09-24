@@ -18,21 +18,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "\"USER_CREDENTIAL\"", schema = "invoice_sync")
+@Table(name = "user_credential", schema = "invoice_sync")
 public class UserDemo implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "\"ID\"", nullable = false)
     private Long id;
 
-    @Column(name = "\"USERNAME\"", nullable = false)
     private String username;
 
-    @Column(name = "\"PASSWORD\"", nullable = false)
     private String password;
 
-    @Column(name = "\"LOGIN\"", nullable = false)
     private String login;
 
     @Enumerated(EnumType.STRING)
