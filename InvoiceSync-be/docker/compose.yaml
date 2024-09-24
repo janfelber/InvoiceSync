@@ -1,0 +1,15 @@
+name: 'is'
+version: '3.8'
+
+services:
+  db:
+    container_name: database_is
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: invoicesync_db_user
+      POSTGRES_PASSWORD: invoicesync_db_password
+      POSTGRES_DB: invoicesync_db
+    ports:
+      - "5432:5432"
+

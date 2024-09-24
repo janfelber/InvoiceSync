@@ -1,9 +1,9 @@
-.head {
+/* .head {
     width: calc(100% - 5rem);
     z-index: 1;
     transition: all 0.5s ease;
     background: #ffffff;
-    padding: 2.5rem 1.5rem; /* Adjust padding to fit content */
+    padding: 2.5rem 1.5rem;
     position: fixed;
     top: 0;
     border-bottom: 1px solid #f0f1f3;
@@ -16,23 +16,23 @@
 .avatar-container {
     display: flex;
     align-items: center;
-    margin-left: auto; /* Pushes container to the right */
+    margin-left: auto;
 }
 
 mat-icon {
-font-size: 24px; /* Adjust size as needed */
-vertical-align: middle; /* Align icon vertically within its container */
+font-size: 24px;
+vertical-align: middle;
 }
 .username {
-    font-size: 16px; /* Adjust text size as needed */
-    color: #333; /* Adjust text color as needed */
+    font-size: 16px; 
+    color: #333; 
   }
   
 .avatar {
-width: 3rem; /* Adjust size as needed */
-height: 3rem; /* Adjust size as needed */
-border-radius: 50%; /* Makes the image circular */
-object-fit: cover; /* Ensures the image fits within the circle */
+width: 3rem; 
+height: 3rem; 
+border-radius: 50%; 
+object-fit: cover; 
 }
   
 .head-trimmed {
@@ -44,4 +44,19 @@ margin-left: 16.5625rem;
 .head-md-screen {
 width: calc(100% - 5rem);
 margin-left: 5rem;
-}
+} */
+
+.header 
+{
+    background-color: #f8f9fa; /* Svetlá farba pozadia pre header */
+    display: flex;
+    align-items: center; /* Vertikálne zarovnávanie obsahu */
+    padding: 0 20px; /* Horizontálne odstupy */
+    height: 60px; /* Výška headeru */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Tieň na dolnej strane */
+  
+    .example-spacer {
+      flex-grow: 1; /* Tento prvok vyplní priestor medzi názvom aplikácie a používateľom */
+    }
+  }
+  

@@ -9,6 +9,8 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.cloud.vision.v1.TextAnnotation;
 import com.google.protobuf.ByteString;
+import com.invoicesync.ocr.service.regex.RegexPatterns;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class OCRService {
@@ -74,4 +78,104 @@ public class OCRService {
     }
     return fullText.toString();
   }
+
+  // INVOICE_ISSUE_DATE
+  public String findIssueDate(String ocrText) {
+    String regex = "Dátum vystavenia:" + RegexPatterns.DATE_DD_MM_YYYY;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Dátum splatnosti nebol nájdený.";
+  }
+
+  // INVOICE_DELIVERY_DATE
+  public String findDeliveryDate(String ocrText) {
+    String regex = "Dátum dodania:" + RegexPatterns.DATE_DD_MM_YYYY;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Dátum dodania nebol nájdený.";
+  }
+
+  // INVOICE_DUE_DATE
+  public String findDueDate(String ocrText) {
+    String regex = "Dátum splatnosti:" + RegexPatterns.DATE_DD_MM_YYYY;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Dátum splatnosti nebol nájdený.";
+  }
+
+  // VARIABLE_SYMBOL
+  public String findVariableSymbol(String ocrText) {
+    String regex = "Variabilný symbol:" + RegexPatterns.VARIABLE_SYMBOL;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1);
+    }
+    return "Variabilný symbol nebol nájdený.";
+  }
+
+  // VAT_ID
+  public String findVatId(String ocrText) {
+    String regex = "IČDPH:" + RegexPatterns.VAT_ID; // Zachytí IČ DPH pre rôzne krajiny
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(1); // Vráti zachytené IČ DPH
+    }
+    return "IČ DPH nebolo nájdené.";
+  }
+
+  // IBAN
+
+  public String findIban (String ocrText) {
+    String regex = "IBAN:" + RegexPatterns.IBAN;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(0);
+    }
+    return "IBAN nebol nájdený.";
+  }
+
+  // ICO
+  public String findIco (String ocrText) {
+    String regex = "IČO:" + RegexPatterns.REGISTRATION_NUMBER;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(0);
+    }
+    return "IČO nebol nájdený.";
+  }
+
+
+  // DIC
+  public String findDic (final String ocrText) {
+    String regex = "DIČ:" + RegexPatterns.TAX_ID;
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      return matcher.group(0);
+    }
+    return "DIČ nebol nájdený.";
+  }
 }
+
+
