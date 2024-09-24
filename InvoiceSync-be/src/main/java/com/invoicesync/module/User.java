@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
+@Deprecated
 @Entity
 @Table(name = "credential", schema = "invoice_sync")
 public class User {

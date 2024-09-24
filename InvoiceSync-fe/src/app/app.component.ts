@@ -23,6 +23,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { BodyComponent } from './body/body.component';
 import { HeaderComponent } from './header/header.component';
 import { Invoices } from './invoices/invoices.component';
+import { ContentComponent } from './content/content.component';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -39,7 +40,12 @@ interface SideNavToggle {
   SidenavComponent,
   BodyComponent,
   HeaderComponent,
-  Invoices],
+  Invoices,
+ContentComponent,
+CommonModule,
+RouterOutlet,
+GridInvoicesComponent
+],
 })
 
 export class AppComponent  {

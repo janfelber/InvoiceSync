@@ -16,7 +16,6 @@ public class InvoiceSyncApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(InvoiceSyncApplication.class, args);
 	}
-
 	@Bean
 	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
