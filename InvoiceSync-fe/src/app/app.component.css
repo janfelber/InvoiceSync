@@ -15,3 +15,7 @@
   height: 100%; /* Zabezpeč, že main bude mať 100% výšku */
   padding-left: 200px;
 }
+
+.header {
+  padding-left: 200px;
+}
