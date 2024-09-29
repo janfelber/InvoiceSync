@@ -24,6 +24,7 @@ import { BodyComponent } from './body/body.component';
 import { HeaderComponent } from './header/header.component';
 import { Invoices } from './invoices/invoices.component';
 import { ContentComponent } from './content/content.component';
+import { HeaderCompanyComponent } from "./header-company/header-company.component";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -36,15 +37,16 @@ interface SideNavToggle {
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports:  [
-  SidenavComponent,
-  BodyComponent,
-  HeaderComponent,
-  Invoices,
-ContentComponent,
-CommonModule,
-RouterOutlet,
-GridInvoicesComponent
+  imports: [
+    SidenavComponent,
+    BodyComponent,
+    HeaderComponent,
+    Invoices,
+    ContentComponent,
+    CommonModule,
+    RouterOutlet,
+    GridInvoicesComponent,
+    HeaderCompanyComponent
 ],
 })
 
