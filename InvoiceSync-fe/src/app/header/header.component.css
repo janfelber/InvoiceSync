@@ -46,18 +46,31 @@ width: calc(100% - 5rem);
 margin-left: 5rem;
 } */
 
-.header
-{
-    background-color: #f8f9fa; /* Svetlá farba pozadia pre header */
-    display: flex;
-    align-items: center; /* Vertikálne zarovnávanie obsahu */
-    padding: 0 20px; /* Horizontálne odstupy */
-    height: 60px; /* Výška headeru */
-    border-bottom: 1px solid #d8d8f0;
-    
-  
-    .example-spacer {
-      flex-grow: 1; /* Tento prvok vyplní priestor medzi názvom aplikácie a používateľom */
-    }
-  }
-  
+.header {
+  background-color: #f8f9fa; /* Svetlá farba pozadia pre header */
+  display: flex;
+  align-items: center; /* Vertikálne zarovnávanie obsahu */
+  padding: 0 20px; /* Horizontálne odstupy */
+  height: 60px; /* Výška headeru */
+  border-bottom: 1px solid #d8d8f0;
+}
+
+.ActiveRouter {
+  display: flex;
+  justify-content: flex-start; /* Zarovná text na ľavú stranu */
+  flex-grow: 1; /* Nech obsadí čo najviac priestoru, aby tlačil obsah na pravú stranu */
+}
+
+.active-router-label {
+  text-align: left; /* Tento text bude zarovnaný naľavo */
+}
+
+.example-spacer {
+  flex-grow: 1; /* Vyplní zvyšný priestor medzi routerom a používateľom */
+}
+
+.actionbar {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}

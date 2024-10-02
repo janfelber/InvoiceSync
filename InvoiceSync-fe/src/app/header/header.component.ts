@@ -4,6 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { navbarData } from '../sidenav/nav-data';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +15,17 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  navData = navbarData;
+  currentRoute = '';
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      const currentUrl = this.router.url.slice(1);
+      const currentNav = this.navData.find(nav => nav.routerLink === currentUrl);
+      this.currentRoute = currentNav ? currentNav.label : 'Unknown';
+    });
+  }
 
   // @Input() collapsed = true;
   // @Input() screenWidth = 0;
