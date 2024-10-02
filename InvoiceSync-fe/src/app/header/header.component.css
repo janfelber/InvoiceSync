@@ -46,12 +46,11 @@ width: calc(100% - 5rem);
 margin-left: 5rem;
 } */
 
-.header {
+header {
   background-color: #f8f9fa; /* Svetlá farba pozadia pre header */
   display: flex;
+  height: 60px;
   align-items: center; /* Vertikálne zarovnávanie obsahu */
-  padding: 0 20px; /* Horizontálne odstupy */
-  height: 60px; /* Výška headeru */
   border-bottom: 1px solid #d8d8f0;
 }
 
@@ -61,16 +60,16 @@ margin-left: 5rem;
   flex-grow: 1; /* Nech obsadí čo najviac priestoru, aby tlačil obsah na pravú stranu */
 }
 
-.active-router-label {
-  text-align: left; /* Tento text bude zarovnaný naľavo */
+.RouterLabel {
+  align-items: center;
+  flex-wrap: nowrap;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-left: 1.75rem;
 }
 
-.example-spacer {
+.Spacer {
   flex-grow: 1; /* Vyplní zvyšný priestor medzi routerom a používateľom */
 }
 
-.actionbar {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-}
