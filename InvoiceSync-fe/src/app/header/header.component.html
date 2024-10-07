@@ -1,20 +1,38 @@
-<!-- <mat-toolbar class="head" [ngClass]="getHeadClass()">
-    <div class="avatar-container">
-        <mat-icon>account_circle</mat-icon>
-        <span class="username"> Ekon Consult S.R.O</span>
-      </div>
-  </mat-toolbar>
-   -->
-
 <header>
-    <nav class="HeaderNav">
-        <div class="ActiveRouter">
-            <span class="RouterLabel">{{ currentRoute }}</span>
+    <nav class="header-nav">
+        <div class="active-router">
+            <span class="router-label">{{ currentRoute }}</span>
         </div>
     </nav>
-    <div class="Spacer"></div> <!-- Spacer, aby oddelil router od zvyšku obsahu -->
-    <p>Name of user</p>
-    <button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>account_circle</mat-icon>
-    </button>
+    <div class="vertical-divider"></div>
+    <div class="spacer"></div>
+    <div class="vertical-divider"></div>
+    <div class="user-container">
+        <div class="user-menu">
+            <button class="user-menu-button" (click)="toggleDropdown()">
+                <div class="user-avatar">
+                </div>
+                <div class="user-info">
+                    <span class="accountant-company">Ekon Consult</span>
+                    <span class="name">Emilia Felberova</span>
+                </div>
+            </button>
+            <div class="dropdown-content" *ngIf="isDropdownOpen">
+                <div class="wrapper">
+                    <a href="" class="user-detail">
+                        <span>Detail Profilu</span>
+                        <mat-icon>account_circle</mat-icon>
+                    </a>
+                </div>
+                <hr class="devider">
+                <div class="wrapper">
+                    <a href="" class="logout">
+                        <span>Odhlásiť sa</span>
+                        <mat-icon>exit_to_app</mat-icon>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div> 
 </header>

@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
 
   navData = navbarData;
+  isDropdownOpen = false;
   currentRoute = '';
 
   constructor(private router: Router) {
@@ -26,6 +27,16 @@ export class HeaderComponent {
       this.currentRoute = currentNav ? currentNav.label : 'Unknown';
     });
   }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+    console.log('Dropdown is now', this.isDropdownOpen ? 'open' : 'closed');
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
 
   // @Input() collapsed = true;
   // @Input() screenWidth = 0;

@@ -47,29 +47,129 @@ margin-left: 5rem;
 } */
 
 header {
-  background-color: #f8f9fa; /* Svetlá farba pozadia pre header */
+  background-color: white;
   display: flex;
   height: 60px;
-  align-items: center; /* Vertikálne zarovnávanie obsahu */
+  align-items: center;
   border-bottom: 1px solid #d8d8f0;
 }
 
-.ActiveRouter {
+.active-router {
   display: flex;
-  justify-content: flex-start; /* Zarovná text na ľavú stranu */
-  flex-grow: 1; /* Nech obsadí čo najviac priestoru, aby tlačil obsah na pravú stranu */
+  justify-content: flex-start;
+  flex-grow: 1;
 }
 
-.RouterLabel {
+.router-label {
   align-items: center;
   flex-wrap: nowrap;
   font-size: 1rem;
   font-weight: 500;
   white-space: nowrap;
+}
+
+.devider {
+  margin: 0.25rem 0;
+  border-top: 1px solid #d8d8f0;
+  width: 100%;
+}
+
+.vertical-divider {
+  width: 1px;
+  height: 35px;
+  background-color: #d8d8f0;
+  margin: 0 1rem;
+}
+
+.header-nav {
   margin-left: 1.75rem;
 }
 
-.Spacer {
-  flex-grow: 1; /* Vyplní zvyšný priestor medzi routerom a používateľom */
+.spacer {
+  flex-grow: 1;
 }
 
+.user-menu-button {
+  align-items: center;
+  border-radius: .25rem;
+  display: flex;
+  gap: .25rem;
+  padding: .25rem;
+  width: 18.5rem;
+  border-color: transparent;
+  background-color: white;
+  box-sizing: border-box;
+
+  &:hover {
+    background-color: rgba(228, 226, 226, 0.918);
+  }
+}
+
+.dropdown-content {
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  padding: .25rem 0;
+  gap: .25rem;
+  border-radius: .25rem;
+  width: 18.5rem;
+}
+
+.wrapper {
+  padding: 0 .25rem;
+}
+
+.user-detail{
+  border-radius: .25rem;
+  align-items: center;
+  color: #333638;
+  display: flex;
+  justify-content: space-between;
+  padding: .25rem;
+  text-decoration: none;
+
+  &:hover {
+    background-color: rgba(228, 226, 226, 0.918);
+  }
+}
+
+.logout {
+  border-radius: .25rem;
+  align-items: center;
+  color: #333638;
+  display: flex;
+  justify-content: space-between;
+  padding: .25rem;
+  text-decoration: none;
+
+  &:hover {
+    color: #f44336;
+    background-color: rgba(244, 67, 54, 0.1);
+  }
+}
+
+
+.user-menu {
+  margin-right: 2rem;
+  position: relative;
+}
+
+
+.user-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 12rem;
+  text-align: start;
+}
+
+
+.accountant-company {
+  font-size: 12px;
+}
+
+.name {
+  font-size: 10px;
+}
