@@ -1,13 +1,24 @@
-<mat-toolbar>
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Dropdown
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" type="button">Action</button>
-            <button class="dropdown-item" type="button">Another action</button>
-            <button class="dropdown-item" type="button">Something else here</button>
-        </div>
+<div class="header-company">
+  <div class="company-dropdown">
+    <div class="dropdown" style="position: relative; display: inline-block;">
+      <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Vyber spoločnosť
+        <i class="fas fa-chevron-down"
+          style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #667085;"></i>
+      </button>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <button class="dropdown-item" type="button">Action</button>
+        <button class="dropdown-item" type="button">Another action</button>
+        <button class="dropdown-item" type="button">Something else here</button>
+      </div>
     </div>
-</mat-toolbar>
+  </div>
+  <div class="action-button">
+    <button type="button" class="btn filter-button btn-sm">
+      <img class="icon" src="assets/icons/invoice_icon.svg" alt="test">
+      <span>Faktury</span>
+    </button>
+  </div>
+</div>
