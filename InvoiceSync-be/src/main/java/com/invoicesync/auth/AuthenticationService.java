@@ -6,7 +6,6 @@ import com.invoicesync.repository.UserCredentialRepository;
 import com.invoicesync.token.Token;
 import com.invoicesync.token.TokenRepository;
 import com.invoicesync.token.TokenType;
-import com.invoicesync.user.Role;
 import com.invoicesync.user.UserDemo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -36,36 +32,35 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        var user = UserDemo.builder()
+    public AuthenticationResponse register(final RegisterRequest request) {
+        final var user = UserDemo.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .login(request.getLogin())
-                .role(Role.USER)
+                .role(request.getRole())
                 .build();
-        var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        final var savedUser = repository.save(user);
+        final var jwtToken = jwtService.generateToken(user);
+        final var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
-
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(final AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getLogin(),
                 request.getPassword())
         );
-        var user = repository.findByLogin(request.getLogin())
+        final var user = repository.findByLogin(request.getLogin())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        final var jwtToken = jwtService.generateToken(user);
+        final var refreshToken = jwtService.generateRefreshToken(user);
 
         revokeAllUsersTokens(user);
-        saveUserToken(user,jwtToken);
+        saveUserToken(user, jwtToken);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
@@ -74,8 +69,8 @@ public class AuthenticationService {
     }
 
 
-    private void revokeAllUsersTokens(UserDemo user) {
-        var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+    private void revokeAllUsersTokens(final UserDemo user) {
+        final var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
         if (validUserTokens.isEmpty()) {
             return;
         }
@@ -86,8 +81,8 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    private void saveUserToken(UserDemo user, String jwtToken) {
-        var token = Token.builder()
+    private void saveUserToken(final UserDemo user, final String jwtToken) {
+        final var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
@@ -99,8 +94,8 @@ public class AuthenticationService {
     }
 
     public void refreshToken(
-        final HttpServletRequest request,
-        final HttpServletResponse response) throws IOException {
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws IOException {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
@@ -114,15 +109,15 @@ public class AuthenticationService {
         login = jwtService.extractLogin(refreshToken);
 
         if (login != null) {
-            var user = this.repository.findByLogin(login).orElseThrow();
+            final var user = this.repository.findByLogin(login).orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+                final var accessToken = jwtService.generateToken(user);
                 revokeAllUsersTokens(user);
-                saveUserToken(user,accessToken);
-                var authResponse = AuthenticationResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
-                    .build();
+                saveUserToken(user, accessToken);
+                final var authResponse = AuthenticationResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build();
 
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
