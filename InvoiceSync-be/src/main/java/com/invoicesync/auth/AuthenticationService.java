@@ -1,16 +1,22 @@
 package com.invoicesync.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.config.JwtService;
 import com.invoicesync.repository.UserCredentialRepository;
 import com.invoicesync.token.Token;
 import com.invoicesync.token.TokenRepository;
 import com.invoicesync.token.TokenType;
 import com.invoicesync.user.UserDemo;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +41,11 @@ public class AuthenticationService {
                 .build();
         final var savedUser = repository.save(user);
         final var jwtToken = jwtService.generateToken(user);
-
+        final var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -51,12 +57,14 @@ public class AuthenticationService {
         final var user = repository.findByLogin(request.getLogin())
                 .orElseThrow();
         final var jwtToken = jwtService.generateToken(user);
+        final var refreshToken = jwtService.generateRefreshToken(user);
 
         revokeAllUsersTokens(user);
         saveUserToken(user, jwtToken);
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -85,5 +93,35 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
+    public void refreshToken(
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws IOException {
+
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String login;
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+
+        refreshToken = authHeader.substring(7);
+        login = jwtService.extractLogin(refreshToken);
+
+        if (login != null) {
+            final var user = this.repository.findByLogin(login).orElseThrow();
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                final var accessToken = jwtService.generateToken(user);
+                revokeAllUsersTokens(user);
+                saveUserToken(user, accessToken);
+                final var authResponse = AuthenticationResponse.builder()
+                        .accessToken(accessToken)
+                        .refreshToken(refreshToken)
+                        .build();
+
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+            }
+        }
+    }
 
 }
