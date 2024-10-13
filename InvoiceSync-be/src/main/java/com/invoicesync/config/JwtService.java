@@ -1,6 +1,6 @@
 package com.invoicesync.config;
 
-import com.google.api.client.util.Value;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,9 +19,12 @@ import java.util.function.Function;
 public class JwtService {
 
 
-    private  String secretKey = "3a403e356638404254274a2d383c787d62367c663b467b3235286a736f";
-
-
+    @Value("${security.jwt.secret-key}")
+    private String secretKey;
+    @Value("${security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
 
     public String extractLogin(final String token) {
         return extractClaim(token, Claims::getSubject);
@@ -40,19 +43,23 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
-        return buildToken(extraClaims, userDetails);
+        return buildToken(extraClaims, userDetails, jwtExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(),userDetails, refreshExpiration);
     }
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
+            UserDetails userDetails, long expiration
     ) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKeY(), SignatureAlgorithm.HS256)
                 .compact();
     }
