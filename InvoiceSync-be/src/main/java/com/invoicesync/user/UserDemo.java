@@ -30,6 +30,10 @@ public class UserDemo implements UserDetails {
 
     private String login;
 
+    private boolean mfa_enabled;
+
+    private String secret;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

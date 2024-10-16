@@ -3,15 +3,19 @@ package com.invoicesync.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.config.JwtService;
 import com.invoicesync.repository.UserCredentialRepository;
+import com.invoicesync.tfa.TwoFactorAuthenticationService;
 import com.invoicesync.token.Token;
 import com.invoicesync.token.TokenRepository;
 import com.invoicesync.token.TokenType;
+import com.invoicesync.user.Role;
 import com.invoicesync.user.UserDemo;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,30 +36,48 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    private final TwoFactorAuthenticationService tfaService;
+
     public AuthenticationResponse register(final RegisterRequest request) {
         final var user = UserDemo.builder()
                 .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
                 .login(request.getLogin())
-                .role(request.getRole())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .mfa_enabled(request.isMfaEnabled())
                 .build();
+
+        // if MFA is enabled, generate a secret key and save it to the user
+        if (request.isMfaEnabled()) {
+            user.setSecret(tfaService.generateNewSecret());
+        }
         final var savedUser = repository.save(user);
         final var jwtToken = jwtService.generateToken(user);
         final var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
+                .secretImageUri(tfaService.generateQrCodeImageUri(user.getSecret()))
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .mfaEnabled(user.isMfa_enabled())
                 .build();
     }
 
     public AuthenticationResponse authenticate(final AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getLogin(),
-                request.getPassword())
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getLogin(),
+                        request.getPassword())
         );
         final var user = repository.findByLogin(request.getLogin())
                 .orElseThrow();
+        if (user.isMfa_enabled()) {
+            return AuthenticationResponse.builder()
+                    .accessToken("")
+                    .refreshToken("")
+                    .mfaEnabled(true)
+                    .build();
+        }
         final var jwtToken = jwtService.generateToken(user);
         final var refreshToken = jwtService.generateRefreshToken(user);
 
@@ -65,6 +87,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .mfaEnabled(false)
                 .build();
     }
 
@@ -117,6 +140,7 @@ public class AuthenticationService {
                 final var authResponse = AuthenticationResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
+                        .mfaEnabled(false)
                         .build();
 
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
@@ -124,4 +148,22 @@ public class AuthenticationService {
         }
     }
 
+    public AuthenticationResponse verifyCode(
+            final VerificationRequest verificationRequest
+    ) {
+        final UserDemo user = repository
+                .findByLogin(verificationRequest.getLogin())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        String.format("No user found with login: %s", verificationRequest.getLogin()))
+                );
+        if (tfaService.isOtpNotValid(user.getSecret(), verificationRequest.getCode())) {
+            throw new BadCredentialsException("Code is not valid");
+        }
+        final var jwtToken = jwtService.generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .mfaEnabled(user.isMfa_enabled())
+                .build();
+    }
 }
