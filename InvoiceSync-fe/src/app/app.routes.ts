@@ -5,19 +5,24 @@ import { InvoiceInspect } from './invoice-inspect/invoice-inspect.component';
 import {LoginComponent} from "./login/login.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {RegisterComponent} from "./register/register.component";
+import {authGuard} from "./services/auth/auth.guard";
 
 export const routes: Routes = [
     // {path:'', redirectTo:'invoices', pathMatch: 'full'},
     // {path: 'invoices', component: Invoices},
     // {path: 'test', component: InvoiceInspect},
   {
-    path: 'login', component: LoginComponent
+    path: 'login',
+    component: LoginComponent
   },
   {
-    path: 'register', component: RegisterComponent
+    path: 'register',
+    component: RegisterComponent
   },
   {
-    path: 'welcome', component: WelcomeComponent
+    path: 'welcome',
+    component: WelcomeComponent,
+    canActivate: [authGuard]
   }
 
 ];
