@@ -20,24 +20,35 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-        @RequestBody RegisterRequest request
+    public ResponseEntity<?> register(
+            @RequestBody final RegisterRequest request
     ) {
-        return ResponseEntity.ok(service.register(request));
+        final var response = service.register(request);
+        if (request.isMfaEnabled()) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.accepted().build();
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
-        @RequestBody AuthenticationRequest request
+            @RequestBody final AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
     @PostMapping("/refresh-token")
     public void refreshToken(
-        HttpServletRequest request,
-        HttpServletResponse response
+            final HttpServletRequest request,
+            final HttpServletResponse response
     ) throws IOException {
         service.refreshToken(request, response);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyCode(
+            @RequestBody final VerificationRequest verificationRequest
+    ) {
+        return ResponseEntity.ok(service.verifyCode(verificationRequest));
     }
 }
