@@ -42,15 +42,14 @@ export class LoginComponent {
         {
           next: (response) => {
             this.authResponse = response;
-            if(!this.authResponse.mfaEnabled){
+            if (!this.authResponse.mfaEnabled) {
               localStorage.setItem('token', this.authResponse.access_token as string);
-              console.log(response.access_token)
-              this.router.navigate(['welcome']);
+              console.log(response.access_token);
+              this.router.navigate(['invoices']); // Redirect directly to 'invoices'
             }
           }
         }
-      )
-
+      );
   }
 
   verifyCode() {

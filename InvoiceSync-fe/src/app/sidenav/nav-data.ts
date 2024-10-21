@@ -10,7 +10,7 @@ export const navbarData = [
     label: 'Faktury'
   },
   {
-    routerLink: 'test',
+    routerLink: 'rex',
     icon: 'fas fa-light fa-mobile',
     label: 'Rex'
   }
