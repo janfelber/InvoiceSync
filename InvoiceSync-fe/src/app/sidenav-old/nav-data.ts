@@ -10,4 +10,3 @@ export const navbarData = [
       label: 'REX'
     }
   ];
-  
