@@ -1,0 +1,96 @@
+.table {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  border: 1px solid #d8d8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.table .table-head {
+  align-items: center;
+  display: flex;
+  padding: .5em 2em;
+}
+
+.home-page-container {
+  padding: .75rem 2.5rem;
+  display: flex;
+}
+
+.col-7 {
+  margin-right: 1.5rem;
+}
+
+
+.col {
+  flex-basis: 0;
+  width: 100%;
+}
+
+.table-title h5 {
+  line-height: 1;
+  margin: 0;
+}
+
+.table-title {
+  align-items: center;
+  display: flex;
+  height: calc(1.5em + .75rem + 2px);
+}
+
+.table-title h5,
+.table-title {
+  margin: 0;
+  padding: 0;
+}
+
+h5 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.table .table-container {
+  overflow: auto;
+  position: relative;
+}
+
+.table table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-top: 1px solid #d8d8f0;
+  width: 100%;
+
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  unicode-bidi: isolate;
+  border-style: none;
+}
+
+.table .table-row.empty .cell {
+  text-align: center;
+  border-top: 1px solid #d8d8f0;
+}
+
+.head-container {
+  padding: .5em;
+  border-right:1px solid #d8d8f0;
+}
+
+.column-header:last-child .head-container {
+  border-right: none;
+}
+
+tbody {
+  border: none;
+}
+
+.table-row.empty .cell {
+  padding: 1em;
+  text-align: center;
+}
