@@ -7,7 +7,7 @@
     position: fixed;
     z-index: 1;
     top: 0;
-    width: 11.5rem;
+    width: 11.5rem !important;
     height: 100vh;
     border-right: 1px solid #d8d8f0;
     box-sizing: border-box;
@@ -21,13 +21,13 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding-top: 6px; 
+    padding-top: 6px;
     padding-bottom: 4px;
 }
 
 .SideMenuHeader-icon {
     background: white;
-    text-align: center; 
+    text-align: center;
     border-radius: 0.313rem;
     font-size: 24px;
     font-weight: 900;
@@ -86,7 +86,7 @@
         .sidenav-link-icon {
             color: #333638;
         }
-        
+
         .sidenav-link-text {
             color: #333638;
         }
@@ -94,11 +94,11 @@
 
     &.active {
         color: #333638;
-        
+
         .sidenav-link-icon {
             color: #333638;
         }
-        
+
         .sidenav-link-text {
             color: #333638;
         }
