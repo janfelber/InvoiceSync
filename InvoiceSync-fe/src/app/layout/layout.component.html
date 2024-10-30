@@ -1,7 +1,7 @@
 <div class="body">
   <header class="header">
     <app-header></app-header>
-    <app-header-company></app-header-company>
+    <app-header-company *ngIf="showHeaderCompany"></app-header-company>
   </header>
   <div class="content">
     <app-sidenav></app-sidenav>
