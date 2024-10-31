@@ -1,43 +1,36 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { FileService } from '../../file.service';
-import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import saveAs from 'file-saver';
-import { InvoiceService } from '../../page/invoices/invoice.service';
-import { MatTableModule } from '@angular/material/table';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { AxiosService } from '../../axios.service';
-
-
+import { GridInvoicesComponent } from "../../components/grid-invoices/grid-invoices.component";
+import {HeaderCompanyComponent} from "../../header-company/header-company.component";
+import {FileService} from "../../file.service";
+import {InvoiceService} from "./invoice.service";
+import {AxiosService} from "../../axios.service";
+import {HttpErrorResponse, HttpEvent, HttpEventType} from "@angular/common/http";
+import saveAs from "file-saver";
+import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {MatButton, MatIconButton} from "@angular/material/button";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow, MatRowDef, MatTable
+} from "@angular/material/table";
+import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {MatIcon} from "@angular/material/icon";
+import {MatOption} from "@angular/material/autocomplete";
+import {MatSelect} from "@angular/material/select";
 
 @Component({
-  selector: 'app-grid-invoices',
+  selector: 'app-test',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatDividerModule,
-    MatListModule,
-    MatToolbarModule,
-    FormsModule,
-    HttpClientModule
-  ],
-  templateUrl: './grid-invoices.component.html',
-  styleUrls: ['./grid-invoices.component.css']
+  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf],
+  templateUrl: './invoices.component.html',
+  styleUrl: './invoices.component.css'
 })
-export class GridInvoicesComponent {
+export class Invoices {
+
   protected filenames: string[] = [];
 
   protected fileStatus = { status: '', requestType: '', percentage: 0 };
@@ -81,8 +74,8 @@ export class GridInvoicesComponent {
   }
 
   /**
-  * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-  */
+   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+   */
   onFetchImports(): void {
     this.isLoading = true;
     this.invoiceService.fetchImports(this.selectedCompanyId).subscribe(
@@ -100,8 +93,8 @@ export class GridInvoicesComponent {
   }
 
   /**
- * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
- */
+   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+   */
   onFetchCompanies(): void {
     this.invoiceService.fetchCompany().subscribe(
       companies => {
@@ -131,9 +124,9 @@ export class GridInvoicesComponent {
       });
   }
 
-    /**
- * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
- */
+  /**
+   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
+   */
   public onUploadFiles(files: File[]): void {
     const formData = new FormData();
     for (const file of files) { formData.append('file', file, file.name); }
@@ -214,6 +207,4 @@ export class GridInvoicesComponent {
     this.onFetchImports();
   }
 
-
 }
-
