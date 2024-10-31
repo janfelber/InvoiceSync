@@ -6,6 +6,10 @@ import {GridInvoicesComponent} from "../components/grid-invoices/grid-invoices.c
 import {CommonModule} from "@angular/common";
 import {RouterOutlet} from "@angular/router";
 
+
+/**
+ * @deprecated DO NOT USE THIS COMPONENT.
+ */
 @Component({
   selector: 'app-welcome',
   standalone: true,

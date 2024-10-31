@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+/**
+ * @deprecated DO NOT USE THIS COMPONENT.
+ */
 @Component({
   selector: 'app-appbar',
   standalone: true,

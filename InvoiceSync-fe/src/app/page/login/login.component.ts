@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
-import {AuthenticationRequest} from "../models/authentication-request";
-import {AuthenticationReponse} from "../models/authentication-reponse";
+import {AuthenticationRequest} from "../../models/authentication-request";
+import {AuthenticationReponse} from "../../models/authentication-reponse";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
-import {VerificationRequest} from "../models/verification-request";
+import {VerificationRequest} from "../../models/verification-request";
 import { RouterModule } from '@angular/router';
 
 @Component({

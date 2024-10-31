@@ -37,10 +37,9 @@
 
 .header-company {
   flex-direction: column;
-  padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #d8d8f0;;
+  padding: .75rem 1.5rem;
+  border-bottom: 1px solid #d8d8f0;
+  background-color: white;
 }
 
 .filter-button {
