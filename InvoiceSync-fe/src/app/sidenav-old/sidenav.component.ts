@@ -9,6 +9,9 @@ interface SideNavToggle {
   collapsed: boolean;
 }
 
+/**
+ * @deprecated DO NOT USE THIS COMPONENT.
+ */
 @Component({
   selector: 'app-sidenav-old',
   standalone: true,
@@ -19,13 +22,13 @@ interface SideNavToggle {
     trigger('fadeInOut', [
       transition(':enter', [
         style({opacity:0}),
-        animate('350ms', 
+        animate('350ms',
           style({opacity:1})
         )
       ]),
       transition(':leave', [
         style({opacity:0}),
-        animate('350ms', 
+        animate('350ms',
           style({opacity:0})
         )
       ])
