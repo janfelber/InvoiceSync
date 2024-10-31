@@ -18,11 +18,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { CustomButtonComponent } from './components/custom-button/custom-button.component';
-import { InvoiceService } from './components/grid-invoices/invoice.service';
+import { InvoiceService } from './page/invoices/invoice.service';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { BodyComponent } from './body/body.component';
 import { HeaderComponent } from './header/header.component';
-import { Invoices } from './invoices/invoices.component';
+import { Invoices } from './page/invoices/invoices.component';
 import { ContentComponent } from './content/content.component';
 import { HeaderCompanyComponent } from "./header-company/header-company.component";
 
@@ -53,7 +53,7 @@ interface SideNavToggle {
 export class AppComponent  {
 
   @ViewChild(GridInvoicesComponent) gridInvoicesComponent!: GridInvoicesComponent;
-  
+
   isRexDisabled: boolean = true;
 
   filenames: string[] = [];
@@ -69,7 +69,7 @@ export class AppComponent  {
       event => {
         console.log(event);
         this.gridInvoicesComponent.onFetchAllImports();
-        
+
       },
       (error: HttpErrorResponse) => {
         console.error(error);

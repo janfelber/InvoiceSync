@@ -1,28 +1,32 @@
+.test {
+  padding: .75rem 1.5rem;
+}
+
 .invoices-container {
-    height: 100%; /* Full viewport height */
-    max-width: 1700px; /* Maximum width to maintain responsiveness */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
-    border-top: 1px solid #ccc; /* Top border style */
-    border-left: 1px solid #ccc; /* Left border style */
-    border-right: 1px solid #ccc; /* Right border style */
-    border-bottom: none; /* No border at the bottom */
-    border-top-left-radius: 10px; /* Rounded corner at top-left */
-    border-top-right-radius: 10px; /* Rounded corner at top-right */
-    padding-top: 20px; /* Optional: Padding at the top for spacing */
-    margin-bottom: 20px; /* Optional: Margin at the bottom for spacing */
-    margin-left: auto; /* Center horizontally */
-    margin-right: auto; /* Center horizontally */
+  height: 100%; /* Full viewport height */
+  max-width: 1700px; /* Maximum width to maintain responsiveness */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+  border-top: 1px solid #ccc; /* Top border style */
+  border-left: 1px solid #ccc; /* Left border style */
+  border-right: 1px solid #ccc; /* Right border style */
+  border-bottom: none; /* No border at the bottom */
+  border-top-left-radius: 10px; /* Rounded corner at top-left */
+  border-top-right-radius: 10px; /* Rounded corner at top-right */
+  padding-top: 20px; /* Optional: Padding at the top for spacing */
+  margin-bottom: 20px; /* Optional: Margin at the bottom for spacing */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
 }
 
-  /* Ensure .rectangle inside .invoices-container */
+/* Ensure .rectangle inside .invoices-container */
 .rectangle {
-padding: 20px; /* Example padding inside .rectangle */
+  padding: 20px; /* Example padding inside .rectangle */
 
 }
 
-  /* Optional: Adjust styles for specific elements inside .rectangle */
+/* Optional: Adjust styles for specific elements inside .rectangle */
 .table-container {
-overflow-y: auto; /* Enable scrolling if table content exceeds container height */
+  overflow-y: auto; /* Enable scrolling if table content exceeds container height */
 }
 
 .dropdown-toggle::after {
@@ -93,4 +97,6 @@ overflow-y: auto; /* Enable scrolling if table content exceeds container height 
   font-weight: 500;
 }
 
-
+.invoices-page-container {
+  padding: .75rem 1.5rem;
+}

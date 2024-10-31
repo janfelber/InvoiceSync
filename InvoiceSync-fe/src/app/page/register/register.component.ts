@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import {RegisterRequest} from "../models/register-request";
+import {RegisterRequest} from "../../models/register-request";
 import { FormsModule } from "@angular/forms";
-import {AuthenticationReponse} from "../models/authentication-reponse";
+import {AuthenticationReponse} from "../../models/authentication-reponse";
 import { CommonModule } from "@angular/common";
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from "../../services/authentication.service";
 import {Router, RouterLink} from "@angular/router";
-import {VerificationRequest} from "../models/verification-request";
+import {VerificationRequest} from "../../models/verification-request";
 
 @Component({
   selector: 'app-register',

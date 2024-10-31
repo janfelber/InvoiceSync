@@ -7,6 +7,9 @@ import { BodyComponent } from '../body/body.component';
 import { HeaderCompanyComponent } from '../header-company/header-company.component';
 
 
+/**
+ * @deprecated DO NOT USE THIS COMPONENT.
+ */
 @Component({
   selector: 'app-content',
   standalone: true,
@@ -14,6 +17,7 @@ import { HeaderCompanyComponent } from '../header-company/header-company.compone
   templateUrl: './content.component.html',
   styleUrl: './content.component.css'
 })
+
 export class ContentComponent {
 
 }
