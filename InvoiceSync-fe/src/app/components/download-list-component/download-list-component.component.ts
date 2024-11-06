@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+/**
+ * @deprecated DO NOT USE THIS COMPONENT.
+ */
 @Component({
   selector: 'app-download-list-component',
   standalone: true,

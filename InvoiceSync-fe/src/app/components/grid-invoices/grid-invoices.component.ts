@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FileService } from '../../file.service';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import saveAs from 'file-saver';
-import { InvoiceService } from './invoice.service';
+import { InvoiceService } from '../../page/invoices/invoice.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';

@@ -10,13 +10,13 @@
       <span class="SideMenuTitle-text">Menu</span>
     </div>
     <li *ngFor="let data of navData">
-      <a class="sidenav-nav-link" [routerLink]="data.routerLink" 
+      <a class="sidenav-nav-link" [routerLink]="data.routerLink"
          routerLinkActive="active"
          [routerLinkActiveOptions]="{exact: true}">
          <span class="sidenav-link-icon">
             <i [ngClass]="data.icon"></i>
          </span>
-         <span class="sidenav-link-text">{{ data.label }}</span>
+        <span class="sidenav-link-text">{{ data.label }}</span>
       </a>
       <i class="fa-solid fa-file-lines"></i>
     </li>
