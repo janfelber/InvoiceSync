@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component} from '@angular/core';
 import { navbarData } from './nav-data';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';

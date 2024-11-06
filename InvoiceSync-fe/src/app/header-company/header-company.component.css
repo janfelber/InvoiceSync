@@ -17,7 +17,7 @@
   font-weight: bolder;
 }
 .dropdown-menu {
-  width: 215px; 
+  width: 215px;
   overflow-y: auto;
   border-color: rgba(34, 35, 36, 0.38);
 }
@@ -37,10 +37,9 @@
 
 .header-company {
   flex-direction: column;
-  padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #d8d8f0;;
+  padding: .75rem 1.5rem;
+  border-bottom: 1px solid #d8d8f0;
+  background-color: white;
 }
 
 .filter-button {
@@ -61,7 +60,7 @@
 }
 
 .filter-button span {
-  margin-top: 5px;      
+  margin-top: 5px;
   font-size: 16px;
   font-weight: 500;
 }
