@@ -1,5 +1,6 @@
 package com.invoicesync.user;
 
+import com.invoicesync.module.XmlFile;
 import com.invoicesync.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,8 +38,11 @@ public class UserDemo implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user")
+    private List<XmlFile> xmlFiles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

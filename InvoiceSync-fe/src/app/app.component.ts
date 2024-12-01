@@ -56,43 +56,6 @@ export class AppComponent  {
 
   isRexDisabled: boolean = true;
 
-  filenames: string[] = [];
-  fileStatus = { status: '', requestType: '', percentage: 0 };
-
-
-  constructor(private fileService: FileService) {}
-
-  public onUploadFiles(files: File[]): void {
-    const formData = new FormData();
-    for (const file of files) { formData.append('file', file, file.name); }
-    this.fileService.upload(formData).subscribe(
-      event => {
-        console.log(event);
-        this.gridInvoicesComponent.onFetchAllImports();
-
-      },
-      (error: HttpErrorResponse) => {
-        console.error(error);
-      }
-    );
-  }
-
-  openFileDialog() {
-    const inputElement = document.createElement('input');
-    inputElement.type = 'file';
-    inputElement.accept = '.xml';
-
-    inputElement.click();
-
-    inputElement.addEventListener('change', (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      if (target.files) {
-        this.onUploadFiles(Array.from(target.files));
-        alert('Files selected');
-      }
-    });
-  }
-
   isSideNavCollapsed = false;
   screenWidth = 0;
 
