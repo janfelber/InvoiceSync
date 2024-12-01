@@ -1,5 +1,6 @@
 package com.invoicesync.config;
 
+import com.invoicesync.user.UserDemo;
 import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -54,6 +55,8 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails, long expiration
     ) {
+        UserDemo userDemo = (UserDemo) userDetails;
+        extraClaims.put("userId", userDemo.getId());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
