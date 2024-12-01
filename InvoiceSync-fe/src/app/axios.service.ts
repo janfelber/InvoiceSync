@@ -12,21 +12,6 @@ export class AxiosService {
     axios.defaults.headers.post["Content-Type"] = "application/json"
   }
 
-  getUserId(): string | null {
-    const token = this.getAuthToken();
-    if (token) {
-      try {
-        const token =  this.getAuthToken() as string;
-        const decodedToken: any = jwtDecode(token) as string;
-        return decodedToken.userId || null;
-      } catch (error) {
-        console.error("Invalid token", error);
-        return null;
-      }
-    }
-    return null;
-  }
-
   getAuthToken(): string | null {
     return window.localStorage.getItem("token");
   }
@@ -50,8 +35,8 @@ export class AxiosService {
     return axios({
       method: method,
       url: url,
-      data:data,
-      headers:headers,
+      data: data,
+      headers: headers,
       ...config
     })
   }

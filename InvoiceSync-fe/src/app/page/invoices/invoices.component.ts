@@ -51,8 +51,6 @@ export class Invoices {
 
   protected schema_name: string = '';
 
-  private user_id = this.axiosService.getUserId();
-
   constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) { }
 
 
@@ -63,7 +61,7 @@ export class Invoices {
   onFetchAllImports(): void {
     this.axiosService.request(
       "GET",
-      `api/v1/import/user/${this.user_id}`,
+      `api/v1/import/user/`,
       null
     ).then(
       (imports) => {

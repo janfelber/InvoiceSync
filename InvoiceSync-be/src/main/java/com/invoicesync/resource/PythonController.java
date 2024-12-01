@@ -25,10 +25,10 @@ public class PythonController {
     public String runPythonScript(@RequestParam String username, @RequestParam String filePath, @RequestParam String schemaPath) {
         String script = "";
         try {
-
             Connection connection = dataSource.getConnection();
 
             String sql = "SELECT script FROM invoice_sync.credential WHERE username = ?";
+            System.out.println("SQL: " + sql);
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
 

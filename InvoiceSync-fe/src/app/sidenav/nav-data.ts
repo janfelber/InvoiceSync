@@ -13,5 +13,10 @@ export const navbarData = [
     routerLink: 'rex',
     icon: 'fas fa-light fa-mobile',
     label: 'Rex'
+  },
+  {
+    routerLink: 'xml-import',
+    icon: 'fas fa-file-import',
+    label: 'XML import'
   }
 ];
