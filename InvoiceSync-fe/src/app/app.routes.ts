@@ -6,6 +6,7 @@ import { RegisterComponent } from './page/register/register.component';
 import { authGuard } from './services/auth/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
 import {HomeComponent} from "./page/home/home.component";
+import {XmlPageComponent} from "./xml-page/xml-page.component";
 
 export const routes: Routes = [
   {
@@ -37,6 +38,10 @@ export const routes: Routes = [
       {
         path: 'rex',
         component: InvoiceInspect
+      },
+      {
+        path: 'xml-import',
+        component: XmlPageComponent
       }
     ]
   },
