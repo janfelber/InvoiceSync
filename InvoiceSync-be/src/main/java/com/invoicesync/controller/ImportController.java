@@ -1,17 +1,22 @@
 package com.invoicesync.controller;
 
 
+import com.invoicesync.service.XmlFileService;
+import com.invoicesync.xml.processing.XMLProcessor;
 import com.invoicesync.module.Import;
 import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
 import com.invoicesync.service.ImportService;
 import com.invoicesync.service.InvoiceImportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,17 +31,18 @@ public class ImportController {
     private final ImportService importService;
     private final JdbcTemplate jdbcTemplate;
     private final OCRService ocrService;
+    private final XmlFileService xmlFileService;
 
     @Autowired
     private InvoiceImportService invoiceImportService;
 
     @Autowired
-    public ImportController(final ImportService importService, final JdbcTemplate jdbcTemplate,
-                            final OCRService ocrService, final InvoiceImportService invoiceImportService) {
+    public ImportController(final ImportService importService, final JdbcTemplate jdbcTemplate, final OCRService ocrService, final InvoiceImportService invoiceImportService, final XmlFileService xmlFileService) {
         this.importService = importService;
         this.jdbcTemplate = jdbcTemplate;
         this.ocrService = ocrService;
         this.invoiceImportService = invoiceImportService;
+        this.xmlFileService = xmlFileService;
     }
 
     //get all imports
