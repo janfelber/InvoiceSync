@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { navbarData } from './nav-data';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -12,5 +12,11 @@ import { RouterModule } from '@angular/router';
 })
 export class SidenavComponent{
   navData = navbarData;
+
+  @Input() layout: string = 'default';
+
+  get filteredNavBarData() {
+    return this.navData.filter(item => item.layout === this.layout);
+  }
 
 }
