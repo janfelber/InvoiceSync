@@ -2,21 +2,31 @@ export const navbarData = [
   {
     routerLink: 'home',
     icon: 'fas fa-home', // cesta k SVG súboru
-    label: 'Domov'
+    label: 'Domov',
+    layout: 'default'
   },
   {
     routerLink: 'invoices',
     icon: 'fas fa-receipt', // cesta k SVG súboru
-    label: 'Faktury'
+    label: 'Faktury',
+    layout: 'default'
   },
   {
     routerLink: 'rex',
     icon: 'fas fa-light fa-mobile',
-    label: 'Rex'
+    label: 'Rex',
+    layout: 'default'
   },
   {
     routerLink: 'xml-import',
     icon: 'fas fa-file-import',
-    label: 'XML import'
+    label: 'XML import',
+    layout: 'default'
+  },
+  {
+    routerLink: 'users',
+    icon: 'fas fa-user',
+    label: 'Users',
+    layout: 'admin'
   }
 ];
