@@ -9,7 +9,6 @@ import {MatButtonModule, MatIconButton} from '@angular/material/button';
 import {HttpErrorResponse} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import { FormsModule } from '@angular/forms';
-import {TableComponent} from "../../shared/table/table.component";
 
 @Component({
   selector: 'app-xml-page',
@@ -21,8 +20,7 @@ import {TableComponent} from "../../shared/table/table.component";
     MatIconButton,
     MatButtonModule,
     ReactiveFormsModule,
-    FormsModule,
-    TableComponent
+    FormsModule
   ],
   templateUrl: './xml-page.component.html',
   styleUrl: './xml-page.component.css'
