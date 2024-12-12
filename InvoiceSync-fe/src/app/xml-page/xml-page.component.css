@@ -1,4 +1,8 @@
 /* General Styles */
+.body {
+  padding: 2.5rem 2.5rem .75rem;
+}
+
 .flex-container {
   display: flex;
   align-items: center;
@@ -33,7 +37,6 @@
 /* Table Styles */
 .table {
   display: flex;
-  align-items: center;
   flex-direction: column;
   border-radius: 0.5rem;
   border: 1px solid #d8d8f0;
@@ -47,6 +50,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5em 1em;
+  border-bottom: 1px solid #d8d8f0;
 }
 
 .table-title {
