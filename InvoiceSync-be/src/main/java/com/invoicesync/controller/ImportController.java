@@ -1,13 +1,15 @@
 package com.invoicesync.controller;
 
 
-import com.invoicesync.service.XmlFileService;
+import com.invoicesync.dto.InvoiceImportResponseDto;
+import com.invoicesync.service.*;
+import com.invoicesync.user.CurrentUserService;
+import com.invoicesync.user.UserDemo;
 import com.invoicesync.xml.processing.XMLProcessor;
 import com.invoicesync.module.Import;
 import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
-import com.invoicesync.service.ImportService;
-import com.invoicesync.service.InvoiceImportService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 @PreAuthorize("hasRole('USER')")
 public class ImportController {
 
@@ -32,18 +35,9 @@ public class ImportController {
     private final JdbcTemplate jdbcTemplate;
     private final OCRService ocrService;
     private final XmlFileService xmlFileService;
+    private final CurrentUserService currentUserService;
+    private final InvoiceImportService invoiceImportService;
 
-    @Autowired
-    private InvoiceImportService invoiceImportService;
-
-    @Autowired
-    public ImportController(final ImportService importService, final JdbcTemplate jdbcTemplate, final OCRService ocrService, final InvoiceImportService invoiceImportService, final XmlFileService xmlFileService) {
-        this.importService = importService;
-        this.jdbcTemplate = jdbcTemplate;
-        this.ocrService = ocrService;
-        this.invoiceImportService = invoiceImportService;
-        this.xmlFileService = xmlFileService;
-    }
 
     //get all imports
     @GetMapping("/import")
@@ -60,23 +54,13 @@ public class ImportController {
     }
 
     //get import by user id
-    @GetMapping("/import/user/{id}")
+    @GetMapping("/import/user")
     @PreAuthorize("hasAuthority('user:read')")
-    public List<Map<String, String>> getImportsByUserId(@PathVariable final int id) {
-        final List<Import> imports = importService.getImportsByUserId(id);
-        final List<Map<String, String>> result = new ArrayList<>();
-        for (final Import anImport : imports) {
-            final Map<String, String> map = new HashMap<>();
-            map.put("id", String.valueOf(anImport.getId()));
-            map.put("company_id", String.valueOf(anImport.getCompany().getId()));
-            map.put("filename", anImport.getFilename());
-            map.put("username", anImport.getUser().getUsername());
-            map.put("created_at", anImport.getCreatedAt());
-            map.put("company_name", anImport.getCompany().getName());
-            result.add(map);
-        }
-        return result;
+    public List<InvoiceImportResponseDto> getImportsByUserId() {
+        final Long userId = currentUserService.getCurrentUserId();
+        return invoiceImportService.getInoivceImportsByUserId(userId);
     }
+
 
     //get import by company id for user
     @GetMapping("/import/user/{userId}/company/{companyId}")
@@ -154,13 +138,18 @@ public class ImportController {
     public String importInvoice(@RequestParam final String pdfPath) {
         final InvoiceImport invoice = new InvoiceImport();
         try {
+            Long currentUserId = currentUserService.getCurrentUserId();
             final String ocrText = ocrService.extractTextFromPDF(pdfPath);
             final String dueDateStr = ocrService.findDueDate(ocrText);
             final String issueDateStr = ocrService.findIssueDate(ocrText);
 
-            invoice.setInvoiceDueDate(dueDateStr);
-            invoice.setInvoiceIssueDate(issueDateStr);
-            invoice.setInvoiceStatus("UNPROCESSED");
+
+            UserDemo hardcodedUser = new UserDemo();
+            hardcodedUser.setId(34L);
+            invoice.setUser(hardcodedUser);
+            invoice.setInvoice_due_date(dueDateStr);
+            invoice.setInvoice_issue_date(issueDateStr);
+            invoice.setInvoice_status("UNPROCESSED");
 
             invoiceImportService.saveInvoice(invoice);
             return "Invoice successfully imported!";
