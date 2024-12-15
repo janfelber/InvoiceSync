@@ -8,6 +8,8 @@ import {HttpErrorResponse, HttpEvent, HttpEventType} from "@angular/common/http"
 import saveAs from "file-saver";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from "@angular/common";
 import {
   MatCell,
   MatCellDef,
@@ -21,11 +23,12 @@ import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf],
+  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
@@ -41,8 +44,6 @@ export class Invoices {
 
   protected isLoading: boolean = true;
 
-  protected displayedColumn: string[] = ['filename', "username", 'created_at', "download"];
-
   protected dataSource: any[] = [];
 
   protected selectedCompanyId: any;
@@ -50,6 +51,13 @@ export class Invoices {
   protected selectedCompanyName: string = '';
 
   protected schema_name: string = '';
+
+  headers = ['Cislo Faktury', 'Var. Symbol', 'Dat. vystavenia', 'Dat. Splatnosti', 'Suma total'];
+  filteredInvoiceImports: any[] = [];
+  currentPage = 1;
+  rowsPerPage = 10;
+  currentPageInput = 1;
+  pageSizes = [5,10, 20, 50];
 
   constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) { }
 
@@ -61,16 +69,46 @@ export class Invoices {
   onFetchAllImports(): void {
     this.axiosService.request(
       "GET",
-      `api/v1/import/user/`,
+      `/api/v1/import/user`,
       null
     ).then(
       (imports) => {
         this.imports = imports.data
         this.dataSource = imports.data;
+        this.filteredInvoiceImports = [...this.dataSource];
         this.isLoading = false;
         console.log(imports.data);
       }
     )
+  }
+
+  get paginatedImports(): any[] {
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    const end = start + this.rowsPerPage;
+    return this.filteredInvoiceImports.slice(start, end);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredInvoiceImports.length / this.rowsPerPage);
+  }
+
+  get recordRange(): string {
+    const startRecord = (this.currentPage - 1) * this.rowsPerPage + 1;
+    const endRecord = Math.min(this.currentPage * this.rowsPerPage, this.filteredInvoiceImports.length);
+    return `${startRecord} - ${endRecord} z ${this.filteredInvoiceImports.length}`;
+  }
+
+  goToPage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.currentPageInput = page;
+    }
+  }
+
+  jumpToPage(): void {
+    if (this.currentPageInput > 0 && this.currentPageInput <= this.totalPages) {
+      this.goToPage(this.currentPageInput);
+    }
   }
 
   /**
