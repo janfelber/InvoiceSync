@@ -10,4 +10,6 @@ public interface InvoiceImportService {
   List<InvoiceImportResponseDto> getInoivceImportsByUserId(Long userId);
 
   InvoiceImport saveInvoice(InvoiceImport invoice);
+
+  InvoiceImportResponseDto getInvoiceById(Long id);
 }
