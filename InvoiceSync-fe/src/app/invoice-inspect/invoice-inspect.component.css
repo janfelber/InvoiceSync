@@ -1,12 +1,12 @@
 .container {
     display: flex;
-    justify-content: space-between; /* Oddeľuje komponenty rovnakým priestorom */
-    align-items: flex-start; /* Zarovná komponenty na horný okraj */
+    justify-content: space-between;
+    align-items: flex-start;
   }
 
   app-invoice-inspect-display,
   app-invoice-inspect-ocr-warning {
-    flex: 1; /* Flexibilné šírky komponentov */
+    flex: 1;
   }
 
 .body {
@@ -23,8 +23,8 @@
 }
 
 h3 {
-  margin: 0; /* Odstráni defaultné medzery */
-  padding: 0; /* Odstráni vnútorný priestor */
+  margin: 0;
+  padding: 0;
 }
 
 h4 {
@@ -37,8 +37,8 @@ h4 {
 }
 
 .col-custom {
-  flex: 0 0 30%; /* 30% šírky kontajnera */
-  max-width: 30%; /* Maximálna šírka 30% */
+  flex: 0 0 30%;
+  max-width: 30%;
 }
 
 .form-input input {
@@ -55,8 +55,8 @@ h4 {
 }
 
 .cards-container {
-  display: flex; /* Karty pôjdu vedľa seba */
-  gap: 1rem; /* Medzera medzi kartami */
+  display: flex;
+  gap: 1rem;
 }
 
 label {
