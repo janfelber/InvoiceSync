@@ -49,8 +49,8 @@ public class ImportController {
     //get import by id
     @GetMapping("/import/{id}")
     @PreAuthorize("hasAuthority('user:read')")
-    public Import getImportById(@PathVariable final int id) {
-        return importService.getImport(id);
+    public InvoiceImportResponseDto getImportById(@PathVariable final Long id) {
+        return invoiceImportService.getInvoiceById(id);
     }
 
     //get import by user id

@@ -48,4 +48,29 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
   public InvoiceImport saveInvoice(InvoiceImport invoice) {
     return invoiceImportRepository.save(invoice);
   }
+
+  @Override
+  public InvoiceImportResponseDto getInvoiceById(Long id) {
+    return invoiceImportRepository.findById(id)
+            .map(invoiceImport -> new InvoiceImportResponseDto(
+                    invoiceImport.getId(),
+                    invoiceImport.getInvoice_number(),
+                    invoiceImport.getInvoice_import_date(),
+                    invoiceImport.getInvoice_delivery_date(),
+                    invoiceImport.getInvoice_issue_date(),
+                    invoiceImport.getInvoice_due_date(),
+                    invoiceImport.getInvoice_variable_symbol(),
+                    invoiceImport.getInvoice_total_amount(),
+                    invoiceImport.getInvoice_company_name(),
+                    invoiceImport.getInvoice_company_city(),
+                    invoiceImport.getInvoice_company_zip(),
+                    invoiceImport.getInvoice_company_vat_number(),
+                    invoiceImport.getInvoice_company_iban(),
+                    invoiceImport.getInvoice_company_registration_number(),
+                    invoiceImport.getInvoice_tax_number(),
+                    invoiceImport.getInvoice_status()
+            ))
+            .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + id + " not found"));
+  }
+
 }

@@ -38,7 +38,7 @@ export const routes: Routes = [
         component: Invoices,
       },
       {
-        path: 'rex',
+        path: 'invoices/:id',
         component: InvoiceInspect
       },
       {
