@@ -72,13 +72,24 @@
           <table class="data-table">
             <thead>
             <tr>
+              <th class="header-item" style="width: 5.452637%; text-align: center;">
+                <mat-checkbox class="rounded-checkbox" (change)="toggleSelectAll($event)"> </mat-checkbox>
+              </th>
               <th class="header-item" *ngFor="let header of headers">{{ header }}</th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let import of paginatedImports; let last = last">
+              <td class="cell" style="text-align: center;" [ngClass]="{'last-row': last}">
+                <mat-checkbox
+                  [(ngModel)]="import.selected"
+                  (change)="onRowCheckboxChange(import)">
+                </mat-checkbox>
+              </td>
               <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
-                {{ import.invoice_number }}
+                <a [routerLink]="['/invoices', import.id]" class="text-link">
+                  {{ import.invoice_number }}
+                </a>
               </td>
               <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
                 {{ import.invoice_variable_symbol }}

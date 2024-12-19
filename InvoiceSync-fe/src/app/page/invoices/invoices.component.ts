@@ -24,11 +24,13 @@ import {MatIcon} from "@angular/material/icon";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf, ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf, ReactiveFormsModule, FormsModule, CommonModule, MatCheckbox, RouterLink],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
@@ -52,7 +54,7 @@ export class Invoices {
 
   protected schema_name: string = '';
 
-  headers = ['Cislo Faktury', 'Var. Symbol', 'Dat. vystavenia', 'Dat. Splatnosti', 'Suma total'];
+  headers = [ 'Cislo Faktury', 'Var. Symbol', 'Dat. vystavenia', 'Dat. Splatnosti', 'Suma total'];
   filteredInvoiceImports: any[] = [];
   currentPage = 1;
   rowsPerPage = 10;
@@ -64,6 +66,17 @@ export class Invoices {
 
   ngOnInit(): void {
     this.onFetchAllImports();
+  }
+
+  toggleSelectAll(event: any): void {
+    const isChecked = event.checked;
+    this.paginatedImports.forEach((importItem) => {
+      importItem.selected = isChecked;
+    });
+  }
+
+  onRowCheckboxChange(importItem: any): void {
+    console.log(`Checkbox changed for import:`, importItem.id);
   }
 
   onFetchAllImports(): void {
