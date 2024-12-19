@@ -8,7 +8,7 @@ import com.invoicesync.module.InvoiceImport;
 import java.util.List;
 
 @Repository
-public interface InvoiceImportRepository extends JpaRepository<InvoiceImport, Integer> {
+public interface InvoiceImportRepository extends JpaRepository<InvoiceImport, Long> {
 
     List<InvoiceImport> findByUserId(Long id);
 }

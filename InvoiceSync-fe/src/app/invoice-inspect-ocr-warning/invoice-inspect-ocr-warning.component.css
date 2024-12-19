@@ -4,9 +4,7 @@
     flex-direction: column;
     border-radius: 1rem;
     background-color: #FFF7FA;
-    margin: 1.25rem 0;
-    margin-left: 6rem;
-    width: 25rem;
+  margin-bottom: 1rem;
     height: auto;
     border: 2px solid #FAAAA4;
 }
