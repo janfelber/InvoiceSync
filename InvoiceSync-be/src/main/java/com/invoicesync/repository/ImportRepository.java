@@ -1,14 +1,13 @@
 package com.invoicesync.repository;
 
-import com.invoicesync.module.Import;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.invoicesync.module.Import;
 
 public interface ImportRepository extends JpaRepository<Import, Integer> {
 
     List<Import> findByUserId(int id);
-
-    List<Import> findByUserIdAndCompanyId(int userId, int companyId);
 
 }

@@ -1,10 +1,18 @@
 package com.invoicesync.module;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 
 @Deprecated
 @Entity
@@ -47,18 +55,6 @@ public class User {
     public List<ScriptSchema> getScriptSchemas() {return scriptSchemas;}
 
     public void setScriptShcemas(List<ScriptSchema> scriptSchemas) { this.scriptSchemas = scriptSchemas;}
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("user")
-    private List<Company> companies;
-
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
-    }
 
     public int getId() {
         return id;
