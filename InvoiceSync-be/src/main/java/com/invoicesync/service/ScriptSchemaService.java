@@ -1,8 +1,8 @@
 package com.invoicesync.service;
 
-import com.invoicesync.module.ScriptSchema;
-
 import java.util.List;
+
+import com.invoicesync.module.ScriptSchema;
 
 public interface ScriptSchemaService {
     List<ScriptSchema> getScriptSchemasMapping();
@@ -10,8 +10,4 @@ public interface ScriptSchemaService {
     List<ScriptSchema> getScriptSchemaByUserId(int userId);
 
     ScriptSchema getScriptSchema(int id);
-
-    ScriptSchema getScriptByCompanyId(int companyId);
-
-    ScriptSchema getSchemaByCompanyId(int companyId);
 }
