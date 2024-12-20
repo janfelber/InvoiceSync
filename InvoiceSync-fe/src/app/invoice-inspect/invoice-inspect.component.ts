@@ -42,6 +42,7 @@ export class InvoiceInspect implements OnInit {
         this.invoice = {
           companyName: data.invoice_company_name,
           companyCity: data.invoice_company_city,
+          companyStreet: data.invoice_company_address,
           companyZip: data.invoice_company_zip,
           companyVat: data.invoice_company_vat_number,
           companyIban: data.invoice_company_iban,
@@ -50,7 +51,7 @@ export class InvoiceInspect implements OnInit {
           issueDate: data.invoice_issue_date,
           deliveryDate: data.invoice_delivery_date,
           dueDate: data.invoice_due_date,
-          invoiceNumber: data.invoice_number
+          variableSymbol: data.invoice_variable_symbol
         }
       }
     )
