@@ -1,12 +1,11 @@
 package com.invoicesync.repository;
 
-import com.invoicesync.module.ScriptSchema;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.invoicesync.module.ScriptSchema;
 
 public interface ScriptSchemaRepository extends JpaRepository<ScriptSchema, Integer> {
     List<ScriptSchema> findByUserId(int id);
-
-    ScriptSchema findByCompanyId(int id);
 }

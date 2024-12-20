@@ -1,10 +1,11 @@
 package com.invoicesync.service;
 
-import com.invoicesync.module.ScriptSchema;
-import com.invoicesync.repository.ScriptSchemaRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.invoicesync.module.ScriptSchema;
+import com.invoicesync.repository.ScriptSchemaRepository;
 
 @Service
 public class ScriptSchemaServiceServiceImpl implements ScriptSchemaService {
@@ -28,16 +29,6 @@ public class ScriptSchemaServiceServiceImpl implements ScriptSchemaService {
     @Override
     public ScriptSchema getScriptSchema(int id) {
         return scriptSchemaRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public ScriptSchema getScriptByCompanyId(int companyId) {
-        return scriptSchemaRepository.findByCompanyId(companyId);
-    }
-
-    @Override
-    public ScriptSchema getSchemaByCompanyId(int companyId) {
-       return scriptSchemaRepository.findByCompanyId(companyId);
     }
 
 
