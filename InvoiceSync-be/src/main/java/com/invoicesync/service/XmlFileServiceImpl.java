@@ -1,22 +1,20 @@
 package com.invoicesync.service;
 
-import com.google.api.Authentication;
-import com.invoicesync.dto.XmlFileRequestDto;
-import com.invoicesync.dto.XmlFileResponseDto;
-import com.invoicesync.module.XmlFile;
-import com.invoicesync.repository.UserCredentialRepository;
-import com.invoicesync.repository.XmlFileRepository;
-import com.invoicesync.user.UserDemo;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.invoicesync.dto.XmlFileResponseDto;
+import com.invoicesync.module.XmlFile;
+import com.invoicesync.repository.XmlFileRepository;
+import com.invoicesync.user.UserDemo;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
