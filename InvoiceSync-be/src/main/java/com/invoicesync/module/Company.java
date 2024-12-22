@@ -1,10 +1,7 @@
 package com.invoicesync.module;
 
-import java.util.Date;
-
 import com.invoicesync.user.UserDemo;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,21 +19,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "xml_file", schema = "invoice_sync")
-public class XmlFile {
+@Table(name = "company", schema = "invoice_sync")
+public class Company {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String file_name;
+  private String name;
 
-    @Column(columnDefinition = "XML")
-    private String xml_content;
+  @ManyToOne
+  @JoinColumn(name = "\"user_id\"")
+  private UserDemo user;
 
-    private Date created_at;
-
-    @ManyToOne
-    @JoinColumn(name = "\"user_id\"")
-    private UserDemo user;
 }
