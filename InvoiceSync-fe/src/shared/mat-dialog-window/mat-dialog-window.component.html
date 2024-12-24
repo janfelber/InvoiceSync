@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<div mat-dialog-content>
+  <ng-container *ngFor="let input of data.inputs">
+    <div class="input-group" [class.required]="input.required">
+      <label>{{ input.label }}</label>
+      <input
+        [type]="input.type"
+        [(ngModel)]="input.value"
+        [placeholder]="input.placeholder"
+      />
+    </div>
+  </ng-container>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close(false)">{{ data.cancelText || 'Zrušiť' }}</button>
+  <button mat-button color="primary" (click)="save()">{{ data.confirmText || 'Uložiť' }}</button>
+</div>
