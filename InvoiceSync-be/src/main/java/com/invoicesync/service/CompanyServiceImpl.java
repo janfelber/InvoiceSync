@@ -3,11 +3,13 @@ package com.invoicesync.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.dto.CompanyResponseDto;
 import com.invoicesync.module.Company;
 import com.invoicesync.repository.CompanyRepository;
+import com.invoicesync.user.UserDemo;
 
 import lombok.AllArgsConstructor;
 
@@ -22,7 +24,7 @@ public class CompanyServiceImpl implements CompanyService {
     if (company.getName() == null || company.getName().isEmpty()) {
       throw new IllegalArgumentException("Company name cannot be null or empty");
     }
-
+    company.setUser((UserDemo) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     return companyRepository.save(company);
   }
 
