@@ -20,7 +20,6 @@
   </div>
 </div> -->
 
-
 <router-outlet></router-outlet>
 
 <!-- make this as component -->
@@ -28,7 +27,7 @@
   <span>IvoiceSync </span> <mat-icon>sync </mat-icon>
 </mat-toolbar>
 <div class="app-version">
-  Version: Alpha 0.1  
+  Version: Alpha 0.1
 </div>
 
 <div class="grid-container">
@@ -49,7 +48,7 @@
       <mat-icon>upload </mat-icon>
       Import
     </button>
-    
+
     <app-grid-invoices></app-grid-invoices>
 
   </div>
@@ -62,7 +61,7 @@
     <div class="panel-heading">
       <h4>Upload and Download Files</h4>
     </div><br>
-    <div class="panel-body">        
+    <div class="panel-body">
       <strong>Select XML files from your computer</strong>
       <div *ngIf="fileStatus.status==='progress'">
         <div class="progress">
@@ -84,9 +83,9 @@
 
 
 
-  
 
-      <br>  
+
+      <br>
       <div class="parent-container">
         <app-import-list-component></app-import-list-component>
         <app-download-list-component></app-download-list-component>

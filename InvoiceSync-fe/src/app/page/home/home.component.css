@@ -238,7 +238,7 @@ tbody {
   height: auto;
   font-size: 0.75rem;
   font-weight: 500;
-  width: 8rem;
+  width: 10rem;
   transition: background-color 0.3s;
   justify-content: flex-end;
 }

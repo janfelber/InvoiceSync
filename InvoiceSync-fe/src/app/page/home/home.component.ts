@@ -7,6 +7,7 @@ import {MatIconButton} from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogWindowComponent } from "../../../shared/mat-dialog-window/mat-dialog-window.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ import { MatDialogWindowComponent } from "../../../shared/mat-dialog-window/mat-
 })
 export class HomeComponent {
 
-  constructor(private axiosService: AxiosService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(private axiosService: AxiosService, private dialog: MatDialog, private toastr: ToastrService) {
   }
 
   columnWidths = ['30%', '5%'];
@@ -39,21 +40,12 @@ export class HomeComponent {
     this.onFetchAllCompanies();
   }
 
-  openToastMessage() {
-    this.snackBar.open('Successfully added', 'Close', {
-      duration: 3000, // Toast duration (in milliseconds)
-      horizontalPosition: 'end', // Right-aligned (end)
-      verticalPosition: 'top',  // Top of the screen
-      panelClass: ['success-toast'] // Apply custom styles
-    });
-  }
-
   openDialog() {
     const dialogRef = this.dialog.open(MatDialogWindowComponent, {
       width: '400px',
       panelClass: 'custom-dialog-container',
       data: {
-        title: 'Nova firma',
+        title: 'Nova spolocnost',
         inputs: [
           { label: 'Názov', type: 'text', placeholder: '', value: '', required: true },
         ],
@@ -66,6 +58,14 @@ export class HomeComponent {
       if (result) {
         console.log('Dialóg zatvorený s výsledkom:', result);
         this.saveCompany(result);
+        this.toastr.success('Spoločnosť bola úspešne vytvorená!', 'Informácia',
+          {
+            timeOut: 3000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            closeButton: true,
+            positionClass: 'toast-top-right'
+          });
       } else {
         console.log('Dialóg bol zrušený');
       }
