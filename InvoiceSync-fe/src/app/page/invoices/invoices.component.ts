@@ -1,36 +1,34 @@
 import { Component } from '@angular/core';
-import { GridInvoicesComponent } from "../../components/grid-invoices/grid-invoices.component";
 import {HeaderCompanyComponent} from "../../header-company/header-company.component";
 import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../axios.service";
 import {HttpErrorResponse, HttpEvent, HttpEventType} from "@angular/common/http";
 import saveAs from "file-saver";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {DatePipe} from "@angular/common";
+import {MatButton} from "@angular/material/button";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from "@angular/common";
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable
-} from "@angular/material/table";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
-import {MatOption} from "@angular/material/autocomplete";
-import {MatSelect} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf, ReactiveFormsModule, FormsModule, CommonModule, MatCheckbox, RouterLink],
+  imports: [
+    HeaderCompanyComponent,
+    DatePipe,
+    MatButton,
+    MatIcon,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatCheckbox,
+    RouterLink],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
@@ -61,7 +59,12 @@ export class Invoices {
   currentPageInput = 1;
   pageSizes = [5,10, 20, 50];
 
-  constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) { }
+  constructor(
+    private fileService: FileService,
+    private invoiceService: InvoiceService,
+    private axiosService: AxiosService
+  ) {
+  }
 
 
   ngOnInit(): void {
