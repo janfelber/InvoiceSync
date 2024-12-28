@@ -68,6 +68,19 @@ public class ImportController {
         return xml_content.getXmlContent();
     }
 
+    /**
+     * Retrieves a list of invoice imports associated with the specified company ID and the current authenticated user.
+     *
+     * @param companyId the ID of the company for which to retrieve invoice imports
+     * @return a list of {@link InvoiceImportResponseDto} representing the invoice imports
+     */
+    @GetMapping("/imports/company/{companyId}/current-user")
+    @PreAuthorize("hasAuthority('user:read')")
+    public List<InvoiceImportResponseDto> getImportsByCompanyIdCurrentUser(@PathVariable final Long companyId) {
+        final Long currentUserId = currentUserService.getCurrentUserId();
+        return invoiceImportService.getInvoiceImportsByCompanyIdCurrentUser(companyId, currentUserId);
+    }
+
     @GetMapping("/extract-text")
     @PreAuthorize("hasAuthority('user:read')")
     public String extractText(@RequestParam final String pdfPath) {

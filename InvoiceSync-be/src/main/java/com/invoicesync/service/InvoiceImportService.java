@@ -1,9 +1,9 @@
 package com.invoicesync.service;
 
+import java.util.List;
+
 import com.invoicesync.dto.InvoiceImportResponseDto;
 import com.invoicesync.module.InvoiceImport;
-
-import java.util.List;
 
 public interface InvoiceImportService {
 
@@ -12,4 +12,6 @@ public interface InvoiceImportService {
   InvoiceImport saveInvoice(InvoiceImport invoice);
 
   InvoiceImportResponseDto getInvoiceById(Long id);
+
+  List<InvoiceImportResponseDto> getInvoiceImportsByCompanyIdCurrentUser(Long companyId, Long currentUserId);
 }
