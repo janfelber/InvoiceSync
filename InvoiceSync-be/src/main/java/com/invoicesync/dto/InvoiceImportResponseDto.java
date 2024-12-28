@@ -43,4 +43,6 @@ public class InvoiceImportResponseDto {
 
   private String invoice_status;
 
+  private Long company;
+
 }

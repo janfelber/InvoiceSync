@@ -41,7 +41,8 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
             invoiceImport.getInvoice_company_iban(),
             invoiceImport.getInvoice_company_registration_number(),
             invoiceImport.getInvoice_tax_number(),
-            invoiceImport.getInvoice_status()
+            invoiceImport.getInvoice_status(),
+            invoiceImport.getCompany().getId()
         ))
         .collect(Collectors.toList());
   }
@@ -70,9 +71,38 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
             invoiceImport.getInvoice_company_iban(),
             invoiceImport.getInvoice_company_registration_number(),
             invoiceImport.getInvoice_tax_number(),
-            invoiceImport.getInvoice_status()
+            invoiceImport.getInvoice_status(),
+            invoiceImport.getCompany().getId()
         ))
         .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + id + " not found"));
+  }
+
+  @Override
+  public List<InvoiceImportResponseDto> getInvoiceImportsByCompanyIdCurrentUser(final Long companyId,
+      final Long currentUserId) {
+    return invoiceImportRepository.findByCompanyIdAndUserId(companyId, currentUserId)
+        .stream()
+        .map(invoiceImport -> new InvoiceImportResponseDto(
+            invoiceImport.getId(),
+            invoiceImport.getInvoice_number(),
+            invoiceImport.getInvoice_import_date(),
+            invoiceImport.getInvoice_delivery_date(),
+            invoiceImport.getInvoice_issue_date(),
+            invoiceImport.getInvoice_due_date(),
+            invoiceImport.getInvoice_variable_symbol(),
+            invoiceImport.getInvoice_total_amount(),
+            invoiceImport.getInvoice_company_name(),
+            invoiceImport.getInvoice_company_city(),
+            invoiceImport.getInvoice_company_address(),
+            invoiceImport.getInvoice_company_zip(),
+            invoiceImport.getInvoice_company_vat_number(),
+            invoiceImport.getInvoice_company_iban(),
+            invoiceImport.getInvoice_company_registration_number(),
+            invoiceImport.getInvoice_tax_number(),
+            invoiceImport.getInvoice_status(),
+            invoiceImport.getCompany().getId()
+        ))
+        .collect(Collectors.toList());
   }
 
 }
