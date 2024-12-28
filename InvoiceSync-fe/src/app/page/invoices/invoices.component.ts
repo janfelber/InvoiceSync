@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {HeaderCompanyComponent} from "../../header-company/header-company.component";
 import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../axios.service";
@@ -15,12 +14,13 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
+import {ToastrService} from "ngx-toastr";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-test',
   standalone: true,
   imports: [
-    HeaderCompanyComponent,
     DatePipe,
     MatButton,
     MatIcon,
@@ -28,7 +28,9 @@ import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-di
     FormsModule,
     CommonModule,
     MatCheckbox,
-    RouterLink],
+    RouterLink,
+    MatProgressSpinner
+  ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
@@ -40,17 +42,17 @@ export class Invoices {
 
   protected imports: string[] = [];
 
-  protected companies: any[] = [];
-
   protected isLoading: boolean = true;
 
   protected dataSource: any[] = [];
 
   protected selectedCompanyId: any;
 
-  protected selectedCompanyName: string = '';
-
   protected schema_name: string = '';
+
+  protected companies: any[] = [];
+
+  selectedCompanyName = 'Vyber spoločnosť';
 
   headers = [ 'Cislo Faktury', 'Var. Symbol', 'Dat. vystavenia', 'Dat. Splatnosti', 'Suma total'];
   filteredInvoiceImports: any[] = [];
@@ -62,13 +64,16 @@ export class Invoices {
   constructor(
     private fileService: FileService,
     private invoiceService: InvoiceService,
-    private axiosService: AxiosService
+    private axiosService: AxiosService,
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {
   }
 
 
   ngOnInit(): void {
     this.onFetchAllImports();
+    this.onFetchCompanies();
   }
 
   toggleSelectAll(event: any): void {
@@ -89,13 +94,17 @@ export class Invoices {
       null
     ).then(
       (imports) => {
-        this.imports = imports.data
+        this.imports = imports.data;
         this.dataSource = imports.data;
         this.filteredInvoiceImports = [...this.dataSource];
-        this.isLoading = false;
-        console.log(imports.data);
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 3000);
       }
-    )
+    ).catch((error) => {
+      console.error('Error fetching imports:', error);
+      this.isLoading = false;
+    });
   }
 
   get paginatedImports(): any[] {
@@ -127,6 +136,47 @@ export class Invoices {
     }
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(MatDialogWindowComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: {
+        title: 'Nova spolocnost',
+        inputs: [
+          { label: 'Názov', type: 'text', placeholder: '', value: '', required: true },
+        ],
+        confirmText: 'Uložiť',
+        cancelText: 'Zrušiť'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialóg zatvorený s výsledkom:', result);
+        this.saveCompany(result);
+      } else {
+        console.log('Dialóg bol zrušený');
+      }
+    });
+  }
+
+  saveCompany(data: any): void {
+    const valuesToSend = data.map((input: { value: any }) => input.value);
+
+    console.log('Posielam údaje na server:', valuesToSend);
+
+    this.axiosService.request(
+      "POST",
+      `/api/v1/company/add`,
+      { name: valuesToSend[0] }
+    ).then(response => {
+      console.log('Spoločnosť bola úspešne vytvorená:', response);
+      this.onFetchCompanies();
+    }).catch(error => {
+      console.error('Chyba pri vytváraní spoločnosti:', error);
+    });
+  }
+
   /**
    * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
    */
@@ -146,19 +196,31 @@ export class Invoices {
     );
   }
 
-  /**
-   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-   */
-  onFetchCompanies(): void {
-    this.invoiceService.fetchCompany().subscribe(
-      companies => {
-        this.companies = companies;
-        console.table(companies);
-      },
-      error => {
-        console.log(error);
+  onFetchCompanies() {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/company/user`,
+      null
+    ).then(
+      (companies) => {
+        this.companies = companies.data
+        this.isLoading = false;
+        console.log(companies.data);
+
+        if (this.companies.length === 0) {
+          this.toastr.warning('Nemáte pridané žiadne spoločnosti!', 'Informácia',
+            {
+              timeOut: 3000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            });
+        }
       }
-    )
+    ).catch(() => {
+      this.isLoading = false;
+    });
   }
 
   downloadFile(importId: number) {
@@ -247,13 +309,25 @@ export class Invoices {
     });
   }
 
-  onCompanyChange(company: any) {
-    this.selectedCompanyId = company.company_id;
+  //select company from dropdown
+  onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
-    this.schema_name = company.schema_name;
+    console.log(this.selectedCompanyName)
+    this.onCompanyChange(company);
+  }
 
-    // Zavolanie funkcie na získanie importov
-    this.onFetchImports();
+  onCompanyChange(company: any) {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/imports/company/${company.id}/current-user`,
+      null,
+    ).then(response => {
+      console.log(response.data);
+      //update imports
+      this.filteredInvoiceImports = response.data;
+    }).catch(error => {
+      console.error(error);
+    });
   }
 
 
