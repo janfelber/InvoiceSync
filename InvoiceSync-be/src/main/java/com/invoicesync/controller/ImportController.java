@@ -103,9 +103,10 @@ public class ImportController {
 
     @PostMapping("/import-invoice")
     @PreAuthorize("hasAuthority('user:create')")
-    public ResponseEntity<List<String>> importInvoice(@RequestParam("file") final MultipartFile pdfFile) {
+    public ResponseEntity<List<String>> importInvoice(@RequestParam("file") final MultipartFile pdfFile,
+        final Long companyId) {
         try {
-            invoiceImportService.saveInvoice(pdfFile);
+            invoiceImportService.saveInvoice(pdfFile, companyId);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
