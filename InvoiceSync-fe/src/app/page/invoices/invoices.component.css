@@ -1,34 +1,3 @@
-.test {
-  padding: .75rem 1.5rem;
-}
-
-.invoices-container {
-  height: 100%; /* Full viewport height */
-  max-width: 1700px; /* Maximum width to maintain responsiveness */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
-  border-top: 1px solid #ccc; /* Top border style */
-  border-left: 1px solid #ccc; /* Left border style */
-  border-right: 1px solid #ccc; /* Right border style */
-  border-bottom: none; /* No border at the bottom */
-  border-top-left-radius: 10px; /* Rounded corner at top-left */
-  border-top-right-radius: 10px; /* Rounded corner at top-right */
-  padding-top: 20px; /* Optional: Padding at the top for spacing */
-  margin-bottom: 20px; /* Optional: Margin at the bottom for spacing */
-  margin-left: auto; /* Center horizontally */
-  margin-right: auto; /* Center horizontally */
-}
-
-/* Ensure .rectangle inside .invoices-container */
-.rectangle {
-  padding: 20px; /* Example padding inside .rectangle */
-
-}
-
-/* Optional: Adjust styles for specific elements inside .rectangle */
-.table-container {
-  overflow-y: auto; /* Enable scrolling if table content exceeds container height */
-}
-
 .dropdown-toggle::after {
   display: none; /* Hide default dropdown icon */
 }
@@ -47,6 +16,60 @@
   color: rgba(34, 35, 36, 0.5);
   font-weight: bolder;
 }
+
+.table-actions {
+  padding: 0.7rem 2rem;
+  text-align: right;
+}
+
+.import-button {
+  background-color: #0000;
+  border: 1px solid #d8d8f0;
+  display: inline-block;
+  align-items: center;
+  border-radius: 0.2rem;
+  height: auto;
+  font-size: 0.75rem;
+  font-weight: 500;
+  width: 6rem;
+  transition: background-color 0.3s;
+  justify-content: flex-end;
+}
+
+.import-button:hover {
+  border-color: #a0a0a0;
+  background: #f8f8f8;
+}
+
+.import-button span,
+.import-button i {
+  background-color: transparent;
+  color: inherit;
+}
+
+.import-button:hover span,
+.import-button:hover i {
+  color: #000;
+}
+
+.import-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  border-color: #d8d8f0;
+  background: transparent;
+}
+
+.import-button:disabled:hover {
+  border-color: #d8d8f0;
+  background: transparent;
+}
+
+.import-button:disabled span,
+.import-button:disabled i {
+  color: inherit;
+}
+
+
 .dropdown-menu {
   width: 215px;
   overflow-y: auto;
@@ -68,10 +91,9 @@
 
 .header-company {
   flex-direction: column;
-  padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #d8d8f0;;
+  padding: .75rem 1.5rem;
+  border-bottom: 1px solid #d8d8f0;
+  background-color: white;
 }
 
 .filter-button {
@@ -97,6 +119,239 @@
   font-weight: 500;
 }
 
-.invoices-page-container {
-  padding: .75rem 1.5rem;
+
+
+
+
+
+/* General Styles */
+.body {
+  padding: 2.5rem 2.5rem .75rem;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+
+.border-radius {
+  border-radius: 0.5rem;
+}
+
+.border-style {
+  border: 1px solid #d8d8f0;
+}
+
+.text-header {
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.hidden-overflow {
+  overflow: hidden;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Table Styles */
+.table {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  border: 1px solid #d8d8f0;
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #d8d8f0;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+  height: calc(1.5em + 0.75rem + 2px);
+  margin: 0;
+  padding: 0;
+}
+
+.table-title h5 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+  margin: 0;
+}
+
+.title-count::before {
+  content: "•";
+  padding: 0 0.5em;
+}
+
+.table-container {
+  display: flex;
+}
+
+.table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-style: none;
+}
+
+tbody {
+  border: none;
+}
+
+/* Data Table Styles */
+.data-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.data-table .header-item,
+.data-table .cell {
+  border-left: 1px solid #d8d8f0;
+  border-right: 1px solid #d8d8f0;
+  border-bottom: 1px solid #d8d8f0;
+  padding: 0.5em;
+  background: white;
+}
+
+
+.data-table .header-item {
+  padding: 0.9em;
+  font-size: 12px;
+  text-transform: uppercase;
+  background: #f7f7fc;
+}
+
+.data-table .header-item:first-child,
+.data-table .cell:first-child {
+  border-left: none;
+}
+
+.data-table .header-item:last-child,
+.data-table .cell:last-child{
+  border-right: none;
+}
+
+.data-table .cell {
+  padding: 0.9em;
+}
+
+
+.data-table tr:last-child .cell {
+  border-bottom: none;
+}
+
+.data-table .last-row {
+  border-bottom: none;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid #d8d8f0;
+  height: 2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  width: 5rem;
+}
+
+.page-number {
+  display: flex;
+  align-items: center;
+}
+
+.page-number label,
+.page-size-label {
+  margin-right: 0.5em;
+  line-height: 1;
+  font-size: 13px;
+}
+
+.custom-select-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 5rem;
+}
+
+.custom-select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 60%;
+  background: #d8d8f0;
+}
+
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #d8d8f0;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  width: 5rem;
+  height: 2rem;
+  box-sizing: border-box;
+  padding: 0 1rem;
+  background-color: white;
+  text-align: center;
+}
+
+.select-icon {
+  position: absolute;
+  right: 0.65rem;
+  pointer-events: none;
+}
+
+.page-size {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
+.page-number .fas {
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+/* Input Styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

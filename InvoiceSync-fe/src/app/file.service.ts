@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import {HttpClient, HttpEvent, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -8,14 +8,37 @@ import { Observable } from 'rxjs';
 export class FileService {
   private server = 'http://localhost:8080'
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
   //define a method to upload a file
-  upload(formData: FormData) : Observable<HttpEvent<string[]>> {
-    return this.http.post<string[]>( `${this.server}/file/upload`, formData, {
+  upload(formData: FormData): Observable<HttpEvent<string[]>> {
+    const token = localStorage.getItem('token'); // Názov kľúča môže byť iný, záleží na tom, ako ho ukladáš
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<string[]>(`${this.server}/xml-file/upload`, formData, {
+      headers: headers,
       reportProgress: true,
       observe: 'events'
+    });
+  }
+
+  uploadPdf(formData: FormData): Observable<HttpEvent<string[]>> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<string[]>(`${this.server}/api/v1/import-invoice`, formData, {
+      headers: headers,
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
+  uploadXml(formData: FormData) {
+    return this.http.post(`${this.server}/xml-file/upload`, formData, {
+      headers: new HttpHeaders(),
+      observe: 'events',
+      reportProgress: true
     });
   }
 

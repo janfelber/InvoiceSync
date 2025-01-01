@@ -1,62 +1,42 @@
 package com.invoicesync.controller;
 
-import com.invoicesync.module.Company;
-import com.invoicesync.service.CompanyService;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.invoicesync.dto.CompanyResponseDto;
+import com.invoicesync.module.Company;
+import com.invoicesync.service.CompanyService;
+import com.invoicesync.user.CurrentUserService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/company")
 public class CompanyController {
 
-    private final CompanyService companyService;
+  private final CompanyService companyService;
+  private final CurrentUserService currentUserService;
 
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
-    }
+  @PostMapping
+  @RequestMapping("/add")
+  public ResponseEntity<Company> addCompany(@RequestBody final Company company) {
+    return ResponseEntity.ok(companyService.addCompany(company));
+  }
 
-    //get all companies
-    @GetMapping("/company")
-    public List<Map<String, String>> getCompanies() {
-        List <Company> companies = companyService.getCompanies();
-        List<Map<String, String>> result = new ArrayList<>();
-        for (Company company : companies) {
-            Map<String, String> map = new HashMap<>();
-            map.put("company_id", String.valueOf(company.getId()));
-            map.put("name", company.getName());
-            map.put("user_name", company.getUser().getUsername());
-            result.add(map);
-        }
-        return result;
-    }
+  @GetMapping("/user")
+  public ResponseEntity<List<CompanyResponseDto>> getUserCompanies() {
+    return ResponseEntity.ok(companyService.getCompaniesByUserId(getCurrentUserId()));
+  }
 
-    //get company for specific user
-    @GetMapping("/company/user/{id}")
-    public List<Map<String, String>> getCompaniesByUserId(@PathVariable int id) {
-        List<Company> companies = companyService.getCompaniesByUserId(id);
-        List<Map<String, String>> result = new ArrayList<>();
-        for (Company company : companies) {
-            Map<String, String> map = new HashMap<>();
-            map.put("company_id", String.valueOf(company.getId()));
-            map.put("name", company.getName());
-            result.add(map);
-
-        }
-        return result;
-    }
-
-    //get id of company by name
-    @GetMapping("/company/{name}")
-    public String getCompanyIdByName(@PathVariable String name) {
-        Company company = companyService.getCompanyByName(name);
-        return String.valueOf(company.getId());
-    }
+  private Long getCurrentUserId() {
+    return currentUserService.getCurrentUserId();
+  }
 
 }

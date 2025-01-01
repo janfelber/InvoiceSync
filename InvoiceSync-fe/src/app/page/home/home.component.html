@@ -1,39 +1,126 @@
-<div class="home-page-container">
-  <div class="col-7">
-    <div class="table">
-      <div class="table-head">
-        <div class="table-title">
-          <h5>Záznamy aktivít</h5>
-          <span>- zobrazenych 0 aktivit</span>
+<div class="body">
+  <div class="tables-container">
+    <div class="home-page-container">
+      <div class="col">
+        <div class="table">
+          <div class="table-head">
+            <div class="table-title">
+              <h5>Záznamy aktivít</h5>
+              <span>- zobrazenych 0 aktivit</span>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+              <tr>
+                <th class="column-header">
+                  <div class="head-container">
+                    <span>Datum a cas</span>
+                  </div>
+                </th>
+                <th class="column-header">
+                  <div class="head-container">
+                    <span>Typ akcie</span>
+                  </div>
+                </th>
+                <th class="column-header">
+                  <div class="head-container">
+                    <span>Popis akcie</span>
+                  </div>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="table-row empty">
+                <td class="cell" colspan="9">Ziadne zaznamy</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <div class="table-container">
-        <table>
-          <thead>
-          <tr>
-            <th class="column-header">
-              <div class="head-container">
-                <span>Datum a cas</span>
+    </div>
+    <div class="col">
+      <div class="table">
+        <div class="table-head">
+          <div class="table-title">
+            <h5>Spolocnosti</h5>
+            <span class="users-count">zobrazenych {{ recordRange }} z {{ filteredCompanies.length }}</span>
+          </div>
+          <div class="pagination-container">
+            <div class="page-number">
+              <label for="page-size" style="font-size: 13px;">
+                Page {{ currentPage }} / {{ totalPages }}
+              </label>
+              <i>
+              <span class="fas fa-caret-left"
+                    [class.disabled]="currentPage === 1"
+                    (click)="goToPage(1)">
+              </span>
+              </i>
+              <input
+                type="number"
+                [(ngModel)]="currentPageInput"
+                (keyup.enter)="jumpToPage()"
+                [min]="1"
+                [max]="totalPages"
+                class="pagination-input"
+                style="width: 5rem; height: 2rem; font-size: 0.75rem; font-weight: 500; text-align: center"/>
+              <i class="fas fa-caret-right"
+                 [class.disabled]="currentPage === totalPages"
+                 (click)="goToPage(currentPage + 1)">
+              </i>
+            </div>
+            <div class="page-size">
+              <label for="page-size" class="page-size-label">Page Size</label>
+              <div class="custom-select-wrapper">
+                <select
+                  id="page-size"
+                  [(ngModel)]="rowsPerPage"
+                  (change)="goToPage(1)"
+                  class="custom-select">
+                  <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+                </select>
+                <span class="select-icon">
+              <i class="fas fa-chevron-down"></i>
+            </span>
               </div>
-            </th>
-            <th class="column-header">
-              <div class="head-container">
-                <span>Typ akcie</span>
-              </div>
-            </th>
-            <th class="column-header">
-              <div class="head-container">
-                <span>Popis akcie</span>
-              </div>
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr class="table-row empty">
-            <td class="cell" colspan="9">Ziadne zaznamy</td>
-          </tr>
-          </tbody>
-        </table>
+            </div>
+          </div>
+        </div>
+        <div class="table-actions">
+          <button class="company-button" (click)="openDialog()">
+            <i class="fal fa-plus"></i>
+            <span>Pridať spolocnost</span>
+          </button>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th
+                class="header-item"
+                *ngFor="let header of headers; let i = index"
+                [ngStyle]="{'width': columnWidths[i]}"
+              >
+                {{ header }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of paginatedCompanies; let last = last">
+              <td class="cell cell-name" [ngClass]="{'last-row': last}">
+                {{ user.name }}
+              </td>
+              <td class="cell" style="width: 10%;" [ngClass]="{'last-row': last}">
+                <button mat-icon-button>
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

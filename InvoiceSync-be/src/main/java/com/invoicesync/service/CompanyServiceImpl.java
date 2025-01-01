@@ -1,35 +1,42 @@
 package com.invoicesync.service;
 
-import com.invoicesync.module.Company;
-import com.invoicesync.repository.CompanyRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.invoicesync.dto.CompanyResponseDto;
+import com.invoicesync.module.Company;
+import com.invoicesync.repository.CompanyRepository;
+import com.invoicesync.user.UserDemo;
+
+import lombok.AllArgsConstructor;
 
 @Service
-public class CompanyServiceImpl implements CompanyService{
+@AllArgsConstructor
+public class CompanyServiceImpl implements CompanyService {
 
-    private final CompanyRepository companyRepository;
+  private final CompanyRepository companyRepository;
 
-    @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+  @Override
+  public Company addCompany(final Company company) {
+    if (company.getName() == null || company.getName().isEmpty()) {
+      throw new IllegalArgumentException("Company name cannot be null or empty");
     }
+    company.setUser((UserDemo) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+    return companyRepository.save(company);
+  }
 
-    @Override
-    public List<Company> getCompanies() {
-        return companyRepository.findAll();
-    }
+  @Override
+  public List<CompanyResponseDto> getCompaniesByUserId(final Long userId) {
+    return companyRepository.findByUserId(userId)
+        .stream()
+        .map(company -> new CompanyResponseDto(
+            company.getId(),
+            company.getName()
+        ))
+        .collect(Collectors.toList());
+  }
 
-    @Override
-    public List<Company> getCompaniesByUserId(int id) {
-        return companyRepository.findByUserId(id);
-    }
-
-    @Override
-    public Company getCompanyByName(String name) {
-        return companyRepository.findByName(name);
-    }
 }

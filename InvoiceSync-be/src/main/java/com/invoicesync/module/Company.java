@@ -1,47 +1,35 @@
 package com.invoicesync.module;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import com.invoicesync.user.UserDemo;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "company", schema = "invoice_sync")
 public class Company {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
+  private String name;
 
-    @ManyToOne()
-    @JoinColumn(name = "credential_id")
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "\"user_id\"")
+  private UserDemo user;
 
-    @NotEmpty
-    @Column(name = "name")
-    private String name;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public @NotEmpty String getName() {
-        return name;
-    }
-
-    public void setName(@NotEmpty String name) {
-        this.name = name;
-    }
 }

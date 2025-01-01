@@ -1,15 +1,14 @@
 package com.invoicesync.service;
 
-
-import com.invoicesync.module.Import;
-import com.invoicesync.repository.ImportRepository;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import com.invoicesync.module.Import;
+import com.invoicesync.repository.ImportRepository;
 
 @Service
 public class ImportServiceImpl implements ImportService{
@@ -36,12 +35,6 @@ public class ImportServiceImpl implements ImportService{
     @Override
     public List<Import> getImportsByUserId(int id) {
         return importRepository.findByUserId(id);
-    }
-
-    //get import by company id for user
-    @Override
-    public List<Import> getImportsByCompanyId(int userId, int companyId) {
-        return importRepository.findByUserIdAndCompanyId(userId, companyId);
     }
 
     @Override

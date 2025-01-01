@@ -1,5 +1,20 @@
 package com.invoicesync.ocr.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesRequest;
@@ -11,28 +26,14 @@ import com.google.cloud.vision.v1.TextAnnotation;
 import com.google.protobuf.ByteString;
 import com.invoicesync.ocr.service.regex.RegexPatterns;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Service
 public class OCRService {
 
-  public String extractTextFromPDF(String pdfPath) throws IOException {
+  public String extractTextFromPDF(final MultipartFile file) throws IOException {
     StringBuilder fullText = new StringBuilder();
 
     // Load PDF and initialize PDFRenderer
-    try (PDDocument document = PDDocument.load(new File(pdfPath))) {
+    try (PDDocument document = PDDocument.load(file.getInputStream())) {
       PDFRenderer pdfRenderer = new PDFRenderer(document);
 
       List<ByteString> imageBytesList = new ArrayList<>();
@@ -76,7 +77,23 @@ public class OCRService {
         }
       }
     }
+
+    System.out.println(fullText);
+
     return fullText.toString();
+  }
+
+  public String extractSupplierSection(final String ocrText) {
+    final String regex = "Dodávateľ\\s*:?\\s*([\\s\\S]*?)(?=\\n\\s*Odberateľ|$)";
+    final Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+    final Matcher matcher = pattern.matcher(ocrText);
+
+    if (matcher.find()) {
+      String result = matcher.group(1).trim();
+      result = result.replaceAll("^[':]+\\s*", "");
+      return result;
+    }
+    return "Sekcia 'Dodávateľ' nebola nájdená.";
   }
 
   // INVOICE_ISSUE_DATE
@@ -89,6 +106,43 @@ public class OCRService {
       return matcher.group(1);
     }
     return "Dátum splatnosti nebol nájdený.";
+  }
+
+  public String extractSupplierName(final String supplierSection) {
+    final String[] lines = supplierSection.split("\\n");
+    return lines.length > 0 ? lines[0].trim() : "Názov nenájdený";
+  }
+
+  public String extractSupplierAddress(final String supplierSection) {
+    final String[] lines = supplierSection.split("\\n");
+    return lines.length > 1 ? lines[1].trim() : "Adresa nenájdená";
+  }
+
+  public String extractSupplierPostalCode(final String supplierSection) {
+    final String regex = "\\b(\\d{3}\\s?\\d{2})\\b";
+    final Pattern pattern = Pattern.compile(regex);
+    final Matcher matcher = pattern.matcher(supplierSection);
+
+    if (matcher.find()) {
+      return matcher.group(1).trim();
+    }
+    return "PSČ nebolo nájdené.";
+  }
+
+  public String extractSupplierCity(final String supplierSection) {
+    final String[] parts = supplierSection.split("\\b\\d{3}\\s?\\d{2}\\b");
+
+    if (parts.length > 1) {
+      String cityPart = parts[1].trim();
+      final int endIndex = cityPart.indexOf('\n');
+      if (endIndex > -1) {
+        cityPart = cityPart.substring(0, endIndex).trim();
+      }
+
+      return cityPart.isEmpty() ? "Mesto nebolo nájdené." : cityPart;
+    }
+
+    return "Mesto nebolo nájdené.";
   }
 
   // INVOICE_DELIVERY_DATE
@@ -122,6 +176,7 @@ public class OCRService {
     Matcher matcher = pattern.matcher(ocrText);
 
     if (matcher.find()) {
+      System.out.println("Variable symbol: " + matcher.group(1));
       return matcher.group(1);
     }
     return "Variabilný symbol nebol nájdený.";
@@ -147,7 +202,7 @@ public class OCRService {
     Matcher matcher = pattern.matcher(ocrText);
 
     if (matcher.find()) {
-      return matcher.group(0);
+      return matcher.group(1);
     }
     return "IBAN nebol nájdený.";
   }
@@ -159,7 +214,8 @@ public class OCRService {
     Matcher matcher = pattern.matcher(ocrText);
 
     if (matcher.find()) {
-      return matcher.group(0);
+      System.out.println(matcher.group(1));
+      return matcher.group(1);
     }
     return "IČO nebol nájdený.";
   }
@@ -172,7 +228,8 @@ public class OCRService {
     Matcher matcher = pattern.matcher(ocrText);
 
     if (matcher.find()) {
-      return matcher.group(0);
+      System.out.println(matcher.group(1));
+      return matcher.group(1);
     }
     return "DIČ nebol nájdený.";
   }

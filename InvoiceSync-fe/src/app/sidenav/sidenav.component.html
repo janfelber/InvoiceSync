@@ -9,7 +9,7 @@
     <div class="SideMenuTitle">
       <span class="SideMenuTitle-text">Menu</span>
     </div>
-    <li *ngFor="let data of navData">
+    <li *ngFor="let data of filteredNavBarData">
       <a class="sidenav-nav-link" [routerLink]="data.routerLink"
          routerLinkActive="active"
          [routerLinkActiveOptions]="{exact: true}">
