@@ -12,7 +12,7 @@ public interface InvoiceImportService {
 
   List<InvoiceImportResponseDto> getInoivceImportsByUserId(Long userId);
 
-  InvoiceImport saveInvoice(MultipartFile file) throws IOException;
+  InvoiceImport saveInvoice(MultipartFile file, Long companyId) throws IOException;
 
   InvoiceImportResponseDto getInvoiceById(Long id);
 
