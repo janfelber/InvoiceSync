@@ -1,18 +1,7 @@
 package com.invoicesync.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.invoicesync.config.JwtService;
-import com.invoicesync.repository.UserCredentialRepository;
-import com.invoicesync.tfa.TwoFactorAuthenticationService;
-import com.invoicesync.token.Token;
-import com.invoicesync.token.TokenRepository;
-import com.invoicesync.token.TokenType;
-import com.invoicesync.user.Role;
-import com.invoicesync.user.UserDemo;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +9,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.invoicesync.config.JwtService;
+import com.invoicesync.repository.UserCredentialRepository;
+import com.invoicesync.service.UserCredentialService;
+import com.invoicesync.tfa.TwoFactorAuthenticationService;
+import com.invoicesync.token.Token;
+import com.invoicesync.token.TokenRepository;
+import com.invoicesync.token.TokenType;
+import com.invoicesync.user.Role;
+import com.invoicesync.user.UserDemo;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,8 @@ public class AuthenticationService {
 
     private final TwoFactorAuthenticationService tfaService;
 
+    private final UserCredentialService userCredentialService;
+
     public AuthenticationResponse register(final RegisterRequest request) {
         final var user = UserDemo.builder()
                 .username(request.getUsername())
@@ -52,6 +57,10 @@ public class AuthenticationService {
             user.setSecret(tfaService.generateNewSecret());
         }
         final var savedUser = repository.save(user);
+
+        final Long userId = savedUser.getId();
+        userCredentialService.createUserDirectory(userId);
+
         final var jwtToken = jwtService.generateToken(user);
         final var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);

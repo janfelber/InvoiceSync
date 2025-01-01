@@ -37,12 +37,6 @@
 
 
 <div class="body">
-  <div class="upload-container">
-    <button mat-flat-button color="basic" [style.backgroundColor]="'rgba(192, 192, 192, 0.35)'">
-      <mat-icon>upload</mat-icon>
-      Import
-    </button>
-  </div>
   <div class="home-page-container">
     <div class="col">
       <div class="table">
@@ -92,6 +86,16 @@
             </div>
           </div>
         </div>
+        <div class="table-actions">
+          <button class="import-button"
+                  matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"
+                  [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'" style="display: inline-block;"
+                  (click)="onFileSelected()"
+                  [disabled]="selectedCompanyName === 'Vyber spoločnosť'">
+            <i class="fal fa-plus"></i>
+            <span>Import</span>
+          </button>
+        </div>
         <div class="table-container">
           <table class="data-table">
             <thead>
@@ -127,10 +131,10 @@
                 {{ import.invoice_variable_symbol }}
               </td>
               <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
-                {{ import.invoice_issue_date }}
+                {{ import.invoice_import_date | date:'dd.MM.yyyy' }}
               </td>
               <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
-                {{ import.invoice_import_date | date:'dd.MM.yyyy' }}
+                {{ import.invoice_issue_date }}
               </td>
               <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
                 {{ import.invoice_total_amount }}

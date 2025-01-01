@@ -16,6 +16,60 @@
   color: rgba(34, 35, 36, 0.5);
   font-weight: bolder;
 }
+
+.table-actions {
+  padding: 0.7rem 2rem;
+  text-align: right;
+}
+
+.import-button {
+  background-color: #0000;
+  border: 1px solid #d8d8f0;
+  display: inline-block;
+  align-items: center;
+  border-radius: 0.2rem;
+  height: auto;
+  font-size: 0.75rem;
+  font-weight: 500;
+  width: 6rem;
+  transition: background-color 0.3s;
+  justify-content: flex-end;
+}
+
+.import-button:hover {
+  border-color: #a0a0a0;
+  background: #f8f8f8;
+}
+
+.import-button span,
+.import-button i {
+  background-color: transparent;
+  color: inherit;
+}
+
+.import-button:hover span,
+.import-button:hover i {
+  color: #000;
+}
+
+.import-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  border-color: #d8d8f0;
+  background: transparent;
+}
+
+.import-button:disabled:hover {
+  border-color: #d8d8f0;
+  background: transparent;
+}
+
+.import-button:disabled span,
+.import-button:disabled i {
+  color: inherit;
+}
+
+
 .dropdown-menu {
   width: 215px;
   overflow-y: auto;

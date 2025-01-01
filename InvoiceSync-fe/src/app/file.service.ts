@@ -23,6 +23,17 @@ export class FileService {
     });
   }
 
+  uploadPdf(formData: FormData): Observable<HttpEvent<string[]>> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<string[]>(`${this.server}/api/v1/import-invoice`, formData, {
+      headers: headers,
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
   uploadXml(formData: FormData) {
     return this.http.post(`${this.server}/xml-file/upload`, formData, {
       headers: new HttpHeaders(),
