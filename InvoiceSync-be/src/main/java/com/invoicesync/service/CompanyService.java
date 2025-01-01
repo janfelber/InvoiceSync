@@ -1,13 +1,14 @@
 package com.invoicesync.service;
 
-import com.invoicesync.module.Company;
-
 import java.util.List;
 
+import com.invoicesync.dto.CompanyResponseDto;
+import com.invoicesync.module.Company;
+
 public interface CompanyService {
-    List<Company> getCompanies();
 
-    List<Company> getCompaniesByUserId(int id);
+  Company addCompany(Company company);
 
-    Company getCompanyByName(String name);
+  List<CompanyResponseDto> getCompaniesByUserId(Long userId);
+
 }

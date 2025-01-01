@@ -1,31 +1,38 @@
 import { Component } from '@angular/core';
-import { GridInvoicesComponent } from "../../components/grid-invoices/grid-invoices.component";
-import {HeaderCompanyComponent} from "../../header-company/header-company.component";
 import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../axios.service";
 import {HttpErrorResponse, HttpEvent, HttpEventType} from "@angular/common/http";
 import saveAs from "file-saver";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable
-} from "@angular/material/table";
-import {MatFormField, MatLabel} from "@angular/material/form-field";
+import {DatePipe} from "@angular/common";
+import {MatButton} from "@angular/material/button";
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {MatOption} from "@angular/material/autocomplete";
-import {MatSelect} from "@angular/material/select";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatCheckbox} from "@angular/material/checkbox";
+import {RouterLink} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
+import {ToastrService} from "ngx-toastr";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [GridInvoicesComponent, HeaderCompanyComponent, DatePipe, MatButton, MatCell, MatCellDef, MatColumnDef, MatFormField, MatHeaderCell, MatHeaderRow, MatHeaderRowDef, MatIcon, MatIconButton, MatLabel, MatOption, MatRow, MatRowDef, MatSelect, MatTable, NgForOf, NgIf],
+  imports: [
+    DatePipe,
+    MatButton,
+    MatIcon,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatCheckbox,
+    RouterLink,
+    MatProgressSpinner,
+    MatTooltip
+  ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
@@ -37,42 +44,139 @@ export class Invoices {
 
   protected imports: string[] = [];
 
-  protected companies: any[] = [];
-
   protected isLoading: boolean = true;
-
-  protected displayedColumn: string[] = ['filename', "username", 'created_at', "download"];
 
   protected dataSource: any[] = [];
 
   protected selectedCompanyId: any;
 
-  protected selectedCompanyName: string = '';
-
   protected schema_name: string = '';
 
-  private user_id = this.axiosService.getUserId();
+  protected companies: any[] = [];
 
-  constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) { }
+  selectedCompanyName = 'Vyber spoločnosť';
+
+  headers = [ 'Cislo Faktury', 'Var. Symbol', 'Importovane', 'Dat. Splatnosti', 'Suma total'];
+  filteredInvoiceImports: any[] = [];
+  currentPage = 1;
+  rowsPerPage = 10;
+  currentPageInput = 1;
+  pageSizes = [5,10, 20, 50];
+
+  constructor(
+    private fileService: FileService,
+    private invoiceService: InvoiceService,
+    private axiosService: AxiosService,
+    private toastr: ToastrService,
+    private dialog: MatDialog
+  ) {
+  }
 
 
   ngOnInit(): void {
     this.onFetchAllImports();
+    this.onFetchCompanies();
+  }
+
+  toggleSelectAll(event: any): void {
+    const isChecked = event.checked;
+    this.paginatedImports.forEach((importItem) => {
+      importItem.selected = isChecked;
+    });
+  }
+
+  onRowCheckboxChange(importItem: any): void {
+    console.log(`Checkbox changed for import:`, importItem.id);
   }
 
   onFetchAllImports(): void {
     this.axiosService.request(
       "GET",
-      `api/v1/import/user/${this.user_id}`,
+      `/api/v1/import/user`,
       null
     ).then(
       (imports) => {
-        this.imports = imports.data
+        this.imports = imports.data;
         this.dataSource = imports.data;
-        this.isLoading = false;
-        console.log(imports.data);
+        this.filteredInvoiceImports = [...this.dataSource];
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 3000);
       }
-    )
+    ).catch((error) => {
+      console.error('Error fetching imports:', error);
+      this.isLoading = false;
+    });
+  }
+
+  get paginatedImports(): any[] {
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    const end = start + this.rowsPerPage;
+    return this.filteredInvoiceImports.slice(start, end);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredInvoiceImports.length / this.rowsPerPage);
+  }
+
+  get recordRange(): string {
+    const startRecord = (this.currentPage - 1) * this.rowsPerPage + 1;
+    const endRecord = Math.min(this.currentPage * this.rowsPerPage, this.filteredInvoiceImports.length);
+    return `${startRecord} - ${endRecord} z ${this.filteredInvoiceImports.length}`;
+  }
+
+  goToPage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.currentPageInput = page;
+    }
+  }
+
+  jumpToPage(): void {
+    if (this.currentPageInput > 0 && this.currentPageInput <= this.totalPages) {
+      this.goToPage(this.currentPageInput);
+    }
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(MatDialogWindowComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog-container',
+      data: {
+        title: 'Nova spolocnost',
+        inputs: [
+          { label: 'Názov', type: 'text', placeholder: '', value: '', required: true },
+        ],
+        confirmText: 'Uložiť',
+        cancelText: 'Zrušiť'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Dialóg zatvorený s výsledkom:', result);
+        this.saveCompany(result);
+      } else {
+        console.log('Dialóg bol zrušený');
+      }
+    });
+  }
+
+  saveCompany(data: any): void {
+    const valuesToSend = data.map((input: { value: any }) => input.value);
+
+    console.log('Posielam údaje na server:', valuesToSend);
+
+    this.axiosService.request(
+      "POST",
+      `/api/v1/company/add`,
+      { name: valuesToSend[0] }
+    ).then(response => {
+      console.log('Spoločnosť bola úspešne vytvorená:', response);
+      this.onFetchCompanies();
+    }).catch(error => {
+      console.error('Chyba pri vytváraní spoločnosti:', error);
+    });
   }
 
   /**
@@ -94,19 +198,31 @@ export class Invoices {
     );
   }
 
-  /**
-   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-   */
-  onFetchCompanies(): void {
-    this.invoiceService.fetchCompany().subscribe(
-      companies => {
-        this.companies = companies;
-        console.table(companies);
-      },
-      error => {
-        console.log(error);
+  onFetchCompanies() {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/company/user`,
+      null
+    ).then(
+      (companies) => {
+        this.companies = companies.data
+        this.isLoading = false;
+        console.log(companies.data);
+
+        if (this.companies.length === 0) {
+          this.toastr.warning('Nemáte pridané žiadne spoločnosti!', 'Informácia',
+            {
+              timeOut: 3000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              closeButton: true,
+              positionClass: 'toast-top-right'
+            });
+        }
       }
-    )
+    ).catch(() => {
+      this.isLoading = false;
+    });
   }
 
   downloadFile(importId: number) {
@@ -126,21 +242,38 @@ export class Invoices {
       });
   }
 
-  /**
-   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-   */
+  onFileSelected(): void {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = '.pdf';
+
+    inputElement.click();
+
+    inputElement.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.files) {
+        this.onUploadFiles(Array.from(target.files));
+        alert('Files selected');
+      }
+    });
+  }
+
   public onUploadFiles(files: File[]): void {
     const formData = new FormData();
-    for (const file of files) { formData.append('file', file, file.name); }
-    this.fileService.upload(formData).subscribe(
-      event => {
+    for (const file of files) {
+      formData.append('file', file, file.name);
+    }
+    this.fileService.uploadPdf(formData).subscribe({
+      next: (event) => {
         console.log(event);
-        this.reportProgress(event);
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         console.error(error);
+      },
+      complete: () => {
+        console.log('Upload complete');
       }
-    );
+    });
   }
 
   private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
@@ -195,13 +328,25 @@ export class Invoices {
     });
   }
 
-  onCompanyChange(company: any) {
-    this.selectedCompanyId = company.company_id;
+  //select company from dropdown
+  onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
-    this.schema_name = company.schema_name;
+    console.log(this.selectedCompanyName)
+    this.onCompanyChange(company);
+  }
 
-    // Zavolanie funkcie na získanie importov
-    this.onFetchImports();
+  onCompanyChange(company: any) {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/imports/company/${company.id}/current-user`,
+      null,
+    ).then(response => {
+      console.log(response.data);
+      //update imports
+      this.filteredInvoiceImports = response.data;
+    }).catch(error => {
+      console.error(error);
+    });
   }
 
 

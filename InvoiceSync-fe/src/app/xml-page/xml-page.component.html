@@ -1,0 +1,86 @@
+<!-- button to import XML file -->
+<div class="body">
+  <div class="upload-container">
+    <button mat-flat-button color="basic" [style.backgroundColor]="'rgba(192, 192, 192, 0.35)'"
+            (click)="onFileSelected()">
+      <mat-icon>upload</mat-icon>
+      Import
+    </button>
+  </div>
+  <div class="home-page-container">
+    <div class="col">
+      <div class="table">
+        <div class="table-head">
+          <div class="table-title">
+            <h5>Users</h5>
+            <span class="users-count">zobrazenych {{ recordRange }} z {{ filteredXmlImports.length }}</span>
+          </div>
+          <div class="pagination-container">
+            <div class="page-number">
+              <label for="page-size" style="font-size: 13px;">
+                Page {{ currentPage }} / {{ totalPages }}
+              </label>
+              <i>
+              <span class="fas fa-caret-left"
+                    [class.disabled]="currentPage === 1"
+                    (click)="goToPage(1)">
+              </span>
+              </i>
+              <input
+                type="number"
+                [(ngModel)]="currentPageInput"
+                (keyup.enter)="jumpToPage()"
+                [min]="1"
+                [max]="totalPages"
+                class="pagination-input"
+                style="width: 5rem; height: 2rem; font-size: 0.75rem; font-weight: 500; text-align: center"/>
+              <i class="fas fa-caret-right"
+                 [class.disabled]="currentPage === totalPages"
+                 (click)="goToPage(currentPage + 1)">
+              </i>
+            </div>
+            <div class="page-size">
+              <label for="page-size" class="page-size-label">Page Size</label>
+              <div class="custom-select-wrapper">
+                <select
+                  id="page-size"
+                  [(ngModel)]="rowsPerPage"
+                  (change)="goToPage(1)"
+                  class="custom-select">
+                  <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+                </select>
+                <span class="select-icon">
+              <i class="fas fa-chevron-down"></i>
+            </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th class="header-item" *ngFor="let header of headers">{{ header }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of paginatedUsers; let last = last">
+              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+                {{ user.fileName }}
+              </td>
+              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+                {{ user.createdAt | date:'dd.MM.yyyy' }}
+              </td>
+              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+                <button mat-icon-button (click)="downloadFile(user.importId)">
+                  <mat-icon>download</mat-icon>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,8 @@
 package com.invoicesync.service;
 
-import com.invoicesync.module.Import;
-
 import java.util.List;
+
+import com.invoicesync.module.Import;
 
 public interface ImportService {
 
@@ -11,9 +11,6 @@ public interface ImportService {
 
     //get import by user id
     List<Import> getImportsByUserId(int userId);
-
-    //get import by company id for user
-    List<Import> getImportsByCompanyId(int userId, int companyId);
-
+    
     Import getXmlContentById(int importId);
 }

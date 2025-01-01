@@ -1,6 +1,13 @@
 package com.invoicesync.module;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
 @Entity
@@ -24,17 +31,6 @@ public class ScriptSchema {
     @Column(name = "schema")
     private String schema;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
-    }
 
     public int getId() {
         return id;
