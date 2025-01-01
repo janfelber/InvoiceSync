@@ -68,4 +68,6 @@
     @JoinColumn(name = "\"company\"")
     private Company company;
 
+    private String pdf_name;
+
   }

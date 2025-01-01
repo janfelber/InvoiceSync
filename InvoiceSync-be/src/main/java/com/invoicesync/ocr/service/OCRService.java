@@ -2,7 +2,6 @@ package com.invoicesync.ocr.service;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +13,7 @@ import javax.imageio.ImageIO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
@@ -29,11 +29,11 @@ import com.invoicesync.ocr.service.regex.RegexPatterns;
 @Service
 public class OCRService {
 
-  public String extractTextFromPDF(String pdfPath) throws IOException {
+  public String extractTextFromPDF(final MultipartFile file) throws IOException {
     StringBuilder fullText = new StringBuilder();
 
     // Load PDF and initialize PDFRenderer
-    try (PDDocument document = PDDocument.load(new File(pdfPath))) {
+    try (PDDocument document = PDDocument.load(file.getInputStream())) {
       PDFRenderer pdfRenderer = new PDFRenderer(document);
 
       List<ByteString> imageBytesList = new ArrayList<>();

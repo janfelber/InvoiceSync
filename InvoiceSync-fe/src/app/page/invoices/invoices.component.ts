@@ -16,6 +16,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatTooltip} from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-test',
@@ -29,7 +30,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
     CommonModule,
     MatCheckbox,
     RouterLink,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatTooltip
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
@@ -54,7 +56,7 @@ export class Invoices {
 
   selectedCompanyName = 'Vyber spoločnosť';
 
-  headers = [ 'Cislo Faktury', 'Var. Symbol', 'Dat. vystavenia', 'Dat. Splatnosti', 'Suma total'];
+  headers = [ 'Cislo Faktury', 'Var. Symbol', 'Importovane', 'Dat. Splatnosti', 'Suma total'];
   filteredInvoiceImports: any[] = [];
   currentPage = 1;
   rowsPerPage = 10;
@@ -240,21 +242,38 @@ export class Invoices {
       });
   }
 
-  /**
-   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-   */
+  onFileSelected(): void {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = '.pdf';
+
+    inputElement.click();
+
+    inputElement.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.files) {
+        this.onUploadFiles(Array.from(target.files));
+        alert('Files selected');
+      }
+    });
+  }
+
   public onUploadFiles(files: File[]): void {
     const formData = new FormData();
-    for (const file of files) { formData.append('file', file, file.name); }
-    this.fileService.upload(formData).subscribe(
-      event => {
+    for (const file of files) {
+      formData.append('file', file, file.name);
+    }
+    this.fileService.uploadPdf(formData).subscribe({
+      next: (event) => {
         console.log(event);
-        this.reportProgress(event);
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         console.error(error);
+      },
+      complete: () => {
+        console.log('Upload complete');
       }
-    );
+    });
   }
 
   private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
