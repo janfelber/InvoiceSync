@@ -25,6 +25,7 @@ import { HeaderComponent } from './header/header.component';
 import { Invoices } from './page/invoices/invoices.component';
 import { ContentComponent } from './content/content.component';
 import { HeaderCompanyComponent } from "./header-company/header-company.component";
+import {SideNavRedesignComponent} from "../redesign/side-nav-redesign/side-nav-redesign.component";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -46,8 +47,9 @@ interface SideNavToggle {
     CommonModule,
     RouterOutlet,
     GridInvoicesComponent,
-    HeaderCompanyComponent
-],
+    HeaderCompanyComponent,
+    SideNavRedesignComponent
+  ],
 })
 
 export class AppComponent  {
