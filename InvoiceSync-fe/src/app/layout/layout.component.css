@@ -13,9 +13,10 @@
   flex-grow: 1; /* Vyplniť zvyšok priestoru vedľa sidenavu */
   background: #f3f7f9; /* Pozadie pre main obsah */
   height: 100%; /* Zabezpeč, že main bude mať 100% výšku */
-  padding-left: 11.5rem;
+  padding-left: 14rem;
 }
 
 .header {
-  padding-left: 11.5rem;
+  padding-left: 14rem;
+  background: #f3f7f9; /* Pozadie pre main obsah */
 }

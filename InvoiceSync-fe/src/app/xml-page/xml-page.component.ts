@@ -9,19 +9,21 @@ import {MatButtonModule, MatIconButton} from '@angular/material/button';
 import {HttpErrorResponse} from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import { FormsModule } from '@angular/forms';
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
   selector: 'app-xml-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatIcon,
-    MatIconButton,
-    MatButtonModule,
-    ReactiveFormsModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatIcon,
+        MatIconButton,
+        MatButtonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatCheckbox
+    ],
   templateUrl: './xml-page.component.html',
   styleUrl: './xml-page.component.css'
 })
@@ -35,7 +37,7 @@ export class XmlPageComponent {
   protected dataSource: any[] = [];
   protected displayedColumns: string[] = ['filename', 'created_at', "download"];
   filteredXmlImports: any[] = [];
-  headers = ['Nazov', 'Pridane', 'Stiahnut'];
+  headers = ['Status', 'Nazov', 'Pridane', 'Stiahnut'];
   currentPage = 1;
   rowsPerPage = 10;
   currentPageInput = 1;
@@ -58,6 +60,10 @@ export class XmlPageComponent {
           console.log(imports.data);
         }
     )
+  }
+
+  onRowCheckboxChange(importItem: any): void {
+    console.log(`Checkbox changed for import:`, importItem.id);
   }
 
   downloadFile(importId: number) {
