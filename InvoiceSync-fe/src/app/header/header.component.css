@@ -50,7 +50,6 @@ margin-left: 5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 2.9rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -98,7 +97,7 @@ header {
   display: flex;
   height: 70px;
   align-items: center;
-  padding-left:5rem;
+  padding: 1.5rem 2.5rem .75rem;
 }
 
 .active-router {
