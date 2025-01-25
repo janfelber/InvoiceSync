@@ -6,7 +6,7 @@ import {AxiosService} from "../axios.service";
 import {MatTableModule} from '@angular/material/table';
 import {MatIcon} from "@angular/material/icon";
 import {MatButtonModule, MatIconButton} from '@angular/material/button';
-import {HttpErrorResponse} from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import { FormsModule } from '@angular/forms';
 import {MatCheckbox} from "@angular/material/checkbox";
