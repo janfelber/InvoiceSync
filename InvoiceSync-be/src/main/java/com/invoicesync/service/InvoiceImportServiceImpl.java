@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.dto.InvoiceImportResponseDto;
+import com.invoicesync.module.Company;
 import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
+import com.invoicesync.repository.CompanyRepository;
 import com.invoicesync.repository.InvoiceImportRepository;
 import com.invoicesync.user.UserDemo;
 
@@ -24,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class InvoiceImportServiceImpl implements InvoiceImportService {
 
   private final InvoiceImportRepository invoiceImportRepository;
+
+  private final CompanyRepository companyRepository;
 
   private final OCRService ocrService;
 
@@ -54,7 +58,7 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
         .collect(Collectors.toList());
   }
 
-  public InvoiceImport saveInvoice(final MultipartFile file) throws IOException {
+  public InvoiceImport saveInvoice(final MultipartFile file, final Long companyId) throws IOException {
     final InvoiceImport invoiceImport = new InvoiceImport();
     final String ocrText = ocrService.extractTextFromPDF(file);
     final String pdfName = file.getOriginalFilename();
@@ -64,6 +68,9 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     final Path targetPath = Path.of(uploadDir, pdfName);
 
     Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+    final Company company = companyRepository.findById(companyId)
+        .orElseThrow(() -> new RuntimeException("Company not found"));
 
     invoiceImport.setUser((UserDemo) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     final String vatId = ocrService.findVatId(ocrText);
@@ -95,6 +102,7 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     invoiceImport.setInvoice_company_city(supplierCity);
     invoiceImport.setInvoice_status("UNPROCESSED");
     invoiceImport.setPdf_name(pdfName);
+    invoiceImport.setCompany(company);
 
     return invoiceImportRepository.save(invoiceImport);
   }

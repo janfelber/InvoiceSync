@@ -262,10 +262,12 @@ export class Invoices {
     const formData = new FormData();
     for (const file of files) {
       formData.append('file', file, file.name);
+      formData.append('companyId', this.selectedCompanyId.toString());
     }
     this.fileService.uploadPdf(formData).subscribe({
       next: (event) => {
         console.log(event);
+        this.onCompanyChange({ id: this.selectedCompanyId });
       },
       error: (error: HttpErrorResponse) => {
         console.error(error);
@@ -331,6 +333,7 @@ export class Invoices {
   //select company from dropdown
   onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
+    this.selectedCompanyId = company.id;
     console.log(this.selectedCompanyName)
     this.onCompanyChange(company);
   }
