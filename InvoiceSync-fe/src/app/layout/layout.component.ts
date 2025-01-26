@@ -6,6 +6,7 @@ import {Router, RouterOutlet} from "@angular/router";
 import {GridInvoicesComponent} from "../components/grid-invoices/grid-invoices.component";
 import {CommonModule} from "@angular/common";
 import {environment} from "../enviroments/enviroments";
+import {SideNavRedesignComponent} from "../../redesign/side-nav-redesign/side-nav-redesign.component";
 
 @Component({
   selector: 'app-layout',
@@ -16,7 +17,8 @@ import {environment} from "../enviroments/enviroments";
     SidenavComponent,
     RouterOutlet,
     GridInvoicesComponent,
-    CommonModule
+    CommonModule,
+    SideNavRedesignComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'

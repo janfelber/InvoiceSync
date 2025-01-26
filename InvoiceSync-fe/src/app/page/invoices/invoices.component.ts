@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../axios.service";
-import {HttpErrorResponse, HttpEvent, HttpEventType} from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpEventType } from "@angular/common/http";
 import saveAs from "file-saver";
 import {DatePipe} from "@angular/common";
 import {MatButton} from "@angular/material/button";
@@ -17,6 +17,12 @@ import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-di
 import {ToastrService} from "ngx-toastr";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTooltip} from "@angular/material/tooltip";
+
+//TODO: filter state
+interface ImportItem {
+  invoice_status: string;
+  company_id: number;
+}
 
 @Component({
   selector: 'app-test',
@@ -42,11 +48,9 @@ export class Invoices {
 
   protected fileStatus = { status: '', requestType: '', percentage: 0 };
 
-  protected imports: string[] = [];
+  protected imports: ImportItem[] = [];
 
   protected isLoading: boolean = true;
-
-  protected dataSource: any[] = [];
 
   protected selectedCompanyId: any;
 
@@ -54,14 +58,31 @@ export class Invoices {
 
   protected companies: any[] = [];
 
+  protected hasInvoicesDashboardFeature: boolean = false;
+
+  //TODO: filter state
+  activeTab: string = 'UNPROCESSED';
+
+  protected demo: boolean = false;
+
   selectedCompanyName = 'Vyber spoločnosť';
 
-  headers = [ 'Cislo Faktury', 'Var. Symbol', 'Importovane', 'Dat. Splatnosti', 'Suma total'];
+  headers = ['Status', 'Cislo Faktury', 'Var. Symbol', 'Importovane', 'Dat. Vystavenia /Splat.', 'Suma total'];
+  headers1 = [
+    { name: 'Status', width: '2.5%' },
+    { name: 'Firma', width: '7%'},
+    { name: 'Cislo Faktury', width: '5%' },
+    { name: 'Var. Symbol', width: '3%' },
+    { name: 'Importovane', width: '3%' },
+    { name: 'Dat. Vystavenia /Splat.', width: '4%' },
+    { name: 'Suma total', width: '3%'}
+
+  ];
   filteredInvoiceImports: any[] = [];
   currentPage = 1;
-  rowsPerPage = 10;
+  rowsPerPage = 100;
   currentPageInput = 1;
-  pageSizes = [5,10, 20, 50];
+  pageSizes = [20, 50];
 
   constructor(
     private fileService: FileService,
@@ -85,6 +106,45 @@ export class Invoices {
     });
   }
 
+  //TODO: filter state
+  filterImports(status: string): void {
+    if (this.selectedCompanyId) {
+      this.filteredInvoiceImports = this.imports.filter(
+        (importItem: ImportItem) =>
+          importItem.invoice_status === status &&
+          importItem.company_id === this.selectedCompanyId
+      );
+    } else {
+      this.filteredInvoiceImports = this.imports.filter(
+        (importItem: ImportItem) => importItem.invoice_status === status
+      );
+    }
+    this.activeTab = status;
+  }
+
+  //TODO: filter state
+  allImports(): void {
+    if (this.selectedCompanyId) {
+      this.filteredInvoiceImports = this.imports.filter(
+        (importItem: ImportItem) => importItem.company_id === this.selectedCompanyId
+      );
+    } else {
+      this.filteredInvoiceImports = this.imports;
+    }
+    this.activeTab = 'all';
+  }
+
+  getInvoiceStatus(status: string): string {
+    switch (status) {
+      case 'UNPROCESSED' :
+        return 'Nespracovaná';
+      case 'PROCESSED':
+        return 'Spracovaná';
+      default:
+        return 'Neznama'
+    }
+  }
+
   onRowCheckboxChange(importItem: any): void {
     console.log(`Checkbox changed for import:`, importItem.id);
   }
@@ -92,19 +152,18 @@ export class Invoices {
   onFetchAllImports(): void {
     this.axiosService.request(
       "GET",
-      `/api/v1/import/user`,
+      "/api/v1/import/user",
       null
     ).then(
       (imports) => {
         this.imports = imports.data;
-        this.dataSource = imports.data;
-        this.filteredInvoiceImports = [...this.dataSource];
+        this.filteredInvoiceImports = [...this.imports];
         setTimeout(() => {
           this.isLoading = false;
         }, 3000);
       }
     ).catch((error) => {
-      console.error('Error fetching imports:', error);
+      console.error("Error fetching imports:", error);
       this.isLoading = false;
     });
   }
@@ -188,7 +247,6 @@ export class Invoices {
       imports => {
         this.imports = imports;
         this.isLoading = false;
-        this.dataSource = imports;
         console.table(imports);
       },
       error => {

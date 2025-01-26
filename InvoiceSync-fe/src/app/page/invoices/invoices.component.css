@@ -18,9 +18,53 @@
 }
 
 .table-actions {
-  padding: 0.7rem 2rem;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+
+.left-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.right-actions {
+  display: flex;
+  align-items: center;
+}
+
+.invoices-import-function {
+  margin-left: auto;
+}
+
+.table-actions p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.function-text {
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+.tab-text:hover {
+  color: #007bff;
+}
+
+.active .tab-text {
+  color: #0070de;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 10px 0;
+}
+
 
 .import-button {
   background-color: #0000;
@@ -120,13 +164,146 @@
 }
 
 
+.invoices-page-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.invoices-page-title p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.invoices-import-function {
+  cursor: pointer;
+}
+
+.invoices-import-function span {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #007bff;
+}
+
+.invoices-import-function mat-icon {
+  font-weight: 400;
+  margin-right: 4px;
+  color: #007bff;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  border-radius: 0.30rem;
+  border: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 0.2rem 0.5rem;
+  width: 29rem;
+  background-color: white;
+}
+
+.invoices-counter {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.30rem;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.invoices-chart {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.30rem;
+  background-color: #fff;
+}
+
+.invoices-dashboard {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+  padding-bottom: 2rem;
+}
+
+.item {
+  text-align: left;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.title {
+  font-weight: 600;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.value {
+  color: #111827;
+  margin: 0.2rem 0 0 0;
+  font-size: 1.2rem;
+  font-family: "Inter", sans-serif;
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  border: 1px solid #d8d8f0;
+  height: 2rem;
+  font-size: 0.75rem;
+  padding-left: 0.5rem;
+  font-weight: 500;
+}
+
+.status {
+  text-align: left;
+  border-radius: 0.30rem;
+  font-size: 12px;
+  padding: 5px 10px;
+  display: inline-block;
+  width: auto;
+}
+
+.status-unprocessed {
+  background-color: #fdedee;
+  color: #ea2f2f;
+}
+
+.status-processed {
+  background-color: #f0faf9;
+  color: #24b9a1;
+}
+
+.invoice-date {
+  border-bottom: 1px solid #d8d8f0;
+  padding-bottom: 5px;
+}
+
+.invoice-due {
+  margin-top: 5px;
+}
+
+.test {
+  padding-top: .875rem;
+  padding-bottom: .875rem;
+  padding-right:8rem;
+}
+
+.issue-due {
+  padding-right:10rem
+}
 
 
 
 
 /* General Styles */
 .body {
-  padding: 2.5rem 2.5rem .75rem;
+  padding: 2rem 2.5rem .75rem;
 }
 
 .flex-container {
@@ -164,19 +341,18 @@
 .table {
   display: flex;
   flex-direction: column;
-  border-radius: 0.5rem;
-  border: 1px solid #d8d8f0;
+  border-radius: 0.3rem;
   background-color: #fff;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .table-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5em 1em;
-  border-bottom: 1px solid #d8d8f0;
+  padding: 1.5em 0 1.5em 2.2em;
 }
 
 .table-title {
@@ -225,37 +401,41 @@ tbody {
   width: 100%;
 }
 
+.data-table .header-item {
+  background-color: white;
+  color: #97a3b1;
+}
+
 .data-table .header-item,
 .data-table .cell {
   border-left: 1px solid #d8d8f0;
-  border-right: 1px solid #d8d8f0;
   border-bottom: 1px solid #d8d8f0;
-  padding: 0.5em;
   background: white;
 }
 
-
 .data-table .header-item {
-  padding: 0.9em;
   font-size: 12px;
   text-transform: uppercase;
-  background: #f7f7fc;
+  background: #ffffff;
+  border-left: none;
 }
 
 .data-table .header-item:first-child,
 .data-table .cell:first-child {
   border-left: none;
+  border-right: none;
 }
 
 .data-table .header-item:last-child,
-.data-table .cell:last-child{
+.data-table .cell:last-child {
   border-right: none;
 }
 
 .data-table .cell {
-  padding: 0.9em;
+  border-left: none;
+  border-bottom: 1px dashed #d8d8f0; /* Dashed line for rows */
+  background: white;
 }
-
 
 .data-table tr:last-child .cell {
   border-bottom: none;
