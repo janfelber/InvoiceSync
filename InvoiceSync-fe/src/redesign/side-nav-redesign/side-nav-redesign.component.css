@@ -1,0 +1,101 @@
+
+
+@import url("https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+.sidenav {
+  background: #f3f7f9;
+  transition: all 0.5s ease;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 13rem !important;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.SideMenuHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-top: 6px;
+  padding-bottom: 4px;
+}
+
+.SideMenuHeader-icon {
+  background: white;
+  text-align: center;
+  border-radius: 0.313rem;
+  font-size: 24px;
+  font-weight: 900;
+  cursor: pointer;
+  border: none;
+}
+
+.SideMenuHeader-name {
+  margin-left: 0.5rem;
+  font-weight: bold;
+  font-family: "Inter", sans-serif;
+}
+
+.sidenav-nav {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sidenav-nav-link {
+  display: flex;
+  align-items: center;
+  color: #aaa8bd;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  padding: 6px 10px;
+  margin-bottom: 0.5em;
+
+  &:hover {
+    color: #333638;
+    background-color: #B2E0D9;
+
+    .sidenav-link-icon {
+      color: #0067dd;
+    }
+
+    .sidenav-link-text {
+      color: #0067dd;
+    }
+  }
+
+  &.active {
+    color: #0067dd;
+
+    .sidenav-link-icon {
+      color: #0067dd;
+    }
+
+    .sidenav-link-text {
+      color: #0067dd;
+    }
+  }
+}
+
+.sidenav-link-icon {
+  min-width: 1.4rem;
+  text-align: center;
+  margin-right: 0.5em;
+  font-size: 1.3em;
+  color: #aaa8bd;
+}
+
+.sidenav-link-text {
+  font-weight: 550;
+  font-family: "Inter", sans-serif;
+  text-align:  left;
+  color:       #aaa8bd;
+}

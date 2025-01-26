@@ -1,120 +1,221 @@
 <!--TODO - refactor to be component based-->
 <!--<app-header-company></app-header-company>-->
 
-<div class="header-company">
-  <div class="company-dropdown">
-    <div class="dropdown" style="position: relative; display: inline-block;">
-      <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-        {{ selectedCompanyName }}
-        <i class="fas fa-chevron-down"
-           style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #667085;"></i>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length > 0">
-        <button class="dropdown-item" type="button" *ngFor="let data of companies"
-                (click)="onSelectCompany(data)"> {{ data.name }}
-        </button>
-        <button class="dropdown-item" type="button" (click)="openDialog()">
-          <i class="fal fa-plus"></i>
-          <span> Pridať spolocnost</span>
-        </button>
-      </div>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length === 0">
-        <button class="dropdown-item" type="button" (click)="openDialog()">
-          <i class="fal fa-plus"></i>
-          <span> Pridať spolocnost</span>
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="action-button">
-    <button type="button" class="btn filter-button btn-sm">
-      <img class="icon" src="assets/icons/invoice_icon.svg" alt="test">
-      <span>Faktury</span>
-    </button>
-  </div>
-</div>
+<!--<div class="header-company">-->
+<!--  <div class="company-dropdown">-->
+<!--    <div class="dropdown" style="position: relative; display: inline-block;">-->
+<!--      <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"-->
+<!--              aria-haspopup="true" aria-expanded="false">-->
+<!--        {{ selectedCompanyName }}-->
+<!--        <i class="fas fa-chevron-down"-->
+<!--           style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #667085;"></i>-->
+<!--      </button>-->
+<!--      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length > 0">-->
+<!--        <button class="dropdown-item" type="button" *ngFor="let data of companies"-->
+<!--                (click)="onSelectCompany(data)"> {{ data.name }}-->
+<!--        </button>-->
+<!--        <button class="dropdown-item" type="button" (click)="openDialog()">-->
+<!--          <i class="fal fa-plus"></i>-->
+<!--          <span> Pridať spolocnost</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length === 0">-->
+<!--        <button class="dropdown-item" type="button" (click)="openDialog()">-->
+<!--          <i class="fal fa-plus"></i>-->
+<!--          <span> Pridať spolocnost</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="action-button">-->
+<!--    <button type="button" class="btn filter-button btn-sm">-->
+<!--      <img class="icon" src="assets/icons/invoice_icon.svg" alt="test">-->
+<!--      <span>Faktury</span>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 
 
 <div class="body">
   <div class="home-page-container">
-    <div class="col">
-      <div class="table">
-        <div class="table-head">
-          <div class="table-title">
-            <h5>Faktury</h5>
-            <span class="users-count">zobrazenych {{ recordRange }} z {{ filteredInvoiceImports.length }}</span>
-          </div>
-          <div class="pagination-container">
-            <div class="page-number">
-              <label for="page-size" style="font-size: 13px;">
-                Page {{ currentPage }} / {{ totalPages }}
-              </label>
-              <i>
-              <span class="fas fa-caret-left"
-                    [class.disabled]="currentPage === 1"
-                    (click)="goToPage(1)">
-              </span>
-              </i>
-              <input
-                type="number"
-                [(ngModel)]="currentPageInput"
-                (keyup.enter)="jumpToPage()"
-                [min]="1"
-                [max]="totalPages"
-                class="pagination-input"
-                style="width: 5rem; height: 2rem; font-size: 0.75rem; font-weight: 500; text-align: center"/>
-              <i class="fas fa-caret-right"
-                 [class.disabled]="currentPage === totalPages"
-                 (click)="goToPage(currentPage + 1)">
-              </i>
-            </div>
-            <div class="page-size">
-              <label for="page-size" class="page-size-label">Page Size</label>
-              <div class="custom-select-wrapper">
-                <select
-                  id="page-size"
-                  [(ngModel)]="rowsPerPage"
-                  (change)="goToPage(1)"
-                  class="custom-select">
-                  <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-                </select>
-                <span class="select-icon">
-              <i class="fas fa-chevron-down"></i>
-            </span>
-              </div>
-            </div>
-          </div>
+    <div class="invoices-page-title" *ngIf="hasInvoicesDashboardFeature">
+      <p>Faktúry</p>
+    </div>
+    <div class="invoices-dashboard" *ngIf="hasInvoicesDashboardFeature">
+      <div class="col-2 invoices-counter">
+        <div class="item">
+          <p class="title">CURRENT</p>
+          <p class="value">$10,123.10</p>
         </div>
-        <div class="table-actions">
-          <button class="import-button"
-                  matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"
-                  [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'" style="display: inline-block;"
-                  (click)="onFileSelected()"
-                  [disabled]="selectedCompanyName === 'Vyber spoločnosť'">
-            <i class="fal fa-plus"></i>
-            <span>Import</span>
-          </button>
+        <div class="divider"></div>
+        <div class="item">
+          <p class="title">1-30 DAYS PAST DUE</p>
+          <p class="value">$7,777.10</p>
         </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-            <tr>
-              <th class="header-item" style="width: 5.452637%; text-align: center;">
-                <mat-checkbox class="rounded-checkbox" (change)="toggleSelectAll($event)"></mat-checkbox>
-              </th>
-              <th class="header-item" *ngFor="let header of headers">{{ header }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngIf="isLoading" style="text-align: center; vertical-align: middle;">
-              <td class="cell" colspan="6" style="text-align: center; vertical-align: middle;">
-                <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                  <mat-spinner diameter="30" color="accent"></mat-spinner>
+        <div class="divider"></div>
+        <div class="item">
+          <p class="title">31-60 DAYS PAST DUE</p>
+          <p class="value">$8,123.10</p>
+        </div>
+        <div class="divider"></div>
+        <div class="item">
+          <p class="title">61-90 DAYS PAST DUE</p>
+          <p class="value">$100,777.10</p>
+        </div>
+        <div class="divider"></div>
+        <div class="item">
+          <p class="title">90+ DAYS PAST DUE</p>
+          <p class="value">$123.10</p>
+        </div>
+      </div>
+      <div class="col invoices-chart">
+        <div class="invoices-chart-container">
+          <canvas id="invoices-chart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="table-actions">
+      <div class="left-buttons" >
+        <!-- TODO: probably needs saving filter state -->
+        <p class="unprocessed function-text" *ngIf="demo" [class.active]="activeTab === 'UNPROCESSED'" >
+          <span class="tab-text" (click)="filterImports('UNPROCESSED')">Nespracované faktúry</span>
+        </p>
+        <p class="processed function-text" *ngIf="demo" [class.active]="activeTab === 'PROCESSED'">
+          <span class="tab-text" (click)="filterImports('PROCESSED')">Spracované faktúry</span>
+        </p>
+        <p class="all function-text" *ngIf="demo"[class.active]="activeTab === 'all'">
+          <span class="tab-text" (click)="allImports()">Všetky faktúry</span>
+        </p>
+      </div>
+      <!-- TODO: end of filter state -->
+      <div class="right-actions">
+        <p class="invoices-import-function filter">
+              <div class="dropdown" style="position: relative; display: inline-block; padding: 10px">
+                <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                  {{ selectedCompanyName }}
+                  <i class="fas fa-chevron-down"
+                     style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #667085;"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length > 0">
+                  <button class="dropdown-item" type="button" *ngFor="let data of companies"
+                          (click)="onSelectCompany(data)"> {{ data.name }}
+                  </button>
+                  <button class="dropdown-item" type="button" (click)="openDialog()">
+                    <i class="fal fa-plus"></i>
+                    <span> Pridať spolocnost</span>
+                  </button>
                 </div>
-              </td>
-            </tr>
-            <ng-container *ngIf="!isLoading">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length === 0">
+                  <button class="dropdown-item" type="button" (click)="openDialog()">
+                    <i class="fal fa-plus"></i>
+                    <span> Pridať spolocnost</span>
+                  </button>
+                </div>
+              </div>
+        <p
+          class="invoices-import-function"
+          (click)="selectedCompanyName !== 'Vyber spoločnosť' && onFileSelected()"
+          [class.disabled]="selectedCompanyName === 'Vyber spoločnosť'">
+          <mat-icon>add</mat-icon>
+          <span
+            matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"
+            [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'"
+            style="display: inline-block;"
+            class="import-text">
+            Importuj nový súbor
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="table">
+      <div class="table-head">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search..."
+          style="width: 12rem; height: 2rem; font-size: 0.75rem; font-weight: 500;"/>
+        <!--          <div class="table-title">-->
+        <!--            <h5>Faktury</h5>-->
+        <!--            <span class="users-count">zobrazenych {{ recordRange }} z {{ filteredInvoiceImports.length }}</span>-->
+        <!--          </div>-->
+        <!--          <div class="pagination-container">-->
+        <!--            <div class="page-number">-->
+        <!--              <label for="page-size" style="font-size: 13px;">-->
+        <!--                Page {{ currentPage }} / {{ totalPages }}-->
+        <!--              </label>-->
+        <!--              <i>-->
+        <!--              <span class="fas fa-caret-left"-->
+        <!--                    [class.disabled]="currentPage === 1"-->
+        <!--                    (click)="goToPage(1)">-->
+        <!--              </span>-->
+        <!--              </i>-->
+        <!--              <input-->
+        <!--                type="number"-->
+        <!--                [(ngModel)]="currentPageInput"-->
+        <!--                (keyup.enter)="jumpToPage()"-->
+        <!--                [min]="1"-->
+        <!--                [max]="totalPages"-->
+        <!--                class="pagination-input"-->
+        <!--                style="width: 5rem; height: 2rem; font-size: 0.75rem; font-weight: 500; text-align: center"/>-->
+        <!--              <i class="fas fa-caret-right"-->
+        <!--                 [class.disabled]="currentPage === totalPages"-->
+        <!--                 (click)="goToPage(currentPage + 1)">-->
+        <!--              </i>-->
+        <!--            </div>-->
+        <!--            <div class="page-size">-->
+        <!--              <label for="page-size" class="page-size-label">Page Size</label>-->
+        <!--              <div class="custom-select-wrapper">-->
+        <!--                <select-->
+        <!--                  id="page-size"-->
+        <!--                  [(ngModel)]="rowsPerPage"-->
+        <!--                  (change)="goToPage(1)"-->
+        <!--                  class="custom-select">-->
+        <!--                  <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>-->
+        <!--                </select>-->
+        <!--                <span class="select-icon">-->
+        <!--              <i class="fas fa-chevron-down"></i>-->
+        <!--            </span>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+      </div>
+      <!--        <div class="table-actions">-->
+      <!--          <button class="import-button"-->
+      <!--                  matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"-->
+      <!--                  [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'" style="display: inline-block;"-->
+      <!--                  (click)="onFileSelected()"-->
+      <!--                  [disabled]="selectedCompanyName === 'Vyber spoločnosť'">-->
+      <!--            <i class="fal fa-plus"></i>-->
+      <!--            <span>Import</span>-->
+      <!--          </button>-->
+      <!--        </div>-->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th class="header-item" style="width: 2%; text-align: center;">
+              <mat-checkbox class="rounded-checkbox" (change)="toggleSelectAll($event)"></mat-checkbox>
+            </th>
+            <th
+              class="header-item"
+              *ngFor="let header of headers1"
+              [style.width]="header.width">
+              {{ header.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngIf="isLoading" style="text-align: center; vertical-align: middle;">
+            <td class="cell" colspan="6" style="text-align: center; vertical-align: middle;">
+              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                <mat-spinner diameter="30" color="accent"></mat-spinner>
+              </div>
+            </td>
+          </tr>
+          <ng-container *ngIf="!isLoading">
             <tr *ngFor="let import of paginatedImports; let last = last">
               <td class="cell" style="text-align: center;" [ngClass]="{'last-row': last}">
                 <mat-checkbox
@@ -122,21 +223,33 @@
                   (change)="onRowCheckboxChange(import)">
                 </mat-checkbox>
               </td>
-              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+              <td class="cell" [ngClass]="{'last-row': last}">
+                <div class="status" [ngClass]="{
+                    'status-unprocessed': import.invoice_status === 'UNPROCESSED',
+                    'status-processed': import.invoice_status === 'PROCESSED'
+                  }">
+                  {{ getInvoiceStatus(import.invoice_status) }}
+                </div>
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}">
+                {{ import.invoice_company_name }}
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}">
                 <a [routerLink]="['/invoices', import.id]" class="text-link">
                   {{ import.invoice_number }}
                 </a>
               </td>
-              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+              <td class="cell" [ngClass]="{'last-row': last}">
                 {{ import.invoice_variable_symbol }}
               </td>
-              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+              <td class="cell" [ngClass]="{'last-row': last}">
                 {{ import.invoice_import_date | date:'dd.MM.yyyy' }}
               </td>
-              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
-                {{ import.invoice_issue_date }}
+              <td class="cell test" [ngClass]="{'last-row': last}">
+                <div class="invoice-date">{{ import.invoice_issue_date }}</div>
+                <div class="invoice-due">{{ import.invoice_due_date }}</div>
               </td>
-              <td class="cell" style="width: 5.452637%;" [ngClass]="{'last-row': last}">
+              <td class="cell" [ngClass]="{'last-row': last}">
                 {{ import.invoice_total_amount }}
               </td>
             </tr>
@@ -150,4 +263,3 @@
       </div>
     </div>
   </div>
-</div>
