@@ -75,7 +75,7 @@ export class Invoices {
     { name: 'Var. Symbol', width: '3%' },
     { name: 'Importovane', width: '3%' },
     { name: 'Dat. Vystavenia /Splat.', width: '4%' },
-    { name: 'Suma total', width: '3%'}
+    // { name: 'Suma total', width: '3%'}
 
   ];
   filteredInvoiceImports: any[] = [];
@@ -158,6 +158,7 @@ export class Invoices {
       (imports) => {
         this.imports = imports.data;
         this.filteredInvoiceImports = [...this.imports];
+        console.log(imports.data);
         setTimeout(() => {
           this.isLoading = false;
         }, 3000);
