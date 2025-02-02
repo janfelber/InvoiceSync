@@ -5,6 +5,9 @@ import {AxiosService} from "../axios.service";
 import {ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import {InvoiceService} from "../page/invoices/invoice.service";
+import {AuthenticationService} from "../services/authentication.service";
+import {InvoiceRequest} from "../models/invoice-request";
 
 @Component({
   selector: 'app-invoice-inspect',
@@ -15,21 +18,83 @@ import {CommonModule} from "@angular/common";
 })
 export class InvoiceInspect implements OnInit {
 
-  constructor(private axiosService: AxiosService, private route: ActivatedRoute) {
+  constructor(
+    private axiosService: AxiosService,
+    private route: ActivatedRoute,
+    private invoiceService: InvoiceService
+  ) {
   }
 
   importId: string = '';
+  companyId: any = null;
   invoice: any = {};
+  partner: any = {};
+  myIdentity: any = {};
 
   showAddress: boolean = true;
   showCompanyData: boolean = true;
   showInformationSupplier: boolean = true;
+  invoiceRequest: InvoiceRequest = {};
+
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.importId = params.get('id') || '';
     });
+    this.route.queryParams.subscribe(params => {
+      this.companyId = params['companyId'];
+      console.log("Company ID:", this.companyId);
+    });
     this.onFetchInvoice();
+    this.infoCompany();
+  }
+
+  exportIssued() {
+
+    this.invoiceRequest = {
+      invoiceDetails: {
+        invoiceType: 'issuedInvoice',
+        invoiceNumber: this.invoice.invoiceNumber,
+        variableSymbol: this.invoice.variableSymbol,
+        pairingSymbol: this.invoice.variableSymbol,
+        dateInvoice: this.invoice.issueDate,
+        dateTax: this.invoice.issueDate,
+        dateDue: this.invoice.dueDate,
+        dateAccounting: this.invoice.issueDate
+      },
+      partner: this.partner,
+      items: this.invoice.items || [],
+      myIdentity: this.myIdentity
+    };
+
+    console.log(this.invoiceRequest);
+
+    this.invoiceService.exportPohodaInvoice(this.invoiceRequest).subscribe({
+      next: (response) => {
+        const blob = new Blob([response], {type: 'application/xml'});
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'invoice.xml';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error('Chyba pri exportovaní faktúry', error);
+      }
+    });
+  }
+
+  infoCompany() {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/company/info/${this.companyId}`,
+      null
+    ).then(response => {
+      this.myIdentity = response.data;
+    })
   }
 
   onFetchInvoice(): void {
@@ -40,19 +105,16 @@ export class InvoiceInspect implements OnInit {
     ).then(response => {
         const data = response.data;
         this.invoice = {
-          companyName: data.invoice_company_name,
-          companyCity: data.invoice_company_city,
-          companyStreet: data.invoice_company_address,
-          companyZip: data.invoice_company_zip,
-          companyVat: data.invoice_company_vat_number,
-          companyIban: data.invoice_company_iban,
-          companyRegistration: data.invoice_company_registration_number,
-          companyTax: data.invoice_tax_number,
-          issueDate: data.invoice_issue_date,
-          deliveryDate: data.invoice_delivery_date,
-          dueDate: data.invoice_due_date,
-          variableSymbol: data.invoice_variable_symbol
+          partnerName: data.partner.name,
+          partnerCity: data.partner.city,
+          partnerStreet: data.partner.street,
+          partnerZip: data.partner.zip,
+          partnerVatId: data.partner.vatId,
+          issueDate: data.invoiceDetails.issueDate,
+          dueDate: data.invoiceDetails.dueDate,
+          variableSymbol: data.invoiceDetails.variableSymbol
         }
+        this.partner = data.partner
       }
     )
   }

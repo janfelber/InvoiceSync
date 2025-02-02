@@ -17,6 +17,7 @@
           </div>
         </div>
       </div>
+      <button (click)="exportIssued()"> Exportuj</button>
     </div>
     <div class="col-custom warning-and-details">
       <div class="warning-container">
@@ -33,7 +34,7 @@
           <div class="form-group">
             <label>Meno</label>
             <div class="form-input">
-              <input [(ngModel)]="invoice.companyName">
+              <input [(ngModel)]="invoice.partnerName">
             </div>
           </div>
           <div class="section-title" [ngClass]="{'no-border': !showAddress}" >
@@ -46,19 +47,19 @@
           <div class="form-group">
             <label>Mesto</label>
             <div class="form-input">
-              <input [(ngModel)]="invoice.companyCity">
+              <input [(ngModel)]="invoice.partnerCity">
             </div>
           </div>
           <div class="form-group">
             <label>Ulica</label>
             <div class="form-input">
-              <input [(ngModel)]="invoice.companyStreet">
+              <input [(ngModel)]="invoice.partnerStreet">
             </div>
           </div>
           <div class="form-group">
             <label>PSČ</label>
             <div class="form-input">
-              <input [(ngModel)]="invoice.companyZip">
+              <input [(ngModel)]="invoice.partnerZip">
             </div>
           </div>
           </div>
@@ -72,27 +73,27 @@
           <div class="form-group">
             <label>IČ DPH</label>
             <div class="form-input">
-              <input [(ngModel)]="invoice.companyVat">
+              <input [(ngModel)]="invoice.partnerVatId">
             </div>
           </div>
-          <div class="form-group">
-            <label>IBAN</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.companyIban">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>IČO</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.companyRegistration">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>DIČ</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.companyTax">
-            </div>
-          </div>
+<!--          <div class="form-group">-->
+<!--            <label>IBAN</label>-->
+<!--            <div class="form-input">-->
+<!--              <input [(ngModel)]="invoice.companyIban">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <label>IČO</label>-->
+<!--            <div class="form-input">-->
+<!--              <input [(ngModel)]="invoice.companyRegistration">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="form-group">-->
+<!--            <label>DIČ</label>-->
+<!--            <div class="form-input">-->
+<!--              <input [(ngModel)]="invoice.companyTax">-->
+<!--            </div>-->
+<!--          </div>-->
           </div>
         </div>
       </div>
@@ -106,12 +107,6 @@
               <label>Datum vystavenia</label>
               <div class="form-input">
                 <input [(ngModel)]="invoice.issueDate">
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Datum dodania</label>
-              <div class="form-input">
-                <input [(ngModel)]="invoice.deliveryDate">
               </div>
             </div>
             <div class="form-group">

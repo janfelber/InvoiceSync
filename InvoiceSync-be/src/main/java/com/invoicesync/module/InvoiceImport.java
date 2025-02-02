@@ -34,35 +34,29 @@
 
     private String invoice_number;
 
-    private Date invoice_import_date;
+    private Date import_date;
 
-    private String invoice_issue_date;
+    private String issue_date;
 
-    private String invoice_delivery_date;
+    private String tax_date;
 
-    private String invoice_due_date;
+    private String accounting_date;
 
-    private String invoice_variable_symbol;
+    private String due_date;
 
-    private String invoice_total_amount;
+    private String variable_symbol;
 
-    private String invoice_company_name;
+    private String partner_name;
 
-    private String invoice_company_city;
+    private String partner_city;
 
-    private String invoice_company_address;
+    private String partner_street;
 
-    private String invoice_company_zip;
+    private String partner_zip;
 
-    private String invoice_company_vat_number;
+    private String partner_vat_id;
 
-    private String invoice_company_iban;
-
-    private String invoice_company_registration_number;
-
-    private String invoice_tax_number;
-
-    private String invoice_status;
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "\"company\"")
