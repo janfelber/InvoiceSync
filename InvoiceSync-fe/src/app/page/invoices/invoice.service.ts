@@ -50,7 +50,7 @@ export class InvoiceService {
       'Authorization': `Bearer ${localStorage.getItem("token")}`
     });
 
-    return this.http.post(`http://localhost:8080/api/v1/pohoda/export/issued`, invoiceRequest, {
+    return this.http.post(`http://localhost:8080/api/v1/pohoda/export/received`, invoiceRequest, {
       headers: headers,
       responseType: 'blob'
     });

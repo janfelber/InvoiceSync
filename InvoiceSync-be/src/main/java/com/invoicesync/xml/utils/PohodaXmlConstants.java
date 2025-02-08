@@ -61,4 +61,6 @@ public final class PohodaXmlConstants {
 
   public static final String PRICE_SUM = "typ:priceSum";
 
+  public static final String ACCOUNT_VALUE = "typ:ids";
+
 }

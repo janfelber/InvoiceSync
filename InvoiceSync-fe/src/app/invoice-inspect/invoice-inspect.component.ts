@@ -1,18 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {InvoiceDisplay} from '../invoice-inspect-display/invoice-inspect-display.component';
-import {InvoiceInspectOcrWarning} from '../invoice-inspect-ocr-warning/invoice-inspect-ocr-warning.component';
 import {AxiosService} from "../axios.service";
 import {ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {InvoiceService} from "../page/invoices/invoice.service";
-import {AuthenticationService} from "../services/authentication.service";
 import {InvoiceRequest} from "../models/invoice-request";
 
 @Component({
   selector: 'app-invoice-inspect',
   standalone: true,
-  imports: [InvoiceDisplay, InvoiceInspectOcrWarning, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './invoice-inspect.component.html',
   styleUrl: './invoice-inspect.component.css'
 })
@@ -30,10 +27,8 @@ export class InvoiceInspect implements OnInit {
   invoice: any = {};
   partner: any = {};
   myIdentity: any = {};
+  items: any = [];
 
-  showAddress: boolean = true;
-  showCompanyData: boolean = true;
-  showInformationSupplier: boolean = true;
   invoiceRequest: InvoiceRequest = {};
 
 
@@ -41,19 +36,15 @@ export class InvoiceInspect implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.importId = params.get('id') || '';
     });
-    this.route.queryParams.subscribe(params => {
-      this.companyId = params['companyId'];
-      console.log("Company ID:", this.companyId);
-    });
     this.onFetchInvoice();
-    this.infoCompany();
   }
 
-  exportIssued() {
+  async exportIssued() {
+    await this.infoCompany();
 
     this.invoiceRequest = {
       invoiceDetails: {
-        invoiceType: 'issuedInvoice',
+        invoiceType: 'receivedInvoice',
         invoiceNumber: this.invoice.invoiceNumber,
         variableSymbol: this.invoice.variableSymbol,
         pairingSymbol: this.invoice.variableSymbol,
@@ -62,12 +53,18 @@ export class InvoiceInspect implements OnInit {
         dateDue: this.invoice.dueDate,
         dateAccounting: this.invoice.issueDate
       },
-      partner: this.partner,
-      items: this.invoice.items || [],
+      partner: {
+        name: this.partner.name,
+        city: this.partner.city,
+        street: this.partner.street,
+        zip: this.partner.zip,
+        registrationNumber: this.partner.registrationNumber,
+        taxId: this.partner.taxId,
+        vatId: this.partner.vatId
+      },
+      items: this.items,
       myIdentity: this.myIdentity
     };
-
-    console.log(this.invoiceRequest);
 
     this.invoiceService.exportPohodaInvoice(this.invoiceRequest).subscribe({
       next: (response) => {
@@ -87,14 +84,25 @@ export class InvoiceInspect implements OnInit {
     });
   }
 
-  infoCompany() {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/company/info/${this.companyId}`,
-      null
-    ).then(response => {
+  async infoCompany() {
+    try {
+      const response = await this.axiosService.request(
+        "GET",
+        `/api/v1/company/info/${this.companyId}`,
+        null
+      );
       this.myIdentity = response.data;
-    })
+    } catch (error) {
+      console.error('Error fetching company info', error);
+    }
+  }
+
+  getTotalPrice(): number {
+    return this.items.reduce((total: number, item: any) => total + (item.price + item.priceVAT), 0);
+  }
+
+  getTotalSumWithoutVat(): number {
+    return this.items.reduce((total: number, item: any) => total + item.price, 0);
   }
 
   onFetchInvoice(): void {
@@ -104,17 +112,14 @@ export class InvoiceInspect implements OnInit {
       null
     ).then(response => {
         const data = response.data;
+        this.companyId = data.company;
         this.invoice = {
-          partnerName: data.partner.name,
-          partnerCity: data.partner.city,
-          partnerStreet: data.partner.street,
-          partnerZip: data.partner.zip,
-          partnerVatId: data.partner.vatId,
           issueDate: data.invoiceDetails.issueDate,
+          deliveryDate: data.invoiceDetails.taxDate,
           dueDate: data.invoiceDetails.dueDate,
-          variableSymbol: data.invoiceDetails.variableSymbol
+          variableSymbol: data.invoiceDetails.variableSymbol,
         }
-        this.partner = data.partner
+        this.partner = data.partner;
       }
     )
   }

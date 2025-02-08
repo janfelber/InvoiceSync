@@ -18,4 +18,6 @@ public class PohodaXmlParentTagNames {
 
   public static final String HOME_CURRENCY = "inv:homeCurrency";
 
+  public static final String ACCOUNTING = "inv:accounting";
+
 }

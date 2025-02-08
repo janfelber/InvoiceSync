@@ -1,5 +1,7 @@
 package com.invoicesync.controller;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,11 @@ public class PohodaController {
 
   private final InvoiceXmlService invoiceXmlService;
 
-  @PostMapping("/export/issued")
+  @PostMapping("/export/received")
   public ResponseEntity<byte[]> createInvoice(@RequestBody final InvoiceRequestDTO invoiceRequestDTO) {
     try {
       final byte[] xmlData = invoiceXmlService.generatePohodaInvoiceXml(invoiceRequestDTO);
+      System.out.println("XML data: " + new String(xmlData, StandardCharsets.UTF_8));
 
       final HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");

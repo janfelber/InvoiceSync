@@ -45,6 +45,7 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
                 invoiceImport.getDue_date()
             ),
             new PartnerDTO(
@@ -52,6 +53,8 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getPartner_city(),
                 invoiceImport.getPartner_street(),
                 invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
                 invoiceImport.getPartner_vat_id()
             ),
             invoiceImport.getStatus(),
@@ -90,9 +93,12 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     final String supplierPostalCode = ocrService.extractSupplierPostalCode(supplierSection);
     final String supplierCity = ocrService.extractSupplierCity(supplierSection);
     invoiceImport.setPartner_vat_id(vatId);
+    invoiceImport.setPartner_tax_id(dic);
+    invoiceImport.setPartner_registration_number(ico);
     invoiceImport.setImport_date(new java.util.Date());
     invoiceImport.setIssue_date(issueDateStr);
     invoiceImport.setDue_date(dueDateStr);
+    invoiceImport.setTax_date(deliveryDateStr);
     invoiceImport.setVariable_symbol(variableSymbol);
     invoiceImport.setPartner_name(supplierName);
     invoiceImport.setPartner_zip(supplierPostalCode);
@@ -116,6 +122,7 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
                 invoiceImport.getDue_date()
             ),
             new PartnerDTO(
@@ -123,6 +130,8 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getPartner_city(),
                 invoiceImport.getPartner_street(),
                 invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
                 invoiceImport.getPartner_vat_id()
             ),
             invoiceImport.getStatus(),
@@ -144,6 +153,7 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getVariable_symbol(),
                 invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
                 invoiceImport.getDue_date()
             ),
             new PartnerDTO(
@@ -151,6 +161,8 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
                 invoiceImport.getPartner_city(),
                 invoiceImport.getPartner_street(),
                 invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
                 invoiceImport.getPartner_vat_id()
             ),
             invoiceImport.getStatus(),

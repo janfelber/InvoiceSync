@@ -39,6 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
             company.getStreet(),
             company.getStreetNumber(),
             company.getZip(),
+            company.getRegistrationNumber(),
             company.getTaxId(),
             company.getVatId()
         ))
@@ -55,6 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
             company.getStreet(),
             company.getStreetNumber(),
             company.getZip(),
+            company.getRegistrationNumber(),
             company.getTaxId(),
             company.getVatId()
         ))

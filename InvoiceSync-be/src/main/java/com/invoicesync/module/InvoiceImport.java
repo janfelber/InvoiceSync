@@ -56,6 +56,10 @@
 
     private String partner_vat_id;
 
+    private String partner_registration_number;
+
+    private String partner_tax_id;
+
     private String status;
 
     @ManyToOne
