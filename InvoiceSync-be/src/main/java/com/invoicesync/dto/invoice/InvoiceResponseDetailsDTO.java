@@ -19,6 +19,8 @@ public class InvoiceResponseDetailsDTO {
 
   private String issueDate;
 
+  private String taxDate;
+
   private String dueDate;
 
 }

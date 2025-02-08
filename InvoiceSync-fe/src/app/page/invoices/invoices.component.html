@@ -236,7 +236,6 @@
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
                 <a [routerLink]="['/invoices', import.id]"
-                   [queryParams]="{ companyId: import.company }"
                    class="text-link">
                   {{ import.invoiceDetails.invoiceNumber }}
                 </a>

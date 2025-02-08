@@ -29,6 +29,8 @@
 						<typ:city>PARTNER_CITY</typ:city>
 						<typ:street>PARTNER_STREET</typ:street>
 						<typ:zip>PARTNER_ZIP</typ:zip>
+						<typ:ico>PARTNER_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>PARTNER_TAX_ID</typ:dic>
 						<typ:icDph>PARTNER_VAT_ID</typ:icDph>
 					</typ:address>
 				</inv:partnerIdentity>

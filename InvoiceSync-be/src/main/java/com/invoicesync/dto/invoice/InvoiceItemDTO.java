@@ -23,4 +23,6 @@ public class InvoiceItemDTO {
 
   private BigDecimal priceSum;
 
+  private String accountValue;
+
 }

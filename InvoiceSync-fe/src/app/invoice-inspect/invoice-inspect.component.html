@@ -1,127 +1,157 @@
-<!--<div class="container">-->
-<!--    <app-invoice-inspect-display></app-invoice-inspect-display>-->
-<!--&lt;!&ndash;    <app-invoice-inspect-ocr-warning></app-invoice-inspect-ocr-warning>&ndash;&gt;-->
-<!--</div>-->
-
-
-<div class="body">
-  <div class="invoice-number">
-    <h1>Faktura #{{invoice.invoice_number}}</h1>
+<div class="invoice-page">
+  <div class="invoice-preview">
+    <h1>Faktúra #{{ invoice.invoice_number }}</h1>
+    <div class="invoice-image">
+      <img src="assets/invoice.png" alt="Náhľad faktúry">
+    </div>
+    <button class="export-btn" (click)="exportIssued()">Exportuj</button>
   </div>
-  <div class="cards-container">
-    <div class="col-5">
+
+  <div class="invoice-details">
+    <div class="info-section">
       <div class="card">
-        <div class="card-body">
-          <div class="invoice-source">
-            <img src="assets/invoice.png" alt="Invoice Image">
-          </div>
+        <h3>Informácie o dodávateľovi</h3>
+        <div class="form-group">
+          <label>Meno</label>
+          <input [(ngModel)]="partner.name">
         </div>
-      </div>
-      <button (click)="exportIssued()"> Exportuj</button>
-    </div>
-    <div class="col-custom warning-and-details">
-      <div class="warning-container">
-        <app-invoice-inspect-ocr-warning></app-invoice-inspect-ocr-warning>
+        <div class="form-group">
+          <label>Mesto</label>
+          <input [(ngModel)]="partner.city">
+        </div>
+        <div class="form-group">
+          <label>Ulica</label>
+          <input [(ngModel)]="partner.street">
+        </div>
+        <div class="form-group">
+          <label>PSČ</label>
+          <input [(ngModel)]="partner.zip">
+        </div>
+        <div class="form-group">
+          <label>IČO</label>
+          <input [(ngModel)]="partner.registrationNumber">
+        </div>
+        <div class="form-group">
+          <label>DIČ</label>
+          <input [(ngModel)]="partner.taxId">
+        </div>
+        <div class="form-group">
+          <label>IČ DPH</label>
+          <input [(ngModel)]="partner.vatId">
+        </div>
       </div>
       <div class="card">
-        <div class="title">
-          <h3 (click)="showInformationSupplier = !showInformationSupplier">Informácie - dodavatel
-          <span class="arrow" [class.rotated]="!showInformationSupplier">
-          </span></h3>
+        <h3>Fakturačné údaje</h3>
+        <div class="form-group">
+          <label>Dátum vystavenia</label>
+          <input [(ngModel)]="invoice.issueDate">
         </div>
-        <div *ngIf="showInformationSupplier">
-        <div>
-          <div class="form-group">
-            <label>Meno</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.partnerName">
-            </div>
-          </div>
-          <div class="section-title" [ngClass]="{'no-border': !showAddress}" >
-          <h4 (click)="showAddress = !showAddress">Sídlo
-            <span class="arrow">▼
-            </span>
-          </h4>
-          </div>
-          <div *ngIf="showAddress" class="content">
-          <div class="form-group">
-            <label>Mesto</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.partnerCity">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Ulica</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.partnerStreet">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>PSČ</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.partnerZip">
-            </div>
-          </div>
-          </div>
-          <div class="section-title" [ngClass]="{'no-border': !showCompanyData}">
-          <h4 (click)="showCompanyData = !showCompanyData">Údaje
-            <span class="arrow"> ▼
-            </span>
-          </h4>
-          </div>
-          <div  *ngIf="showCompanyData" class="content">
-          <div class="form-group">
-            <label>IČ DPH</label>
-            <div class="form-input">
-              <input [(ngModel)]="invoice.partnerVatId">
-            </div>
-          </div>
-<!--          <div class="form-group">-->
-<!--            <label>IBAN</label>-->
-<!--            <div class="form-input">-->
-<!--              <input [(ngModel)]="invoice.companyIban">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group">-->
-<!--            <label>IČO</label>-->
-<!--            <div class="form-input">-->
-<!--              <input [(ngModel)]="invoice.companyRegistration">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="form-group">-->
-<!--            <label>DIČ</label>-->
-<!--            <div class="form-input">-->
-<!--              <input [(ngModel)]="invoice.companyTax">-->
-<!--            </div>-->
-<!--          </div>-->
-          </div>
+        <div class="form-group">
+          <label>Dátum splatnosti</label>
+          <input [(ngModel)]="invoice.dueDate">
+        </div>
+        <div class="form-group">
+          <label>Dátum dodania</label>
+          <input [(ngModel)]="invoice.deliveryDate">
+        </div>
+        <div class="form-group">
+          <label>Variabilný symbol</label>
+          <input [(ngModel)]="invoice.variableSymbol">
         </div>
       </div>
       </div>
-      <br>
-        <div class="card">
-          <div class="title">
-            <h3>Informácie - faktura</h3>
+
+    <div class="list">
+    <div class="card-items">
+      <div class="items-header">
+        <div class="items-title">
+          <span class="title">Položky faktúry</span>
+        </div>
+      </div>
+      <div class="invoice-items">
+        <div *ngFor="let item of items" class="list-item">
+          <div class="item-content">
+            <div class="rg-qc">
+              <p><strong>{{ item.name }}</strong></p>
+              <div class="rg-qc rg-row" style="margin-bottom: .400rem ">
+                <div class="rg-section">
+                  <span class="rg-text">Cena</span>
+                </div>
+                <div class="rg-section">
+                  <span class="rg-text number-badge"
+                        [(ngModel)]="item.accountValue"
+                        [ngClass]="{ 'accounted': item.accountValue !== null, 'not-accounted': item.accountValue === null }">
+                    {{ item.accountValue !== null ? item.accountValue : 'Neúčtované' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="divider" style="border-top: 1px solid #d8d8f0"></div>
+            <div class="rg-qc">
+              <div class="rg-qc rg-row">
+                <div class="rg-section">
+                  <span class="rg-text">Cena</span>
+                </div>
+                <div class="rg-section">
+                  <span class="rg-text">{{ item.unitPrice + item.priceVAT }}</span>
+                </div>
+              </div>
+              <div class="rg-qc rg-row" style="margin-top: .625rem;">
+                <div class="rg-section">
+                  <span class="rg-text"></span>
+                </div>
+                <div class="rg-section">
+                  <span class="rg-text" style="color: #aaa8bd;">{{ item.price }}</span>
+                </div>
+              </div>
+            </div>
+
           </div>
-            <div class="form-group">
-              <label>Datum vystavenia</label>
-              <div class="form-input">
-                <input [(ngModel)]="invoice.issueDate">
+          <div class="item-footer">
+            <div class="item-content">
+              <div class="rg-qc">
+                <div class="rg-qc rg-row">
+                  <div class="rg-section">
+                    <span class="rg-text">Celková cena</span>
+                  </div>
+                  <div class="rg-section">
+                    <span class="rg-text">{{ item.price + item.priceVAT }}</span>
+                  </div>
+                </div>
+                <div class="rg-qc rg-row" style="margin-top: .625rem;">
+                  <div class="rg-section">
+                    <span class="rg-text"></span>
+                  </div>
+                  <div class="rg-section">
+                    <span class="rg-text" style="color: #aaa8bd;">{{ item.price }}</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label>Datum splatnostni</label>
-              <div class="form-input">
-                <input [(ngModel)]="invoice.dueDate">
-              </div>
+          </div>
+        </div>
+      </div>
+      <div class="invoice-items-footer">
+        <div class="rg-qc">
+          <div class="rg-qc rg-row">
+            <div class="rg-section">
+              <span class="rg-text">Celková cena</span>
             </div>
-            <div class="form-group">
-              <label>Variabilny symbol</label>
-              <div class="form-input">
-                <input [(ngModel)]="invoice.variableSymbol">
-              </div>
+            <div class="rg-section">
+              <span class="rg-text">{{ getTotalPrice() }}</span>
             </div>
+          </div>
+          <div class="rg-qc rg-row" style="margin-top: .625rem;">
+            <div class="rg-section">
+              <span class="rg-text"></span>
+            </div>
+            <div class="rg-section">
+              <span class="rg-text" style="color: #aaa8bd;">{{ getTotalSumWithoutVat() }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    </div>
+  </div>
 </div>

@@ -48,6 +48,8 @@ public class InvoiceXmlHelper {
     replaceTextContent(doc, CITY, partnerDTO.getCity(), PARTNER);
     replaceTextContent(doc, STREET, partnerDTO.getStreet(), PARTNER);
     replaceTextContent(doc, ZIP, partnerDTO.getZip(), PARTNER);
+    replaceTextContent(doc, REGISTRATION_NUMBER, partnerDTO.getRegistrationNumber(), PARTNER);
+    replaceTextContent(doc, TAX_ID, partnerDTO.getTaxId(), PARTNER);
     replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), PARTNER);
   }
 
@@ -73,6 +75,10 @@ public class InvoiceXmlHelper {
         createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getPriceVAT()));
         createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
         invoiceItem.appendChild(homeCurrency);
+
+        final Element accounting = doc.createElement(ACCOUNTING);
+        createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
+        invoiceItem.appendChild(accounting);
 
         // Append the invoiceItem to the parent node
         invoiceItemsParent.appendChild(invoiceItem);

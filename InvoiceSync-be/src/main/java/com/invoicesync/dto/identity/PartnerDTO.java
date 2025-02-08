@@ -19,6 +19,10 @@ public class PartnerDTO {
 
   private String zip;
 
+  private String registrationNumber;
+
+  private String taxId;
+
   private String vatId;
 
 }

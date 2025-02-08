@@ -14,6 +14,8 @@ export interface InvoiceRequest {
     city?: string;
     street?: string;
     zip?: string;
+    registrationNumber?: string;
+    taxId?: string;
     vatId?: string;
   };
   items?: Array<{
@@ -22,6 +24,7 @@ export interface InvoiceRequest {
     price?: number;
     priceVAT?: number;
     priceSum?: number;
+    accountValue?: string;
   }>;
   myIdentity?: {
     name?: string;
