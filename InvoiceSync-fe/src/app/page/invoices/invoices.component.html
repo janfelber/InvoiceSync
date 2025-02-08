@@ -225,32 +225,30 @@
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
                 <div class="status" [ngClass]="{
-                    'status-unprocessed': import.invoice_status === 'UNPROCESSED',
-                    'status-processed': import.invoice_status === 'PROCESSED'
+                    'status-unprocessed': import.status === 'UNPROCESSED',
+                    'status-processed': import.status === 'PROCESSED'
                   }">
-                  {{ getInvoiceStatus(import.invoice_status) }}
+                  {{ getInvoiceStatus(import.status) }}
                 </div>
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.invoice_company_name }}
+                {{ import.partner.name }}
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
-                <a [routerLink]="['/invoices', import.id]" class="text-link">
-                  {{ import.invoice_number }}
+                <a [routerLink]="['/invoices', import.id]"
+                   class="text-link">
+                  {{ import.invoiceDetails.invoiceNumber }}
                 </a>
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.invoice_variable_symbol }}
+                {{ import.invoiceDetails.variableSymbol }}
               </td>
               <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.invoice_import_date | date:'dd.MM.yyyy' }}
+                {{ import.importDate | date:'dd.MM.yyyy' }}
               </td>
               <td class="cell test" [ngClass]="{'last-row': last}">
-                <div class="invoice-date">{{ import.invoice_issue_date }}</div>
-                <div class="invoice-due">{{ import.invoice_due_date }}</div>
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.invoice_total_amount }}
+                <div class="invoice-date">{{ import.invoiceDetails.issueDate }}</div>
+                <div class="invoice-due">{{ import.invoiceDetails.dueDate }}</div>
               </td>
             </tr>
             </ng-container>

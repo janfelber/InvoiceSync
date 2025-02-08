@@ -1,6 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpEvent } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
+import {InvoiceRequest} from "../../models/invoice-request";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 export class InvoiceService {
   private server = 'http://localhost:8080'
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
     //define a method to fetch imports based on company id
@@ -39,6 +40,18 @@ export class InvoiceService {
   getZipFile(importId: number): Observable<Blob> {
     const url = `${this.server}/file/generateZip/${importId}`;
     return this.http.get(url, {
+      responseType: 'blob'
+    });
+  }
+
+  //new methods
+  exportPohodaInvoice(invoiceRequest: InvoiceRequest) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+
+    return this.http.post(`http://localhost:8080/api/v1/pohoda/export/received`, invoiceRequest, {
+      headers: headers,
       responseType: 'blob'
     });
   }
