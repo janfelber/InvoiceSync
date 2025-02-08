@@ -1,4 +1,4 @@
-package com.invoicesync.dto;
+package com.invoicesync.dto.identity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyResponseDto {
-
-  private Long id;
+public class MyIdentityDTO {
 
   private String name;
+
+  private String surname;
 
   private String city;
 

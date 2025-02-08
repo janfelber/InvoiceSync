@@ -1,0 +1,117 @@
+package com.invoicesync.xml.utils;
+
+import static com.invoicesync.xml.utils.PohodaXmlConstants.*;
+import static com.invoicesync.xml.utils.PohodaXmlParentTagNames.*;
+
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.invoicesync.dto.identity.MyIdentityDTO;
+import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.invoice.InvoiceItemDTO;
+import com.invoicesync.dto.invoice.InvoiceRequestDetailsDTO;
+
+@Component
+public class InvoiceXmlHelper {
+
+  public void updateInvoiceDetails(final Document doc, final InvoiceRequestDetailsDTO invoiceRequestDetailsDTO) {
+    replaceTextContent(doc, INVOICE_TYPE, invoiceRequestDetailsDTO.getInvoiceType(), null);
+    replaceTextContent(doc, INVOICE_NUMBER, invoiceRequestDetailsDTO.getInvoiceNumber(),
+        NUMBER);
+    replaceTextContent(doc, VARIABLE_SYMBOL, invoiceRequestDetailsDTO.getVariableSymbol(), null);
+    replaceTextContent(doc, PAIRING_SYMBOL, invoiceRequestDetailsDTO.getPairingSymbol(), null);
+    replaceTextContent(doc, DATE, invoiceRequestDetailsDTO.getDateIssue(), null);
+    replaceTextContent(doc, DATE_TAX, invoiceRequestDetailsDTO.getDateTax(), null);
+    replaceTextContent(doc, DATE_ACCOUNTING, invoiceRequestDetailsDTO.getDateAccounting(), null);
+    replaceTextContent(doc, DATE_DUE, invoiceRequestDetailsDTO.getDateDue(), null);
+  }
+
+  public void updateMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
+    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), MY_IDENTITY);
+    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
+        MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), MY_IDENTITY);
+  }
+
+  public void updatePartner(final Document doc, final PartnerDTO partnerDTO) {
+    replaceTextContent(doc, NAME, partnerDTO.getName(), PARTNER);
+    replaceTextContent(doc, CITY, partnerDTO.getCity(), PARTNER);
+    replaceTextContent(doc, STREET, partnerDTO.getStreet(), PARTNER);
+    replaceTextContent(doc, ZIP, partnerDTO.getZip(), PARTNER);
+    replaceTextContent(doc, REGISTRATION_NUMBER, partnerDTO.getRegistrationNumber(), PARTNER);
+    replaceTextContent(doc, TAX_ID, partnerDTO.getTaxId(), PARTNER);
+    replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), PARTNER);
+  }
+
+  public void updateInvoiceItems(final Document doc, final List<InvoiceItemDTO> items) {
+      final Element invoiceItemsParent = (Element) doc.getElementsByTagName(INVOICE_DETAIL)
+          .item(0);
+      for (final InvoiceItemDTO item : items) {
+        final Element invoiceItem = doc.createElement(INVOICE_ITEM);
+
+        // Set the relevant fields for the invoiceItem
+        createElementAndAppend(doc, invoiceItem, TEXT, "test");
+        createElementAndAppend(doc, invoiceItem, QUANTITY,
+            String.valueOf(item.getQuantity()));
+        createElementAndAppend(doc, invoiceItem, COEFFICIENT, "1");
+        createElementAndAppend(doc, invoiceItem, PAY_VAT, "false");
+        createElementAndAppend(doc, invoiceItem, RATE_VAT, "high");
+        createElementAndAppend(doc, invoiceItem, DISCOUNT_PERCENTAGE, "0");
+
+        // Handle homeCurrency and pricing
+        final Element homeCurrency = doc.createElement(HOME_CURRENCY);
+        createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPrice()));
+        createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPrice()));
+        createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getPriceVAT()));
+        createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
+        invoiceItem.appendChild(homeCurrency);
+
+        final Element accounting = doc.createElement(ACCOUNTING);
+        createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
+        invoiceItem.appendChild(accounting);
+
+        // Append the invoiceItem to the parent node
+        invoiceItemsParent.appendChild(invoiceItem);
+      }
+  }
+
+  private void createElementAndAppend(final Document doc, final Element parent, final String tagName,
+      final String value) {
+    if (value != null) {
+      final Element element = doc.createElement(tagName);
+      element.appendChild(doc.createTextNode(value));
+      parent.appendChild(element);
+    }
+  }
+
+  private void replaceTextContent(final Document doc, final String tagName, final String newValue,
+      final String parentTagName) {
+    final NodeList nodeList;
+    if (parentTagName != null && !parentTagName.isEmpty()) {
+      final NodeList parentNodeList = doc.getElementsByTagName(parentTagName);
+      if (parentNodeList.getLength() > 0) {
+        final Node parentNode = parentNodeList.item(0);
+        nodeList = ((Element) parentNode).getElementsByTagName(tagName);
+      } else {
+        return;
+      }
+    } else {
+      nodeList = doc.getElementsByTagName(tagName);
+    }
+
+    if (nodeList.getLength() > 0) {
+      nodeList.item(0).setTextContent(newValue);
+    }
+  }
+
+}

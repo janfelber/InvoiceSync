@@ -11,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.dto.InvoiceImportResponseDto;
+import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.invoice.InvoiceImportResponseDto;
+import com.invoicesync.dto.invoice.InvoiceResponseDetailsDTO;
 import com.invoicesync.module.Company;
 import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
@@ -37,22 +39,25 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
         .stream()
         .map(invoiceImport -> new InvoiceImportResponseDto(
             invoiceImport.getId(),
-            invoiceImport.getInvoice_number(),
-            invoiceImport.getInvoice_import_date(),
-            invoiceImport.getInvoice_delivery_date(),
-            invoiceImport.getInvoice_issue_date(),
-            invoiceImport.getInvoice_due_date(),
-            invoiceImport.getInvoice_variable_symbol(),
-            invoiceImport.getInvoice_total_amount(),
-            invoiceImport.getInvoice_company_name(),
-            invoiceImport.getInvoice_company_city(),
-            invoiceImport.getInvoice_company_address(),
-            invoiceImport.getInvoice_company_zip(),
-            invoiceImport.getInvoice_company_vat_number(),
-            invoiceImport.getInvoice_company_iban(),
-            invoiceImport.getInvoice_company_registration_number(),
-            invoiceImport.getInvoice_tax_number(),
-            invoiceImport.getInvoice_status(),
+            invoiceImport.getImport_date(),
+            new InvoiceResponseDetailsDTO(
+                invoiceImport.getInvoice_number(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
+                invoiceImport.getDue_date()
+            ),
+            new PartnerDTO(
+                invoiceImport.getPartner_name(),
+                invoiceImport.getPartner_city(),
+                invoiceImport.getPartner_street(),
+                invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
+                invoiceImport.getPartner_vat_id()
+            ),
+            invoiceImport.getStatus(),
             invoiceImport.getCompany().getId()
         ))
         .collect(Collectors.toList());
@@ -87,20 +92,19 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     final String supplierAddress = ocrService.extractSupplierAddress(supplierSection);
     final String supplierPostalCode = ocrService.extractSupplierPostalCode(supplierSection);
     final String supplierCity = ocrService.extractSupplierCity(supplierSection);
-    invoiceImport.setInvoice_company_vat_number(vatId);
-    invoiceImport.setInvoice_company_iban(iban);
-    invoiceImport.setInvoice_company_registration_number(ico);
-    invoiceImport.setInvoice_tax_number(dic);
-    invoiceImport.setInvoice_import_date(new java.util.Date());
-    invoiceImport.setInvoice_issue_date(issueDateStr);
-    invoiceImport.setInvoice_delivery_date(deliveryDateStr);
-    invoiceImport.setInvoice_due_date(dueDateStr);
-    invoiceImport.setInvoice_variable_symbol(variableSymbol);
-    invoiceImport.setInvoice_company_name(supplierName);
-    invoiceImport.setInvoice_company_zip(supplierPostalCode);
-    invoiceImport.setInvoice_company_address(supplierAddress);
-    invoiceImport.setInvoice_company_city(supplierCity);
-    invoiceImport.setInvoice_status("UNPROCESSED");
+    invoiceImport.setPartner_vat_id(vatId);
+    invoiceImport.setPartner_tax_id(dic);
+    invoiceImport.setPartner_registration_number(ico);
+    invoiceImport.setImport_date(new java.util.Date());
+    invoiceImport.setIssue_date(issueDateStr);
+    invoiceImport.setDue_date(dueDateStr);
+    invoiceImport.setTax_date(deliveryDateStr);
+    invoiceImport.setVariable_symbol(variableSymbol);
+    invoiceImport.setPartner_name(supplierName);
+    invoiceImport.setPartner_zip(supplierPostalCode);
+    invoiceImport.setPartner_street(supplierAddress);
+    invoiceImport.setPartner_city(supplierCity);
+    invoiceImport.setStatus("UNPROCESSED");
     invoiceImport.setPdf_name(pdfName);
     invoiceImport.setCompany(company);
 
@@ -112,22 +116,25 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     return invoiceImportRepository.findById(id)
         .map(invoiceImport -> new InvoiceImportResponseDto(
             invoiceImport.getId(),
-            invoiceImport.getInvoice_number(),
-            invoiceImport.getInvoice_import_date(),
-            invoiceImport.getInvoice_delivery_date(),
-            invoiceImport.getInvoice_issue_date(),
-            invoiceImport.getInvoice_due_date(),
-            invoiceImport.getInvoice_variable_symbol(),
-            invoiceImport.getInvoice_total_amount(),
-            invoiceImport.getInvoice_company_name(),
-            invoiceImport.getInvoice_company_city(),
-            invoiceImport.getInvoice_company_address(),
-            invoiceImport.getInvoice_company_zip(),
-            invoiceImport.getInvoice_company_vat_number(),
-            invoiceImport.getInvoice_company_iban(),
-            invoiceImport.getInvoice_company_registration_number(),
-            invoiceImport.getInvoice_tax_number(),
-            invoiceImport.getInvoice_status(),
+            invoiceImport.getImport_date(),
+            new InvoiceResponseDetailsDTO(
+                invoiceImport.getInvoice_number(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
+                invoiceImport.getDue_date()
+            ),
+            new PartnerDTO(
+                invoiceImport.getPartner_name(),
+                invoiceImport.getPartner_city(),
+                invoiceImport.getPartner_street(),
+                invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
+                invoiceImport.getPartner_vat_id()
+            ),
+            invoiceImport.getStatus(),
             invoiceImport.getCompany().getId()
         ))
         .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + id + " not found"));
@@ -140,22 +147,25 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
         .stream()
         .map(invoiceImport -> new InvoiceImportResponseDto(
             invoiceImport.getId(),
-            invoiceImport.getInvoice_number(),
-            invoiceImport.getInvoice_import_date(),
-            invoiceImport.getInvoice_delivery_date(),
-            invoiceImport.getInvoice_issue_date(),
-            invoiceImport.getInvoice_due_date(),
-            invoiceImport.getInvoice_variable_symbol(),
-            invoiceImport.getInvoice_total_amount(),
-            invoiceImport.getInvoice_company_name(),
-            invoiceImport.getInvoice_company_city(),
-            invoiceImport.getInvoice_company_address(),
-            invoiceImport.getInvoice_company_zip(),
-            invoiceImport.getInvoice_company_vat_number(),
-            invoiceImport.getInvoice_company_iban(),
-            invoiceImport.getInvoice_company_registration_number(),
-            invoiceImport.getInvoice_tax_number(),
-            invoiceImport.getInvoice_status(),
+            invoiceImport.getImport_date(),
+            new InvoiceResponseDetailsDTO(
+                invoiceImport.getInvoice_number(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getVariable_symbol(),
+                invoiceImport.getIssue_date(),
+                invoiceImport.getTax_date(),
+                invoiceImport.getDue_date()
+            ),
+            new PartnerDTO(
+                invoiceImport.getPartner_name(),
+                invoiceImport.getPartner_city(),
+                invoiceImport.getPartner_street(),
+                invoiceImport.getPartner_zip(),
+                invoiceImport.getPartner_registration_number(),
+                invoiceImport.getPartner_tax_id(),
+                invoiceImport.getPartner_vat_id()
+            ),
+            invoiceImport.getStatus(),
             invoiceImport.getCompany().getId()
         ))
         .collect(Collectors.toList());

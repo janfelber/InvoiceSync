@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="51728923" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13605.5 (20.2.2024)" application="Transformace" note="Užívateľský export, Dátum = január, X = Označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<inv:invoice version="2.0" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd">
+			<inv:invoiceHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<inv:invoiceType>INVOICE_TYPE</inv:invoiceType>
+				<inv:number>
+					<typ:numberRequested>INVOICE_NUMBER</typ:numberRequested>
+				</inv:number>
+				<inv:symVar>VARIABLE_SYMBOL</inv:symVar>
+				<inv:symPar>PAIRING_SYMBOL</inv:symPar>
+				<inv:date>DATE</inv:date>
+				<inv:dateTax>DATE_TAX</inv:dateTax>
+				<inv:dateAccounting>DATE_ACCOUNTING</inv:dateAccounting>
+				<inv:dateDue>DATE_DUE</inv:dateDue>
+				<inv:accounting>
+					<typ:ids>604</typ:ids>
+				</inv:accounting>
+				<inv:classificationVAT>
+					<typ:ids>UD</typ:ids>
+				</inv:classificationVAT>
+				<inv:classificationKVDPH>
+					<typ:ids>D2</typ:ids>
+				</inv:classificationKVDPH>
+				<inv:text>Fakturujeme Vám tovar podľa Vašej objednávky:</inv:text>
+				<inv:partnerIdentity>
+					<typ:address>
+						<typ:name>PARTNER_NAME</typ:name>
+						<typ:city>PARTNER_CITY</typ:city>
+						<typ:street>PARTNER_STREET</typ:street>
+						<typ:zip>PARTNER_ZIP</typ:zip>
+						<typ:ico>PARTNER_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>PARTNER_TAX_ID</typ:dic>
+						<typ:icDph>PARTNER_VAT_ID</typ:icDph>
+					</typ:address>
+				</inv:partnerIdentity>
+				<inv:myIdentity>
+					<typ:address>
+						<typ:company>COMPANY</typ:company>
+						<typ:surname></typ:surname>
+						<typ:city>COMPANY_CITY</typ:city>
+						<typ:street>COMPANY_STREET</typ:street>
+						<typ:number>COMPANY_STREET_NUMBER</typ:number>
+						<typ:zip>COMPANY_ZIP</typ:zip>
+						<typ:ico>COMPANY_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>COMPANY_TAX_ID</typ:dic>
+						<typ:icDph>COMPANY_VAT_ID</typ:icDph>
+					</typ:address>
+				</inv:myIdentity>
+				<inv:numberOrder>INVOICE_NUMBER</inv:numberOrder>
+				<inv:paymentType>
+					<typ:ids>Dobierkou</typ:ids>
+					<typ:paymentType>delivery</typ:paymentType>
+				</inv:paymentType>
+				<inv:account>
+					<typ:ids>UNCR</typ:ids>
+					<typ:accountNo>1511254007</typ:accountNo>
+					<typ:bankCode>1111</typ:bankCode>
+				</inv:account>
+				<inv:liquidation>
+					<typ:date>2024-01-08</typ:date>
+				</inv:liquidation>
+				<inv:lock2>false</inv:lock2>
+				<inv:markRecord>true</inv:markRecord>
+			</inv:invoiceHeader>
+			<inv:invoiceDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+			</inv:invoiceDetail>
+			<inv:invoiceSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<inv:roundingDocument>none</inv:roundingDocument>
+				<inv:roundingVAT>none</inv:roundingVAT>
+				<inv:homeCurrency>
+					<typ:priceNone>0.01</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>36.03</typ:priceHigh>
+					<typ:priceHighVAT>7.21</typ:priceHighVAT>
+					<typ:priceHighSum>43.24</typ:priceHighSum>
+					<typ:price3>0</typ:price3>
+					<typ:price3VAT>0</typ:price3VAT>
+					<typ:price3Sum>0</typ:price3Sum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</inv:homeCurrency>
+			</inv:invoiceSummary>
+		</inv:invoice>
+	</dat:dataPackItem>
+</dat:dataPack>
