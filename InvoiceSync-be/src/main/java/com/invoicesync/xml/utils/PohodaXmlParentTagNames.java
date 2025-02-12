@@ -20,4 +20,17 @@ public class PohodaXmlParentTagNames {
 
   public static final String ACCOUNTING = "inv:accounting";
 
+  //receipt
+  public static final String RECEIPT_NUMBER = "vch:number";
+
+  public static final String RECEIPT_MY_IDENTITY = "vch:myIdentity";
+
+  public static final String RECEIPT_PARTNER = "vch:partnerIdentity";
+
+  public static final String RECEIPT_DETAIL = "vch:voucherDetail";
+
+  public static final String RECEIPT_ITEM = "vch:voucherItem";
+
+  public static final String RECEIPT_HOME_CURRENCY = "vch:homeCurrency";
+
 }

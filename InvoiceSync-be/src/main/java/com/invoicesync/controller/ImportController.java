@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.dto.invoice.InvoiceImportResponseDto;
+import com.invoicesync.dto.invoice.pohoda.InvoiceImportResponseDto;
 import com.invoicesync.module.Import;
 import com.invoicesync.ocr.service.OCRService;
 import com.invoicesync.service.ImportService;

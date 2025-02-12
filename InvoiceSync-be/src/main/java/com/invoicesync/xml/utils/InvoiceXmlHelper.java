@@ -13,8 +13,10 @@ import org.w3c.dom.NodeList;
 
 import com.invoicesync.dto.identity.MyIdentityDTO;
 import com.invoicesync.dto.identity.PartnerDTO;
-import com.invoicesync.dto.invoice.InvoiceItemDTO;
-import com.invoicesync.dto.invoice.InvoiceRequestDetailsDTO;
+import com.invoicesync.dto.invoice.pohoda.InvoiceItemDTO;
+import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDetailsDTO;
+import com.invoicesync.dto.receipt.pohoda.ReceiptItemDTO;
+import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDetailsDTO;
 
 @Component
 public class InvoiceXmlHelper {
@@ -83,6 +85,61 @@ public class InvoiceXmlHelper {
         // Append the invoiceItem to the parent node
         invoiceItemsParent.appendChild(invoiceItem);
       }
+  }
+
+  public void updateReceiptDetails(final Document doc, final ReceiptRequestDetailsDTO receiptRequestDetailsDTO) {
+    replaceTextContent(doc, INVOICE_NUMBER, receiptRequestDetailsDTO.getNumberRequested(), null);
+    replaceTextContent(doc, RECEIPT_DATE, receiptRequestDetailsDTO.getDate(), null);
+    replaceTextContent(doc, RECEIPT_DATE_PAYMENT, receiptRequestDetailsDTO.getDate(), null);
+    replaceTextContent(doc, RECEIPT_DATE_TAX, receiptRequestDetailsDTO.getDateTax(), null);
+  }
+
+  public void updateReceiptMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
+    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
+        RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), RECEIPT_MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), RECEIPT_MY_IDENTITY);
+  }
+
+  public void updateReceiptPartner(final Document doc, final PartnerDTO partnerDTO) {
+    replaceTextContent(doc, COMPANY, partnerDTO.getName(), RECEIPT_PARTNER);
+    replaceTextContent(doc, CITY, partnerDTO.getCity(), RECEIPT_PARTNER);
+    replaceTextContent(doc, STREET, partnerDTO.getStreet(), RECEIPT_PARTNER);
+    replaceTextContent(doc, ZIP, partnerDTO.getZip(), RECEIPT_PARTNER);
+    replaceTextContent(doc, REGISTRATION_NUMBER, partnerDTO.getRegistrationNumber(), RECEIPT_PARTNER);
+    replaceTextContent(doc, TAX_ID, partnerDTO.getTaxId(), RECEIPT_PARTNER);
+    replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), RECEIPT_PARTNER);
+  }
+
+  public void updateReceiptItems(final Document doc, final List<ReceiptItemDTO> items) {
+    final Element receiptItemsParent = (Element) doc.getElementsByTagName(RECEIPT_DETAIL)
+        .item(0);
+    for (final ReceiptItemDTO item : items) {
+      final Element receiptItem = doc.createElement(RECEIPT_ITEM);
+
+      createElementAndAppend(doc, receiptItem, TEXT, "test");
+      createElementAndAppend(doc, receiptItem, QUANTITY,
+          String.valueOf(item.getQuantity()));
+      createElementAndAppend(doc, receiptItem, COEFFICIENT, "1");
+      createElementAndAppend(doc, receiptItem, PAY_VAT, "false");
+      createElementAndAppend(doc, receiptItem, RATE_VAT, "high");
+      createElementAndAppend(doc, receiptItem, DISCOUNT_PERCENTAGE, "0");
+      
+      final Element homeCurrency = doc.createElement(RECEIPT_HOME_CURRENCY);
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPrice()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPrice()));
+      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getPriceVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
+      receiptItem.appendChild(homeCurrency);
+
+      // Append the receiptItem to the parent node
+      receiptItemsParent.appendChild(receiptItem);
+    }
   }
 
   private void createElementAndAppend(final Document doc, final Element parent, final String tagName,

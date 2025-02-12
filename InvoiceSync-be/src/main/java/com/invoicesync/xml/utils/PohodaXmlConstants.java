@@ -63,4 +63,15 @@ public final class PohodaXmlConstants {
 
   public static final String ACCOUNT_VALUE = "typ:ids";
 
+  // receipt
+  public static final String RECEIPT_DATE = "vch:date";
+
+  public static final String RECEIPT_DATE_PAYMENT = "vch:datePayment";
+
+  public static final String RECEIPT_TEXT = "vch:text";
+
+  public static final String RECEIPT_DATE_TAX = "vch:dateTax";
+
+  public static final String RECEIPT_QUANTITY = "vch:quantity";
+
 }
