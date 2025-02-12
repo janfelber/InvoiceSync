@@ -1,4 +1,4 @@
-package com.invoicesync.dto.invoice;
+package com.invoicesync.dto.invoice.pohoda;
 
 import java.util.List;
 

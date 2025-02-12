@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.dto.invoice.InvoiceImportResponseDto;
+import com.invoicesync.dto.invoice.pohoda.InvoiceImportResponseDto;
 import com.invoicesync.module.InvoiceImport;
 
 public interface InvoiceImportService {
