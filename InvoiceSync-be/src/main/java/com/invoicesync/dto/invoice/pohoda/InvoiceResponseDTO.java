@@ -1,4 +1,4 @@
-package com.invoicesync.dto.invoice;
+package com.invoicesync.dto.invoice.pohoda;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class InvoiceImportResponseDto {
+public class InvoiceResponseDTO {
 
   private Long id;
 

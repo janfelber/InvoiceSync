@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.dto.identity.PartnerDTO;
-import com.invoicesync.dto.invoice.InvoiceImportResponseDto;
-import com.invoicesync.dto.invoice.InvoiceResponseDetailsDTO;
+import com.invoicesync.dto.invoice.pohoda.InvoiceImportResponseDto;
+import com.invoicesync.dto.invoice.pohoda.InvoiceResponseDetailsDTO;
 import com.invoicesync.module.Company;
 import com.invoicesync.module.InvoiceImport;
 import com.invoicesync.ocr.service.OCRService;
