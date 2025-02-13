@@ -11,4 +11,6 @@ public interface CompanyService {
 
   List<CompanyResponseDto> getCompaniesByUserId(Long userId);
 
+  CompanyResponseDto getCompanyInfo(Long id);
+
 }

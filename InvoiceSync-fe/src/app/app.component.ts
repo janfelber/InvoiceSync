@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FileService } from './file.service';
 import { saveAs } from 'file-saver';
-import { HttpClientModule, HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +25,7 @@ import { HeaderComponent } from './header/header.component';
 import { Invoices } from './page/invoices/invoices.component';
 import { ContentComponent } from './content/content.component';
 import { HeaderCompanyComponent } from "./header-company/header-company.component";
+import {SideNavRedesignComponent} from "../redesign/side-nav-redesign/side-nav-redesign.component";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -46,8 +47,9 @@ interface SideNavToggle {
     CommonModule,
     RouterOutlet,
     GridInvoicesComponent,
-    HeaderCompanyComponent
-],
+    HeaderCompanyComponent,
+    SideNavRedesignComponent
+  ],
 })
 
 export class AppComponent  {

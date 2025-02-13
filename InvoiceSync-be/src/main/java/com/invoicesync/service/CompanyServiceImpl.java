@@ -34,9 +34,33 @@ public class CompanyServiceImpl implements CompanyService {
         .stream()
         .map(company -> new CompanyResponseDto(
             company.getId(),
-            company.getName()
+            company.getName(),
+            company.getCity(),
+            company.getStreet(),
+            company.getStreetNumber(),
+            company.getZip(),
+            company.getRegistrationNumber(),
+            company.getTaxId(),
+            company.getVatId()
         ))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public CompanyResponseDto getCompanyInfo(final Long id) {
+    return companyRepository.findById(id)
+        .map(company -> new CompanyResponseDto(
+            company.getId(),
+            company.getName(),
+            company.getCity(),
+            company.getStreet(),
+            company.getStreetNumber(),
+            company.getZip(),
+            company.getRegistrationNumber(),
+            company.getTaxId(),
+            company.getVatId()
+        ))
+        .orElseThrow(() -> new IllegalArgumentException("Company with id " + id + " not found"));
   }
 
 }
