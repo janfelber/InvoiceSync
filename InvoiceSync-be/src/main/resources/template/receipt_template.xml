@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="53409094" key="4194741f-4009-47b8-93cd-b3a8d1986957" programVersion="13901.13 (14.1.2025)" application="Transformace" note="Užívateľský export, X = Označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<vch:voucher version="2.0" xmlns:vch="http://www.stormware.cz/schema/version_2/voucher.xsd">
+			<vch:voucherHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<vch:voucherType>expense</vch:voucherType>
+				<vch:cashAccount>
+					<typ:ids>HP</typ:ids>
+				</vch:cashAccount>
+				<vch:number>
+					<typ:numberRequested>24HV0037</typ:numberRequested>
+				</vch:number>
+				<vch:date>2024-12-30</vch:date>
+				<vch:datePayment>2024-12-30</vch:datePayment>
+				<vch:dateTax>2024-12-30</vch:dateTax>
+				<vch:accounting>
+					<typ:ids>2Vzásoby </typ:ids>
+				</vch:accounting>
+				<vch:classificationVAT>
+					<typ:ids>PD</typ:ids>
+				</vch:classificationVAT>
+				<vch:classificationKVDPH>
+					<typ:ids>B3</typ:ids>
+				</vch:classificationKVDPH>
+				<vch:text>Hotovosť výdaj - spotreba PHL 22,92L*1,537€</vch:text>
+				<vch:partnerIdentity>
+					<typ:address linkToAddress="true">
+						<typ:company>SLOVNAFT, a.s.</typ:company>
+						<typ:city>Bratislava</typ:city>
+						<typ:street>Vlčie hrdlo 1</typ:street>
+						<typ:zip>824 12</typ:zip>
+						<typ:ico>31322832</typ:ico>
+						<typ:dic>2020372640</typ:dic>
+						<typ:icDph>SK2020372640</typ:icDph>
+					</typ:address>
+				</vch:partnerIdentity>
+				<vch:myIdentity>
+					<typ:address>
+						<typ:company>Tomáš Sabol - TSBL Transport&amp;Trade</typ:company>
+						<typ:surname>Tomáš Sabol - TSBL Transport&amp;Tra</typ:surname>
+						<typ:city>Vráble</typ:city>
+						<typ:street>Sídl.Žitava  </typ:street>
+						<typ:number>1400/9</typ:number>
+						<typ:zip>952 01</typ:zip>
+						<typ:ico>53409094</typ:ico>
+						<typ:dic>1079573253</typ:dic>
+						<typ:icDph>SK1079573253</typ:icDph>
+						<typ:mobilPhone></typ:mobilPhone>
+					</typ:address>
+				</vch:myIdentity>
+				<vch:lock2>false</vch:lock2>
+				<vch:markRecord>true</vch:markRecord>
+			</vch:voucherHeader>
+			<vch:voucherDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+			</vch:voucherDetail>
+			<vch:voucherSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<vch:roundingDocument>math5cent</vch:roundingDocument>
+				<vch:roundingVAT>noneEveryRate</vch:roundingVAT>
+				<vch:calculateVAT>false</vch:calculateVAT>
+				<vch:homeCurrency>
+					<typ:priceNone>0</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>29.17</typ:priceHigh>
+					<typ:priceHighVAT>5.83</typ:priceHighVAT>
+					<typ:priceHighSum>35</typ:priceHighSum>
+					<typ:price3>0</typ:price3>
+					<typ:price3VAT>0</typ:price3VAT>
+					<typ:price3Sum>0</typ:price3Sum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</vch:homeCurrency>
+			</vch:voucherSummary>
+		</vch:voucher>
+	</dat:dataPackItem>
+</dat:dataPack>

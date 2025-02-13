@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pohodaimporter-fe": {
+    "invoicesync-fe": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/pohodaimporter-fe",
+            "outputPath": "dist/invoicesync-fe",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -40,15 +40,15 @@
             "production": {
               "budgets": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5kb",
+                  "maximumError": "8kb"
                 },
                 {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "3mb"
+                },
               ],
               "outputHashing": "all"
             },
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "pohodaimporter-fe:build:production"
+              "buildTarget": "invoicesync-fe:build:production"
             },
             "development": {
-              "buildTarget": "pohodaimporter-fe:build:development"
+              "buildTarget": "invoicesync-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +75,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "pohodaimporter-fe:build"
+            "buildTarget": "invoicesync-fe:build"
           }
         },
         "test": {

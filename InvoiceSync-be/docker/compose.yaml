@@ -13,3 +13,16 @@ services:
     ports:
       - "5432:5432"
 
+  app:
+    container_name: backend_is
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/invoicesync_db
+      SPRING_DATASOURCE_USERNAME: invoicesync_db_user
+      SPRING_DATASOURCE_PASSWORD: invoicesync_db_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
