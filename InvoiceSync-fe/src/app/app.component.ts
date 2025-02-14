@@ -34,22 +34,21 @@ interface SideNavToggle {
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  imports: [
-    SidenavComponent,
-    BodyComponent,
-    HeaderComponent,
-    Invoices,
-    ContentComponent,
-    CommonModule,
-    RouterOutlet,
-    GridInvoicesComponent,
-    HeaderCompanyComponent,
-    SideNavRedesignComponent
-  ],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    imports: [
+        SidenavComponent,
+        BodyComponent,
+        HeaderComponent,
+        Invoices,
+        ContentComponent,
+        CommonModule,
+        RouterOutlet,
+        GridInvoicesComponent,
+        HeaderCompanyComponent,
+        SideNavRedesignComponent
+    ]
 })
 
 export class AppComponent  {
