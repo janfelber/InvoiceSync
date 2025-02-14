@@ -4,16 +4,15 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
 import {navbarDataRedesign} from "./nav-data-redesign";
 
 @Component({
-  selector: 'app-side-nav-redesign',
-  standalone: true,
-  imports: [
-    NgForOf,
-    RouterLinkActive,
-    RouterLink,
-    NgClass
-  ],
-  templateUrl: './side-nav-redesign.component.html',
-  styleUrl: './side-nav-redesign.component.css'
+    selector: 'app-side-nav-redesign',
+    imports: [
+        NgForOf,
+        RouterLinkActive,
+        RouterLink,
+        NgClass
+    ],
+    templateUrl: './side-nav-redesign.component.html',
+    styleUrl: './side-nav-redesign.component.css'
 })
 export class SideNavRedesignComponent {
   navData = navbarDataRedesign;

@@ -25,22 +25,21 @@ interface ImportItem {
 }
 
 @Component({
-  selector: 'app-test',
-  standalone: true,
-  imports: [
-    DatePipe,
-    MatButton,
-    MatIcon,
-    ReactiveFormsModule,
-    FormsModule,
-    CommonModule,
-    MatCheckbox,
-    RouterLink,
-    MatProgressSpinner,
-    MatTooltip
-  ],
-  templateUrl: './invoices.component.html',
-  styleUrl: './invoices.component.css'
+    selector: 'app-test',
+    imports: [
+        DatePipe,
+        MatButton,
+        MatIcon,
+        ReactiveFormsModule,
+        FormsModule,
+        CommonModule,
+        MatCheckbox,
+        RouterLink,
+        MatProgressSpinner,
+        MatTooltip
+    ],
+    templateUrl: './invoices.component.html',
+    styleUrl: './invoices.component.css'
 })
 export class Invoices {
 

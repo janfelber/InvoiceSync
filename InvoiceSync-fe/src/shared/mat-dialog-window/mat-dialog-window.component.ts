@@ -19,18 +19,17 @@ interface InputData {
 }
 
 @Component({
-  selector: 'app-mat-dialog-window',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton,
-    MatDialogTitle,
-    FormsModule
-  ],
-  templateUrl: './mat-dialog-window.component.html',
-  styleUrl: './mat-dialog-window.component.css'
+    selector: 'app-mat-dialog-window',
+    imports: [
+        CommonModule,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton,
+        MatDialogTitle,
+        FormsModule
+    ],
+    templateUrl: './mat-dialog-window.component.html',
+    styleUrl: './mat-dialog-window.component.css'
 })
 export class MatDialogWindowComponent {
   constructor(

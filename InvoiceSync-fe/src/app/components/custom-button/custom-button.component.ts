@@ -4,11 +4,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-custom-button',
-  standalone: true,
-  templateUrl: './custom-button.component.html',
-  styleUrls: ['./custom-button.component.css'],
-  imports: [MatButtonModule, MatIconModule, MatTooltipModule]
+    selector: 'app-custom-button',
+    templateUrl: './custom-button.component.html',
+    styleUrls: ['./custom-button.component.css'],
+    imports: [MatButtonModule, MatIconModule, MatTooltipModule]
 })
 export class CustomButtonComponent {
   @Input() label: string = '';

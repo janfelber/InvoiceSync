@@ -12,18 +12,17 @@ import {VerificationRequest} from "../../models/verification-request";
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatIconModule,
-    MatLabel,
-    FormsModule,
-    CommonModule,
-    RouterModule
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [
+        MatFormField,
+        MatIconModule,
+        MatLabel,
+        FormsModule,
+        CommonModule,
+        RouterModule
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   authRequest: AuthenticationRequest = {};
