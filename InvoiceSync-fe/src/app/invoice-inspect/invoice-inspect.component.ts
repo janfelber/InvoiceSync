@@ -7,11 +7,10 @@ import {InvoiceService} from "../page/invoices/invoice.service";
 import {InvoiceRequest} from "../models/invoice-request";
 
 @Component({
-  selector: 'app-invoice-inspect',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './invoice-inspect.component.html',
-  styleUrl: './invoice-inspect.component.css'
+    selector: 'app-invoice-inspect',
+    imports: [FormsModule, CommonModule],
+    templateUrl: './invoice-inspect.component.html',
+    styleUrl: './invoice-inspect.component.css'
 })
 export class InvoiceInspect implements OnInit {
 

@@ -11,18 +11,17 @@ import {RouterOutlet} from "@angular/router";
  * @deprecated DO NOT USE THIS COMPONENT.
  */
 @Component({
-  selector: 'app-welcome',
-  standalone: true,
-  imports: [
-    HeaderComponent,
-    HeaderCompanyComponent,
-    SidenavComponent,
-    GridInvoicesComponent,
-    CommonModule,
-    RouterOutlet,
-  ],
-  templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
+    selector: 'app-welcome',
+    imports: [
+        HeaderComponent,
+        HeaderCompanyComponent,
+        SidenavComponent,
+        GridInvoicesComponent,
+        CommonModule,
+        RouterOutlet,
+    ],
+    templateUrl: './welcome.component.html',
+    styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
 
