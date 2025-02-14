@@ -12,8 +12,7 @@ import { FormsModule } from '@angular/forms';
 import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
-  selector: 'app-xml-page',
-  standalone: true,
+    selector: 'app-xml-page',
     imports: [
         CommonModule,
         MatTableModule,
@@ -24,8 +23,8 @@ import {MatCheckbox} from "@angular/material/checkbox";
         FormsModule,
         MatCheckbox
     ],
-  templateUrl: './xml-page.component.html',
-  styleUrl: './xml-page.component.css'
+    templateUrl: './xml-page.component.html',
+    styleUrl: './xml-page.component.css'
 })
 export class XmlPageComponent {
   private server = 'http://localhost:8080'

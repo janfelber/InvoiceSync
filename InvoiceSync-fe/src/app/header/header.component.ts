@@ -8,11 +8,10 @@ import { navbarData } from '../sidenav/nav-data';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule, MatToolbarModule,MatIconModule,MatInputModule,  MatButtonModule ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+    selector: 'app-header',
+    imports: [CommonModule, MatToolbarModule, MatIconModule, MatInputModule, MatButtonModule],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.css'
 })
 export class HeaderComponent {
 
