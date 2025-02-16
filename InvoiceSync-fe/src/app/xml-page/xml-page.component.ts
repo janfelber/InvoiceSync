@@ -56,7 +56,6 @@ export class XmlPageComponent {
           this.imports = imports.data
           this.dataSource = imports.data;
           this.filteredXmlImports = [...this.dataSource];
-          console.log(imports.data);
         }
     )
   }

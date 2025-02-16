@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FileService } from '../../file.service';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import saveAs from 'file-saver';
 import { InvoiceService } from '../../page/invoices/invoice.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
@@ -151,7 +150,6 @@ export class GridInvoicesComponent {
     this.fileService.upload(formData).subscribe(
       event => {
         console.log(event);
-        this.reportProgress(event);
       },
       (error: HttpErrorResponse) => {
         console.error(error);
@@ -159,35 +157,35 @@ export class GridInvoicesComponent {
     );
   }
 
-  private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
-    switch (httpEvent.type) {
-      case HttpEventType.UploadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Uploading... ');
-        break;
-      case HttpEventType.DownloadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Downloading... ');
-        break;
-      case HttpEventType.ResponseHeader:
-        console.log('Header returned', httpEvent);
-        break;
-      case HttpEventType.Response:
-        if (httpEvent.body instanceof Array) {
-          this.fileStatus.status = 'done';
-          for (const filename of httpEvent.body) {
-            this.filenames.unshift(filename);
-          }
-        } else {
-          saveAs(new File([httpEvent.body!], httpEvent.headers.get('File-Name')!,
-            { type: `${httpEvent.headers.get('Content-Type')};charset=utf-8` }));
-        }
-        this.fileStatus.status = 'done';
-        break;
-      default:
-        console.log(httpEvent);
-        break;
-
-    }
-  }
+  // private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
+  //   switch (httpEvent.type) {
+  //     case HttpEventType.UploadProgress:
+  //       this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Uploading... ');
+  //       break;
+  //     case HttpEventType.DownloadProgress:
+  //       this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Downloading... ');
+  //       break;
+  //     case HttpEventType.ResponseHeader:
+  //       console.log('Header returned', httpEvent);
+  //       break;
+  //     case HttpEventType.Response:
+  //       if (httpEvent.body instanceof Array) {
+  //         this.fileStatus.status = 'done';
+  //         for (const filename of httpEvent.body) {
+  //           this.filenames.unshift(filename);
+  //         }
+  //       } else {
+  //         saveAs(new File([httpEvent.body!], httpEvent.headers.get('File-Name')!,
+  //           { type: `${httpEvent.headers.get('Content-Type')};charset=utf-8` }));
+  //       }
+  //       this.fileStatus.status = 'done';
+  //       break;
+  //     default:
+  //       console.log(httpEvent);
+  //       break;
+  //
+  //   }
+  // }
 
   private updateStatus(loaded: number, total: number, requestType: string) {
     this.fileStatus.status = 'progress';
