@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { FileService } from './file.service';
-import { saveAs } from 'file-saver';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';

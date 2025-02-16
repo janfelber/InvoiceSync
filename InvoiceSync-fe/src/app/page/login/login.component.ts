@@ -43,7 +43,7 @@ export class LoginComponent {
             this.authResponse = response;
             if (!this.authResponse.mfaEnabled) {
               localStorage.setItem('token', this.authResponse.access_token as string);
-              this.router.navigate(['home']);
+              this.router.navigate(['xml-import']);
             }
           }
         }

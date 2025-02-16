@@ -24,7 +24,7 @@
 
 .right-section {
   flex: 1;
-  background-color: #1EB386;
+  background-color: #000000;
   padding: 20px;
 }
 
@@ -41,9 +41,7 @@
 .title h1 {
   display: flex;
   align-items: center;
-  font-weight: 700;
   font-size: 35px;
-  font-family: 'Poppins', sans-serif;
   margin-bottom: 8rem;
 }
 
@@ -52,8 +50,9 @@
 }
 
 .logo-text {
+  font-family: "Russo One", serif;
+  margin-left: .875rem;
   vertical-align: middle;
-  font-weight: 900;
 }
 
 .login-title {
@@ -88,7 +87,7 @@
 
 .login-btn {
   width: 402px;
-  background-color: #1EB386;
+  background-color: #0067DD;
   color: white;
   height: 50px;
   border-radius: 8px;
