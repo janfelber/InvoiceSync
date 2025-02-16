@@ -24,23 +24,23 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
-      {
-        path: 'home',
-        component: HomeComponent
-      },
+      // {
+      //   path: 'home',
+      //   component: HomeComponent
+      // },
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'xml-import',
         pathMatch: 'full'
       },
-      {
-        path: 'invoices',
-        component: Invoices,
-      },
-      {
-        path: 'invoices/:id',
-        component: InvoiceInspect
-      },
+      // {
+      //   path: 'invoices',
+      //   component: Invoices,
+      // },
+      // {
+      //   path: 'invoices/:id',
+      //   component: InvoiceInspect
+      // },
       {
         path: 'xml-import',
         component: XmlPageComponent
@@ -48,19 +48,19 @@ export const routes: Routes = [
     ]
   },
   //admin layout
-  {
-
-    path: 'admin',
-    component: AdminLayoutComponent,
-    children: [
-      {
-        path: 'users',
-        component: AdminComponent
-      }
-    ]
-  },
+  // {
+  //
+  //   path: 'admin',
+  //   component: AdminLayoutComponent,
+  //   children: [
+  //     {
+  //       path: 'users',
+  //       component: AdminComponent
+  //     }
+  //   ]
+  // },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'xml-import'
   }
 ];
