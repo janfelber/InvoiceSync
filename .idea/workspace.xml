@@ -5,22 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce4e6f82-da55-4952-a280-eb107e3ed138" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InvoiceSync-be/docker/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InvoiceSync-be/dump.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/InvoiceSync-be/src/uploads/users/34/invoice.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/docker/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/docker/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/auth/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/auth/AuthenticationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/module/Import.java" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/src/main/java/com/invoicesync/module/Import.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/InvoiceSync.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/db/sql/upgrade/V1__IS_99.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/db/sql/upgrade/V2__IS_101.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/db/sql/upgrade/V4__IS_.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-be/src/main/resources/db/sql/upgrade/V5__IS_113.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/invoice-inspect/invoice-inspect.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/invoice-inspect/invoice-inspect.component.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/invoice-inspect/invoice-inspect.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/invoice-inspect/invoice-inspect.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/app/xml-page/xml-page.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/app/xml-page/xml-page.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceSync-fe/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceSync-fe/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +44,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;janfelber&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/janfelber/InvoiceSync.git&quot;,
+    &quot;accountId&quot;: &quot;2685ed3b-7692-4492-8693-801e9155b109&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -49,7 +68,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;is-sprint-8&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tailwind-test&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/johnny/Desktop/GitHub/InvoiceSync&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -57,10 +76,25 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="InvoiceSync" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="InvoiceSync" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="InvoiceSync" />
       <method v="2">
@@ -82,6 +116,9 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Physical" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="ce4e6f82-da55-4952-a280-eb107e3ed138" name="Changes" comment="" />
@@ -98,6 +135,10 @@
       <workItem from="1736029145573" duration="868000" />
       <workItem from="1736117773662" duration="2283000" />
       <workItem from="1736200331162" duration="5741000" />
+      <workItem from="1739785274047" duration="5831000" />
+      <workItem from="1739801563974" duration="59000" />
+      <workItem from="1739801627268" duration="72000" />
+      <workItem from="1739801704414" duration="1306000" />
     </task>
     <servers />
   </component>
