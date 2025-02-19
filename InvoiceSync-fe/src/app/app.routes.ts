@@ -24,23 +24,23 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
-      // {
-      //   path: 'home',
-      //   component: HomeComponent
-      // },
+      {
+        path: 'home',
+        component: HomeComponent
+      },
       {
         path: '',
         redirectTo: 'xml-import',
         pathMatch: 'full'
       },
-      // {
-      //   path: 'invoices',
-      //   component: Invoices,
-      // },
-      // {
-      //   path: 'invoices/:id',
-      //   component: InvoiceInspect
-      // },
+      {
+        path: 'invoices',
+        component: Invoices,
+      },
+      {
+        path: 'invoices/:id',
+        component: InvoiceInspect
+      },
       {
         path: 'xml-import',
         component: XmlPageComponent
