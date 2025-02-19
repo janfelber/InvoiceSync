@@ -9,5 +9,7 @@ FROM eclipse-temurin:23-jre
 WORKDIR /application
 COPY --from=builder /builder/application.jar .
 
+EXPOSE 8080
+
 # Run the jar directly
 ENTRYPOINT ["java", "-jar", "application.jar"]
