@@ -1,0 +1,61 @@
+<!-- button to import XML file -->
+<div class="body">
+  <div class="home-page-container">
+    <div class="home-page-title">
+      <p>Xml Imports</p>
+      <p class="import-function" (click)="onFileSelected()">
+        <mat-icon>add</mat-icon> <span class="import-text">Importuj nový súbor</span>
+      </p>
+    </div>
+    <div class="col">
+      <div class="table">
+        <div class="table-head">
+          <!-- sreach input -->
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+            style="width: 12rem; height: 2rem; font-size: 0.75rem; font-weight: 500;"/>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th class="header-item" style="width: 5.452637%; text-align: center; font-weight: normal;">
+                <mat-checkbox class="rounded-checkbox"></mat-checkbox>
+              </th>
+              <th class="header-item" style="font-weight: 550;   font-family: 'Inter', sans-serif;"  *ngFor="let header of headers">{{ header }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of imports; let last = last">
+              <td class="cell" style="text-align: center" [ngClass]="{'last-row': last}">
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}" style="width: 2%">
+                <a [routerLink]="['/web/receipts', user.id]"
+                   class="text-link">
+                  {{ user.id }}
+                </a>
+
+              <td class="cell" [ngClass]="{'last-row': last}">
+                {{ user.partnerName }}
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}">
+                {{ user.partnerRegistrationNumber }}
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}">
+                {{ user.importDate | date:'dd.MM.yyyy' }}
+              </td>
+              <td class="cell" [ngClass]="{'last-row': last}">
+                <button mat-icon-button (click)="downloadFile(user.importId)">
+                  <mat-icon>download</mat-icon>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
 package com.invoicesync.dto.receipt.pohoda;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,5 +32,9 @@ public class ReceiptDTO {
   private String partnerTaxId;
 
   private String partnerVatId;
+
+  private String totalPrice;
+
+  private List<ReceiptItemDTO> items;
 
 }

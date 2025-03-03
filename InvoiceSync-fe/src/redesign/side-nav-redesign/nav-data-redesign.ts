@@ -27,6 +27,12 @@ export const navbarDataRedesign = [
     layout: 'default',
   },
   {
+    routerLink: '/web/receipts',
+    icon: 'fas fa-receipt',
+    label: 'Bločky',
+    layout: 'default'
+  },
+  {
     routerLink: 'users',
     icon: 'fas fa-user',
     label: 'Users',

@@ -15,13 +15,15 @@ public class ReceiptItemDTO {
 
   private String text;
 
-  private BigDecimal quantity;
+  private String name;
+
+  private int quantity;
 
   private BigDecimal unitPrice;
 
   private BigDecimal price;
 
-  private BigDecimal priceVAT;
+  private int vatRate;
 
   private BigDecimal priceSum;
 
