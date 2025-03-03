@@ -3,7 +3,6 @@ import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../axios.service";
 import { HttpErrorResponse, HttpEvent, HttpEventType } from "@angular/common/http";
-import saveAs from "file-saver";
 import {DatePipe} from "@angular/common";
 import {MatButton} from "@angular/material/button";
 import { FormsModule } from '@angular/forms';
@@ -25,22 +24,21 @@ interface ImportItem {
 }
 
 @Component({
-  selector: 'app-test',
-  standalone: true,
-  imports: [
-    DatePipe,
-    MatButton,
-    MatIcon,
-    ReactiveFormsModule,
-    FormsModule,
-    CommonModule,
-    MatCheckbox,
-    RouterLink,
-    MatProgressSpinner,
-    MatTooltip
-  ],
-  templateUrl: './invoices.component.html',
-  styleUrl: './invoices.component.css'
+    selector: 'app-test',
+    imports: [
+        DatePipe,
+        MatButton,
+        MatIcon,
+        ReactiveFormsModule,
+        FormsModule,
+        CommonModule,
+        MatCheckbox,
+        RouterLink,
+        MatProgressSpinner,
+        MatTooltip
+    ],
+    templateUrl: './invoices.component.html',
+    styleUrl: './invoices.component.css'
 })
 export class Invoices {
 
@@ -335,36 +333,6 @@ export class Invoices {
         console.log('Upload complete');
       }
     });
-  }
-
-  private reportProgress(httpEvent: HttpEvent<string[] | Blob>): void {
-    switch (httpEvent.type) {
-      case HttpEventType.UploadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Uploading... ');
-        break;
-      case HttpEventType.DownloadProgress:
-        this.updateStatus(httpEvent.loaded, httpEvent.total!, 'Downloading... ');
-        break;
-      case HttpEventType.ResponseHeader:
-        console.log('Header returned', httpEvent);
-        break;
-      case HttpEventType.Response:
-        if (httpEvent.body instanceof Array) {
-          this.fileStatus.status = 'done';
-          for (const filename of httpEvent.body) {
-            this.filenames.unshift(filename);
-          }
-        } else {
-          saveAs(new File([httpEvent.body!], httpEvent.headers.get('File-Name')!,
-            { type: `${httpEvent.headers.get('Content-Type')};charset=utf-8` }));
-        }
-        this.fileStatus.status = 'done';
-        break;
-      default:
-        console.log(httpEvent);
-        break;
-
-    }
   }
 
   private updateStatus(loaded: number, total: number, requestType: string) {

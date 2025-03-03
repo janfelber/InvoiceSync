@@ -9,19 +9,18 @@ import {environment} from "../enviroments/enviroments";
 import {SideNavRedesignComponent} from "../../redesign/side-nav-redesign/side-nav-redesign.component";
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  imports: [
-    HeaderComponent,
-    HeaderCompanyComponent,
-    SidenavComponent,
-    RouterOutlet,
-    GridInvoicesComponent,
-    CommonModule,
-    SideNavRedesignComponent
-  ],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+    selector: 'app-layout',
+    imports: [
+        HeaderComponent,
+        HeaderCompanyComponent,
+        SidenavComponent,
+        RouterOutlet,
+        GridInvoicesComponent,
+        CommonModule,
+        SideNavRedesignComponent
+    ],
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.css'
 })
 export class LayoutComponent{
 
