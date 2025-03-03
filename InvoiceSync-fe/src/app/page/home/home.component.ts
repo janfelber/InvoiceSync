@@ -10,18 +10,17 @@ import { MatDialogWindowComponent } from "../../../shared/mat-dialog-window/mat-
 import {ToastrService} from "ngx-toastr";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf,
-    NgClass,
-    MatIcon,
-    MatIconButton,
-    NgStyle
-  ]
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    imports: [
+        FormsModule,
+        NgForOf,
+        NgClass,
+        MatIcon,
+        MatIconButton,
+        NgStyle
+    ]
 })
 export class HomeComponent {
 

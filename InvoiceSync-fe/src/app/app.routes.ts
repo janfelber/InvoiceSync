@@ -30,7 +30,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'xml-import',
         pathMatch: 'full'
       },
       {
@@ -48,19 +48,19 @@ export const routes: Routes = [
     ]
   },
   //admin layout
-  {
-
-    path: 'admin',
-    component: AdminLayoutComponent,
-    children: [
-      {
-        path: 'users',
-        component: AdminComponent
-      }
-    ]
-  },
+  // {
+  //
+  //   path: 'admin',
+  //   component: AdminLayoutComponent,
+  //   children: [
+  //     {
+  //       path: 'users',
+  //       component: AdminComponent
+  //     }
+  //   ]
+  // },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'xml-import'
   }
 ];

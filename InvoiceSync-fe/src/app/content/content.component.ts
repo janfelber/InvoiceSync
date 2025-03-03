@@ -11,11 +11,10 @@ import { HeaderCompanyComponent } from '../header-company/header-company.compone
  * @deprecated DO NOT USE THIS COMPONENT.
  */
 @Component({
-  selector: 'app-content',
-  standalone: true,
-  imports: [ CommonModule, HeaderComponent, SidenavComponent, BodyComponent, HeaderCompanyComponent],
-  templateUrl: './content.component.html',
-  styleUrl: './content.component.css'
+    selector: 'app-content',
+    imports: [CommonModule, HeaderComponent, SidenavComponent, BodyComponent, HeaderCompanyComponent],
+    templateUrl: './content.component.html',
+    styleUrl: './content.component.css'
 })
 
 export class ContentComponent {

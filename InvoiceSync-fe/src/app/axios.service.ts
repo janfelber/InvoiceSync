@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+import { environment } from '../environments/environment';
 import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
@@ -8,7 +9,7 @@ import {jwtDecode} from 'jwt-decode';
 export class AxiosService {
 
   constructor() {
-    axios.defaults.baseURL = "http://localhost:8080"
+    axios.defaults.baseURL = environment.apiUrl;
     axios.defaults.headers.post["Content-Type"] = "application/json"
   }
 

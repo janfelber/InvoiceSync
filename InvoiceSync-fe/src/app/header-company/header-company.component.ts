@@ -7,15 +7,14 @@ import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialo
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-header-company',
-  standalone: true,
-  imports: [
-    MatToolbarModule,
-    NgForOf,
-    NgIf
-  ],
-  templateUrl: './header-company.component.html',
-  styleUrl: './header-company.component.css'
+    selector: 'app-header-company',
+    imports: [
+        MatToolbarModule,
+        NgForOf,
+        NgIf
+    ],
+    templateUrl: './header-company.component.html',
+    styleUrl: './header-company.component.css'
 })
 export class HeaderCompanyComponent implements OnInit {
 
