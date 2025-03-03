@@ -23,6 +23,17 @@ export class FileService {
     });
   }
 
+  uploadReceipt(formData: FormData): Observable<HttpEvent<string[]>> {
+    const token = localStorage.getItem('token'); // Názov kľúča môže byť iný, záleží na tom, ako ho ukladáš
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<string[]>(`${this.server}/api/v1/receipt/save`, formData, {
+      headers: headers,
+      reportProgress: true,
+      observe: 'events'
+    });
+  }
+
   uploadPdf(formData: FormData): Observable<HttpEvent<string[]>> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

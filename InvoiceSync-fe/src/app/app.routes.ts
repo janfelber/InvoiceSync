@@ -9,6 +9,8 @@ import {HomeComponent} from "./page/home/home.component";
 import {XmlPageComponent} from "./xml-page/xml-page.component";
 import {AdminComponent} from "./admin/admin.component";
 import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
+import {ReceiptsComponent} from "./receipts/receipts.component";
+import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.component";
 
 export const routes: Routes = [
   {
@@ -32,6 +34,14 @@ export const routes: Routes = [
         path: '',
         redirectTo: 'xml-import',
         pathMatch: 'full'
+      },
+      {
+        path: 'web/receipts',
+        component: ReceiptsComponent
+      },
+      {
+        path: 'web/receipts/:id',
+        component: ReceiptDetailsComponent
       },
       {
         path: 'invoices',
