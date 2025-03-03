@@ -133,7 +133,7 @@ public class InvoiceXmlHelper {
       final Element homeCurrency = doc.createElement(RECEIPT_HOME_CURRENCY);
       createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPrice()));
       createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPrice()));
-      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getPriceVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getVatRate()));
       createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
       receiptItem.appendChild(homeCurrency);
 

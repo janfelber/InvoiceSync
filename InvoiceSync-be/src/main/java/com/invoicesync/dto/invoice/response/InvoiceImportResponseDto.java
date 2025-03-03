@@ -1,8 +1,9 @@
-package com.invoicesync.dto.invoice.pohoda;
+package com.invoicesync.dto.invoice.response;
 
 import java.util.Date;
 
 import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.invoice.pohoda.InvoiceResponseDetailsDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

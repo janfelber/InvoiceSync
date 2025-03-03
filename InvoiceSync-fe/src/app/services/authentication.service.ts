@@ -4,13 +4,14 @@ import {RegisterRequest} from "../models/register-request";
 import {AuthenticationReponse} from "../models/authentication-reponse";
 import {VerificationRequest} from "../models/verification-request";
 import {AuthenticationRequest} from "../models/authentication-request";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class  AuthenticationService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/auth';
+  private baseUrl = environment.apiUrl + '/api/v1/auth';
 
   constructor(
     private http: HttpClient

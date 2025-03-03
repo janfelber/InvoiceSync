@@ -1,7 +1,12 @@
 package com.invoicesync.module;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.invoicesync.user.UserDemo;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +40,9 @@ public class Receipt {
   @ManyToOne
   @JoinColumn(name = "\"company\"")
   private Company company;
+
+  @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ReceiptItem> items = new ArrayList<>();
 
   private String date;
 
@@ -63,5 +72,11 @@ public class Receipt {
 
   @Column(name = "partner_vat_id")
   private String partnerVatId;
+
+  @Column(name = "import_date")
+  private Date importDate;
+
+  @Column(name = "total_price")
+  private String totalPrice;
 
 }
