@@ -17,7 +17,7 @@ import {RouterLink} from "@angular/router";
     MatIconButton,
     NgForOf,
     NgClass,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'
@@ -28,6 +28,12 @@ export class ReceiptsComponent {
     private fileService: FileService,
     private axiosService: AxiosService) {
   }
+
+  companies = [
+    {id: 1, name: 'Company 1'},
+    {id: 2, name: 'Company 2'},
+    {id: 3, name: 'Company 3'},
+  ]
 
   ngOnInit(): void {
     this.onFetchAllImports();
