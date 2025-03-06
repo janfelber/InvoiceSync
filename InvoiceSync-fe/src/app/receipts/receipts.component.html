@@ -1,61 +1,114 @@
-<!-- button to import XML file -->
-<div class="body">
-  <div class="home-page-container">
-    <div class="home-page-title">
-      <p>Xml Imports</p>
-      <p class="import-function" (click)="onFileSelected()">
-        <mat-icon>add</mat-icon> <span class="import-text">Importuj nový súbor</span>
-      </p>
-    </div>
-    <div class="col">
-      <div class="table">
-        <div class="table-head">
-          <!-- sreach input -->
-          <input
-            type="text"
-            class="search-input"
-            placeholder="Search..."
-            style="width: 12rem; height: 2rem; font-size: 0.75rem; font-weight: 500;"/>
-        </div>
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-            <tr>
-              <th class="header-item" style="width: 5.452637%; text-align: center; font-weight: normal;">
-                <mat-checkbox class="rounded-checkbox"></mat-checkbox>
-              </th>
-              <th class="header-item" style="font-weight: 550;   font-family: 'Inter', sans-serif;"  *ngFor="let header of headers">{{ header }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let user of imports; let last = last">
-              <td class="cell" style="text-align: center" [ngClass]="{'last-row': last}">
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}" style="width: 2%">
-                <a [routerLink]="['/web/receipts', user.id]"
-                   class="text-link">
-                  {{ user.id }}
-                </a>
+<div class="w-full min-h-screen ">
+  <div class="mx-auto p-6">
 
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ user.partnerName }}
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ user.partnerRegistrationNumber }}
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ user.importDate | date:'dd.MM.yyyy' }}
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                <button mat-icon-button (click)="downloadFile(user.importId)">
-                  <mat-icon>download</mat-icon>
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="text-3xl font-semibold text-gray-700">Importy</h1>
+      <button class="px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+        Importuj bloček
+      </button>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+      <div class="flex items-center justify-between p-4">
+        <div class="flex flex-col gap-1 w-full">
+          <label class="text-sm text-gray-600 font-bold">Čo hľadáte?</label>
+
+          <div class="flex items-center gap-3 w-full">
+            <!-- Vyhľadávacie pole -->
+            <div class="flex items-center gap-3 border rounded-lg px-4 py-2 shadow-sm bg-gray-50 flex-grow">
+              <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35"></path>
+                <circle cx="10.5" cy="10.5" r="7.5"></circle>
+              </svg>
+              <input type="text" placeholder="Search..." class="bg-transparent outline-none w-full text-gray-700">
+            </div>
+
+            <button id="dropdownButtonDate" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
+              <span>Vyber datum</span>
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <button id="dropdownButtonSupplier" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
+              <span>Vyber dodavatela</span>
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <!-- Button "Filtrovať" -->
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ml-auto">
+              Filtrovať
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+
+
+
+    <!-- Table Container -->
+    <div class="bg-white shadow-md rounded-2xl overflow-hidden mt-10">
+
+      <!-- Action Bar -->
+      <div class="flex items-center justify-between p-4">
+        <h2 class="text-lg font-semibold text-gray-700">Importy</h2>
+
+        <div class="flex items-center gap-6">
+          <!-- Dropdown na výber firmy -->
+          <button id="dropdownButton" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
+            <span>Vyber firmu</span>
+            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+
+          <!-- Pagination -->
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">Zobrazené 1-10 z 50</span>
+            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">←</button>
+            <button class="px-3 py-1 border rounded-md bg-gray-200">1</button>
+            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">2</button>
+            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">3</button>
+            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">→</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabuľka -->
+      <table class="w-full text-left border-collapse text-sm"> <!-- text-sm pre menšie písmo -->
+        <thead class="bg-gray-100 text-gray-700">
+        <tr>
+          <th class="p-2.5 text-center"> <!-- p-2.5 namiesto p-3 -->
+            <mat-checkbox class="rounded-checkbox"></mat-checkbox>
+          </th>
+          <th class="p-2.5 font-medium" *ngFor="let header of headers">{{ header }}</th>
+          <th class="p-2.5 font-medium text-center">Akcie</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of imports; let last = last" class="border-b hover:bg-gray-100 transition-all">
+          <td class="p-2.5 text-left w-4 h-4">
+            <mat-checkbox></mat-checkbox>
+          </td>
+          <td class="p-2.5">
+            <a [routerLink]="['/web/receipts', user.id]" class="text-blue-600 hover:underline font-medium">
+              {{ user.id }}
+            </a>
+          </td>
+          <td class="p-2.5">{{ user.partnerName }}</td>
+          <td class="p-2.5">{{ user.partnerRegistrationNumber }}</td>
+          <td class="p-2.5">{{ user.importDate | date:'dd.MM.yyyy' }}</td>
+          <td class="p-2.5 text-center">
+            <button mat-icon-button class="text-gray-600 hover:text-indigo-600 transition-all" (click)="downloadFile(user.importId)">
+              <mat-icon>download</mat-icon>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 </div>
