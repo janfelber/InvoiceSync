@@ -25,7 +25,6 @@ import { Invoices } from './page/invoices/invoices.component';
 import { ContentComponent } from './content/content.component';
 import { HeaderCompanyComponent } from "./header-company/header-company.component";
 import {SideNavRedesignComponent} from "../redesign/side-nav-redesign/side-nav-redesign.component";
-import {HlmButtonDirective} from "@spartan-ng/ui-button-helm";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -48,7 +47,6 @@ interface SideNavToggle {
     GridInvoicesComponent,
     HeaderCompanyComponent,
     SideNavRedesignComponent,
-    HlmButtonDirective,
   ]
 })
 
