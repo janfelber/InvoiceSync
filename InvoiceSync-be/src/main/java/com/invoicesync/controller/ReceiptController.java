@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDTO;
 import com.invoicesync.dto.receipt.reponse.ReceiptDetailsDTO;
 import com.invoicesync.dto.receipt.reponse.ReceiptListDTO;
+import com.invoicesync.repository.CompanyRepository;
 import com.invoicesync.service.InvoiceXmlService;
 import com.invoicesync.service.ReceiptService;
 import com.invoicesync.user.CurrentUserService;
@@ -30,6 +32,8 @@ public class ReceiptController {
 
   private final InvoiceXmlService invoiceXmlService;
   private final CurrentUserService currentUserService;
+
+  private final CompanyRepository companyRepository;
 
   private final ReceiptService receiptService;
 
@@ -52,7 +56,27 @@ public class ReceiptController {
   @GetMapping("/current-user")
   public List<ReceiptListDTO> getReceiptsCurrentUser() {
     final Long currentUserId = currentUserService.getCurrentUserId();
-    return receiptService.getReceiptsByUserId(currentUserId);
+    final List<ReceiptListDTO> receipts = receiptService.getReceiptsByUserId(currentUserId);
+
+    receipts.sort((r1, r2) -> r2.getImportDate().compareTo(r1.getImportDate()));
+
+    return receipts;
+  }
+
+  //get receipts by company id
+  @GetMapping("/company/{id}")
+  public List<ReceiptListDTO> getReceiptsByCompanyId(@PathVariable("id") final Long companyId) {
+    final Long currentUserId = currentUserService.getCurrentUserId();
+
+    if (!companyRepository.existsByIdAndUserId(companyId, currentUserId)) {
+      throw new AccessDeniedException("User does not have access to this company");
+    }
+
+    final List<ReceiptListDTO> receipts = receiptService.getReceiptsByCompanyId(companyId);
+
+    receipts.sort((r1, r2) -> r2.getImportDate().compareTo(r1.getImportDate()));
+
+    return receipts;
   }
 
   @GetMapping("/{id}")

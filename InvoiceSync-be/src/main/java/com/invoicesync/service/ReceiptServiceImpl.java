@@ -92,8 +92,28 @@ public class ReceiptServiceImpl implements ReceiptService {
         .map(receipt -> new ReceiptListDTO(
             receipt.getId(),
             receipt.getPartnerName(),
-            receipt.getPartnerRegistrationNumber(),
             receipt.getImportDate(),
+            receipt.getCompany().getName(),
+            receipt.getPartnerRegistrationNumber(),
+            receipt.getPartnerTaxId(),
+            receipt.getPartnerVatId(),
+            receipt.getTotalPrice()
+        ))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<ReceiptListDTO> getReceiptsByCompanyId(final Long companyId) {
+    return receiptRepository.findByCompanyId(companyId)
+        .stream()
+        .map(receipt -> new ReceiptListDTO(
+            receipt.getId(),
+            receipt.getPartnerName(),
+            receipt.getImportDate(),
+            receipt.getCompany().getName(),
+            receipt.getPartnerRegistrationNumber(),
+            receipt.getPartnerTaxId(),
+            receipt.getPartnerVatId(),
             receipt.getTotalPrice()
         ))
         .collect(Collectors.toList());
