@@ -17,9 +17,15 @@ public class ReceiptListDTO {
 
   private String partnerName;
 
+  private Date importDate;
+
+  private String company;
+
   private String partnerRegistrationNumber;
 
-  private Date importDate;
+  private String partnerTaxId;
+
+  private String partnerVatId;
 
   private String totalPrice;
 }

@@ -1,23 +1,21 @@
-import { Component } from '@angular/core';
-import {DatePipe, NgClass, NgForOf} from "@angular/common";
-import {MatCheckbox} from "@angular/material/checkbox";
-import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {Component} from '@angular/core';
+import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileService} from "../file.service";
 import {AxiosService} from "../axios.service";
 import {RouterLink} from "@angular/router";
+import {initFlowbite} from 'flowbite'
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-receipts',
   imports: [
     DatePipe,
-    MatCheckbox,
-    MatIcon,
-    MatIconButton,
     NgForOf,
-    NgClass,
     RouterLink,
+    NgIf,
+    FormsModule,
+    CurrencyPipe
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'
@@ -27,21 +25,46 @@ export class ReceiptsComponent {
   constructor(
     private fileService: FileService,
     private axiosService: AxiosService) {
+    this.calculatePages();
   }
 
-  companies = [
-    {id: 1, name: 'Company 1'},
-    {id: 2, name: 'Company 2'},
-    {id: 3, name: 'Company 3'},
-  ]
+  calculatePages() {
+    this.pages = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pages.push(i);
+    }
+  }
+
+  // Funkcia na zmenu stránky
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) {
+      return; // Zabráni zmenám mimo rozsahu
+    }
+    this.currentPage = page;
+  }
+
+  protected companies: any[] = [];
+  protected suppliers: any[] = [];
+  protected selectedCompanyId: any;
+  filteredInvoiceImports: any[] = [];
+
+  currentPage = 1;
+  totalPages = 5;  // Prispôsob podľa potreby (napr. podľa počtu položiek)
+  pages: number[] = [];
 
   ngOnInit(): void {
     this.onFetchAllImports();
+    this.onFetchCompanies();
+    initFlowbite();
   }
 
-  headers = ['Status', 'Nazov', 'Pridane', 'Stiahnut'];
+  headers = ['ID', 'Dodávateľ', 'Dátum importu', 'Odberateľ', 'IČO', 'DIČ', 'IČ DPH', 'Cena (€)'];
 
-  protected imports: string[] = [];
+  protected imports: any[] = [];
+
+  selectedCompanyName = 'Vyber spoločnosť';
+  selectedSupplier = 'Vyber dodávateľa';
+  searchText: string = '';
 
   onFetchAllImports(): void {
     this.axiosService.request(
@@ -50,10 +73,30 @@ export class ReceiptsComponent {
       null
     ).then(
       (imports) => {
-        this.imports = imports.data
+        this.imports = imports.data;
+        this.filteredInvoiceImports = [...this.imports];
+        this.getSuppliers();
         console.log(imports.data);
       }
     )
+  }
+
+  // TODO: implement filtering by supplier
+  // onChangeSupplier(supplier: any) {
+  //   this.selectedSupplier = supplier;
+  //   this.filteredInvoiceImports = this.imports.filter(invoice => invoice.partnerName === supplier);
+  // }
+
+  getSuppliers() {
+    this.suppliers = Array.from(new Set(this.filteredInvoiceImports.map(invoice => invoice.partnerName)));
+    console.log(this.suppliers)
+  }
+
+  searchInvoices() {
+    this.filteredInvoiceImports = this.imports.filter(invoice =>
+      invoice.partnerName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      invoice.partnerRegistrationNumber.toLowerCase().includes(this.searchText.toLowerCase())
+    );
   }
 
   onFileSelected(): void {
@@ -89,6 +132,40 @@ export class ReceiptsComponent {
       complete: () => {
         console.log('Upload complete');
       }
+    });
+  }
+
+  onFetchCompanies() {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/company/user`,
+      null
+    ).then(
+      (companies) => {
+        this.companies = companies.data
+        console.log(companies.data);
+      }
+    ).catch(() => {
+    });
+  }
+
+  onSelectCompany(company: any) {
+    this.selectedCompanyName = company.name;
+    this.selectedCompanyId = company.id;
+    console.log(this.selectedCompanyName)
+    this.onCompanyChange(company);
+  }
+
+  onCompanyChange(company: any) {
+    this.axiosService.request(
+      "GET",
+      `/api/v1/receipt/company/${company.id}`,
+      null,
+    ).then(response => {
+      console.log(response.data);
+      this.filteredInvoiceImports = response.data;
+    }).catch(error => {
+      console.error(error);
     });
   }
 }

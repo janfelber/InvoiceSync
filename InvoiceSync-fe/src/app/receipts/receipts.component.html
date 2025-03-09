@@ -3,7 +3,7 @@
 
     <div class="flex items-center justify-between mb-10">
       <h1 class="text-3xl font-semibold text-gray-700">Importy</h1>
-      <button class="px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+      <button class="px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" (click)="onFileSelected()">
         Importuj bloček
       </button>
     </div>
@@ -15,32 +15,54 @@
 
           <div class="flex items-center gap-3 w-full">
             <!-- Vyhľadávacie pole -->
-            <div class="flex items-center gap-3 border rounded-lg px-4 py-2 shadow-sm bg-gray-50 flex-grow">
-              <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35"></path>
-                <circle cx="10.5" cy="10.5" r="7.5"></circle>
-              </svg>
-              <input type="text" placeholder="Search..." class="bg-transparent outline-none w-full text-gray-700">
-            </div>
+            <form class="flex items-center w-full flex">
+              <label for="simple-search" class="sr-only">Search</label>
+              <div class="relative w-full">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                  </svg>
+                </div>
+                <input type="text" id="simple-search" [(ngModel)]="searchText" name="search"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                       placeholder="Vyhľadávanie" required />
+              </div>
+            </form>
 
-            <button id="dropdownButtonDate" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
-              <span>Vyber datum</span>
-              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
+            <!-- TODO: Implement datepicker -->
+<!--            <div class="relative max-w-sm">-->
+<!--              <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">-->
+<!--                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">-->
+<!--                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>-->
+<!--                </svg>-->
+<!--              </div>-->
+<!--              <input datepicker id="datepicker-autohide" datepicker datepicker-autohide type="text"-->
+<!--                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 px-4 h-10 light:bg-gray dark:border-gray dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500 "-->
+<!--                     placeholder="Vyber dátum">-->
+<!--            </div>-->
 
-            <button id="dropdownButtonSupplier" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
-              <span>Vyber dodavatela</span>
-              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
+            <!-- TODO: Implement supplier dropdown -->
+<!--            <button id="dropdownSupplier" data-dropdown-toggle="supplier"-->
+<!--                    class="h-10.5 w-72 text-gray-700 bg-white border hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-white dark:text-black dark:border-gray-300 dark:hover:bg-gray-300 dark:focus:ring-gray-700"-->
+<!--                    type="button">-->
+<!--              <span class="truncate text-left">{{ selectedSupplier }}</span>-->
+<!--              <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">-->
+<!--                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>-->
+<!--              </svg>-->
+<!--            </button>-->
 
-            <!-- Button "Filtrovať" -->
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition ml-auto">
-              Filtrovať
-            </button>
+<!--            &lt;!&ndash; Dropdown menu &ndash;&gt;-->
+<!--            <div id="supplier" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 dark:bg-white border border-black-500">-->
+<!--              <ul class="py-2 text-sm text-black dark:text-black" aria-labelledby="dropdownDefaultButton">-->
+<!--                <li *ngIf="suppliers.length > 0">-->
+<!--                  <a class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-200 dark:hover:text-black" *ngFor="let supplier of suppliers" (click)="onChangeSupplier(supplier)">{{ supplier}}</a>-->
+<!--                </li>-->
+<!--                <li *ngIf="suppliers.length === 0" class="block px-4 py-2 text-gray-500 italic">-->
+<!--                   Žiadni dodávatelia nie sú k dispozícii-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
+            <button type="button" (click)="searchInvoices()"  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-32 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Vyhľadať</button>
           </div>
         </div>
       </div>
@@ -55,60 +77,130 @@
       <div class="flex items-center justify-between p-4">
         <h2 class="text-lg font-semibold text-gray-700">Importy</h2>
 
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3">
+          <span class="font-bold  text-sm text-gray-400"> Zobraziť </span>
           <!-- Dropdown na výber firmy -->
-          <button id="dropdownButton" class="px-4 py-2 border rounded-lg bg-white shadow-sm flex items-center gap-40">
-            <span>Vyber firmu</span>
-            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                  class="w-56 text-gray-700 bg-white border hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 ps-3.5 text-center inline-flex items-center justify-between dark:bg-white dark:text-black dark:border-gray-300 dark:hover:bg-gray-300 dark:focus:ring-gray-700"
+                  type="button">
+            <span class="truncate w-full text-left">{{ selectedCompanyName }}</span>
+            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
             </svg>
           </button>
 
-          <!-- Pagination -->
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">Zobrazené 1-10 z 50</span>
-            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">←</button>
-            <button class="px-3 py-1 border rounded-md bg-gray-200">1</button>
-            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">2</button>
-            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">3</button>
-            <button class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-200">→</button>
+          <!-- Dropdown menu -->
+          <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 dark:bg-white border border-black-500">
+            <ul class="py-2 text-sm text-black dark:text-black" aria-labelledby="dropdownDefaultButton">
+              <li *ngIf="companies.length > 0">
+                <a class="block px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-200 dark:hover:text-black" *ngFor="let data of companies" (click)="onSelectCompany(data)">{{ data.name }}</a>
+              </li>
+              <li *ngIf="companies.length === 0" class="block px-4 py-2 text-gray-500 italic">
+                Žiadne firmy nie sú k dispozícii
+              </li>
+            </ul>
           </div>
+
+          <!-- Pagination -->
+          <div class="flex items-center gap-4">
+          <nav aria-label="navigation">
+            <ul class="flex items-center -space-x-px h-8 text-sm">
+              <!-- Previous Button -->
+              <li>
+                <a href="#" (click)="changePage(currentPage - 1)"
+                   [class.disabled]="currentPage === 1"
+                   class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">
+                  <span class="sr-only">Previous</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                  </svg>
+                </a>
+              </li>
+
+              <!-- Pages -->
+              <li *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">
+                <a href="#" (click)="changePage(page)"
+                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">
+                  {{ page }}
+                </a>
+              </li>
+
+              <!-- Next Button -->
+              <li>
+                <a href="#" (click)="changePage(currentPage + 1)"
+                   [class.disabled]="currentPage === totalPages"
+                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">
+                  <span class="sr-only">Next</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
         </div>
       </div>
 
-      <!-- Tabuľka -->
-      <table class="w-full text-left border-collapse text-sm"> <!-- text-sm pre menšie písmo -->
-        <thead class="bg-gray-100 text-gray-700">
+      <table class="w-full text-sm text-left rtl:text-right text-black dark:text-black">
+        <thead class="text-xs text-black uppercase bg-gray-100 dark:bg-gray-100 dark:text-black">
         <tr>
-          <th class="p-2.5 text-center"> <!-- p-2.5 namiesto p-3 -->
-            <mat-checkbox class="rounded-checkbox"></mat-checkbox>
+          <th scope="col" class="p-4">
+            <div class="flex items-center">
+              <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:border-gray-300">
+              <label for="checkbox-all-search" class="sr-only">checkbox</label>
+            </div>
           </th>
-          <th class="p-2.5 font-medium" *ngFor="let header of headers">{{ header }}</th>
-          <th class="p-2.5 font-medium text-center">Akcie</th>
+          <th scope="col" class="px-6 py-3" *ngFor="let header of headers">{{ header }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let user of imports; let last = last" class="border-b hover:bg-gray-100 transition-all">
-          <td class="p-2.5 text-left w-4 h-4">
-            <mat-checkbox></mat-checkbox>
+        <tr class="bg-white border-b dark:bg-white border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-200" *ngFor="let user of filteredInvoiceImports;">
+          <td class="w-4 p-4">
+            <div class="flex items-center">
+              <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:border-gray-600">
+              <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+            </div>
           </td>
-          <td class="p-2.5">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             <a [routerLink]="['/web/receipts', user.id]" class="text-blue-600 hover:underline font-medium">
               {{ user.id }}
             </a>
+          </th>
+          <td class="px-6 py-4">
+            {{ user.partnerName }}
           </td>
-          <td class="p-2.5">{{ user.partnerName }}</td>
-          <td class="p-2.5">{{ user.partnerRegistrationNumber }}</td>
-          <td class="p-2.5">{{ user.importDate | date:'dd.MM.yyyy' }}</td>
-          <td class="p-2.5 text-center">
-            <button mat-icon-button class="text-gray-600 hover:text-indigo-600 transition-all" (click)="downloadFile(user.importId)">
-              <mat-icon>download</mat-icon>
-            </button>
+          <td class="px-6 py-4">
+            {{ user.importDate | date:'dd.MM.yyyy' }}
           </td>
+          <td class="px-6 py-4">
+            {{ user.company }}
+          </td>
+          <td class="px-6 py-4">
+            {{ user.partnerRegistrationNumber }}
+          </td>
+          <td class="px-6 py-4">
+            {{ user.partnerTaxId }}
+          </td>
+          <td class="px-6 py-4">
+            {{ user.partnerVatId }}
+          </td>
+          <td class="px-6 py-4">
+            {{ user.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
+          </td>
+
+
+<!--          <td class="px-6 py-4">-->
+<!--            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>-->
+<!--          </td>-->
         </tr>
         </tbody>
       </table>
 
     </div>
   </div>
+
+
+
+
 </div>

@@ -13,6 +13,8 @@ public interface ReceiptService {
 
    List<ReceiptListDTO> getReceiptsByUserId(Long userId);
 
+   List<ReceiptListDTO> getReceiptsByCompanyId(Long companyId);
+
    ReceiptDetailsDTO getReceiptById(Long id);
 
 }
