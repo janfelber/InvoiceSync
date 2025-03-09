@@ -12,4 +12,6 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
 
   List<Receipt> findByUserId(Long id);
 
+  List<Receipt> findByCompanyId(Long companyId);
+
 }
