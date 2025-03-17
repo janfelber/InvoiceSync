@@ -1,0 +1,786 @@
+<div class="w-full min-h-screen ">
+  <div class="mx-auto p-6">
+
+    <!-- tabs -->
+    <div class="mb-4 border-b border-gray-400">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center" id="default-tab"
+          data-tabs-toggle="#default-tab-content" role="tablist">
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-1 px-3 border-b-3 rounded-t-lg !text-black hover:!border-blue-500"
+                  id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
+                  aria-selected="false">Zakladné Informácie
+          </button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-1 px-3 border-b-3 rounded-t-lg !text-black hover:!border-blue-500"
+                  id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
+                  aria-selected="false">Učtovná knižka
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- tabs content -->
+    <div id="default-tab-content">
+      <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel"
+           aria-labelledby="profile-tab">
+        <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong
+          class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another
+          tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
+          content visibility and styling.</p>
+      </div>
+      <div class="hidden p-4 rounded-lg bg-gray-50" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab"
+           style="background-color: #f3f7f9;">
+        <!-- content chart of accounts -->
+        <div class="md:flex" data-tabs-toggle="#profileTabs">
+          <!-- Tab Links (Tab Toggling Buttons) -->
+          <ul
+            class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0"
+            id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content"
+            data-tabs-active-classes="text-purple-600 bg-blue dark:bg-blue-600 hover:text-white dark:text-white"
+            data-tabs-inactive-classes="dark:border-transparent border-gray-100 hover:border-gray-300 hover:bg-blue-600 dark:bg-white dark:text-black">
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg w-full dark:hover:text-white"
+                 role="tab" data-tabs-target="#class0" aria-selected="true">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 0</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg w-full dark:hover:text-white"
+                 role="tab" data-tabs-target="#class1" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+
+                <span class="whitespace-nowrap">Účtová trieda 1</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class2" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 2</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class3" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 3</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class4" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 4</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class5" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 5</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class6" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 6</span>
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 class="inline-flex items-center px-4 py-3 rounded-lg dark:hover:text-white"
+                 role="tab" data-tabs-target="#class7" aria-selected="false">
+                <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                     fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+                </svg>
+                <span class="whitespace-nowrap">Účtová trieda 7</span>
+              </a>
+            </li>
+          </ul>
+          <!-- Tab Content Section -->
+          <div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-white rounded-lg w-full">
+            <!-- Class0 Tab Content -->
+            <div id="class0" role="tabpanel" class="tab-content hidden" aria-labelledby="class0"
+                 data-tabs-target="#class0">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 0</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts0)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts0[Object.keys(accounts0)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts0[Object.keys(accounts0)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts0[Object.keys(accounts0)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class1 Tab Content -->
+            <div id="class1" role="tabpanel" class="tab-content hidden" aria-labelledby="class1"
+                 data-tabs-target="#class1">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 1</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts1)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts1[Object.keys(accounts1)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts1[Object.keys(accounts1)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts1[Object.keys(accounts1)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class2 Tab Content -->
+            <div id="class2" role="tabpanel" class="tab-content hidden" aria-labelledby="class2"
+                 data-tabs-target="#class2">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 2</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts2)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts2[Object.keys(accounts2)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts2[Object.keys(accounts2)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts2[Object.keys(accounts2)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class3 Tab Content -->
+            <div id="class3" role="tabpanel" class="tab-content hidden" aria-labelledby="class3"
+                 data-tabs-target="#class3">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 3</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts3)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts3[Object.keys(accounts3)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts3[Object.keys(accounts3)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts3[Object.keys(accounts3)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class4 Tab Content -->
+            <div id="class4" role="tabpanel" class="tab-content hidden" aria-labelledby="class4"
+                 data-tabs-target="#class4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 4</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts4)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts4[Object.keys(accounts4)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts4[Object.keys(accounts4)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts4[Object.keys(accounts4)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class5 Tab Content -->
+            <div id="class5" role="tabpanel" class="tab-content hidden" aria-labelledby="class5"
+                 data-tabs-target="#class5">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 5</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts5)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts5[Object.keys(accounts5)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts5[Object.keys(accounts5)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts5[Object.keys(accounts5)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class6 Tab Content -->
+            <div id="class6" role="tabpanel" class="tab-content hidden" aria-labelledby="class6"
+                 data-tabs-target="#class6">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 6</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts6)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts6[Object.keys(accounts6)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts6[Object.keys(accounts6)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts6[Object.keys(accounts6)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- Class7 Tab Content -->
+            <div id="class7" role="tabpanel" class="tab-content hidden" aria-labelledby="class7"
+                 data-tabs-target="#class7">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-2">Účtová trieda 7</h3>
+              <p class="mb-2 font-bold dark:text-gray-700">{{ Object.keys(accounts7)[0] }}</p>
+              <div *ngFor="let category of Object.keys(accounts7[Object.keys(accounts7)[0]].categories)">
+                <div class="flex justify-between items-center mt-4" (click)="toggleCategory(category)">
+                  <h3 class="font-medium text-lg mb-2">
+                    {{ category }} - {{ accounts7[Object.keys(accounts7)[0]].categories[category].categoryName }}
+                  </h3>
+                  <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white cursor-pointer"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <!-- Zmeň šípku na základe stavu otvorenia -->
+                    <path
+                      *ngIf="!isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                    <path
+                      *ngIf="isCategoryOpen(category)"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m9 15 7-7 7 7"
+                    />
+                  </svg>
+                </div>
+                <ul *ngIf="isCategoryOpen(category)" class="space-y-3">
+                  <li *ngFor="let account of accounts7[Object.keys(accounts7)[0]].categories[category].accounts"
+                      class="flex justify-between items-center p-4 bg-white dark:bg-white border border-gray-500 text-gray-900 dark:text-gray-900 rounded-lg shadow-sm hover:shadow-lg transition-all hover:bg-gray-100 dark:hover:bg-blue-600 hover:!text-white">
+                    <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+
+                    <!-- Div icon + popover -->
+                    <div class="relative flex items-center gap-1 group"
+                         (click)="account.editable ? onEdit() : null">
+                      <!-- SVG icon -->
+                      <div>
+                        <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                             width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd"
+                                d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="font-bold hover:cursor-pointer text-sm">
+                          Upraviť
+                        </p>
+                      </div>
+
+                      <!-- Popover -->
+                      <div
+                        class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                        <p class="text-sm text-gray-600">{{
+                            account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                              : 'Tento základný účtovný účet nie je možné upraviť.'
+                          }}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+
+            <!-- Modal toggle -->
+            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+              Toggle modal
+            </button>
+
+            <!-- Main modal -->
+            <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+              <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                      Sign in to our platform
+                    </h3>
+                    <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal">
+                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                    </button>
+                  </div>
+                  <!-- Modal body -->
+                  <div class="p-4 md:p-5">
+                    <form class="space-y-4" action="#">
+                      <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required />
+                      </div>
+                      <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                        <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                      </div>
+                      <div class="flex justify-between">
+                        <div class="flex items-start">
+                          <div class="flex items-center h-5">
+                            <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+                          </div>
+                          <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Lost Password?</a>
+                      </div>
+                      <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
+                      <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        Not registered? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
