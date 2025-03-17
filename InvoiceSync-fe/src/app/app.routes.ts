@@ -11,6 +11,7 @@ import {AdminComponent} from "./admin/admin.component";
 import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
 import {ReceiptsComponent} from "./receipts/receipts.component";
 import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.component";
+import {CompanyDetailsComponent} from "./company-details/company-details.component";
 
 export const routes: Routes = [
   {
@@ -42,6 +43,10 @@ export const routes: Routes = [
       {
         path: 'web/receipts/:id',
         component: ReceiptDetailsComponent
+      },
+      {
+        path: 'web/company/:id',
+        component: CompanyDetailsComponent
       },
       {
         path: 'invoices',

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.invoicesync.module.ChartAccount;
 import com.invoicesync.module.Company;
 import com.invoicesync.module.XmlFile;
 import com.invoicesync.token.Token;
@@ -57,6 +58,9 @@ public class UserDemo implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Company> companies;
+
+    @OneToMany(mappedBy = "user")
+    private List<ChartAccount> chartAccounts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
