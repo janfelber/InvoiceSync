@@ -26,7 +26,7 @@ import com.invoicesync.user.CurrentUserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/v1")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('USER')")
 public class ImportController {

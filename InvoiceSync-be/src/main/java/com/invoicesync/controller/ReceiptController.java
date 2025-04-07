@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/receipt")
+@RequestMapping("/v1/receipt")
 public class ReceiptController {
 
   private final InvoiceXmlService invoiceXmlService;

@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/pohoda")
+@RequestMapping("/v1/pohoda")
 public class PohodaController {
 
   private final InvoiceXmlHelper xmlHelper;

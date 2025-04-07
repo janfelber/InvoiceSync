@@ -73,15 +73,11 @@ export class HomeComponent {
 
   saveCompany(data: any): void {
     const valuesToSend = data.map((input: { value: any }) => input.value);
-
-    console.log('Posielam údaje na server:', valuesToSend);
-
     this.axiosService.request(
       "POST",
-      `/api/v1/company/add`,
+      `/v1/company/add`,
       { name: valuesToSend[0] }
     ).then(response => {
-      console.log('Spoločnosť bola úspešne vytvorená:', response);
       this.onFetchAllCompanies();
     }).catch(error => {
       console.error('Chyba pri vytváraní spoločnosti:', error);
@@ -91,12 +87,11 @@ export class HomeComponent {
   onFetchAllCompanies(): void {
     this.axiosService.request(
       "GET",
-      `/api/v1/company/user`,
+      `/v1/company/user`,
       null
     ).then(
       (comapanies) => {
         this.filteredCompanies = [...comapanies.data];
-        console.log(comapanies.data);
       }
     )
   }

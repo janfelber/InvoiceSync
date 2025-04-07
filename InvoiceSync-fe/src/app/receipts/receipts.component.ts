@@ -2,10 +2,11 @@ import {Component} from '@angular/core';
 import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileService} from "../file.service";
-import {AxiosService} from "../axios.service";
 import {RouterLink} from "@angular/router";
 import {initFlowbite} from 'flowbite'
 import {FormsModule} from '@angular/forms';
+import {ReceiptService} from "../services/receipt.service";
+import {CompanyService} from "../services/company.service";
 
 @Component({
   selector: 'app-receipts',
@@ -24,7 +25,8 @@ export class ReceiptsComponent {
 
   constructor(
     private fileService: FileService,
-    private axiosService: AxiosService) {
+    private receiptService: ReceiptService,
+    private companyService: CompanyService) {
     this.calculatePages();
   }
 
@@ -35,7 +37,7 @@ export class ReceiptsComponent {
     }
   }
 
-  // Funkcia na zmenu stránky
+
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) {
       return; // Zabráni zmenám mimo rozsahu
@@ -49,12 +51,12 @@ export class ReceiptsComponent {
   filteredInvoiceImports: any[] = [];
 
   currentPage = 1;
-  totalPages = 5;  // Prispôsob podľa potreby (napr. podľa počtu položiek)
+  totalPages = 5;
   pages: number[] = [];
 
   ngOnInit(): void {
-    this.onFetchAllImports();
-    this.onFetchCompanies();
+    this.onFetchAllReceipts();
+    this.onFetchAllCompanies();
     initFlowbite();
   }
 
@@ -66,19 +68,22 @@ export class ReceiptsComponent {
   selectedSupplier = 'Vyber dodávateľa';
   searchText: string = '';
 
-  onFetchAllImports(): void {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/receipt/current-user`,
-      null
-    ).then(
-      (imports) => {
-        this.imports = imports.data;
-        this.filteredInvoiceImports = [...this.imports];
-        this.getSuppliers();
-        console.log(imports.data);
+
+  onFetchAllReceipts(): void {
+    this.receiptService.fetchAllReceipts().then((imports) => {
+      this.imports = imports.data;
+      this.filteredInvoiceImports = [...this.imports];
+      this.getSuppliers();
+    });
+  }
+
+  onFetchAllCompanies() {
+    this.companyService.fetchAllCompanies().then(
+      (companies) => {
+        this.companies = companies.data
       }
-    )
+    ).catch(() => {
+    });
   }
 
   // TODO: implement filtering by supplier
@@ -89,7 +94,6 @@ export class ReceiptsComponent {
 
   getSuppliers() {
     this.suppliers = Array.from(new Set(this.filteredInvoiceImports.map(invoice => invoice.partnerName)));
-    console.log(this.suppliers)
   }
 
   searchInvoices() {
@@ -120,9 +124,10 @@ export class ReceiptsComponent {
     for (const file of files) {
       formData.append('file', file, file.name);
     }
-    formData.append('companyId', '2');
 
-    this.fileService.uploadReceipt(formData).subscribe({
+    formData.append('companyId', this.selectedCompanyId.toString());
+
+    this.receiptService.uploadReceipt(formData).subscribe({
       next: (event) => {
         console.log(event);
       },
@@ -135,37 +140,19 @@ export class ReceiptsComponent {
     });
   }
 
-  onFetchCompanies() {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/company/user`,
-      null
-    ).then(
-      (companies) => {
-        this.companies = companies.data
-        console.log(companies.data);
-      }
-    ).catch(() => {
-    });
-  }
-
   onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
     this.selectedCompanyId = company.id;
-    console.log(this.selectedCompanyName)
-    this.onCompanyChange(company);
+    this.onCompanyChange(this.selectedCompanyId);
   }
 
-  onCompanyChange(company: any) {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/receipt/company/${company.id}`,
-      null,
-    ).then(response => {
-      console.log(response.data);
-      this.filteredInvoiceImports = response.data;
-    }).catch(error => {
-      console.error(error);
-    });
+  onCompanyChange(companyId: number) {
+    this.receiptService.fetchReceiptsByCompany(companyId)
+      .then(response => {
+        this.filteredInvoiceImports = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 }

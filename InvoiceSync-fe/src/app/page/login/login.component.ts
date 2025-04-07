@@ -59,7 +59,6 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
             localStorage.setItem('token', response.access_token as string);
-            console.log(response.access_token)
             this.router.navigate(['welcome']);
         }
       })

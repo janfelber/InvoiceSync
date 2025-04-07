@@ -3,7 +3,7 @@ import {AxiosService} from "../axios.service";
 import {ActivatedRoute} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import {InvoiceService} from "../page/invoices/invoice.service";
+import {InvoiceService} from "../services/invoice.service";
 import {InvoiceRequest} from "../models/invoice-request";
 
 @Component({
@@ -87,7 +87,7 @@ export class InvoiceInspect implements OnInit {
     try {
       const response = await this.axiosService.request(
         "GET",
-        `/api/v1/company/info/${this.companyId}`,
+        `/v1/company/info/${this.companyId}`,
         null
       );
       this.myIdentity = response.data;
@@ -107,7 +107,7 @@ export class InvoiceInspect implements OnInit {
   onFetchInvoice(): void {
     this.axiosService.request(
       "GET",
-      `/api/v1/import/${this.importId}`,
+      `/v1/import/${this.importId}`,
       null
     ).then(response => {
         const data = response.data;

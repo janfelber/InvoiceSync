@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FileService} from "../../file.service";
-import {InvoiceService} from "./invoice.service";
+import {InvoiceService} from "../../services/invoice.service";
 import {AxiosService} from "../../axios.service";
 import { HttpErrorResponse, HttpEvent, HttpEventType } from "@angular/common/http";
 import {DatePipe} from "@angular/common";
@@ -16,6 +16,7 @@ import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-di
 import {ToastrService} from "ngx-toastr";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTooltip} from "@angular/material/tooltip";
+import {CompanyService} from "../../services/company.service";
 
 //TODO: filter state
 interface ImportItem {
@@ -50,7 +51,7 @@ export class Invoices {
 
   protected isLoading: boolean = true;
 
-  protected selectedCompanyId: any;
+  protected selectedCompanyId!: number;
 
   protected schema_name: string = '';
 
@@ -87,14 +88,15 @@ export class Invoices {
     private invoiceService: InvoiceService,
     private axiosService: AxiosService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private companyService: CompanyService
   ) {
   }
 
 
   ngOnInit(): void {
     this.onFetchAllImports();
-    this.onFetchCompanies();
+    this.onFetchAllCompanies();
   }
 
   toggleSelectAll(event: any): void {
@@ -148,15 +150,10 @@ export class Invoices {
   }
 
   onFetchAllImports(): void {
-    this.axiosService.request(
-      "GET",
-      "/api/v1/import/user",
-      null
-    ).then(
+    this.invoiceService.fetchAllInvoices().then(
       (imports) => {
         this.imports = imports.data;
         this.filteredInvoiceImports = [...this.imports];
-        console.log(imports.data);
         setTimeout(() => {
           this.isLoading = false;
         }, 3000);
@@ -212,7 +209,6 @@ export class Invoices {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialóg zatvorený s výsledkom:', result);
         this.saveCompany(result);
       } else {
         console.log('Dialóg bol zrušený');
@@ -223,48 +219,23 @@ export class Invoices {
   saveCompany(data: any): void {
     const valuesToSend = data.map((input: { value: any }) => input.value);
 
-    console.log('Posielam údaje na server:', valuesToSend);
+    const formData = new FormData();
+    formData.append("name", valuesToSend[0]);
 
-    this.axiosService.request(
-      "POST",
-      `/api/v1/company/add`,
-      { name: valuesToSend[0] }
-    ).then(response => {
-      console.log('Spoločnosť bola úspešne vytvorená:', response);
-      this.onFetchCompanies();
-    }).catch(error => {
-      console.error('Chyba pri vytváraní spoločnosti:', error);
-    });
+    this.companyService.addCompany(formData)
+      .then(response => {
+        this.onFetchAllCompanies();
+      })
+      .catch(error => {
+        console.error("Chyba pri vytváraní spoločnosti:", error);
+      });
   }
 
-  /**
-   * @deprecated This method is deprecated and will be removed in future versions this should use new api approach
-   */
-  onFetchImports(): void {
-    this.isLoading = true;
-    this.invoiceService.fetchImports(this.selectedCompanyId).subscribe(
-      imports => {
-        this.imports = imports;
-        this.isLoading = false;
-        console.table(imports);
-      },
-      error => {
-        console.log(error);
-        this.isLoading = false;
-      }
-    );
-  }
-
-  onFetchCompanies() {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/company/user`,
-      null
-    ).then(
+  onFetchAllCompanies() {
+    this.companyService.fetchAllCompanies().then(
       (companies) => {
         this.companies = companies.data
         this.isLoading = false;
-        console.log(companies.data);
 
         if (this.companies.length === 0) {
           this.toastr.warning('Nemáte pridané žiadne spoločnosti!', 'Informácia',
@@ -285,7 +256,6 @@ export class Invoices {
   downloadFile(importId: number) {
     this.axiosService.request('GET', `/file/generateZip/${importId}`, null, { responseType: 'blob' })
       .then((response) => {
-        console.log(response);
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -323,8 +293,7 @@ export class Invoices {
     }
     this.fileService.uploadPdf(formData).subscribe({
       next: (event) => {
-        console.log(event);
-        this.onCompanyChange({ id: this.selectedCompanyId });
+        this.onCompanyChange(this.selectedCompanyId);
       },
       error: (error: HttpErrorResponse) => {
         console.error(error);
@@ -361,27 +330,15 @@ export class Invoices {
   onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
     this.selectedCompanyId = company.id;
-    console.log(this.selectedCompanyName)
-    this.onCompanyChange(company);
+    this.onCompanyChange(this.selectedCompanyId);
   }
 
-  onCompanyChange(company: any) {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/imports/company/${company.id}/current-user`,
-      null,
-    ).then(response => {
-      console.log(response.data);
-      //update imports
+  onCompanyChange(companyId: number) {
+    this.invoiceService.fetchInvoicesByCompany(companyId).then(response => {
       this.filteredInvoiceImports = response.data;
     }).catch(error => {
       console.error(error);
     });
-  }
-
-
-  reloadImports() {
-    this.onFetchImports();
   }
 
 }

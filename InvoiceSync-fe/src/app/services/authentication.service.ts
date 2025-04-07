@@ -11,7 +11,7 @@ import {environment} from "../../environments/environment";
 })
 export class  AuthenticationService {
 
-  private baseUrl = environment.apiUrl + '/api/v1/auth';
+  private baseUrl = environment.apiUrl + '/v1/auth';
 
   constructor(
     private http: HttpClient

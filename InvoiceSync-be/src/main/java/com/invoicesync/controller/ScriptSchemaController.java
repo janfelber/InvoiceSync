@@ -13,7 +13,7 @@ import com.invoicesync.module.ScriptSchema;
 import com.invoicesync.service.ScriptSchemaService;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/v1")
 public class ScriptSchemaController {
 
     private final ScriptSchemaService scriptSchemaService;

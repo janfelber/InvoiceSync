@@ -46,7 +46,7 @@ export class ReceiptDetailsComponent implements OnInit {
     try {
       const response = await this.axiosService.request(
         "GET",
-        `/api/v1/company/info/3`,
+        `/v1/company/info/3`,
         null
       );
       this.myIdentity = response.data;
@@ -58,11 +58,10 @@ export class ReceiptDetailsComponent implements OnInit {
   onFetchReceipt() {
     this.axiosService.request(
       'GET',
-      `/api/v1/receipt/${this.receiptId}`,
+      `/v1/receipt/${this.receiptId}`,
       null,
     ).then(response => {
       const data = response.data;
-      console.log(data);
       this.companyId = data.company;
       this.receipt = data.receiptDetails;
       this.partner = data.partner;

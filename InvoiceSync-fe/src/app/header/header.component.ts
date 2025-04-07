@@ -29,7 +29,6 @@ export class HeaderComponent {
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
-    console.log('Dropdown is now', this.isDropdownOpen ? 'open' : 'closed');
   }
 
   closeDropdown() {

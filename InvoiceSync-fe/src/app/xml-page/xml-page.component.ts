@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import {FileService} from "../file.service";
-import {InvoiceService} from "../page/invoices/invoice.service";
+import {InvoiceService} from "../services/invoice.service";
 import {AxiosService} from "../axios.service";
 import {MatTableModule} from '@angular/material/table';
 import {MatIcon} from "@angular/material/icon";
@@ -10,6 +10,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import {ReactiveFormsModule} from "@angular/forms";
 import { FormsModule } from '@angular/forms';
 import {MatCheckbox} from "@angular/material/checkbox";
+import {XmlService} from "../services/xml.service";
 
 @Component({
     selector: 'app-xml-page',
@@ -29,7 +30,12 @@ import {MatCheckbox} from "@angular/material/checkbox";
 export class XmlPageComponent {
   private server = 'http://localhost:8080'
 
-  constructor(private fileService: FileService, private invoiceService: InvoiceService, private axiosService: AxiosService) {
+  constructor(
+    private fileService: FileService,
+    private invoiceService: InvoiceService,
+    private axiosService: AxiosService,
+    private xmlService: XmlService
+    ) {
   }
 
   protected imports: string[] = [];
@@ -47,11 +53,7 @@ export class XmlPageComponent {
   }
 
   onFetchAllImports(): void {
-    this.axiosService.request(
-        "GET",
-        `/xml-file/imports/current-user`,
-        null
-    ).then(
+    this.xmlService.fetchAllXmlImports().then(
         (imports) => {
           this.imports = imports.data
           this.dataSource = imports.data;
@@ -67,8 +69,6 @@ export class XmlPageComponent {
   downloadFile(importId: number) {
     this.axiosService.request('POST', `/xml-file/generate-zip/${importId}`, null, { responseType: 'blob' })
         .then((response) => {
-          console.log(importId);
-          console.log(response);
           const blob = new Blob([response.data]);
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');

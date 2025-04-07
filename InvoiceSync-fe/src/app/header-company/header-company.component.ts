@@ -49,7 +49,6 @@ export class HeaderCompanyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Dialóg zatvorený s výsledkom:', result);
         this.saveCompany(result);
       } else {
         console.log('Dialóg bol zrušený');
@@ -59,15 +58,11 @@ export class HeaderCompanyComponent implements OnInit {
 
   saveCompany(data: any): void {
     const valuesToSend = data.map((input: { value: any }) => input.value);
-
-    console.log('Posielam údaje na server:', valuesToSend);
-
     this.axiosService.request(
       "POST",
-      `/api/v1/company/add`,
+      `/v1/company/add`,
       { name: valuesToSend[0] }
     ).then(response => {
-      console.log('Spoločnosť bola úspešne vytvorená:', response);
       this.onFetchCompanies();
     }).catch(error => {
       console.error('Chyba pri vytváraní spoločnosti:', error);
@@ -82,13 +77,12 @@ export class HeaderCompanyComponent implements OnInit {
   onFetchCompanies() {
       this.axiosService.request(
         "GET",
-        `/api/v1/company/user`,
+        `/v1/company/user`,
         null
       ).then(
         (companies) => {
           this.companies = companies.data
           this.isLoading = false;
-          console.log(companies.data);
 
           if (this.companies.length === 0) {
             this.toastr.warning('Nemáte pridané žiadne spoločnosti!', 'Informácia',

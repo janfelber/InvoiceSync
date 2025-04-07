@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FileService } from '../../file.service';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { InvoiceService } from '../../page/invoices/invoice.service';
+import { InvoiceService } from '../../services/invoice.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -78,14 +78,13 @@ export class GridInvoicesComponent {
   onFetchAllImports(): void {
     this.axiosService.request(
       "GET",
-      "api/v1/import/user/1",
+      "/v1/import/user/1",
       null
     ).then(
       (imports) => {
         this.imports = imports.data
         this.dataSource = imports.data;
         this.isLoading = false;
-        console.log(imports.data);
       }
     )
   }
@@ -95,7 +94,7 @@ export class GridInvoicesComponent {
   */
   onFetchImports(): void {
     this.isLoading = true;
-    this.invoiceService.fetchImports(this.selectedCompanyId).subscribe(
+    this.invoiceService.fetchAllInvoices().then(
       imports => {
         this.imports = imports;
         this.isLoading = false;
@@ -103,7 +102,6 @@ export class GridInvoicesComponent {
         console.table(imports);
       },
       error => {
-        console.log(error);
         this.isLoading = false;
       }
     );
@@ -127,7 +125,6 @@ export class GridInvoicesComponent {
   downloadFile(importId: number) {
     this.axiosService.request('GET', `/file/generateZip/${importId}`, null, { responseType: 'blob' })
       .then((response) => {
-        console.log(response);
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
