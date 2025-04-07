@@ -72,6 +72,12 @@ public final class PohodaXmlConstants {
 
   public static final String RECEIPT_DATE_TAX = "vch:dateTax";
 
+  public static final String RECEIPT_ACCOUNTING = "vch:accounting";
+
+  public static final String RECEIPT_CLASSIFICATION_VAT = "vch:classificationVAT";
+
+  public static final String RECEIPT_CLASSIFICATION_KV_VAT = "vch:classificationKVDPH";
+
   public static final String RECEIPT_QUANTITY = "vch:quantity";
 
 }
