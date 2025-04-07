@@ -1,6 +1,7 @@
 package com.invoicesync.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,12 +25,21 @@ public final class ParseUtils {
 
     final List<ReceiptItemDTO> items = new ArrayList<>();
     final JsonNode itemsNode = receiptNode.path("items");
+
     for (final JsonNode itemNode : itemsNode) {
       final ReceiptItemDTO item = new ReceiptItemDTO();
+      final double price = itemNode.path("price").asDouble();
+      final int vatRate = itemNode.path("vatRate").asInt();
+
+      final BigDecimal priceWithoutVAT = new BigDecimal(price).divide(BigDecimal.valueOf(1 + (double) vatRate / 100), 2,
+          RoundingMode.HALF_UP);
+
       item.setName(itemNode.path("name").asText());
       item.setQuantity(itemNode.path("quantity").asInt());
-      item.setUnitPrice(new BigDecimal(itemNode.path("price").asText()));
       item.setVatRate(itemNode.path("vatRate").asInt());
+      item.setPriceWithoutVAT(priceWithoutVAT);
+      item.setPriceWithVAT(new BigDecimal(itemNode.path("price").asText()));
+
       items.add(item);
     }
 

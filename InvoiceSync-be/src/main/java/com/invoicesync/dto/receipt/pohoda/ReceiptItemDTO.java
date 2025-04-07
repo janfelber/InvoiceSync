@@ -13,18 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReceiptItemDTO {
 
-  private String text;
+  private Long id;
+
+  private String accountText;
 
   private String name;
 
   private int quantity;
 
-  private BigDecimal unitPrice;
-
-  private BigDecimal price;
+  private BigDecimal priceWithoutVAT;
 
   private int vatRate;
 
-  private BigDecimal priceSum;
+  private BigDecimal priceWithVAT;
+
+  private String accountValue;
 
 }

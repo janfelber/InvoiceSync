@@ -35,10 +35,19 @@ public class ReceiptItem {
 
   private int quantity;
 
-  @Column(name = "unit_price")
-  private BigDecimal unitPrice;
+  @Column(name = "price_without_vat")
+  private BigDecimal priceWithoutVAT;
 
   @Column(name = "vat_rate")
   private int vatRate;
+
+  @Column(name = "account_value")
+  private String accountValue;
+
+  @Column(name = "price_with_vat")
+  private BigDecimal priceWithVAT;
+
+  @Column(name = "account_text")
+  private String accountText;
 
 }

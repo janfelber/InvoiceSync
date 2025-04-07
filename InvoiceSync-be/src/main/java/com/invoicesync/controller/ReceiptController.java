@@ -41,6 +41,7 @@ public class ReceiptController {
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO) {
     try {
       final byte[] xmlData = invoiceXmlService.generatePohodaReceiptXml(receiptRequestDTO);
+      System.out.println(receiptRequestDTO);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
@@ -90,5 +91,12 @@ public class ReceiptController {
       @RequestParam("companyId") final Long companyId) {
     final Long currentUserId = currentUserService.getCurrentUserId();
     receiptService.saveReceipt(file, currentUserId, companyId);
+  }
+
+  @PostMapping("/update/{receiptId}")
+  public void updateReceipt(@PathVariable final Long receiptId,
+      @RequestBody final ReceiptRequestDTO receiptRequestDTO) {
+    final Long currentUserId = currentUserService.getCurrentUserId();
+    receiptService.updateReceiptById(receiptId, currentUserId, receiptRequestDTO);
   }
 }

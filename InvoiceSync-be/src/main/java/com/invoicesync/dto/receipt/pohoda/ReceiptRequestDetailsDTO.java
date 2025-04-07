@@ -19,4 +19,12 @@ public class ReceiptRequestDetailsDTO {
 
   private String dateTax;
 
+  private String accountValue;
+
+  private String classificationVAT;
+
+  private String classificationKVVAT;
+
+  private String description;
+
 }

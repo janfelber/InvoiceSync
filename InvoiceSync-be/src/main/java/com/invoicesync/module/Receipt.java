@@ -79,4 +79,15 @@ public class Receipt {
   @Column(name = "total_price")
   private String totalPrice;
 
+  @Column(name = "accounting")
+  private String accounting;
+
+  @Column(name = "classification_vat")
+  private String classificationVAT;
+
+  @Column(name = "classification_kv_vat")
+  private String classificationKVVAT;
+
+  @Column(name = "description")
+  private String description;
 }
