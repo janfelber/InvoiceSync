@@ -1,20 +1,23 @@
 import {Component, Input} from '@angular/core';
-import {NgClass, NgForOf} from "@angular/common";
+import { CommonModule } from "@angular/common";
+import {NgComponentOutlet, NgForOf, NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {navbarDataRedesign} from "./nav-data-redesign";
 
 @Component({
-    selector: 'app-side-nav-redesign',
+    selector: 'app-side-nav',
   imports: [
     NgForOf,
     RouterLinkActive,
     RouterLink,
-    NgClass
+    NgOptimizedImage,
+    NgComponentOutlet,
+    CommonModule
   ],
-    templateUrl: './side-nav-redesign.component.html',
-    styleUrl: './side-nav-redesign.component.css'
+    templateUrl: './side-nav.component.html',
+    styleUrl: './side-nav.component.css'
 })
-export class SideNavRedesignComponent {
+export class SideNavComponent {
   navData = navbarDataRedesign;
 
   @Input() layout: string = 'default';

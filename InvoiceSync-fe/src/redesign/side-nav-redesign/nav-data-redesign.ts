@@ -1,40 +1,41 @@
+import {IconReceiptsComponent} from "../../app/icons/icons/icon-receipts/icon-receipts.component";
+import {IconHomeComponent} from "../../app/icons/icons/icon-home/icon-home.component";
+import {IconXmlImportComponent} from "../../app/icons/icons/icon-xml-import/icon-xml-import.component";
+
 export const navbarDataRedesign = [
   {
     routerLink: 'home',
-    icon: 'fas fa-home', // cesta k SVG súboru
+    iconComponent: IconHomeComponent,
     label: 'Domov',
     layout: 'default',
-    hideIfNotZero: true
+    hideIfNotZero: false
   },
   {
     routerLink: 'invoices',
-    icon: 'fas fa-file-invoice', // cesta k SVG súboru
     label: 'Faktury',
     layout: 'default',
     hideIfNotZero: true
   },
   {
     routerLink: 'rex',
-    icon: 'fas fa-light fa-mobile',
     label: 'Rex',
     layout: 'default',
     hideIfNotZero: true
   },
   {
     routerLink: 'xml-import',
-    icon: 'fas fa-file-import',
+    iconComponent: IconXmlImportComponent,
     label: 'XML import',
     layout: 'default',
   },
   {
     routerLink: '/web/receipts',
-    icon: 'fas fa-receipt',
+    iconComponent: IconReceiptsComponent,
     label: 'Bločky',
     layout: 'default'
   },
   {
     routerLink: 'users',
-    icon: 'fas fa-user',
     label: 'Users',
     layout: 'admin',
   }

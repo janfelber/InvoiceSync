@@ -1,7 +1,2 @@
 @import "tailwindcss";
 @import "flowbite";
-
-@utility custom-url {
-  background-color: --color-primary-600;
-  text-decoration: underline;
-}

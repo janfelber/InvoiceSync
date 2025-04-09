@@ -1,13 +1,11 @@
 <div class="body">
-  <header class="header">
-    <app-header></app-header>
-  </header>
   <div class="content">
 <!--    <app-sidenav layout="default"></app-sidenav>-->
-    <app-side-nav-redesign></app-side-nav-redesign>
-    <main class="main">
+    <app-side-nav></app-side-nav>
+    <div class="p-2 sm:ml-64">
+      <div class="p-2">
       <router-outlet></router-outlet>
-
-    </main>
+      </div>
+    </div>
   </div>
 </div>
