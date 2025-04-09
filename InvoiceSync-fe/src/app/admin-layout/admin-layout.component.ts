@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import {HeaderComponent} from "../header/header.component";
 import {RouterOutlet} from "@angular/router";
-import {SidenavComponent} from "../sidenav/sidenav.component";
+import {SideNavComponent} from "../../redesign/side-nav-redesign/side-nav.component";
 
 @Component({
     selector: 'app-admin-layout',
-    imports: [
-        HeaderComponent,
-        RouterOutlet,
-        SidenavComponent
-    ],
+  imports: [
+    RouterOutlet,
+    SideNavComponent
+  ],
     templateUrl: './admin-layout.component.html',
     styleUrl: './admin-layout.component.css'
 })
