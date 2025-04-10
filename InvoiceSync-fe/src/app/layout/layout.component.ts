@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
 import {CommonModule} from "@angular/common";
-import {environment} from "../enviroments/enviroments";
 import {SideNavComponent} from "../../redesign/side-nav-redesign/side-nav.component";
 
 @Component({
@@ -17,7 +16,5 @@ import {SideNavComponent} from "../../redesign/side-nav-redesign/side-nav.compon
 export class LayoutComponent{
 
   constructor(private router: Router) {}
-
-  version = environment.version;
 
 }
