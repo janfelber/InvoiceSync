@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DecimalPipe, NgClass, NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {AxiosService} from "../axios.service";
@@ -10,8 +10,7 @@ import {AxiosService} from "../axios.service";
     NgForOf,
     ReactiveFormsModule,
     FormsModule,
-    NgClass,
-    DecimalPipe
+    NgClass
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
