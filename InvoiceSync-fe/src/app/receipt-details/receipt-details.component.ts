@@ -1,7 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {NgClass, NgForOf} from "@angular/common";
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DecimalPipe, NgClass, NgForOf, NgStyle} from "@angular/common";
+import {NgClass, NgForOf } from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {AxiosService} from "../axios.service";
@@ -14,8 +12,7 @@ import {ToastrService} from "ngx-toastr";
   imports: [
     NgForOf,
     ReactiveFormsModule,
-    FormsModule,
-    NgClass
+    FormsModule
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
