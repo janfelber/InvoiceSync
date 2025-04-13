@@ -56,6 +56,31 @@ export class InvoiceService {
     });
   }
 
+  updateReceipt(invoiceRequest: InvoiceRequest, receiptId: number) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+
+    return this.http.post(`http://localhost:8080/api/v1/receipt/update/${receiptId}`, invoiceRequest, {
+      headers: headers,
+    });
+  }
+
+  exportPohodaReceipt(invoiceRequest: InvoiceRequest) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+
+    return this.http.post(`http://localhost:8080/api/v1/receipt/pohoda/export/receipt`, invoiceRequest, {
+      headers: headers,
+      responseType: 'blob'
+    });
+  }
+
+
+
+
+
 
 
 

@@ -1,29 +1,48 @@
-input {
-  border: 1px solid #d8d8f0;
-  padding: 8px;
-  width: 100%;
-  height: 2rem;
-  box-sizing: border-box;
-}
+/*.modal-wrapper {*/
+/*  position: fixed;*/
+/*  inset: 0;*/
+/*  z-index: 50; !* musí byť vyššie než zvyšok stránky *!*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*}*/
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-}
+/*.modal-wrapper.hidden {*/
+/*  display: none;*/
+/*}*/
 
-.input-group label {
-  margin-bottom: 0.5rem;
-  color: black;
-  font-size: .875rem;
-}
+/*.modal-backdrop {*/
+/*  position: absolute;*/
+/*  inset: 0;*/
+/*  background-color: rgba(0, 0, 0, 0.5); !* tmavé pozadie *!*/
+/*  backdrop-filter: blur(4px); !* voliteľne: rozmazanie *!*/
+/*  z-index: -1;*/
+/*}*/
 
+/*.modal-window {*/
+/*  position: relative;*/
+/*  background-color: white;*/
+/*  border-radius: 0.75rem;*/
+/*  padding: 1.5rem;*/
+/*  max-width: 600px;*/
+/*  width: 100%;*/
+/*  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);*/
+/*  z-index: 1;*/
+/*}*/
 
-.required label:after {
-  color: #fd6f6f;
-  content: "✱";
-  font-size: .75em;
-  line-height: 1;
-  margin-left: .25em;
-  vertical-align: top;
-}
+/*.modal-close {*/
+/*  position: absolute;*/
+/*  top: 0.5rem;*/
+/*  right: 0.75rem;*/
+/*  font-size: 1.5rem;*/
+/*  color: #888;*/
+/*  background: none;*/
+/*  border: none;*/
+/*  cursor: pointer;*/
+/*}*/
+
+/*.modal-title {*/
+/*  margin-bottom: 1rem;*/
+/*  font-weight: bold;*/
+/*  font-size: 1.25rem;*/
+/*}*/

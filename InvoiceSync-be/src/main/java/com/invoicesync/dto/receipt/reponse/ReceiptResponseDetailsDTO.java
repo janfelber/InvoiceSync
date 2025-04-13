@@ -19,4 +19,12 @@ public class ReceiptResponseDetailsDTO {
 
   private String totalPrice;
 
+  private String accountValue;
+
+  private String classificationVAT;
+
+  private String classificationKVVAT;
+
+  private String description;
+
 }
