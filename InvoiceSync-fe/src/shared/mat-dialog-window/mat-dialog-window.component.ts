@@ -1,52 +1,27 @@
-import {Component, Inject} from '@angular/core';
-import { CommonModule } from "@angular/common";
-import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle
-} from "@angular/material/dialog";
-import {MatButton} from "@angular/material/button";
-import {FormsModule} from "@angular/forms";
-
-interface InputData {
-  label: string;
-  value: any;
-  required: boolean;
-  type: string;
-  placeholder: string;
-}
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {NgIf} from "@angular/common";
 
 @Component({
-    selector: 'app-mat-dialog-window',
-    imports: [
-        CommonModule,
-        MatDialogContent,
-        MatDialogActions,
-        MatButton,
-        MatDialogTitle,
-        FormsModule
-    ],
-    templateUrl: './mat-dialog-window.component.html',
-    styleUrl: './mat-dialog-window.component.css'
+  selector: 'app-modal',
+  standalone: true,
+  templateUrl: './mat-dialog-window.component.html',
+  imports: [
+    NgIf
+  ],
+  styleUrls: [] // nič netreba, všetko cez Tailwind
 })
 export class MatDialogWindowComponent {
-  constructor(
-    public dialogRef: MatDialogRef<MatDialogWindowComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  @Input() show = false;
+  @Input() title = 'Modal Title';
+  @Output() closeModal = new EventEmitter<void>();
 
-  close(result: boolean): void {
-    this.dialogRef.close(result);
+  onClose() {
+    this.closeModal.emit();
   }
 
-  save(): void {
-    const result = this.data.inputs.map((input: InputData) => ({
-      label: input.label,
-      value: input.value
-    }));
-
-    this.dialogRef.close(result);
+  onBackdropClick(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal-overlay')) {
+      this.onClose();
+    }
   }
 }
