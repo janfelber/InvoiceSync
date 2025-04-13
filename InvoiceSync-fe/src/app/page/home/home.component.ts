@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
-import {NgClass, NgForOf, NgStyle} from "@angular/common";
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import { NgForOf } from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AxiosService} from "../../axios.service";
-import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogWindowComponent } from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 
@@ -13,76 +9,101 @@ import {ToastrService} from "ngx-toastr";
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    imports: [
-        FormsModule,
-        NgForOf,
-        NgClass,
-        MatIcon,
-        MatIconButton,
-        NgStyle
-    ]
+  imports: [
+    FormsModule,
+    NgForOf,
+    MatDialogWindowComponent,
+  ]
 })
 export class HomeComponent {
 
-  constructor(private axiosService: AxiosService, private dialog: MatDialog, private toastr: ToastrService) {
+  constructor(
+    private axiosService: AxiosService,
+    private toastr: ToastrService) {
   }
 
+  @ViewChild('successToast') successToast!: ElementRef;
+
   columnWidths = ['30%', '5%'];
-  headers = ['Nazov', 'Akcie'];
+  headers = ['Názov spoločnosti', 'Mesto', 'IČO', 'IČ DPH'];
   currentPage = 1;
   rowsPerPage = 10;
   currentPageInput = 1;
   pageSizes = [5,10, 20, 50];
   filteredCompanies: any[] = [];
+  searchText: string = '';
 
   ngOnInit(): void {
     this.onFetchAllCompanies();
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(MatDialogWindowComponent, {
-      width: '400px',
-      panelClass: 'custom-dialog-container',
-      data: {
-        title: 'Nova spolocnost',
-        inputs: [
-          { label: 'Názov', type: 'text', placeholder: '', value: '', required: true },
-        ],
-        confirmText: 'Uložiť',
-        cancelText: 'Zrušiť'
-      }
-    });
+  modalOpen = false;
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Dialóg zatvorený s výsledkom:', result);
-        this.saveCompany(result);
-        this.toastr.success('Spoločnosť bola úspešne vytvorená!', 'Informácia',
-          {
-            timeOut: 3000,
-            progressBar: true,
-            progressAnimation: 'increasing',
-            closeButton: true,
-            positionClass: 'toast-top-right'
-          });
-      } else {
-        console.log('Dialóg bol zrušený');
-      }
-    });
+  openModal() {
+    this.modalOpen = true;
   }
 
-  saveCompany(data: any): void {
-    const valuesToSend = data.map((input: { value: any }) => input.value);
+  closeModal() {
+    this.modalOpen = false;
+  }
 
-    console.log('Posielam údaje na server:', valuesToSend);
+  searchCompany(): void {
+    this.filteredCompanies = this.filteredCompanies.filter(company =>
+    company.name.toLowerCase().includes(this.searchText.toLowerCase())
+    )
+  }
 
+  resetSearch(): void {
+    this.searchText = '';
+    this.onFetchAllCompanies();
+  }
+
+  formData = {
+    name: '',
+    city: '',
+    street: '',
+    streetNumber: '',
+    zip: '',
+    registrationNumber: '',
+    taxId: '',
+    vatId: ''
+  };
+
+  createNewCompany(): void {
+    console.log(this.formData)
     this.axiosService.request(
       "POST",
       `/api/v1/company/add`,
-      { name: valuesToSend[0] }
-    ).then(response => {
-      console.log('Spoločnosť bola úspešne vytvorená:', response);
+      this.formData
+    ).then(() => {
+      this.modalOpen = false;
       this.onFetchAllCompanies();
+
+      this.toastr.success(
+        'Spoločnosť <b>' + this.formData.name + '</b> úspešne vytvorená',
+        '',
+        {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+          enableHtml: true,
+        }
+      );
+
+      this.formData = {
+        name: '',
+        city: '',
+        street: '',
+        streetNumber: '',
+        zip: '',
+        registrationNumber: '',
+        taxId: '',
+        vatId: ''
+      };
+
+
     }).catch(error => {
       console.error('Chyba pri vytváraní spoločnosti:', error);
     });
