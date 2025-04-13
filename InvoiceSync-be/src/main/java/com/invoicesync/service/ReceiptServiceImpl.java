@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,8 @@ import com.google.zxing.common.HybridBinarizer;
 import com.invoicesync.dto.identity.PartnerDTO;
 import com.invoicesync.dto.receipt.pohoda.ReceiptDTO;
 import com.invoicesync.dto.receipt.pohoda.ReceiptItemDTO;
+import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDTO;
+import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDetailsDTO;
 import com.invoicesync.dto.receipt.reponse.ReceiptDetailsDTO;
 import com.invoicesync.dto.receipt.reponse.ReceiptListDTO;
 import com.invoicesync.dto.receipt.reponse.ReceiptResponseDetailsDTO;
@@ -40,6 +43,7 @@ import com.invoicesync.user.CurrentUserService;
 import com.invoicesync.user.UserDemo;
 import com.invoicesync.utils.ParseUtils;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -125,13 +129,14 @@ public class ReceiptServiceImpl implements ReceiptService {
         .map(receipt -> {
           final List<ReceiptItemDTO> itemsDTO = receipt.getItems().stream()
               .map(item -> new ReceiptItemDTO(
-                  item.getName(),
+                  item.getId(),
+                  item.getAccountText(),
                   item.getName(),
                   item.getQuantity(),
-                  item.getUnitPrice(),
-                  item.getUnitPrice(),
+                  item.getPriceWithoutVAT(),
                   item.getVatRate(),
-                  null
+                  item.getPriceWithVAT(),
+                  item.getAccountValue()
               ))
               .collect(Collectors.toList());
 
@@ -141,7 +146,11 @@ public class ReceiptServiceImpl implements ReceiptService {
                   receipt.getDate(),
                   receipt.getDatePayment(),
                   receipt.getDateTax(),
-                  receipt.getTotalPrice()
+                  receipt.getTotalPrice(),
+                  receipt.getAccounting(),
+                  receipt.getClassificationVAT(),
+                  receipt.getClassificationKVVAT(),
+                  receipt.getDescription()
               ),
               new PartnerDTO(
                   receipt.getPartnerName(),
@@ -157,6 +166,49 @@ public class ReceiptServiceImpl implements ReceiptService {
           );
         })
         .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + receiptId + " not found"));
+  }
+
+  @Override
+  public Receipt updateReceiptById(final Long receiptId, final Long userId,
+      final ReceiptRequestDTO requestDTO) {
+
+    final Receipt receipt = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
+
+    final ReceiptRequestDetailsDTO details = requestDTO.getReceiptDetails();
+    final PartnerDTO partner = requestDTO.getPartner();
+    final List<ReceiptItemDTO> items = requestDTO.getItems();
+
+    receipt.setDate(details.getDate());
+    receipt.setDatePayment(details.getDatePayment());
+    receipt.setDateTax(details.getDateTax());
+    receipt.setAccounting(details.getAccountValue());
+    receipt.setClassificationVAT(details.getClassificationVAT());
+    receipt.setClassificationKVVAT(details.getClassificationKVVAT());
+    receipt.setDescription(details.getDescription());
+
+    receipt.setPartnerName(partner.getName());
+    receipt.setPartnerCity(partner.getCity());
+    receipt.setPartnerStreet(partner.getStreet());
+    receipt.setPartnerZip(partner.getZip());
+    receipt.setPartnerRegistrationNumber(partner.getRegistrationNumber());
+    receipt.setPartnerTaxId(partner.getTaxId());
+    receipt.setPartnerVatId(partner.getVatId());
+
+    final Map<Long, ReceiptItem> existingItemsMap = receipt.getItems().stream()
+        .collect(Collectors.toMap(ReceiptItem::getId, item -> item));
+
+    for (final ReceiptItemDTO dto : items) {
+      if (dto.getId() != null && existingItemsMap.containsKey(dto.getId())) {
+        final ReceiptItem existingItem = existingItemsMap.get(dto.getId());
+
+        existingItem.setAccountValue(dto.getAccountValue());
+        existingItem.setAccountText(dto.getAccountText());
+      }
+    }
+
+    receiptRepository.save(receipt);
+    return receipt;
   }
 
   public String sendPostRequest(final String receiptId) {
@@ -208,9 +260,10 @@ public class ReceiptServiceImpl implements ReceiptService {
       items.add(ReceiptItem.builder()
           .receipt(receipt)
           .name(item.getName())
-          .unitPrice(item.getUnitPrice())
+          .priceWithoutVAT(item.getPriceWithoutVAT())
           .quantity(item.getQuantity())
           .vatRate(item.getVatRate())
+          .priceWithVAT(item.getPriceWithVAT())
           .build());
     });
 

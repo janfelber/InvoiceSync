@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileService} from "../file.service";
 import {AxiosService} from "../axios.service";
@@ -15,7 +15,8 @@ import {FormsModule} from '@angular/forms';
     RouterLink,
     NgIf,
     FormsModule,
-    CurrencyPipe
+    CurrencyPipe,
+    NgClass
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'

@@ -1,6 +1,5 @@
 .invoice-page {
   display: grid;
-  grid-template-columns: 3fr 3fr;
   gap: 20px;
   padding: 20px;
 }
@@ -135,7 +134,6 @@
   margin: .5rem;
   padding: .5rem;
   overflow-y: auto;  /* Povolenie vertikálneho scrollovania */
-  max-height: 300px;
 }
 
 .invoice-items-footer {
@@ -179,16 +177,6 @@
   flex-direction: column;
   gap: .25rem;
   padding: .375rem 1rem;
-}
-
-.rg-section:first-child {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.rg-section:last-child {
-  justify-content: flex-end;
-  text-align: right;
 }
 
 .rg-text {

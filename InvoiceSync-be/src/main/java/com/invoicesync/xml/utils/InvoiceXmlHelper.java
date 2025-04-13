@@ -3,6 +3,8 @@ package com.invoicesync.xml.utils;
 import static com.invoicesync.xml.utils.PohodaXmlConstants.*;
 import static com.invoicesync.xml.utils.PohodaXmlParentTagNames.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -92,6 +94,10 @@ public class InvoiceXmlHelper {
     replaceTextContent(doc, RECEIPT_DATE, receiptRequestDetailsDTO.getDate(), null);
     replaceTextContent(doc, RECEIPT_DATE_PAYMENT, receiptRequestDetailsDTO.getDate(), null);
     replaceTextContent(doc, RECEIPT_DATE_TAX, receiptRequestDetailsDTO.getDateTax(), null);
+    replaceTextContent(doc, RECEIPT_ACCOUNTING, receiptRequestDetailsDTO.getAccountValue(), null);
+    replaceTextContent(doc, RECEIPT_CLASSIFICATION_VAT, receiptRequestDetailsDTO.getClassificationVAT(), null);
+    replaceTextContent(doc, RECEIPT_CLASSIFICATION_KV_VAT, receiptRequestDetailsDTO.getClassificationKVVAT(), null);
+    replaceTextContent(doc, RECEIPT_TEXT, receiptRequestDetailsDTO.getDescription(), null);
   }
 
   public void updateReceiptMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
@@ -122,20 +128,33 @@ public class InvoiceXmlHelper {
     for (final ReceiptItemDTO item : items) {
       final Element receiptItem = doc.createElement(RECEIPT_ITEM);
 
-      createElementAndAppend(doc, receiptItem, TEXT, "test");
+      createElementAndAppend(doc, receiptItem, TEXT, item.getAccountText());
       createElementAndAppend(doc, receiptItem, QUANTITY,
           String.valueOf(item.getQuantity()));
       createElementAndAppend(doc, receiptItem, COEFFICIENT, "1");
       createElementAndAppend(doc, receiptItem, PAY_VAT, "false");
       createElementAndAppend(doc, receiptItem, RATE_VAT, "high");
       createElementAndAppend(doc, receiptItem, DISCOUNT_PERCENTAGE, "0");
+
+      final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());  // Sadza DPH, napr. 19
+
+      // Cena bez DPH
+      final BigDecimal priceWithoutVAT = item.getPriceWithoutVAT();
+
+      // Vypočítať DPH ako čiastku (t.j. podiel z ceny bez DPH)
+      final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
+          .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
       
       final Element homeCurrency = doc.createElement(RECEIPT_HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPrice()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPrice()));
-      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getVatRate()));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceWithVAT()));
       receiptItem.appendChild(homeCurrency);
+
+      final Element accounting = doc.createElement(ACCOUNTING);
+      createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
+      receiptItem.appendChild(accounting);
 
       // Append the receiptItem to the parent node
       receiptItemsParent.appendChild(receiptItem);

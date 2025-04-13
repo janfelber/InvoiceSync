@@ -1,108 +1,106 @@
 <div class="invoice-page">
   <div class="invoice-details">
-    <div class="info-section">
-      <div class="card">
-        <h3>Informácie o dodávateľovi</h3>
-        <div class="form-group">
-          <label>Meno</label>
-          <input [(ngModel)]="partner.name">
+    <div class="flex gap-6">
+      <div class="w-1/2 p-4 bg-white rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold mb-4">Informácie o dodávateľovi</h3>
+        <div class="mb-3">
+          <label class="block text-sm font-medium">Meno</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.name">
         </div>
-        <div class="form-group">
-          <label>Mesto</label>
-          <input [(ngModel)]="partner.city">
+        <div class="mb-3">
+          <label class="block text-sm font-medium">Mesto</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.city">
         </div>
-        <div class="form-group">
-          <label>Ulica</label>
-          <input [(ngModel)]="partner.street">
+        <div class="mb-3">
+          <label class="block text-sm font-medium">Ulica</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.street">
         </div>
-        <div class="form-group">
-          <label>PSČ</label>
-          <input [(ngModel)]="partner.zip">
+        <div class="mb-3">
+          <label class="block text-sm font-medium">PSČ</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.zip">
         </div>
-        <div class="form-group">
-          <label>IČO</label>
-          <input [(ngModel)]="partner.registrationNumber">
+        <div class="mb-3">
+          <label class="block text-sm font-medium">IČO</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.registrationNumber">
         </div>
-        <div class="form-group">
-          <label>DIČ</label>
-          <input [(ngModel)]="partner.taxId">
+        <div class="mb-3">
+          <label class="block text-sm font-medium">DIČ</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.taxId">
         </div>
-        <div class="form-group">
-          <label>IČ DPH</label>
-          <input [(ngModel)]="partner.vatId">
-        </div>
-      </div>
-      <div class="card">
-        <h3>Fakturačné údaje</h3>
-        <div class="form-group">
-          <label>Dátum vystavenia</label>
-          <input [(ngModel)]="receipt.date">
-        </div>
-        <div class="form-group">
-          <label>Dátum splatenia</label>
-          <input [(ngModel)]="receipt.datePayment">
-        </div>
-        <div class="form-group">
-          <label>Dátum danovej povinnosti</label>
-          <input [(ngModel)]="receipt.dateTax">
+        <div>
+          <label class="block text-sm font-medium">IČ DPH</label>
+          <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="partner.vatId">
         </div>
       </div>
-    </div>
 
-    <div class="list">
-      <div class="card-items">
-        <div class="items-header">
-          <div class="items-title">
-            <span class="title">Položky bločka</span>
+      <div class="w-1/2 flex flex-col gap-6">
+        <div class="p-4 bg-white rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-4">Fakturačné údaje</h3>
+          <div class="mb-3">
+            <label class="block text-sm font-medium">Dátum vystavenia</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.date">
+          </div>
+          <div class="mb-3">
+            <label class="block text-sm font-medium">Dátum splatenia</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.datePayment">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Dátum daňovej povinnosti</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.dateTax">
           </div>
         </div>
-        <div class="invoice-items">
-          <div *ngFor="let item of items" class="list-item">
-            <div class="item-content">
-              <div class="rg-qc">
-                <p><strong>{{ item.name }}</strong></p>
-                <div class="rg-qc rg-row" style="margin-bottom: .400rem ">
-                  <div class="rg-section">
-                    <span class="rg-text">Cena</span>
-                  </div>
-                  <div class="rg-section">
-<!--                    [(ngModel)]="item.accountValue"-->
-                  <span class="rg-text number-badge"
-                        [ngClass]="{ 'accounted': item.accountValue !== null, 'not-accounted': item.accountValue === null }">
-                  </span>
-                  </div>
-                </div>
-              </div>
-              <div class="divider" style="border-top: 1px solid #d8d8f0"></div>
-              <div class="rg-qc">
-                <div class="rg-qc rg-row">
-                  <div class="rg-section">
-                    <span class="rg-text">Cena</span>
-                  </div>
-                  <div class="rg-section">
-                    <span class="rg-text">{{ item.unitPrice}}</span>
-                  </div>
-                </div>
-                <div class="rg-qc rg-row" style="margin-top: .625rem;">
-                  <div class="rg-section">
-                    <span class="rg-text"></span>
-                  </div>
-                  <div class="rg-section">
-                    <span class="rg-text" style="color: #aaa8bd;">{{ (item.price / (1 + item.vatRate / 100)).toFixed(2) }}</span>
-                  </div>
-                </div>
-              </div>
 
+        <div class="p-4 bg-white rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-4">Ostatné údaje</h3>
+          <div class="mb-3">
+            <label class="block text-sm font-medium">Predakontácia</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.accountValue">
+          </div>
+          <div class="mb-3">
+            <label class="block text-sm font-medium">Členenie DPH</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.classificationVAT">
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Členenie KV DPH</label>
+            <input class="w-full border border-gray-300 rounded-md p-2" [(ngModel)]="receipt.classificationKVVAT">
+          </div>
+        </div>
+      </div>
+
+      <div class="list w-1/2">
+        <div class="card-items">
+          <div class="items-header">
+            <div class="items-title">
+              <span class="title">Položky bločka</span>
             </div>
-            <div class="item-footer">
+          </div>
+          <div class="invoice-items max-h-113 overflow-y-auto space-y-4 pr-2">
+            <div *ngFor="let item of items" class="list-item">
               <div class="item-content">
+                <div class="rg-qc">
+                  <p><strong>{{ item.name }}</strong></p>
+                  <div class="rg-qc rg-row" style="margin-bottom: .400rem ">
+                    <div class="rg-section">
+                      <span class="rg-text">Účet</span>
+                    </div>
+                    <div class="rg-section">
+                      <input type="text"
+                             class="w-24 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm bg-blue-700 text-white border border-black text-center placeholder-white"
+                             [(ngModel)]="item.accountValue"
+                             [placeholder]="'Neúčtované'"
+                             [ngStyle]="{'color': item.accountValue ? 'white' : 'white'}"
+                             (input)="item.accountValue = item.accountValue === '' ? undefined : item.accountValue">
+                    </div>
+                  </div>
+                </div>
+                <div class="divider" style="border-top: 1px solid #d8d8f0"></div>
                 <div class="rg-qc">
                   <div class="rg-qc rg-row">
                     <div class="rg-section">
-                      <span class="rg-text">Celková cena</span>
+                      <span class="rg-text">Cena</span>
                     </div>
                     <div class="rg-section">
-                      <span class="rg-text">{{ item.price }}</span>
+                      <span class="rg-text">{{ item.priceWithVAT}}</span>
                     </div>
                   </div>
                   <div class="rg-qc rg-row" style="margin-top: .625rem;">
@@ -110,43 +108,97 @@
                       <span class="rg-text"></span>
                     </div>
                     <div class="rg-section">
-                      <span class="rg-text" style="color: #aaa8bd;">{{ (item.price / (1 + item.vatRate / 100)).toFixed(2) }}</span>
+                      <span class="rg-text" style="color: #aaa8bd;">{{ item.priceWithoutVAT }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="rg-qc rg-row" style="margin-top: 0.625rem;">
+                  <div class="rg-section">
+                    <span class="rg-text">Poznámka</span>
+                  </div>
+                  <div class="rg-section">
+                      <textarea
+                        [(ngModel)]="item.accountText"
+                        class="w-full text-xs px-2.5 py-1 rounded-sm border border-gray-300"
+                        rows="2"
+                        placeholder="Sem napíš poznámku..."></textarea>
+                  </div>
+                </div>
+
+              </div>
+              <div class="item-footer">
+                <div class="item-content">
+                  <div class="rg-qc">
+                    <div class="rg-qc rg-row">
+                      <div class="rg-section">
+                        <span class="rg-text">Celková cena</span>
+                      </div>
+                      <div class="rg-section">
+                        <span class="rg-text">{{ item.priceWithVAT }}</span>
+                      </div>
+                    </div>
+                    <div class="rg-qc rg-row" style="margin-top: .625rem;">
+                      <div class="rg-section">
+                        <span class="rg-text" style="color: #aaa8bd;">Bez DPH({{ item.vatRate }}%)</span>
+                      </div>
+                      <div class="rg-section">
+                        <span class="rg-text" style="color: #aaa8bd;">{{ item.priceWithoutVAT }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="invoice-items-footer">
-          <div class="rg-qc">
-            <div class="rg-qc rg-row">
-              <div class="rg-section">
-                <span class="rg-text">Celková cena</span>
-              </div>
-              <div class="rg-section">
+          <div class="invoice-items-footer">
+            <div class="rg-qc">
+              <div class="rg-qc rg-row">
+                <div class="rg-section">
+                  <span class="rg-text">Celková cena</span>
+                </div>
+                <div class="rg-section">
                 <span class="rg-text">
                   {{ receipt.totalPrice }}
                 </span>
+                </div>
               </div>
-            </div>
-            <div class="rg-qc rg-row" style="margin-top: .625rem;">
-              <div class="rg-section">
+              <div class="rg-qc rg-row" style="margin-top: .625rem;">
+                <div class="rg-section">
                 <span class="rg-text">
                 </span>
-              </div>
-              <div class="rg-section">
+                </div>
+                <div class="rg-section">
                 <span class="rg-text" style="color: #aaa8bd;">
                   {{ (receipt.totalPrice / (1 + 23 / 100)).toFixed(2) }}
                 </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="p-4 bg-white rounded-lg shadow-md">
+    <label for="message" class="block mb-2 text-sm font-medium text-gray-600">Poznámka k faktúre</label>
+    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-black bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 bg-gray-700 border-black placeholder-gray-400 text-black focus:ring-blue-500 focus:border-blue-500" [(ngModel)]="receipt.description" placeholder="Poznámka" ></textarea>
+    </div>
+  </div>
+  <div class="flex gap-1.5">
+    <button
+      type="button"
+      class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
+      (click)="updateReceipt()"
+    >
+      Uložiť
+    </button>
+
+    <button
+      type="button"
+      class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
+      (click)="exportReceipt()"
+    >
+      Exportovať
+    </button>
   </div>
 </div>
-
-
-
