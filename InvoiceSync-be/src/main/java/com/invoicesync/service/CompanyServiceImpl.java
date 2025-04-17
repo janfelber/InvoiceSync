@@ -29,6 +29,38 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
+  public Company updateCompany(final Long companyId, final Company company) {
+    final Company oldCompany = companyRepository.findById(companyId).orElse(null);
+
+    if (oldCompany == null) {
+      throw new IllegalArgumentException("Company not found");
+    }
+
+    oldCompany.setName(company.getName());
+    System.out.println("update meno" + company.getName());
+    oldCompany.setCity(company.getCity());
+    System.out.println("update mesto" + company.getCity());
+    oldCompany.setStreet(company.getStreet());
+    System.out.println("update ulica" + company.getStreet());
+    oldCompany.setStreetNumber(company.getStreetNumber());
+    System.out.println("update meno" + company.getName());
+    oldCompany.setZip(company.getZip());
+    oldCompany.setTaxId(company.getTaxId());
+    oldCompany.setVatId(company.getVatId());
+    oldCompany.setRegistrationNumber(company.getRegistrationNumber());
+    return companyRepository.save(oldCompany);
+  }
+
+  @Override
+  public Company deleteCompany(final Long companyId) {
+    final Company company = companyRepository.findById(companyId)
+        .orElseThrow(() -> new IllegalArgumentException("Company not found"));
+
+    companyRepository.delete(company);
+    return company;
+  }
+
+  @Override
   public List<CompanyResponseDto> getCompaniesByUserId(final Long userId) {
     return companyRepository.findByUserId(userId)
         .stream()

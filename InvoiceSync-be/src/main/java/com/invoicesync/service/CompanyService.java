@@ -9,6 +9,10 @@ public interface CompanyService {
 
   Company addCompany(Company company);
 
+  Company updateCompany(Long companyId, Company company);
+
+  Company deleteCompany(Long companyId);
+
   List<CompanyResponseDto> getCompaniesByUserId(Long userId);
 
   CompanyResponseDto getCompanyInfo(Long id);
