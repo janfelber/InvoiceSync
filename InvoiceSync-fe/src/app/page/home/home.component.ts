@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {AxiosService} from "../../axios.service";
 import { MatDialogWindowComponent } from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
+import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'app-home',
@@ -13,6 +14,7 @@ import {ToastrService} from "ngx-toastr";
     FormsModule,
     NgForOf,
     MatDialogWindowComponent,
+    RouterLink,
   ]
 })
 export class HomeComponent {

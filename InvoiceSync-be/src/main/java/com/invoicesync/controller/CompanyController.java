@@ -3,6 +3,7 @@ package com.invoicesync.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,13 @@ public class CompanyController {
     return ResponseEntity.ok(companyService.addCompany(company));
   }
 
+  @PostMapping("/update/{companyId}")
+  public ResponseEntity<Company> editCompany(
+      @PathVariable final Long companyId,
+      @RequestBody final Company company) {
+    return ResponseEntity.ok(companyService.updateCompany(companyId, company));
+  }
+
   @GetMapping("/user")
   public ResponseEntity<List<CompanyResponseDto>> getUserCompanies() {
     return ResponseEntity.ok(companyService.getCompaniesByUserId(getCurrentUserId()));
@@ -39,6 +47,11 @@ public class CompanyController {
   @GetMapping("/info/{id}")
   public ResponseEntity<CompanyResponseDto> getCompanyInfo(@PathVariable final Long id) {
     return ResponseEntity.ok(companyService.getCompanyInfo(id));
+  }
+
+  @DeleteMapping("/delete/{companyId}")
+  public ResponseEntity<Company> deleteCompany(@PathVariable final Long companyId) {
+    return ResponseEntity.ok(companyService.deleteCompany(companyId));
   }
 
   private Long getCurrentUserId() {
