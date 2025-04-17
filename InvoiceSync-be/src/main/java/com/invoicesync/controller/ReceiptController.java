@@ -3,6 +3,10 @@ package com.invoicesync.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,7 @@ import com.invoicesync.dto.receipt.reponse.ReceiptDetailDto;
 import com.invoicesync.dto.receipt.reponse.ReceiptResponseDto;
 import com.invoicesync.dto.record.ReceiptRequest;
 import com.invoicesync.module.Receipt;
+import com.invoicesync.service.InvoiceXmlService;
 import com.invoicesync.service.ReceiptService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,9 +35,25 @@ import lombok.RequiredArgsConstructor;
 public class ReceiptController {
 
   // private final InvoiceXmlService invoiceXmlService;
+  private final InvoiceXmlService invoiceXmlService;
   // private final CurrentUserService currentUserService;
   private final ReceiptService receiptService;
 
+  @PostMapping(value = "/pohoda/export/receipt", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO) {
+    try {
+      final byte[] excel = invoiceXmlService.generatePohodaReceiptXml(receiptRequestDTO);
+
+      final HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(
+          MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+      headers.setContentDisposition(ContentDisposition.attachment().filename("receipt.xlsx").build());
+
+      return new ResponseEntity<>(excel, headers, HttpStatus.OK);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+  }
 
   //get receipts for current user
   @GetMapping("/user")
@@ -78,26 +99,4 @@ public class ReceiptController {
       @RequestBody final ReceiptRequest receipt) {
     return ResponseEntity.ok(receiptService.updateReceiptById(receiptId, receipt));
   }
-
-  //
-  // private final CompanyRepository companyRepository;
-  //
-  // private final ReceiptService receiptService;
-  //
-  // @PostMapping("/pohoda/export/receipt")
-  // public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO) {
-  //   try {
-  //     final byte[] xmlData = invoiceXmlService.generatePohodaReceiptXml(receiptRequestDTO);
-  //     System.out.println(receiptRequestDTO);
-  //
-  //     final HttpHeaders headers = new HttpHeaders();
-  //     headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
-  //     headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
-  //
-  //     return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
-  //   } catch (Exception e) {
-  //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-  //   }
-  // }
-  //
 }
