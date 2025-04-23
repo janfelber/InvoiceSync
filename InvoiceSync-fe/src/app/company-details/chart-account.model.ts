@@ -11,7 +11,7 @@ interface Category {
 
 interface ClassGroup {
   className: string;
-  categories: { [key: string]: Category };
+  categories: { [categoryKey: string]: Category };
 }
 
-export type GroupedAccounts = { [key: string]: ClassGroup };
+export type GroupedAccounts = { [classKey: string]: ClassGroup };

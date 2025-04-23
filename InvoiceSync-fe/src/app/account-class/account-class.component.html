@@ -1,0 +1,82 @@
+<div class="md:flex">
+  <!-- Tab Links -->
+  <ul class="flex flex-col space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0" id="default-styled-tab">
+    <li *ngFor="let classId of classIds">
+      <a href="javascript:void(0);"
+         class="inline-flex items-center px-6 py-3 rounded-lg w-full transition-all duration-200 ease-in-out hover:bg-blue-100"
+         role="tab" [attr.aria-selected]="activeClassId === classId ? 'true' : 'false'"
+         (click)="loadChartAccountData(classId)"
+         [ngClass]="{
+           'bg-blue-600 text-white hover:bg-blue-700': activeClassId === classId,
+           'text-gray-500 dark:text-gray-400 hover:text-blue-700': activeClassId !== classId
+         }">
+        <svg class="w-4 h-4 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2Z"/>
+        </svg>
+        <span class="whitespace-nowrap">Účtová trieda {{ classId }}</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div id="default-styled-tab-content" class="w-full">
+    <div *ngFor="let classId of classIds"
+         [id]="'class' + classId"
+         role="tabpanel"
+         [hidden]="activeClassId !== classId"
+         class="p-4 rounded-lg bg-white transition-all duration-300 border border-gray-200">
+      <div *ngIf="activeClassId === classId" class="tab-content">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-gray-700 mb-4">Účtová trieda {{ classId }}</h3>
+        <p class="mb-4 font-bold dark:text-gray-700">{{ Object.keys(chartAccountData)?.[0] }}</p>
+
+        <div *ngFor="let category of Object.keys(chartAccountData[Object.keys(chartAccountData)[0]]?.categories)">
+          <div class="flex justify-between items-center mt-4 p-3 rounded-md cursor-pointer"
+               (click)="toggleCategory(category)">
+            <h3 class="font-medium text-lg text-blue-600">
+              {{ category }} - {{ chartAccountData[Object.keys(chartAccountData)[0]].categories[category].categoryName }}
+            </h3>
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path *ngIf="!isCategoryOpen(category)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/>
+              <path *ngIf="isCategoryOpen(category)" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 15 7-7 7 7"/>
+            </svg>
+          </div>
+
+          <ul *ngIf="isCategoryOpen(category)" class="space-y-3 p-4 rounded-lg">
+            <li *ngFor="let account of chartAccountData[Object.keys(chartAccountData)[0]].categories[category].accounts"
+                class="flex justify-between items-center p-4 bg-white border border-gray-300 text-gray-900 rounded-lg transition-all">
+              <span class="font-medium">{{ account.accountId }} - {{ account.accountName }}</span>
+              <div class="relative flex items-center gap-2 group">
+                <div class="relative flex items-center gap-1 group"
+                     (click)="account.editable ? onEdit() : null">
+                  <!-- SVG icon -->
+                  <div>
+                    <svg class="w-5 h-5 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-bold hover:cursor-pointer text-sm">
+                      Upraviť
+                    </p>
+                  </div>
+
+                  <!-- Popover -->
+                  <div
+                    class="absolute bottom-full left-1/2 transform -translate-x-1/2 -translate-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-lg p-2 w-48">
+                    <p class="text-sm text-gray-600">{{
+                        account.editable ? 'Kliknutím môžete upraviť tento účet.'
+                          : 'Tento základný účtovný účet nie je možné upraviť.'
+                      }}</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
