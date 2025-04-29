@@ -1,6 +1,7 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import {InvoiceRequest} from "./models/invoice-request";
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,18 @@ export class FileService {
       observe: 'events'
     });
   }
+
+  uploadTest(formData: FormData){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+
+    return this.http.post(`${this.server}/api/v1/convert/to-pohoda`, formData, {
+      headers: headers,
+      responseType: 'blob'
+    });
+  }
+
 
   uploadPdf(formData: FormData): Observable<HttpEvent<string[]>> {
     const token = localStorage.getItem('token');

@@ -8,7 +8,6 @@ import {NgIf} from "@angular/common";
   imports: [
     NgIf
   ],
-  styleUrls: [] // nič netreba, všetko cez Tailwind
 })
 export class MatDialogWindowComponent {
   @Input() show = false;
