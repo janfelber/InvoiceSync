@@ -15,8 +15,7 @@ import {FormsModule} from '@angular/forms';
     RouterLink,
     NgIf,
     FormsModule,
-    CurrencyPipe,
-    NgClass
+    CurrencyPipe
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'
@@ -59,11 +58,9 @@ export class ReceiptsComponent {
     initFlowbite();
   }
 
-  headers = ['ID', 'Dodávateľ', 'Dátum importu', 'Odberateľ', 'IČO', 'DIČ', 'IČ DPH', 'Cena (€)'];
-
   protected imports: any[] = [];
 
-  selectedCompanyName = 'Vyber spoločnosť';
+  selectedCompanyName = 'Spoločnosť';
   selectedSupplier = 'Vyber dodávateľa';
   searchText: string = '';
 
