@@ -6,13 +6,18 @@ import {AxiosService} from "../axios.service";
 import {ReceiptRequest} from "../models/receipt-request";
 import {InvoiceService} from "../page/invoices/invoice.service";
 import {ToastrService} from "ngx-toastr";
+import { CommonModule } from '@angular/common';
+import {initFlowbite} from 'flowbite'
+import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 
 @Component({
   selector: 'app-receipt-details',
   imports: [
     NgForOf,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CommonModule,
+    MatDialogWindowComponent
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
@@ -30,7 +35,7 @@ export class ReceiptDetailsComponent implements OnInit {
   companyId: any = null;
   @ViewChild('successToast') successToast!: ElementRef;
 
-
+  modalOpen = false;
   receipt: any = {};
   items: ReceiptRequest['items'] = [];
   partner: any = {};
@@ -43,6 +48,36 @@ export class ReceiptDetailsComponent implements OnInit {
       this.receiptId = params.get('id') || '';
     });
     this.onFetchReceipt();
+    initFlowbite();
+  }
+
+  get subtotal(): number {
+    return this.items?.reduce((sum, item) => sum + (item.priceWithoutVAT * (item.quantity ?? 1)), 0) ?? 0;
+  }
+
+  get totalVAT(): number {
+    return this.items?.reduce((sum, item) => {
+      const quantity = item.quantity ?? 1;
+      return sum + ((item.priceWithVAT - item.priceWithoutVAT) * quantity);
+    }, 0) ?? 0;
+  }
+
+  get totalPrice(): number {
+    return this.items?.reduce((sum, item) => sum + (item.priceWithVAT * (item.quantity ?? 1)), 0) ?? 0;
+  }
+
+  getTotalDiscount(): number {
+    if (!this.items) return 0;
+
+    return this.items
+      .filter(item => item.priceWithVAT < 0)
+      .reduce((sum, item) => sum + item.priceWithVAT * (item.quantity ?? 1), 0);
+  }
+  getDiscountAmount(item: any): number {
+    if (!item.priceOriginal || item.priceOriginal <= item.priceWithVAT) {
+      return 0;
+    }
+    return item.priceOriginal - item.priceWithVAT;
   }
 
   async exportReceipt() {
@@ -100,6 +135,14 @@ export class ReceiptDetailsComponent implements OnInit {
         console.error('Chyba pri exportovaní faktúry', error);
       }
     });
+  }
+
+  openModal() {
+    this.modalOpen = true;
+  }
+
+  closeModal() {
+    this.modalOpen = false;
   }
 
   async updateReceipt() {
