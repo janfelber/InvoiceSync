@@ -6,13 +6,15 @@ import {AxiosService} from "../axios.service";
 import {FormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {DialogTutorialComponent} from "../../shared/mat-dialog-tutorial/dialog-tutorial.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-convertor',
   imports: [
     NgIf,
     FormsModule,
-    DialogTutorialComponent
+    DialogTutorialComponent,
+    RouterLink
   ],
   templateUrl: './convertor.component.html',
   styleUrl: './convertor.component.css'
