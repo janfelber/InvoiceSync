@@ -12,6 +12,7 @@ import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
 import {ReceiptsComponent} from "./receipts/receipts.component";
 import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.component";
 import {CompanyDetailsComponent} from "./company-details/company-details.component";
+import {InvoiceLimiterComponent} from "./invoice-limiter/invoice-limiter.component";
 
 export const routes: Routes = [
   {
@@ -59,6 +60,10 @@ export const routes: Routes = [
       {
         path: 'xml-import',
         component: XmlPageComponent
+      },
+      {
+        path: 'web/limiter',
+        component: InvoiceLimiterComponent
       }
     ]
   },
