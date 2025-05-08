@@ -36,8 +36,10 @@ import com.invoicesync.dto.receipt.reponse.ReceiptResponseDetailsDTO;
 import com.invoicesync.module.Company;
 import com.invoicesync.module.Receipt;
 import com.invoicesync.module.ReceiptItem;
+import com.invoicesync.module.Subscription;
 import com.invoicesync.repository.CompanyRepository;
 import com.invoicesync.repository.ReceiptRepository;
+import com.invoicesync.repository.SubscriptionRepository;
 import com.invoicesync.repository.UserCredentialRepository;
 import com.invoicesync.user.CurrentUserService;
 import com.invoicesync.user.UserDemo;
@@ -59,12 +61,16 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private ReceiptRepository receiptRepository;
 
+  private final SubscriptionRepository subscriptionRepository;
+
   private final CurrentUserService currentUserService;
 
   @Transactional
   @Override
   public void saveReceipt(final MultipartFile qrCodeImage, final Long userId, final Long companyId) {
     try {
+
+      final Subscription sub = subscriptionRepository.findByUserId(userId);
 
       final String receiptId = decodeQRCode(qrCodeImage.getInputStream());
 
@@ -82,6 +88,8 @@ public class ReceiptServiceImpl implements ReceiptService {
       final Receipt receipt = mapToReceipt(receiptDto, user, company);
       receipt.setImportDate(new Date());
       receiptRepository.save(receipt);
+      sub.setUsedAmount(sub.getUsedAmount() + 1);
+      subscriptionRepository.save(sub);
 
     } catch (Exception e) {
       throw new RuntimeException("Chyba pri parsovaní JSON odpovede", e);
