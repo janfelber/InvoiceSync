@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReceiptResponseDetailsDTO {
+public class DetailDto {
 
   private String date;
 

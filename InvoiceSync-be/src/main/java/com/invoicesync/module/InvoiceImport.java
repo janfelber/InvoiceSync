@@ -2,8 +2,6 @@
 
   import java.util.Date;
 
-  import com.invoicesync.user.UserDemo;
-
   import jakarta.persistence.Entity;
   import jakarta.persistence.GeneratedValue;
   import jakarta.persistence.GenerationType;
@@ -28,9 +26,9 @@
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "\"user_id\"")
-    private UserDemo user;
+    // @ManyToOne
+    // @JoinColumn(name = "\"user_id\"")
+    // private UserDemo user;
 
     private String invoice_number;
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {initFlowbite} from 'flowbite'
 import {NgForOf, NgIf} from "@angular/common";
 import {AxiosService} from "../axios.service";
@@ -22,7 +22,7 @@ import {CompanyService} from "../services/company.service";
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css'
 })
-export class CompanyDetailsComponent {
+export class CompanyDetailsComponent implements OnInit{
 
   constructor(
     private axiosService: AxiosService,
@@ -31,6 +31,15 @@ export class CompanyDetailsComponent {
     private router: Router
     ) {
   }
+
+  selectedClassIndex: number | null = null;
+  subClasses: string[] = [];
+  companyId : any = null
+  company: any = {};
+  editedCompany: any = {};
+  loadingCompany = false;
+  editCompanyModalOpen= false
+  deleteCompanyModalOpen = false
 
   ngOnInit(): void {
     initFlowbite();
@@ -44,21 +53,35 @@ export class CompanyDetailsComponent {
     this.onFetchChartAccounts7();
 
     this.route.paramMap.subscribe(params => {
+      console.log(params.get('id'))
       this.companyId = params.get('id') || '';
+      if (this.companyId) {
+        this.onFetchCompany();
+      } else {
+        console.error('Company ID is missing!');
+      }
     });
-
-    this.onFetchCompany();
   }
 
+  onFetchCompany() {
+    this.loadingCompany = true;
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  selectedClassIndex: number | null = null;
-  subClasses: string[] = [];
-  companyId: any = null;
-  company: any = {};
-  editedCompany: any = {};
-  loadingCompany = false;
-  editCompanyModalOpen= false
-  deleteCompanyModalOpen = false
+    Promise.all([
+      this.companyService.getCompanyById(
+        {
+          companyId: this.companyId
+        }
+      ),
+      delay(250)
+    ])
+      .then(([response]) => {
+        this.company = response.data;
+      })
+      .finally(() => {
+        this.loadingCompany = false;
+      });
+  }
 
 
   selectedClassName = 'Učtová trieda';
@@ -100,7 +123,12 @@ export class CompanyDetailsComponent {
   editCompany(): void {
     if (!this.company?.id) return;
 
-    this.companyService.updateCompany(this.company.id, this.editedCompany)
+    this.companyService.updateCompany(
+      {
+        companyId:  this.company.id,
+        company:    this.editedCompany
+      }
+      )
       .then((updatedCompany) => {
         this.company = updatedCompany;
         console.log(this.editedCompany)
@@ -113,7 +141,11 @@ export class CompanyDetailsComponent {
   }
 
   deleteCompany():void {
-    this.companyService.deleteCompany(this.company.id)
+    this.companyService.deleteCompany(
+      {
+        companyId:this.companyId
+      }
+    )
       .then(() => {
         console.log('Zmazané, idem navigovať...');
         this.deleteCompanyModalOpen = false;
@@ -121,27 +153,6 @@ export class CompanyDetailsComponent {
       })
       .catch(err => {
         console.error('Chyba pri mazaní:', err);
-      });
-  }
-
-  onFetchCompany() {
-    this.loadingCompany = true;
-
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-    Promise.all([
-      this.axiosService.request(
-        'GET',
-        `/api/v1/company/info/${this.companyId}`,
-        null
-      ),
-      delay(250)
-    ])
-      .then(([response]) => {
-        this.company = response.data;
-      })
-      .finally(() => {
-        this.loadingCompany = false;
       });
   }
 

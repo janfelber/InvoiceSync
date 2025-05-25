@@ -1,5 +1,4 @@
 name: 'is'
-version: '3.8'
 
 
 services:
@@ -10,30 +9,49 @@ services:
       POSTGRES_USER: invoicesync_db_user
       POSTGRES_PASSWORD: invoicesync_db_password
       POSTGRES_DB: invoicesync_db
+    volumes:
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
       - backend
+    restart: unless-stopped
 
-  app:
-    container_name: backend_is
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-    environment:
-      POSTGRES_USER: invoicesync_db_user
-      POSTGRES_PASSWORD: invoicesync_db_password
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/invoicesync_db
-      SPRING_DATASOURCE_USERNAME: invoicesync_db_user
-      SPRING_DATASOURCE_PASSWORD: invoicesync_db_password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  keycloak:
+    container_name: keycloak_is
+    image: quay.io/keycloak/keycloak:26.2.0
     ports:
-      - "8080:8080"
-    depends_on:
-      - db
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
     networks:
       - backend
+    command:
+      - "start-dev"
+
+#  app:
+#    container_name: backend_is
+#    build:
+#      context: .
+#      dockerfile: docker/Dockerfile
+#    environment:
+#      POSTGRES_USER: invoicesync_db_user
+#      POSTGRES_PASSWORD: invoicesync_db_password
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/invoicesync_db
+#      SPRING_DATASOURCE_USERNAME: invoicesync_db_user
+#      SPRING_DATASOURCE_PASSWORD: invoicesync_db_password
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - db
+#    networks:
+#      - backend
 
 networks:
   backend:
     driver: bridge
+    
+volumes:
+  postgres:

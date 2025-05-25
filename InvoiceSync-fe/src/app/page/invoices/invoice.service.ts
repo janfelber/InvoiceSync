@@ -61,9 +61,7 @@ export class InvoiceService {
       'Authorization': `Bearer ${localStorage.getItem("token")}`
     });
 
-    return this.http.post(`http://localhost:8080/api/v1/receipt/update/${receiptId}`, invoiceRequest, {
-      headers: headers,
-    });
+    return this.http.post(`http://localhost:8080/receipt/update/${receiptId}`, invoiceRequest);
   }
 
   exportPohodaReceipt(invoiceRequest: InvoiceRequest) {

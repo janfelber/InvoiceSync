@@ -20,17 +20,14 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'register',
-    component: RegisterComponent
-  },
-  {
     path: '',
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        pathMatch: "full"
       },
       {
         path: '',

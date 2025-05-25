@@ -2,7 +2,7 @@ package com.invoicesync.dto.invoice.response;
 
 import java.util.Date;
 
-import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.identity.PartnerDto;
 import com.invoicesync.dto.invoice.pohoda.InvoiceResponseDetailsDTO;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class InvoiceImportResponseDto {
 
   private InvoiceResponseDetailsDTO invoiceDetails;
 
-  private PartnerDTO partner;
+  private PartnerDto partner;
 
   private String status;
 
