@@ -1,14 +1,34 @@
-import { ApplicationConfig } from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig} from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr } from 'ngx-toastr';
+import {KeycloakService} from "../keycloak/keycloak.service";
+import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
+
+export function kcFactory(kcService: KeycloakService) {
+  return () => kcService.init();
+}
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideHttpClient(), provideAnimationsAsync(), BrowserAnimationsModule, provideAnimations(), provideToastr()]
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    BrowserAnimationsModule,
+    provideAnimations(),
+    provideToastr(),
+    {
+      provide: APP_INITIALIZER,
+      deps:[KeycloakService],
+      useFactory: kcFactory,
+      multi: true
+    }
+  ]
 };

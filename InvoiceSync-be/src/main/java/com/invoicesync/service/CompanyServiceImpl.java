@@ -1,16 +1,22 @@
 package com.invoicesync.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.invoicesync.module.CompanySpecification.withUserId;
 
-import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.common.PageResponse;
 import com.invoicesync.dto.CompanyResponseDto;
 import com.invoicesync.module.Company;
 import com.invoicesync.repository.CompanyRepository;
-import com.invoicesync.user.UserDemo;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -19,35 +25,63 @@ public class CompanyServiceImpl implements CompanyService {
 
   private final CompanyRepository companyRepository;
 
+  private final CompanyMapper companyMapper;
+
   @Override
-  public Company addCompany(final Company company) {
-    if (company.getName() == null || company.getName().isEmpty()) {
-      throw new IllegalArgumentException("Company name cannot be null or empty");
+  public PageResponse<CompanyResponseDto> findAllCompaniesByUser(final int page, int size,
+      final Authentication connectedUser) {
+    // final UserDemo user = ((UserDemo) connectedUser.getPrincipal());
+    if (size < 1) {
+      size = 1;
     }
-    company.setUser((UserDemo) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-    return companyRepository.save(company);
+    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Page<Company> companies = companyRepository.findAll(withUserId(connectedUser.getName()), pageable);
+
+    final List<CompanyResponseDto> companyResponse = companies.stream()
+        .map(companyMapper::toCompanyResponse)
+        .toList();
+    return new PageResponse<>(
+        companyResponse,
+        companies.getNumber(),
+        companies.getSize(),
+        companies.getTotalElements(),
+        companies.getTotalPages(),
+        companies.isFirst(),
+        companies.isLast()
+    );
   }
 
   @Override
-  public Company updateCompany(final Long companyId, final Company company) {
+  public CompanyResponseDto findById(final Long companyId) {
+    return companyRepository.findById(companyId)
+        .map(companyMapper::toCompanyResponse)
+        .orElseThrow(() -> new EntityNotFoundException("No company found with the ID: " + companyId));
+  }
+
+  @Override
+  public Long saveCompany(final CompanyRequest request, final Authentication connectedUser) {
+    // final UserDemo user = ((UserDemo) connectedUser.getPrincipal());
+    final Company company = companyMapper.toCompany(request);
+    // company.setUser(user);
+    return companyRepository.save(company).getId();
+  }
+
+  @Override
+  public Company updateCompany(final Long companyId, final CompanyRequest request) {
     final Company oldCompany = companyRepository.findById(companyId).orElse(null);
 
     if (oldCompany == null) {
       throw new IllegalArgumentException("Company not found");
     }
 
-    oldCompany.setName(company.getName());
-    System.out.println("update meno" + company.getName());
-    oldCompany.setCity(company.getCity());
-    System.out.println("update mesto" + company.getCity());
-    oldCompany.setStreet(company.getStreet());
-    System.out.println("update ulica" + company.getStreet());
-    oldCompany.setStreetNumber(company.getStreetNumber());
-    System.out.println("update meno" + company.getName());
-    oldCompany.setZip(company.getZip());
-    oldCompany.setTaxId(company.getTaxId());
-    oldCompany.setVatId(company.getVatId());
-    oldCompany.setRegistrationNumber(company.getRegistrationNumber());
+    oldCompany.setName(request.name());
+    oldCompany.setCity(request.city());
+    oldCompany.setStreet(request.street());
+    oldCompany.setStreetNumber(request.streetNumber());
+    oldCompany.setZip(request.zip());
+    oldCompany.setTaxId(request.taxId());
+    oldCompany.setVatId(request.vatId());
+    oldCompany.setRegistrationNumber(request.registrationNumber());
     return companyRepository.save(oldCompany);
   }
 
@@ -58,41 +92,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     companyRepository.delete(company);
     return company;
-  }
-
-  @Override
-  public List<CompanyResponseDto> getCompaniesByUserId(final Long userId) {
-    return companyRepository.findByUserId(userId)
-        .stream()
-        .map(company -> new CompanyResponseDto(
-            company.getId(),
-            company.getName(),
-            company.getCity(),
-            company.getStreet(),
-            company.getStreetNumber(),
-            company.getZip(),
-            company.getRegistrationNumber(),
-            company.getTaxId(),
-            company.getVatId()
-        ))
-        .collect(Collectors.toList());
-  }
-
-  @Override
-  public CompanyResponseDto getCompanyInfo(final Long id) {
-    return companyRepository.findById(id)
-        .map(company -> new CompanyResponseDto(
-            company.getId(),
-            company.getName(),
-            company.getCity(),
-            company.getStreet(),
-            company.getStreetNumber(),
-            company.getZip(),
-            company.getRegistrationNumber(),
-            company.getTaxId(),
-            company.getVatId()
-        ))
-        .orElseThrow(() -> new IllegalArgumentException("Company with id " + id + " not found"));
   }
 
 }

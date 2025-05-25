@@ -1,0 +1,1405 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI specification",
+    "description": "OpenAPI documentation for Spring security",
+    "termsOfService": "Terms of service",
+    "contact": {
+      "name": "Johnny",
+      "email": "jfelber@gmail.com"
+    },
+    "license": {
+      "name": "Licence name",
+      "url": "https://some-url.com"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/",
+      "description": "Local ENV"
+    },
+    {
+      "url": "https://google.com",
+      "description": "PROD ENV"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/xml-file/upload": {
+      "post": {
+        "tags": [
+          "xml-file-controller"
+        ],
+        "operationId": "saveXmlFile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xml-file/generate-zip/{importId}": {
+      "post": {
+        "tags": [
+          "xml-file-controller"
+        ],
+        "operationId": "processAndGenerateZip",
+        "parameters": [
+          {
+            "name": "importId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/update/{companyId}": {
+      "post": {
+        "tags": [
+          "company-controller"
+        ],
+        "operationId": "editCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Company"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/save": {
+      "post": {
+        "tags": [
+          "company-controller"
+        ],
+        "operationId": "saveCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/update/{receiptId}": {
+      "post": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "updateReceipt",
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/save": {
+      "post": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "saveReceipt",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/pohoda/export/receipt": {
+      "post": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "createReceipt",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pohoda/export/received": {
+      "post": {
+        "tags": [
+          "pohoda-controller"
+        ],
+        "operationId": "createInvoice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pohoda/export/receipt": {
+      "post": {
+        "tags": [
+          "pohoda-controller"
+        ],
+        "operationId": "createReceipt_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xml-file/imports/current-user": {
+      "get": {
+        "tags": [
+          "xml-file-controller"
+        ],
+        "operationId": "getCurrentUserXmlFiles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/XmlFileResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/xml-file/content/{importId}": {
+      "get": {
+        "tags": [
+          "xml-file-controller"
+        ],
+        "operationId": "getXmlContentByImportId",
+        "parameters": [
+          {
+            "name": "importId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runPythonScript": {
+      "get": {
+        "tags": [
+          "python-controller"
+        ],
+        "operationId": "runPythonScript",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filePath",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "schemaPath",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages": {
+      "get": {
+        "tags": [
+          "message"
+        ],
+        "operationId": "messeges",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/{company-id}": {
+      "get": {
+        "tags": [
+          "company-controller"
+        ],
+        "operationId": "getCompanyById",
+        "parameters": [
+          {
+            "name": "company-id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/user": {
+      "get": {
+        "tags": [
+          "company-controller"
+        ],
+        "operationId": "findAllCompaniesByUser",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseCompanyResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/{id}": {
+      "get": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "getReceiptById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceiptDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/current-user": {
+      "get": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "getReceiptsCurrentUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptListDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/receipt/company/{id}": {
+      "get": {
+        "tags": [
+          "receipt-controller"
+        ],
+        "operationId": "getReceiptsByCompanyId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceiptListDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/demo-controller": {
+      "get": {
+        "tags": [
+          "demo-controller"
+        ],
+        "operationId": "sayHello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/chart-account/categories": {
+      "get": {
+        "tags": [
+          "chart-account-controller"
+        ],
+        "operationId": "getChartAccountsByCategory",
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/ClassDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/delete/{companyId}": {
+      "delete": {
+        "tags": [
+          "company-controller"
+        ],
+        "operationId": "deleteCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChartAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDemo"
+          },
+          "classId": {
+            "type": "string"
+          },
+          "className": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "editable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModifiedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastModifiedBy": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "registrationNumber": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "vatId": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDemo"
+          }
+        }
+      },
+      "GrantedAuthority": {
+        "type": "object",
+        "properties": {
+          "authority": {
+            "type": "string"
+          }
+        }
+      },
+      "Token": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          },
+          "tokenType": {
+            "type": "string",
+            "enum": [
+              "BEARER"
+            ]
+          },
+          "expired": {
+            "type": "boolean"
+          },
+          "revoked": {
+            "type": "boolean"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDemo"
+          }
+        }
+      },
+      "UserDemo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "login": {
+            "type": "string"
+          },
+          "mfa_enabled": {
+            "type": "boolean"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          },
+          "tokens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Token"
+            }
+          },
+          "xmlFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/XmlFile"
+            }
+          },
+          "companies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Company"
+            }
+          },
+          "chartAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartAccount"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "accountNonExpired": {
+            "type": "boolean"
+          },
+          "accountNonLocked": {
+            "type": "boolean"
+          },
+          "authorities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GrantedAuthority"
+            }
+          },
+          "credentialsNonExpired": {
+            "type": "boolean"
+          }
+        }
+      },
+      "XmlFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "xml_content": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDemo"
+          }
+        }
+      },
+      "CompanyRequest": {
+        "required": [
+          "city",
+          "registrationNumber",
+          "street",
+          "streetNumber",
+          "taxId",
+          "vatId",
+          "zip"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "registrationNumber": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "vatId": {
+            "type": "string"
+          }
+        }
+      },
+      "MyIdentityDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "registrationNumber": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "vatId": {
+            "type": "string"
+          }
+        }
+      },
+      "PartnerDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "registrationNumber": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "vatId": {
+            "type": "string"
+          }
+        }
+      },
+      "ReceiptItemDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountText": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "priceWithoutVAT": {
+            "type": "number"
+          },
+          "vatRate": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "priceWithVAT": {
+            "type": "number"
+          },
+          "accountValue": {
+            "type": "string"
+          }
+        }
+      },
+      "ReceiptRequestDTO": {
+        "type": "object",
+        "properties": {
+          "receiptDetails": {
+            "$ref": "#/components/schemas/ReceiptRequestDetailsDTO"
+          },
+          "partner": {
+            "$ref": "#/components/schemas/PartnerDTO"
+          },
+          "myIdentity": {
+            "$ref": "#/components/schemas/MyIdentityDTO"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReceiptItemDTO"
+            }
+          }
+        }
+      },
+      "ReceiptRequestDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "numberRequested": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "datePayment": {
+            "type": "string"
+          },
+          "dateTax": {
+            "type": "string"
+          },
+          "accountValue": {
+            "type": "string"
+          },
+          "classificationVAT": {
+            "type": "string"
+          },
+          "classificationKVVAT": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "InvoiceItemDTO": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": "number"
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "priceVAT": {
+            "type": "number"
+          },
+          "priceSum": {
+            "type": "number"
+          },
+          "accountValue": {
+            "type": "string"
+          }
+        }
+      },
+      "InvoiceRequestDTO": {
+        "type": "object",
+        "properties": {
+          "invoiceDetails": {
+            "$ref": "#/components/schemas/InvoiceRequestDetailsDTO"
+          },
+          "partner": {
+            "$ref": "#/components/schemas/PartnerDTO"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceItemDTO"
+            }
+          },
+          "myIdentity": {
+            "$ref": "#/components/schemas/MyIdentityDTO"
+          }
+        }
+      },
+      "InvoiceRequestDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "invoiceType": {
+            "type": "string"
+          },
+          "invoiceNumber": {
+            "type": "string"
+          },
+          "variableSymbol": {
+            "type": "string"
+          },
+          "pairingSymbol": {
+            "type": "string"
+          },
+          "dateIssue": {
+            "type": "string"
+          },
+          "dateTax": {
+            "type": "string"
+          },
+          "dateDue": {
+            "type": "string"
+          },
+          "dateAccounting": {
+            "type": "string"
+          }
+        }
+      },
+      "XmlFileResponseDto": {
+        "type": "object",
+        "properties": {
+          "importId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CompanyResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "street": {
+            "type": "string"
+          },
+          "streetNumber": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          },
+          "registrationNumber": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "vatId": {
+            "type": "string"
+          }
+        }
+      },
+      "PageResponseCompanyResponseDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompanyResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReceiptDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "receiptDetails": {
+            "$ref": "#/components/schemas/ReceiptResponseDetailsDTO"
+          },
+          "partner": {
+            "$ref": "#/components/schemas/PartnerDTO"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReceiptItemDTO"
+            }
+          },
+          "company": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ReceiptResponseDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "datePayment": {
+            "type": "string"
+          },
+          "dateTax": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "string"
+          },
+          "accountValue": {
+            "type": "string"
+          },
+          "classificationVAT": {
+            "type": "string"
+          },
+          "classificationKVVAT": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ReceiptListDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "partnerName": {
+            "type": "string"
+          },
+          "importDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "company": {
+            "type": "string"
+          },
+          "partnerRegistrationNumber": {
+            "type": "string"
+          },
+          "partnerTaxId": {
+            "type": "string"
+          },
+          "partnerVatId": {
+            "type": "string"
+          },
+          "totalPrice": {
+            "type": "string"
+          }
+        }
+      },
+      "AccountDTO": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "editable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CategoryDTO": {
+        "type": "object",
+        "properties": {
+          "categoryName": {
+            "type": "string"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountDTO"
+            }
+          }
+        }
+      },
+      "ClassDTO": {
+        "type": "object",
+        "properties": {
+          "className": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CategoryDTO"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT auth description",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

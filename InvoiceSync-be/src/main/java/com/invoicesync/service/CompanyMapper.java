@@ -1,0 +1,39 @@
+package com.invoicesync.service;
+
+import org.springframework.stereotype.Service;
+
+import com.invoicesync.dto.CompanyResponseDto;
+import com.invoicesync.module.Company;
+
+@Service
+public class CompanyMapper {
+
+  public Company toCompany(final CompanyRequest request) {
+    return Company.builder()
+        .id(request.id())
+        .name(request.name())
+        .city(request.city())
+        .street(request.street())
+        .streetNumber(request.streetNumber())
+        .zip(request.zip())
+        .registrationNumber(request.registrationNumber())
+        .taxId(request.taxId())
+        .vatId(request.vatId())
+        .build();
+  }
+
+  public CompanyResponseDto toCompanyResponse(final Company company) {
+    return CompanyResponseDto.builder()
+        .id(company.getId())
+        .name(company.getName())
+        .city(company.getCity())
+        .street(company.getStreet())
+        .streetNumber(company.getStreetNumber())
+        .zip(company.getZip())
+        .registrationNumber(company.getRegistrationNumber())
+        .taxId(company.getTaxId())
+        .vatId(company.getVatId())
+        .build();
+  }
+
+}

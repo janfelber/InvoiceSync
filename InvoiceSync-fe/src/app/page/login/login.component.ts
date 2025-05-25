@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import {AuthenticationRequest} from "../../models/authentication-request";
 import {AuthenticationReponse} from "../../models/authentication-reponse";
@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
 import { RouterModule } from '@angular/router';
+import {KeycloakService} from "../../../keycloak/keycloak.service";
 
 @Component({
     selector: 'app-login',
@@ -15,36 +16,39 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     CommonModule,
     RouterModule,
-    NgOptimizedImage,
   ],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  authRequest: AuthenticationRequest = {};
-  otpCode: any;
-  authResponse: AuthenticationReponse = {};
+export class LoginComponent implements OnInit{
+  // authRequest: AuthenticationRequest = {};
+  // otpCode: any;
+  // authResponse: AuthenticationReponse = {};
 
   constructor(
-    private authService: AuthenticationService,
-    private router: Router
+    private keycloakService: KeycloakService
   ) {
   }
 
-  authenticate() {
-    this.authService.login(this.authRequest)
-      .subscribe(
-        {
-          next: (response) => {
-            this.authResponse = response;
-            if (!this.authResponse.mfaEnabled) {
-              localStorage.setItem('token', this.authResponse.access_token as string);
-              this.router.navigate(['xml-import']);
-            }
-          }
-        }
-      );
+  async ngOnInit(): Promise<void> {
+    await this.keycloakService.init()
+    await this.keycloakService.login();
   }
+
+  // authenticate() {
+  //   this.authService.login(this.authRequest)
+  //     .subscribe(
+  //       {
+  //         next: (response) => {
+  //           this.authResponse = response;
+  //           if (!this.authResponse.mfaEnabled) {
+  //             localStorage.setItem('token', this.authResponse.access_token as string);
+  //             this.router.navigate(['xml-import']);
+  //           }
+  //         }
+  //       }
+  //     );
+  // }
 
   // verifyCode() {
   //   const verifyRequest: VerificationRequest = {

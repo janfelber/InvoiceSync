@@ -1,32 +1,19 @@
 export interface ReceiptRequest {
-  receiptDetails?: {
-    numberRequested?: string;
-    date?: string;
-    datePayment?: string;
-    dateTax?: string;
-    accountValue?: string;
-    classificationVAT?: string;
-    classificationKVVAT?: string;
-    description?: string;
-  }
-  partner?: {
-    name?: string;
-    city?: string;
-    street?: string;
-    zip?: string;
-    registrationNumber?: string;
-    taxId?: string;
-    vatId?: string;
-  }
-  myIdentity?: {
-    name?: string;
-    city?: string;
-    street?: string;
-    zip?: string;
-    registrationNumber?: string;
-    taxId?: string;
-    vatId?: string;
-  },
+  date?:String;
+  datePayment?:String;
+  dateTax?:String;
+  partnerName?:String;
+  partnerCity?:String;
+  partnerStreet?:String;
+  partnerZip?: String;
+  partnerRegistrationNumber?:String;
+  partnerTaxId?:String;
+  partnerVatId?:String;
+  accounting?:String;
+  classificationVAT?:String;
+  classificationKVVAT?:String;
+  description?:String;
+
   items?: Array<{
     accountText?: string;
     name?: string;

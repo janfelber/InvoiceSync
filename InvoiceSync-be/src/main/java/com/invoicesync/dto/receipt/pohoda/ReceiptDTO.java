@@ -35,6 +35,6 @@ public class ReceiptDTO {
 
   private String totalPrice;
 
-  private List<ReceiptItemDTO> items;
+  private List<ReceiptItemDto> items;
 
 }
