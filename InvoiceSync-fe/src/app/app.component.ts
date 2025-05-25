@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import {PreLaunchPageComponent} from "./pre-lanuch-page/pre-launch-page.component";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -15,6 +16,7 @@ interface SideNavToggle {
   imports: [
     CommonModule,
     RouterOutlet,
+    PreLaunchPageComponent,
   ]
 })
 

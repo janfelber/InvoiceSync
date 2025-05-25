@@ -1,0 +1,61 @@
+<div class="bg-white flex flex-col items-center justify-center py-35 max-w-screen-xl mx-auto px-4">
+
+  <div class="max-w-screen-xl w-full mx-auto grid grid-cols-12 gap-0">
+    <div class="col-span-12 md:col-span-6">
+      <span class="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-1.5 rounded-sm">Prednostný prístup</span>
+
+      <div class="flex items-center gap-3 md:me-24 mt-4 mb-4">
+        <img
+          ngSrc="assets/logo_48x48.svg"
+          class="w-12 h-12"
+          alt="FlowBite Logo"
+          height="48" width="48"
+        />
+        <span class="text-5xl font-bold whitespace-nowrap">InvoiceSync</span>
+      </div>
+
+      <p class="text-gray-400 mb-8 max-w-3xl text-lg leading-7 font-light">
+        Sledovanie faktúr, analytika a prehľady pre firmy – všetko na jednom mieste. Pracujeme na tom a budeme radi, ak nám zanecháš svoj e-mail. Dáme ti vedieť, keď spustíme!
+      </p>
+
+      <div>
+        <form (submit)="onSubmit(emailInput.value); $event.preventDefault()" class="w-full flex flex-col sm:flex-row gap-3">
+          <div class="flex flex-col w-full sm:w-96">
+            <label class="block text-sm mb-1">Daj nám vedieť, kam ti máme napísať</label>
+            <input
+              type="email"
+              #emailInput
+              required
+              placeholder="Zadaj svoj e-mail"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="flex items-end">
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-6 py-2.5 rounded-md font-semibold hover:bg-blue-700 transition"
+            >
+              Odoslať
+            </button>
+          </div>
+        </form>
+        <p *ngIf="message">{{ message }}</p>
+        <p class="text-sm text-gray-400 mt-2">
+          Žiadny spam. Pošleme ti len jeden e-mail v deň spustenia.
+        </p>
+      </div>
+    </div>
+    <div class="md:col-span-6 rounded-md border border-gray-200">
+      <img
+        src="assets/receipts_screen_ui.svg"
+        alt=""
+        class="w-full h-full object-cover"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="bg-gray-50 px-6 py-12 text-center">
+  aaa
+</div>

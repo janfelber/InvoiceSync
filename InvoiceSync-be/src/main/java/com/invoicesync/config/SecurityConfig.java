@@ -1,6 +1,7 @@
 package com.invoicesync.config;
 
-import lombok.RequiredArgsConstructor;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
@@ -30,8 +31,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("api/v1/auth/**")
-                                .permitAll()
+                    req -> req.requestMatchers("api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/email/subscribe/news").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
