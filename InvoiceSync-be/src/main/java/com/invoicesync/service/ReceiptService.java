@@ -1,24 +1,29 @@
 package com.invoicesync.service;
 
-import java.util.List;
-
+import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDTO;
-import com.invoicesync.dto.receipt.reponse.ReceiptDetailsDTO;
-import com.invoicesync.dto.receipt.reponse.ReceiptListDTO;
+import com.invoicesync.common.PageResponse;
+import com.invoicesync.dto.receipt.reponse.ReceiptDetailDto;
+import com.invoicesync.dto.receipt.reponse.ReceiptResponseDto;
+import com.invoicesync.dto.record.ReceiptRequest;
 import com.invoicesync.module.Receipt;
 
 public interface ReceiptService {
 
-   void saveReceipt(MultipartFile qrCodeImage, Long userId, Long companyId);
+   PageResponse<ReceiptResponseDto> findAllReceiptsByUser(int size, int page, Authentication connectedUser);
 
-   List<ReceiptListDTO> getReceiptsByUserId(Long userId);
+   PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int size, int page, Long companyId,
+       Authentication connectedUser);
 
-   List<ReceiptListDTO> getReceiptsByCompanyId(Long companyId);
+   ReceiptDetailDto findById(long receiptId);
 
-   ReceiptDetailsDTO getReceiptById(Long id);
+   Long saveReceipt(final MultipartFile qrCodeImage, final Long companyId, final Authentication connectedUser);
 
-   Receipt updateReceiptById(Long id, Long userId, ReceiptRequestDTO requestDTO);
+   Receipt updateReceiptById(Long id, ReceiptRequest receipt);
+
+   //
+   // ReceiptDetailsDTO getReceiptById(Long id);
+   //
 
 }

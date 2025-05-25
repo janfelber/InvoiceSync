@@ -9,6 +9,8 @@ import {ToastrService} from "ngx-toastr";
 import { CommonModule } from '@angular/common';
 import {initFlowbite} from 'flowbite'
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
+import {ReceiptService} from "../services/receipt.service";
+import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
 
 @Component({
   selector: 'app-receipt-details',
@@ -24,7 +26,7 @@ import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialo
 })
 export class ReceiptDetailsComponent implements OnInit {
   constructor(
-    private axiosService: AxiosService,
+    private receiptService: ReceiptService,
     private route: ActivatedRoute,
     private invoiceService: InvoiceService,
     private toastr: ToastrService,
@@ -40,6 +42,7 @@ export class ReceiptDetailsComponent implements OnInit {
   items: ReceiptRequest['items'] = [];
   partner: any = {};
   myIdentity: any = {};
+  receiptResponse: ReceiptDetailResponse = {};
 
   receiptRequest: ReceiptRequest = {};
 
@@ -49,6 +52,19 @@ export class ReceiptDetailsComponent implements OnInit {
     });
     this.onFetchReceipt();
     initFlowbite();
+  }
+
+  onFetchReceipt() {
+    this.receiptService.getReceiptById({
+      receiptId: this.receiptId
+    }).then(response => {
+      this.receiptResponse = response.data
+      console.log("test", this.receiptResponse);
+      // this.companyId = data.company;
+      // this.receipt = data.receiptDetails;
+      // this.partner = data.partner;
+      // this.items = data.items;
+    });
   }
 
   get subtotal(): number {
@@ -80,62 +96,70 @@ export class ReceiptDetailsComponent implements OnInit {
     return item.priceOriginal - item.priceWithVAT;
   }
 
-  async exportReceipt() {
-    await this.myIdentityCompany();
-
-    this.receiptRequest = {
-      receiptDetails: {
-        numberRequested: 'test',
-        date: this.receipt.date,
-        datePayment: this.receipt.datePayment,
-        dateTax: this.receipt.dateTax,
-        accountValue: this.receipt.accountValue,
-        classificationVAT: this.receipt.classificationVAT,
-        classificationKVVAT: this.receipt.classificationKVVAT,
-        description: this.receipt.description
-      },
-      partner: {
-        name: this.partner.name,
-        city: this.partner.city,
-        street: this.partner.street,
-        zip: this.partner.zip,
-        registrationNumber: this.partner.registrationNumber,
-        taxId: this.partner.taxId,
-        vatId: this.partner.vatId
-      },
-      myIdentity: this.myIdentity,
-      items: this.items
-      };
-
-    console.log(this.receiptRequest)
-
-    this.invoiceService.exportPohodaReceipt(this.receiptRequest).subscribe({
-      next: (response) => {
-        const blob = new Blob([response], {type: 'application/xml'});
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'receipt.xml';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-
-        console.log(response)
-        this.toastr.success('Export uspesny', 'Informácia',
-          {
-            timeOut: 1500,
-            progressBar: true,
-            progressAnimation: 'increasing',
-            closeButton: true,
-            positionClass: 'toast-top-right',
-          });
-      },
-      error: (error) => {
-        console.error('Chyba pri exportovaní faktúry', error);
-      }
-    });
-  }
+  // async exportReceipt() {
+  //   // await this.myIdentityCompany();
+  //
+  //   this.receiptRequest = {
+  //     receiptDetails: {
+  //       numberRequested: 'test',
+  //       date: this.receipt.date,
+  //       datePayment: this.receipt.datePayment,
+  //       dateTax: this.receipt.dateTax,
+  //       accountValue: this.receipt.accountValue,
+  //       classificationVAT: this.receipt.classificationVAT,
+  //       classificationKVVAT: this.receipt.classificationKVVAT,
+  //       description: this.receipt.description
+  //     },
+  //     partner: {
+  //       name: this.partner.name,
+  //       city: this.partner.city,
+  //       street: this.partner.street,
+  //       zip: this.partner.zip,
+  //       registrationNumber: this.partner.registrationNumber,
+  //       taxId: this.partner.taxId,
+  //       vatId: this.partner.vatId
+  //     },
+  //     myIdentity: {
+  //       name: this.receiptResponse.company?.name,
+  //       city: this.receiptResponse.company?.city,
+  //       street: this.receiptResponse.company?.street,
+  //       zip: this.receiptResponse.company?.zip,
+  //       taxId: this.receiptResponse.company?.taxId,
+  //       vatId: this.receiptResponse.company?.vatId,
+  //       registrationNumber: this.receiptResponse.company?.registrationNumber
+  //     },
+  //     items: this.items
+  //     };
+  //
+  //   console.log(this.receiptRequest)
+  //
+  //   this.invoiceService.exportPohodaReceipt(this.receiptRequest).subscribe({
+  //     next: (response) => {
+  //       const blob = new Blob([response], {type: 'application/xml'});
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = 'receipt.xml';
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //       window.URL.revokeObjectURL(url);
+  //
+  //       console.log(response)
+  //       this.toastr.success('Export uspesny', 'Informácia',
+  //         {
+  //           timeOut: 1500,
+  //           progressBar: true,
+  //           progressAnimation: 'increasing',
+  //           closeButton: true,
+  //           positionClass: 'toast-top-right',
+  //         });
+  //     },
+  //     error: (error) => {
+  //       console.error('Chyba pri exportovaní faktúry', error);
+  //     }
+  //   });
+  // }
 
   openModal() {
     this.modalOpen = true;
@@ -146,76 +170,41 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   async updateReceipt() {
-    await this.myIdentityCompany();
 
     this.receiptRequest = {
-      receiptDetails: {
-        numberRequested: 'test',
-        date: this.receipt.date,
-        datePayment: this.receipt.datePayment,
-        dateTax: this.receipt.dateTax,
-        accountValue: this.receipt.accountValue,
-        classificationVAT: this.receipt.classificationVAT,
-        classificationKVVAT: this.receipt.classificationKVVAT,
-        description: this.receipt.description
-      },
-      partner: {
-        name: this.partner.name,
-        city: this.partner.city,
-        street: this.partner.street,
-        zip: this.partner.zip,
-        registrationNumber: this.partner.registrationNumber,
-        taxId: this.partner.taxId,
-        vatId: this.partner.vatId
-      },
+        datePayment:this.receiptResponse?.receiptDetails?.datePayment,
+        date: this.receiptResponse.receiptDetails?.date,
+        dateTax: this.receiptResponse.receiptDetails?.dateTax,
+        accounting: this.receiptResponse.receiptDetails?.accountValue,
+        classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
+        classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
+        description: this.receiptResponse.receiptDetails?.description,
+        partnerName: this.receiptResponse.partner?.name,
+        partnerCity: this.receiptResponse.partner?.city,
+        partnerStreet: this.receiptResponse.partner?.street,
+        partnerZip: this.receiptResponse.partner?.zip,
+        partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
+        partnerTaxId: this.receiptResponse.partner?.taxId,
+        partnerVatId: this.receiptResponse.partner?.vatId,
       items: this.items
       }
 
-    console.log(this.receiptRequest)
-
-    this.invoiceService.updateReceipt(this.receiptRequest, this.receiptId).subscribe({
-      next: (response) => {
-        console.log(response)
-          this.toastr.success('Bloček úspešne upravený', 'Informácia',
-            {
-              timeOut: 1500,
-              progressBar: true,
-              progressAnimation: 'increasing',
-              closeButton: true,
-              positionClass: 'toast-top-right',
-            });
-      },
-      error: (error) => {
-        console.error('Chyba pri exportovaní faktúry', error);
-      }
-    });
-  }
-
-  async myIdentityCompany() {
-    try {
-      const response = await this.axiosService.request(
-        "GET",
-        `/api/v1/company/info/${this.companyId}`,
-        null
+    this.receiptService.updateReceipt({
+      receiptId: this.receiptId,
+      receipt: this.receiptRequest
+    }).then(() =>{
+      this.modalOpen = false;
+      this.toastr.success(
+        'Zmeny bločka uložené',
+        '',
+        {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        }
       );
-      this.myIdentity = response.data;
-    } catch (error) {
-      console.error('Error fetching company info', error);
-    }
-  }
-
-  onFetchReceipt() {
-    this.axiosService.request(
-      'GET',
-      `/api/v1/receipt/${this.receiptId}`,
-      null,
-    ).then(response => {
-      const data = response.data;
-      console.log(data);
-      this.companyId = data.company;
-      this.receipt = data.receiptDetails;
-      this.partner = data.partner;
-      this.items = data.items;
     });
   }
 }

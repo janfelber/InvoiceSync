@@ -14,10 +14,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.invoicesync.dto.identity.MyIdentityDTO;
-import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.identity.PartnerDto;
 import com.invoicesync.dto.invoice.pohoda.InvoiceItemDTO;
 import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDetailsDTO;
-import com.invoicesync.dto.receipt.pohoda.ReceiptItemDTO;
+import com.invoicesync.dto.receipt.pohoda.ReceiptItemDto;
 import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDetailsDTO;
 
 @Component
@@ -47,7 +47,7 @@ public class InvoiceXmlHelper {
     replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), MY_IDENTITY);
   }
 
-  public void updatePartner(final Document doc, final PartnerDTO partnerDTO) {
+  public void updatePartner(final Document doc, final PartnerDto partnerDTO) {
     replaceTextContent(doc, NAME, partnerDTO.getName(), PARTNER);
     replaceTextContent(doc, CITY, partnerDTO.getCity(), PARTNER);
     replaceTextContent(doc, STREET, partnerDTO.getStreet(), PARTNER);
@@ -112,7 +112,7 @@ public class InvoiceXmlHelper {
     replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), RECEIPT_MY_IDENTITY);
   }
 
-  public void updateReceiptPartner(final Document doc, final PartnerDTO partnerDTO) {
+  public void updateReceiptPartner(final Document doc, final PartnerDto partnerDTO) {
     replaceTextContent(doc, COMPANY, partnerDTO.getName(), RECEIPT_PARTNER);
     replaceTextContent(doc, CITY, partnerDTO.getCity(), RECEIPT_PARTNER);
     replaceTextContent(doc, STREET, partnerDTO.getStreet(), RECEIPT_PARTNER);
@@ -122,10 +122,10 @@ public class InvoiceXmlHelper {
     replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), RECEIPT_PARTNER);
   }
 
-  public void updateReceiptItems(final Document doc, final List<ReceiptItemDTO> items) {
+  public void updateReceiptItems(final Document doc, final List<ReceiptItemDto> items) {
     final Element receiptItemsParent = (Element) doc.getElementsByTagName(RECEIPT_DETAIL)
         .item(0);
-    for (final ReceiptItemDTO item : items) {
+    for (final ReceiptItemDto item : items) {
       final Element receiptItem = doc.createElement(RECEIPT_ITEM);
 
       createElementAndAppend(doc, receiptItem, TEXT, item.getAccountText());

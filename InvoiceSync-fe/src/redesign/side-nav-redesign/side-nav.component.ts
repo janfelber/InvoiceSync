@@ -7,11 +7,9 @@ import {navbarDataRedesign} from "./nav-data-redesign";
 @Component({
     selector: 'app-side-nav',
   imports: [
-    NgForOf,
     RouterLinkActive,
     RouterLink,
     NgOptimizedImage,
-    NgComponentOutlet,
     CommonModule
   ],
     templateUrl: './side-nav.component.html',
