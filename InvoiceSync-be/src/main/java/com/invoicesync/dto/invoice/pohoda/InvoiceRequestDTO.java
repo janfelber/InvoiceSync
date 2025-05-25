@@ -3,7 +3,7 @@ package com.invoicesync.dto.invoice.pohoda;
 import java.util.List;
 
 import com.invoicesync.dto.identity.MyIdentityDTO;
-import com.invoicesync.dto.identity.PartnerDTO;
+import com.invoicesync.dto.identity.PartnerDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class InvoiceRequestDTO {
 
   private InvoiceRequestDetailsDTO invoiceDetails;
 
-  private PartnerDTO partner;
+  private PartnerDto partner;
 
   private List<InvoiceItemDTO> items;
 

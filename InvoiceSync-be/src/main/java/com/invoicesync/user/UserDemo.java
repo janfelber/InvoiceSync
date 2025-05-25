@@ -1,5 +1,6 @@
 package com.invoicesync.user;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import com.invoicesync.module.Company;
 import com.invoicesync.module.XmlFile;
 import com.invoicesync.token.Token;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -19,19 +19,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "user_credential", schema = "invoice_sync")
-public class UserDemo implements UserDetails {
+// @Entity
+// @Table(name = "user_credential", schema = "invoice_sync")
+//@EntityListeners(AuditingEntityListener.class)
+public class UserDemo implements UserDetails, Principal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,4 +98,10 @@ public class UserDemo implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String getName() {
+        return username;
+    }
+
 }

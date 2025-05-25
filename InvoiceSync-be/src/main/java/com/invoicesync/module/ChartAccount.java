@@ -1,14 +1,10 @@
 package com.invoicesync.module;
 
-import com.invoicesync.user.UserDemo;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +23,9 @@ public class ChartAccount {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "\"user_id\"")
-  private UserDemo user;
+  // @ManyToOne
+  // @JoinColumn(name = "\"user_id\"")
+  // private UserDemo user;
 
   @Column(name = "class_id")
   private String classId;

@@ -37,7 +37,7 @@
             <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>
           </div>
           <div class="text-2xl font-bold tracking-tight">
-            1,285
+            TBA
           </div>
           <p class="text-sm text-muted-foreground">
             Všetky bločky
@@ -50,10 +50,10 @@
             <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>
           </div>
           <div class="text-2xl font-bold tracking-tight">
-            122
+            TBA
           </div>
           <p class="text-sm text-muted-foreground">
-            April 2025
+            TBA
           </p>
         </div>
 
@@ -63,7 +63,7 @@
             <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>
           </div>
           <div class="text-2xl font-bold tracking-tight">
-            $81,542
+            TBA
           </div>
           <p class="text-sm text-muted-foreground">
             Súhrnná hodnota
@@ -76,10 +76,10 @@
             <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>
           </div>
           <div class="text-2xl font-bold tracking-tight">
-            28. apríl 2025
+            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}
           </div>
           <p class="text-sm text-muted-foreground">
-            o 14:36
+            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}
           </p>
         </div>
       </div>
@@ -104,14 +104,12 @@
                    placeholder="Vyhľadávanie" required/>
 
             <button type="submit"
-                    class="absolute top-0 end-0 h-full px-3 text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                    (click)="searchInvoices()">
+                    class="absolute top-0 end-0 h-full px-3 text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
               Search
             </button>
           </div>
         </form>
 
-        <!-- Dropdown na výber firmy -->
         <button id="dropdownFilterButton"
                 data-dropdown-toggle="filterDropdown"
                 data-dropdown-delay="500"
@@ -135,7 +133,7 @@
              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 dark:bg-white border border-black-500">
         </div>
 
-        <!-- Dropdown na výber firmy -->
+        <!-- Dropdown for filter by company -->
         <button id="dropdownCompanyButton"
                 data-dropdown-toggle="companiesDropdown"
                 data-dropdown-delay="500"
@@ -156,11 +154,14 @@
         <div id="companiesDropdown"
              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 shadow-sm">
           <ul class="py-2 text-sm text-black dark:text-black" aria-labelledby="dropdownDefaultButton">
-            <li *ngIf="companies.length > 0">
-              <a class="block px-4 py-2 hover:bg-gray-200"
-                 *ngFor="let data of companies" (click)="onSelectCompany(data)">{{ data.name }}</a>
+            <li *ngIf="companyResponse?.content.length > 0">
+              <a *ngFor="let company of companyResponse?.content"
+                 class="block px-4 py-2 hover:bg-gray-200"
+                 (click)="onCompanyChange(company)">
+                {{ company.name }}
+              </a>
             </li>
-            <li *ngIf="companies.length === 0" class="block px-4 py-2 text-gray-500 italic">
+            <li *ngIf="companyResponse?.content.length === 0" class="block px-4 py-2 text-gray-500 italic">
               Žiadne firmy nie sú k dispozícii
             </li>
           </ul>
@@ -168,9 +169,10 @@
       </div>
 
       <!-- Import receipt button -->
-      <button type="button"
-              class="w-41 h-9.5 text-sm text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
-              (click)="onFileSelected()"
+      <button
+        type="button"
+        class="w-41 h-9.5 text-sm text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
+        (click)="openImportModal()"
       >
         <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
              fill="currentColor" viewBox="0 0 24 24">
@@ -185,6 +187,165 @@
       </button>
     </div>
   </div>
+
+  <app-modal
+    [show]="importModalOpen"
+    (closeModal)="closeImportModal()"
+    title="Import bločkov"
+  >
+    <form #importForm="ngForm">
+      <div class="grid gap-4 mb-6">
+
+        <div class="w-full max-w-md mx-auto">
+          <!-- Tabs -->
+          <div class="flex border-b border-blue-300 mb-4">
+            <button
+              class="w-1/2 py-2 text-center font-semibold"
+              [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'single', 'text-gray-600': activeTab !== 'single' }"
+              (click)="activeTab = 'single'"
+            >
+              Jeden obrázok
+            </button>
+            <button
+              class="w-1/2 py-2 text-center font-semibold"
+              [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'multiple', 'text-gray-600': activeTab !== 'multiple' }"
+              (click)="activeTab = 'multiple'"
+            >
+              Viac obrázkov
+            </button>
+          </div>
+
+          <!-- Single Image Upload -->
+          <div *ngIf="activeTab === 'single'" class="space-y-4">
+            <!-- choose company -->
+            <div>
+              <label for="companySelect" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
+              <select
+                id="companySelect"
+                [(ngModel)]="selectedCompanyId"
+                name="selectedCompany"
+                required
+                class="block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
+                <option *ngFor="let company of companyResponse?.content" [value]="company.id">
+                  {{ company.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- single upload -->
+            <div [class.opacity-50]="!selectedCompanyId">
+              <label
+                for="single-upload"
+                class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                [class.cursor-not-allowed]="!selectedCompanyId"
+              >
+                <div class="flex flex-col items-center pt-5 pb-6">
+                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm.394 9.553a1 1 0 0 0-1.817.062l-2.5 6A1 1 0 0 0 8 19h8a1 1 0 0 0 .894-1.447l-2-4A1 1 0 0 0 13.2 13.4l-.53.706-1.276-2.553ZM13 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd"/>
+                  </svg>
+
+                  <p class="text-sm text-gray-600">
+                    <strong>Vyberte jeden obrázok</strong> (napr. QR kód)
+                  </p>
+                </div>
+                <input
+                  id="single-upload"
+                  type="file"
+                  accept=".jpg,.png"
+                  class="hidden"
+                  (change)="onSingleFileSelected($event)"
+                  [disabled]="!selectedCompanyId"
+                />
+              </label>
+            </div>
+
+            <!-- name of the uploaded file -->
+            <div *ngIf="singleFile" class="mt-2 text-sm text-blue-800">
+              Vybraný súbor: <strong>{{ singleFile.name }}</strong>
+            </div>
+          </div>
+
+          <!-- Multiple Image Upload -->
+          <div *ngIf="activeTab === 'multiple'" class="space-y-4">
+            <!-- Výber firmy -->
+            <div>
+              <label for="companySelectMulti" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
+              <select
+                id="companySelectMulti"
+                [(ngModel)]="selectedCompanyId"
+                name="selectedCompanyMulti"
+                required
+                class="block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
+                <option *ngFor="let company of companyResponse?.content" [value]="company.id">
+                  {{ company.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Upload box -->
+            <div [class.opacity-50]="!selectedCompanyId">
+              <label
+                for="multi-upload"
+                class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg bg-gray-50 hover:bg-gray-100"
+                [class.cursor-not-allowed]="!selectedCompanyId"
+              >
+                <div class="flex flex-col items-center pt-5 pb-6">
+                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
+                  </svg>
+                  <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
+                  <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
+                </div>
+                <input
+                  id="multi-upload"
+                  type="file"
+                  accept=".jpg,.png"
+                  multiple
+                  class="hidden"
+                  (change)="onMultipleFilesSelected($event)"
+                  [disabled]="!selectedCompanyId"
+                />
+              </label>
+            </div>
+
+            <!-- upload images -->
+            <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
+              <div class="grid grid-cols-3 gap-3">
+                <div *ngFor="let file of multipleFiles" class="relative border rounded p-2 bg-white shadow">
+                  <img [src]="file.preview" alt="preview" class="w-full h-28 object-cover rounded" />
+                  <p class="text-xs text-gray-700 mt-1 truncate">{{ file.file.name }}</p>
+                  <p class="text-[10px] text-gray-400">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <hr class="h-px my-4 bg-gray-200 border-0">
+      <button
+        [disabled]="isUploading"
+        type="submit"
+        class="relative text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        (click)="onSubmit()"
+      >
+        <ng-container *ngIf="!isUploading; else loading">
+          Importovať
+        </ng-container>
+        <ng-template #loading>
+          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg>
+          Nahrávam...
+        </ng-template>
+      </button>
+    </form>
+  </app-modal>
 
 
   <!-- Table Container -->
@@ -209,34 +370,33 @@
       </tr>
       </thead>
 
-      <!-- Ak sú dáta -->
-      <tbody *ngIf="filteredInvoiceImports.length > 0; else noData" class="bg-white divide-y divide-gray-200">
-      <tr *ngFor="let user of filteredInvoiceImports">
+      <!-- data present -->
+      <tbody *ngIf="receiptResponse?.content.length > 0; else noData" class="bg-white divide-y divide-gray-200">
+      <tr *ngFor="let receipt of receiptResponse.content">
         <td class="pl-2 pr-1 py-4">
           <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
         </td>
         <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-          <a [routerLink]="['/web/receipts', user.id]" class="text-blue-600 hover:underline">#{{ user.id }}</a>
+          <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">#{{ receipt.id }}</a>
         </td>
-        <td class="px-4 py-4">{{ user.partnerName }}</td>
-        <td class="px-4 py-4">{{ user.importDate | date:'dd.MM.yyyy' }}</td>
-        <td class="px-4 py-4">{{ user.company }}</td>
-        <td class="px-4 py-4">{{ user.partnerRegistrationNumber }}</td>
-        <td class="px-4 py-4">{{ user.partnerTaxId }}</td>
-        <td class="px-4 py-4">{{ user.partnerVatId }}</td>
+        <td class="px-4 py-4">{{ receipt.partner.name }}</td>
+        <td class="px-4 py-4">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
+        <td class="px-4 py-4">{{ receipt.companyName }}</td>
+        <td class="px-4 py-4">{{ receipt.partner.registrationNumber }}</td>
+        <td class="px-4 py-4">{{ receipt.partner.taxId }}</td>
+        <td class="px-4 py-4">{{ receipt.partner.vatId }}</td>
         <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-          {{ user.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
+          {{ receipt.receiptDetails.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
         </td>
       </tr>
       </tbody>
 
-      <!-- Ak nie sú žiadne dáta -->
+      <!-- no data -->
       <ng-template #noData>
         <tbody>
         <tr>
           <td colspan="9" class="px-4 py-8 text-center text-gray-500 text-sm">
             <div class="flex flex-col items-center justify-center gap-2">
-              <!-- Smutný smajlík v SVG formáte -->
               <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
               </svg>

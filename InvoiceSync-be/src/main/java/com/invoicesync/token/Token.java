@@ -1,8 +1,14 @@
 package com.invoicesync.token;
 
-
 import com.invoicesync.user.UserDemo;
-import jakarta.persistence.*;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +18,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "\"token\"", schema = "invoice_sync")
+// @Entity
+// @Table(name = "token", schema = "invoice_sync")
 public class Token {
 
     @Id
@@ -30,7 +36,7 @@ public class Token {
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "\"user_id\"")
+    @JoinColumn(name = "user_id")
     private UserDemo user;
 
 }
