@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDTO;
-import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDTO;
+import com.invoicesync.dto.record.ReceiptRequest;
 import com.invoicesync.service.InvoiceXmlService;
 import com.invoicesync.xml.utils.InvoiceXmlHelper;
 
@@ -40,15 +40,15 @@ public class PohodaController {
   }
 
   @PostMapping("/export/receipt")
-  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO) {
+  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest receiptRequest) {
     try {
-      final byte[] xmlData = invoiceXmlService.generatePohodaReceiptXml(receiptRequestDTO);
+      final byte[] excelData = invoiceXmlService.generatePohodaReceiptExcel(receiptRequest);
 
       final HttpHeaders headers = new HttpHeaders();
-      headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
-      headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
+      headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt.xlsx");
+      headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-      return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
+      return new ResponseEntity<>(excelData, headers, HttpStatus.OK);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }

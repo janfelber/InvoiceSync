@@ -2,6 +2,7 @@
 
 export interface Details {
   accountValue: string,
+  paidByCard?: boolean,
   classificationKVVAT?: string,
   classificationVAT?: string,
   date?: string;

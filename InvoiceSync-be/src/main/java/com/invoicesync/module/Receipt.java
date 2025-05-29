@@ -35,6 +35,9 @@ public class Receipt extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "receipt_number")
+  private String receiptNumber;
+
   // @ManyToOne
   // @JoinColumn(name = "\"user_id\"")
   // private UserDemo user;
@@ -92,4 +95,7 @@ public class Receipt extends BaseEntity {
 
   @Column(name = "description")
   private String description;
+
+  @Column(name = "is_paid_by_card")
+  private boolean isPaidByCard;
 }

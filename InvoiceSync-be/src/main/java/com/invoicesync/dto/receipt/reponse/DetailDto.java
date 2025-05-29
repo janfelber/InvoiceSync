@@ -21,6 +21,8 @@ public class DetailDto {
 
   private String accountValue;
 
+  private boolean isPaidByCard;
+
   private String classificationVAT;
 
   private String classificationKVVAT;
