@@ -42,7 +42,6 @@ public class ReceiptController {
   @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request) {
     try {
-      final byte[] excel = invoiceXmlService.generatePohodaReceiptExcel(request);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.setContentType(

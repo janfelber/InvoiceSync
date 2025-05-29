@@ -28,7 +28,6 @@ export class ReceiptDetailsComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     private route: ActivatedRoute,
-    private invoiceService: InvoiceService,
     private toastr: ToastrService,
   ) {
   }
