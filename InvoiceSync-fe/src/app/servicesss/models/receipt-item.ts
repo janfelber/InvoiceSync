@@ -4,11 +4,11 @@
 
 export interface ReceiptItem {
   accountText?: string;
+  name?: string;
+  quantity?: number;
+  priceWithoutVAT?: number;
+  vatRate?: number;
+  priceWithVAT?: number;
   accountValue?: string;
   id?: number;
-  name?: string;
-  priceWithVAT?: number;
-  priceWithoutVAT?: number;
-  quantity?: number;
-  vatRate?: number;
 }

@@ -63,9 +63,14 @@
             <ul class="py-2 px-2 text-sm text-gray-500" aria-labelledby="dropdownDownloadButton">
               <li>
                 <a>
-                  <div class="group px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1 text-gray-500 group-hover:text-black" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z" clip-rule="evenodd"/>
+                  <div
+                    (click)="exportReceipt()"
+                    class="group px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                    <svg class="w-4 h-4 mr-1 text-gray-500 group-hover:text-black" xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
+                            clip-rule="evenodd"/>
                     </svg>
                     <span>Uložiť ako Excel</span>
                   </div>
@@ -76,8 +81,11 @@
           <button
             (click)="updateReceipt()"
             class="flex items-center space-x-2 px-3 py-1.5 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg">
-            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                    clip-rule="evenodd"/>
               <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
             </svg>
             <span
@@ -91,54 +99,14 @@
       <!-- Ľavá karta (658px) -->
       <div class="col-span-5 p-6 bg-white border border-gray-200 rounded-lg">
         <div class="flex gap-4">
-          <div class="w-1/2 mb-4">
-            <label class="text-sm mb-1 flex items-center gap-1">
-              Typ platby*
-              <svg
-                class="w-4.5 h-4.5 text-gray-400 "
-                data-tooltip-target="payment-type-tooltip"
-                data-tooltip-placement="right"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </label>
-
-            <div id="payment-type-tooltip" role="tooltip"
-                 class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
-              <h3 class="mb-1 text-sm font-bold">Čo je typ platby?</h3>
-              <p class="text-gray-400">Typ platby určuje, aký dokument sa vytvorí, preto</p>
-              <p class="text-gray-400">musí zodpovedať údajom v doklade.</p>
-              <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-            <form>
-              <select
-                id="countries"
-                class="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-gray-50 h-10.5"
-                name="country"
-              >
-                <option selected disabled>Vyber spôsob</option>
-                <option value="US">Plat. karta</option>
-                <option value="CA">Hotovosť</option>
-              </select>
-            </form>
-          </div>
-          <div class="w-1/2">
-            <label class="block text-sm mb-1">Suma</label>
-            <input
-              type="number"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receipt.amount"
-            />
-          </div>
+          <!--          <div class="w-1/2">-->
+          <!--            <label class="block text-sm mb-1">Suma</label>-->
+          <!--            <input-->
+          <!--              type="number"-->
+          <!--              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"-->
+          <!--              [(ngModel)]="receipt.amount"-->
+          <!--            />-->
+          <!--          </div>-->
         </div>
 
         <div class="flex gap-4">
@@ -205,6 +173,51 @@
           </div>
         </div>
 
+
+        <label class="inline-flex items-center cursor-pointer">
+          <input
+            *ngIf="receiptResponse.receiptDetails"
+            type="checkbox"
+            class="sr-only peer"
+            [(ngModel)]="receiptResponse.receiptDetails.paidByCard"
+            [checked]="receiptResponse.receiptDetails.paidByCard"
+            name="isPaidByCard"
+          />
+          <div
+            class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+          </div>
+
+          <span class="ms-3 text-sm font-medium text-gray-900 flex items-center gap-1">
+            Platha Kartou
+            <svg
+              class="w-4.5 h-4.5 text-gray-400"
+              data-tooltip-target="payment-type-tooltip"
+              data-tooltip-placement="right"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                fill-rule="evenodd"
+                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            <div id="payment-type-tooltip" role="tooltip"
+                 class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
+              <h3 class="mb-1 text-sm font-bold">Čo je typ platby?</h3>
+              <p class="text-gray-400">Typ platby určuje, aký dokument sa vytvorí, preto</p>
+              <p class="text-gray-400">musí zodpovedať údajom v doklade.</p>
+              <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+          </span>
+
+        </label>
+
+
         <div class="invoice-description mb-4" *ngIf="receiptResponse.receiptDetails">
           <label for="message" class="block mb-2 text-sm">Poznámka k faktúre</label>
 
@@ -213,75 +226,108 @@
               <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 border-gray-200">
                 <div class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse">
                   <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 20">
-                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                           viewBox="0 0 12 20">
+                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                              d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6"/>
                       </svg>
                       <span class="sr-only">Attach file</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 16 20">
+                        <path
+                          d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
                       </svg>
                       <span class="sr-only">Embed map</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 16 20">
+                        <path
+                          d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
                         <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
                       </svg>
                       <span class="sr-only">Upload image</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 16 20">
                         <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                        <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z"/>
+                        <path
+                          d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z"/>
                       </svg>
                       <span class="sr-only">Format code</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 20 20">
+                        <path
+                          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z"/>
                       </svg>
                       <span class="sr-only">Add emoji</span>
                     </button>
                   </div>
                   <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                           viewBox="0 0 21 18">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
                       </svg>
                       <span class="sr-only">Add list</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 20 20">
+                        <path
+                          d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
                       </svg>
                       <span class="sr-only">Settings</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"/>
-                        <path d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 20 20">
+                        <path
+                          d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"/>
+                        <path
+                          d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"/>
                       </svg>
                       <span class="sr-only">Timeline</span>
                     </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
-                        <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+                    <button type="button"
+                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
+                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                           viewBox="0 0 20 20">
+                        <path
+                          d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
+                        <path
+                          d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
                       </svg>
                       <span class="sr-only">Download</span>
                     </button>
                   </div>
                 </div>
-                <button type="button" data-tooltip-target="tooltip-fullscreen" class="p-2 text-gray-500 rounded-sm cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100">
-                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"/>
+                <button type="button" data-tooltip-target="tooltip-fullscreen"
+                        class="p-2 text-gray-500 rounded-sm cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                       viewBox="0 0 19 19">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"/>
                   </svg>
                   <span class="sr-only">Full screen</span>
                 </button>
-                <div id="tooltip-fullscreen" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                <div id="tooltip-fullscreen" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
                   Show full screen
                   <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
@@ -290,10 +336,10 @@
                 <textarea
                   id="message"
                   name="description"
-                rows="8"
-                class="block w-full px-0 text-sm text-gray-800 bg-white border-0"
-                [(ngModel)]="receiptResponse.receiptDetails.description"
-                placeholder="Poznámka"
+                  rows="8"
+                  class="block w-full px-0 text-sm text-gray-800 bg-white border-0"
+                  [(ngModel)]="receiptResponse.receiptDetails.description"
+                  placeholder="Poznámka"
                 ></textarea>
               </div>
             </div>
@@ -357,32 +403,32 @@
         <div class="receipts-summary ml-auto max-w-[20rem] mb-4">
           <h3 class="mb-4">Sumár dokladu</h3>
           <ul>
-            <!-- 1. Cena bez DPH -->
-            <li class="flex justify-between items-center mb-0.5">
-              <p class="text-gray-500 font-light">Cena bez DPH</p>
-              <div class="font-medium">€{{ subtotal | number:'1.2-2' }}</div>
-            </li>
+<!--            &lt;!&ndash; 1. Cena bez DPH &ndash;&gt;-->
+<!--            <li class="flex justify-between items-center mb-0.5">-->
+<!--              <p class="text-gray-500 font-light">Cena bez DPH</p>-->
+<!--              <div class="font-medium">€{{ subtotal | number:'1.2-2' }}</div>-->
+<!--            </li>-->
 
-            <!-- 2. DPH -->
-            <li class="flex justify-between items-center mb-0.5">
-              <p class="text-gray-500 font-light">DPH</p>
-              <div class="font-medium">€{{ totalVAT | number:'1.2-2' }}</div>
-            </li>
+<!--            &lt;!&ndash; 2. DPH &ndash;&gt;-->
+<!--            <li class="flex justify-between items-center mb-0.5">-->
+<!--              <p class="text-gray-500 font-light">DPH</p>-->
+<!--              <div class="font-medium">€{{ totalVAT | number:'1.2-2' }}</div>-->
+<!--            </li>-->
 
-            <!-- 3. Zľava (ak existuje) -->
-            <li class="flex justify-between items-center mb-0.5" *ngIf="getTotalDiscount() !== 0">
-              <p class="text-gray-500 font-light">Zľava</p>
-              <div class="font-medium text-red-600">−€{{ getTotalDiscount() | number:'1.2-2' }}</div>
-            </li>
+<!--            &lt;!&ndash; 3. Zľava (ak existuje) &ndash;&gt;-->
+<!--            <li class="flex justify-between items-center mb-0.5" *ngIf="getTotalDiscount() !== 0">-->
+<!--              <p class="text-gray-500 font-light">Zľava</p>-->
+<!--              <div class="font-medium text-red-600">−€{{ getTotalDiscount() | number:'1.2-2' }}</div>-->
+<!--            </li>-->
 
-            <!-- 4. Celková cena s DPH -->
-            <li class="flex justify-between items-center pt-2 border-t mt-2">
-              <p class="text-black font-bold">Cena celkom s DPH</p>
-              <div class="font-medium">€{{ totalPrice | number:'1.2-2' }}</div>
-            </li>
+<!--            &lt;!&ndash; 4. Celková cena s DPH &ndash;&gt;-->
+<!--            <li class="flex justify-between items-center pt-2 border-t mt-2">-->
+<!--              <p class="text-black font-bold">Cena celkom s DPH</p>-->
+<!--              <div class="font-medium">€{{ totalPrice | number:'1.2-2' }}</div>-->
+<!--            </li>-->
           </ul>
         </div>
-    </div>
+      </div>
 
       <div class="col-span-7 p-8 flex justify-center bg-gray-100 rounded-lg">
         <div class="bg-white w-90 p-6 rounded-sm font-mono text-sm border border-gray-300">
@@ -392,9 +438,9 @@
             <div class="inline-flex items-center justify-center gap-1">
               <p class="font-bold">{{ receiptResponse.partner?.name }}</p>
               <button
-                      title="Upraviť údaje partnera"
-                      class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
-                      (click)="openModal()"
+                title="Upraviť údaje partnera"
+                class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
+                (click)="openModal()"
               >
                 <svg class="w-4 h-4 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                      width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -404,10 +450,11 @@
                 </svg>
               </button>
             </div>
-            <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}, {{ receiptResponse.partner?.city }}</p>
+            <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}
+              , {{ receiptResponse.partner?.city }}</p>
             <p>DIČ: {{ receiptResponse.partner?.taxId }} IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
             <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
-            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy'}}</p>
+            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy' }}</p>
           </div>
 
           <table class="w-full mb-4">
@@ -433,21 +480,21 @@
           </table>
 
           <div class="border-t border-gray-300 pt-2 space-y-1">
-<!--            <div class="flex justify-between">-->
-<!--              <span>Medzisúčet</span>-->
-<!--              <span>€18.00</span>-->
-<!--            </div>-->
-<!--            <div class="flex justify-between">-->
-<!--              <span>DPH 19%</span>-->
-<!--              <span>€3.60</span>-->
-<!--            </div>-->
-<!--            <div class="flex justify-between">-->
-<!--              <span>Zľava</span>-->
-<!--              <span>-€2.00</span>-->
-<!--            </div>-->
+            <!--            <div class="flex justify-between">-->
+            <!--              <span>Medzisúčet</span>-->
+            <!--              <span>€18.00</span>-->
+            <!--            </div>-->
+            <!--            <div class="flex justify-between">-->
+            <!--              <span>DPH 19%</span>-->
+            <!--              <span>€3.60</span>-->
+            <!--            </div>-->
+            <!--            <div class="flex justify-between">-->
+            <!--              <span>Zľava</span>-->
+            <!--              <span>-€2.00</span>-->
+            <!--            </div>-->
             <div class="flex justify-between font-bold border-gray-300 pt-2 mt-2">
               <span>Spolu</span>
-              <span>€{{ totalPrice | number:'1.2-2' }}</span>
+<!--              <span>€{{ it | number:'1.2-2' }}</span>-->
             </div>
           </div>
 
@@ -463,7 +510,7 @@
     >
       <form #partnerForm="ngForm" *ngIf="receiptResponse.receiptDetails">
         <div class="grid gap-4 mb-6 grid-cols-2">
-          <div class="col-span-2" >
+          <div class="col-span-2">
             <label for="companyName" class="block text-sm font-medium text-gray-900">Názov dodávateľa</label>
             <input
               id="companyName"
@@ -559,11 +606,14 @@
         </div>
         <hr class="h-px my-4 bg-gray-200 border-0">
         <button type="submit"
-                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 (click)="updateReceipt()"
         >
-          <svg class="me-1 -ms-2 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+          <svg class="me-1 -ms-2 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+                  d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                  clip-rule="evenodd"/>
             <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
           </svg>
           Uložiť

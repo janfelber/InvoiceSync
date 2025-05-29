@@ -56,9 +56,7 @@ export class ReceiptService {
     formData.append('companyId', params.companyId.toString());
 
     return this.axiosService.request(
-      'POST',
-      `${this.baseUrl}${ApiPaths.receipt.SAVE}`,
-      formData
+      'POST', `${this.baseUrl}${ApiPaths.receipt.SAVE}`, formData
     );
   }
 
@@ -66,6 +64,13 @@ export class ReceiptService {
     return this.axiosService.request(
       'PATCH', `${this.baseUrl}${ApiPaths.receipt.UPDATE_BY_ID(params.receiptId)}`, params.receipt
     );
+  }
+
+  exportReceiptPohoda(params: {receipt: ReceiptRequest}): Promise<any> {
+    return this.axiosService.request(
+        'POST', `${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT}`, params.receipt,
+        { responseType: 'blob' }
+    )
   }
 
 
