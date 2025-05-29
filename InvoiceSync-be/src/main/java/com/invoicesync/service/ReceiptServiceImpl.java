@@ -152,6 +152,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     receipt.setDatePayment(request.datePayment());
     receipt.setDateTax(request.dateTax());
     receipt.setAccounting(request.accounting());
+    receipt.setPaidByCard(request.isPaidByCard());
     receipt.setClassificationVAT(request.classificationVAT());
     receipt.setClassificationKVVAT(request.classificationKVVAT());
     receipt.setDescription(request.description());
