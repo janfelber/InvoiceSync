@@ -85,6 +85,7 @@ public class ReceiptMapper {
             .dateTax(receipt.getDateTax())
             .totalPrice(receipt.getTotalPrice())
             .accountValue(receipt.getAccounting())
+            .isPaidByCard(receipt.isPaidByCard())
             .classificationVAT(receipt.getClassificationVAT())
             .classificationKVVAT(receipt.getClassificationKVVAT())
             .description(receipt.getDescription())

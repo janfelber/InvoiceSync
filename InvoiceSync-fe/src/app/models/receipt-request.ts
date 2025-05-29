@@ -1,5 +1,9 @@
+import {ReceiptItem} from "../servicesss/models/receipt-item";
+
 export interface ReceiptRequest {
   date?:String;
+  receiptNumber?: String;
+  isPaidByCard?:boolean;
   datePayment?:String;
   dateTax?:String;
   partnerName?:String;
@@ -13,14 +17,7 @@ export interface ReceiptRequest {
   classificationVAT?:String;
   classificationKVVAT?:String;
   description?:String;
+  totalPrice?:String;
 
-  items?: Array<{
-    accountText?: string;
-    name?: string;
-    quantity?: number;
-    priceWithoutVAT: number;
-    vatRate: number;
-    priceWithVAT: number;
-    accountValue?: string
-  }>;
+  items: ReceiptItem[]
 }

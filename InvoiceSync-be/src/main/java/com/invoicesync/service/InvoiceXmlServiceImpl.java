@@ -2,7 +2,6 @@ package com.invoicesync.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -21,8 +20,7 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
 import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDTO;
-import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDTO;
-import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDetailsDTO;
+import com.invoicesync.dto.record.ReceiptRequest;
 import com.invoicesync.xml.utils.InvoiceXmlHelper;
 
 import lombok.RequiredArgsConstructor;
@@ -57,35 +55,54 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
   }
 
   @Override
-  public byte[] generatePohodaReceiptXml(final ReceiptRequestDTO receiptRequestDTO) throws Exception {
-    final InputStream fis = getClass().getClassLoader().getResourceAsStream("template/receipt_template.xlsx");
-    if (fis == null) {
-      throw new FileNotFoundException("Šablóna receipt_template.xlsx sa nenašla v resources/template/");
+  public byte[] generatePohodaReceiptExcel(final ReceiptRequest request) throws Exception {
+
+    System.out.printf("typ platby%s%n", request.isPaidByCard());
+
+    System.out.println("Všetky položky:");
+    request.items().forEach(System.out::println);
+
+    if (request.isPaidByCard()) {
+      throw new IllegalArgumentException("Platba kartou – Excel nie je podporovaný.");
     }
 
-    final Workbook workbook = new XSSFWorkbook(fis);
-    final Sheet sheet = workbook.getSheetAt(0);
+    try (InputStream fis = getClass().getClassLoader().getResourceAsStream("template/receipt-expense-template.xlsx");
+         Workbook workbook = new XSSFWorkbook(fis);
+         ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-    final int newRowIdx = sheet.getLastRowNum() + 1;
-    final Row row = sheet.createRow(newRowIdx);
+      // // Filtrovanie a printovanie kladných položiek
+      // final List<ReceiptItemRequest> positiveItems = request.items().stream()
+      //     .filter(item -> item.priceWithoutVat() != null && item.priceWithoutVat().compareTo(BigDecimal.ZERO) > 0)
+      //     .toList();
+      //
+      // final String positivePrices = request.items().stream()
+      //     .map(ReceiptItemRequest::priceWithoutVat)
+      //     .filter(price -> price != null && price.compareTo(BigDecimal.ZERO) > 0)
+      //     .map(BigDecimal::toPlainString)
+      //     .collect(Collectors.joining(" + "));
 
-    final ReceiptRequestDetailsDTO d = receiptRequestDTO.getReceiptDetails();
+      final Sheet sheet = workbook.getSheetAt(0);
+      final Row row = sheet.createRow(sheet.getLastRowNum() + 1);
 
-    row.createCell(0).setCellValue(d.getNumberRequested());
-    row.createCell(1).setCellValue(d.getDate());
-    row.createCell(2).setCellValue(d.getDate());
-    row.createCell(3).setCellValue(d.getDateTax());
-    row.createCell(4).setCellValue(d.getAccountValue());
-    row.createCell(5).setCellValue(d.getClassificationVAT());
-    row.createCell(6).setCellValue(d.getClassificationKVVAT());
-    row.createCell(7).setCellValue(d.getDescription());
+      row.createCell(0).setCellValue("TRUE");
+      row.createCell(1).setCellValue(request.receiptNumber());
+      row.createCell(3).setCellValue(request.date());
+      row.createCell(5).setCellValue(request.accounting());
+      row.createCell(6).setCellValue(request.description());
+      // row.createCell(8).setCellValue(positivePrices);
+      row.createCell(9).setCellValue(request.partnerName());
 
-    fis.close();
+      row.createCell(11).setCellValue("$" + request.totalPrice());
+      System.out.println(request.totalPrice());
+      row.createCell(13).setCellValue("Výdaj");
+      row.createCell(15).setCellValue("HP");
 
-    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    workbook.write(out);
-    workbook.close();
-    return out.toByteArray();
+      row.createCell(17).setCellValue(request.classificationVAT());
+      row.createCell(21).setCellValue(request.classificationKVVAT());
+
+      workbook.write(out);
+      return out.toByteArray();
+    }
   }
 
 }

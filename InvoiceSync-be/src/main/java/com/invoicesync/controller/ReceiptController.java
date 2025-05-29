@@ -39,16 +39,18 @@ public class ReceiptController {
   // private final CurrentUserService currentUserService;
   private final ReceiptService receiptService;
 
-  @PostMapping(value = "/pohoda/export/receipt", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO) {
+  @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request) {
     try {
-      final byte[] excel = invoiceXmlService.generatePohodaReceiptXml(receiptRequestDTO);
+      final byte[] excel = invoiceXmlService.generatePohodaReceiptExcel(request);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.setContentType(
           MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
-      headers.setContentDisposition(ContentDisposition.attachment().filename("receipt.xlsx").build());
+      headers.setContentDisposition(
+          ContentDisposition.attachment().filename(request.receiptNumber() + ".xlsx").build());
 
+      System.out.println("receipt created");
       return new ResponseEntity<>(excel, headers, HttpStatus.OK);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
