@@ -1,0 +1,226 @@
+#invoice {
+  background-color: white;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 4px;
+  font-size: 14px;
+  align-self: flex-start;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+/* Pre stĺpce so špecifickým zarovnaním */
+#invoice .th-left {
+  text-align: left;
+}
+
+#invoice .th-right {
+  text-align: right;
+}
+
+/* Šírky */
+#invoice .w-80 {
+  width: 80px;
+}
+#invoice .w-120 {
+  width: 120px;
+}
+#invoice .w-140 {
+  width: 140px;
+}
+#invoice .max-w-200 {
+  max-width: 200px;
+}
+
+/* Header */
+
+#invoice .logo-name {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* medzera medzi obrázkom a textom */
+}
+
+#invoice .name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+#invoice .cell {
+  width: 100%;
+  vertical-align: top;
+}
+
+
+/* Faktúra Info */
+#invoice .company-name {
+  font-style: italic;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+#invoice .company-detail {
+  color: #555;
+  margin: 0.1rem 0;
+}
+
+#invoice .border-collapse {
+  border-collapse: collapse;
+}
+
+#invoice .border-spacing-0 {
+  --tw-border-spacing-x: 0px;
+  --tw-border-spacing-y: 0px;
+  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+}
+
+#invoice .whitespace-nowrap {
+  white-space: nowrap;
+}
+
+#invoice .border-b {
+  border-bottom-width: 1px;
+}
+
+#invoice .border-b-2 {
+  border-bottom-width: 2px;
+}
+
+#invoice .border-r {
+  border-right-width: 1px;
+}
+
+#invoice .border-main {
+  border-color: #5c6ac4;
+}
+
+#invoice .bg-main {
+  background-color: #5c6ac4;
+}
+
+#invoice .bg-slate-100 {
+  background-color: #f1f5f9;
+}
+
+#invoice .p-3 {
+  padding: 0.75rem;
+}
+
+#invoice .px-14 {
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
+}
+
+#invoice .px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+#invoice .py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+#invoice .py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+#invoice .py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#invoice.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+#invoice .pb-3 {
+  padding-bottom: 0.75rem;
+}
+
+#invoice .pl-2 {
+  padding-left: 0.5rem;
+}
+
+#invoice .pl-3 {
+  padding-left: 0.75rem;
+}
+
+#invoice .pl-4 {
+  padding-left: 1rem;
+}
+
+#invoice .pr-3 {
+  padding-right: 0.75rem;
+}
+
+#invoice .pr-4 {
+  padding-right: 1rem;
+}
+
+#invoice .text-center {
+  text-align: center;
+}
+
+#invoice .text-right {
+  text-align: right;
+}
+
+#invoice .align-top {
+  vertical-align: top;
+}
+
+#invoice .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+#invoice .text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+#invoice .font-bold {
+  font-weight: 700;
+}
+
+#invoice .italic {
+  font-style: italic;
+}
+
+#invoice .text-main {
+  color: #5c6ac4;
+}
+
+#invoice .text-neutral-600 {
+  color: #525252;
+}
+
+#invoice .text-neutral-700 {
+  color: #404040;
+}
+
+#invoice .text-slate-300 {
+  color: #cbd5e1;
+}
+
+#invoice .text-slate-400 {
+  color: #94a3b8;
+}
+
+#invoice .text-white {
+  color: #fff;
+}
+
+@page {
+  margin: 0;
+}
+
+@media print {
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
