@@ -13,6 +13,7 @@ import {ReceiptsComponent} from "./receipts/receipts.component";
 import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.component";
 import {CompanyDetailsComponent} from "./company-details/company-details.component";
 import {InvoiceLimiterComponent} from "./invoice-limiter/invoice-limiter.component";
+import {CreateNewInvoice} from "./create-new-invoice/create-new-invoice.component";
 
 export const routes: Routes = [
   {
@@ -53,6 +54,10 @@ export const routes: Routes = [
       {
         path: 'invoices/:id',
         component: InvoiceInspect
+      },
+      {
+        path: 'invoice/new',
+        component: CreateNewInvoice
       },
       {
         path: 'xml-import',
