@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DatePipe, DecimalPipe, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {initFlowbite} from 'flowbite'
 import {CompanyService} from "../services/company.service";
@@ -14,19 +14,74 @@ import html2canvas from 'html2canvas';
     DecimalPipe,
     FormsModule,
     NgForOf,
-    NgIf,
-    DatePipe,
-    NgOptimizedImage
+    NgIf
   ],
   templateUrl: './create-new-invoice.component.html',
   styleUrl: './create-new-invoice.component.css'
 })
 export class CreateNewInvoice implements OnInit{
 
-
   public companyResponse: PageResponseCompanyResponseDto = {};
+
   loadingCompanyDetails = false;
   selectedCompanyDetails: any = null;
+
+  subtotal = 0;
+  tax = 0;
+  shipping = 0;
+  total = 0;
+
+
+  invoice = {
+    invoiceNumber: '',
+    dateIssued: '',
+    dateDue: '',
+    dateTax: '',
+    supplier: {
+      name: '',
+      address: '',
+      ico: '',
+      dic: '',
+      icDph: ''
+    },
+    customer: {
+      name: '',
+      address: '',
+      registrationNumber: '',
+      taxId: '',
+      vatId: ''
+    },
+    items: [],
+    totalWithoutTax: 500,
+    totalTax: 100,
+    totalWithTax: 600,
+    //implement this part to generate invoice as PDF
+    paymentMethod: 'Prevod',
+    iban: 'SK12 3456 7890 1234 5678 9012',
+    swift: 'UNCRSKBX',
+    note: ''
+  }
+
+
+  items: {
+    name: string;
+    quantity: number;
+    unit: string;
+    unitPrice: number;
+    taxRate: number;
+    totalWithoutTax: number;
+    taxAmount: number;
+    totalWithTax: number;
+  }[] = [];
+
+  newItem = {
+    name: '',
+    quantity: 1,
+    unit: 'ks',
+    unitPrice: null as number | null,
+    taxRate: 23
+  };
+
 
   constructor(
     private companyService: CompanyService
@@ -85,7 +140,6 @@ export class CreateNewInvoice implements OnInit{
 
     this.companyService.getCompanyById({ companyId })
       .then(response => {
-        // Umelé oneskorenie 2 sekundy
         setTimeout(() => {
           this.selectedCompanyDetails = response.data;
           this.loadingCompanyDetails = false;
@@ -98,59 +152,37 @@ export class CreateNewInvoice implements OnInit{
       });
   }
 
-  invoice = {
-    invoiceNumber: '',
-    dateIssued: '',
-    dateDue: '',
-    dateTax: '',
-    supplier: {
-      name: '',
-      address: '',
-      ico: '',
-      dic: '',
-      icDph: ''
-    },
-    customer: {
-      name: '',
-      address: '',
-      registrationNumber: '',
-      taxId: '',
-      vatId: ''
-    },
-    items: [],
-    totalWithoutTax: 500,
-    totalTax: 100,
-    totalWithTax: 600,
-    paymentMethod: 'Prevod',
-    iban: 'SK12 3456 7890 1234 5678 9012',
-    swift: 'UNCRSKBX',
-    note: ''
+  addItem() {
+    if (this.newItem.name && this.newItem.unitPrice != null && this.newItem.quantity != null) {
+
+      const totalWithoutTax = this.newItem.unitPrice * this.newItem.quantity;
+
+      const taxAmount = totalWithoutTax * (this.newItem.taxRate / 100);
+
+      const totalWithTax = totalWithoutTax + taxAmount;
+
+      this.items.push({
+        name: this.newItem.name,
+        quantity: this.newItem.quantity,
+        unit: this.newItem.unit ?? 'ks',
+        unitPrice: this.newItem.unitPrice,
+        taxRate: this.newItem.taxRate,
+        totalWithoutTax,
+        taxAmount,
+        totalWithTax
+      });
+
+      this.newItem = {
+        name: '',
+        quantity: 1,
+        unit: 'ks',
+        unitPrice: null,
+        taxRate: 19
+      };
+
+      this.calculateSummary();
+    }
   }
-
-
-  items: {
-    name: string;
-    quantity: number;
-    unit: string;
-    unitPrice: number;     // jednotková cena bez DPH
-    taxRate: number;       // % DPH
-    totalWithoutTax: number;
-    taxAmount: number;
-    totalWithTax: number;
-  }[] = [];
-
-  newItem = {
-    name: '',
-    quantity: 1,
-    unit: 'ks',
-    unitPrice: null as number | null,
-    taxRate: 23
-  };
-
-  subtotal = 0;
-  tax = 0;
-  shipping = 0; // nastav napr. 3.50 alebo z form inputu
-  total = 0;
 
   calculateSummary() {
     this.subtotal = this.items.reduce((acc, item) => acc + item.totalWithoutTax, 0);
@@ -166,44 +198,6 @@ export class CreateNewInvoice implements OnInit{
   decreaseQuantity() {
     if (this.newItem.quantity != null && this.newItem.quantity > 1) {
       this.newItem.quantity--;
-    }
-  }
-
-  addItem() {
-    // Skontroluj základné povinné polia
-    if (this.newItem.name && this.newItem.unitPrice != null && this.newItem.quantity != null) {
-
-      // Výpočet ceny bez DPH = jednotková cena * množstvo
-      const totalWithoutTax = this.newItem.unitPrice * this.newItem.quantity;
-
-      // Výpočet DPH podľa sadzby
-      const taxAmount = totalWithoutTax * (this.newItem.taxRate / 100);
-
-      // Celková cena s DPH
-      const totalWithTax = totalWithoutTax + taxAmount;
-
-      // Pridaj novú položku do zoznamu
-      this.items.push({
-        name: this.newItem.name,
-        quantity: this.newItem.quantity,
-        unit: this.newItem.unit ?? 'ks',       // Ak nie je nastavené, použije sa 'ks'
-        unitPrice: this.newItem.unitPrice,
-        taxRate: this.newItem.taxRate,
-        totalWithoutTax,
-        taxAmount,
-        totalWithTax
-      });
-
-      // Reset formu na prázdny stav (pripravený na ďalší vstup)
-      this.newItem = {
-        name: '',
-        quantity: 1,
-        unit: 'ks',             // Prednastavená merná jednotka
-        unitPrice: null,
-        taxRate: 19             // alebo iná štandardná sadzba podľa tvojej potreby
-      };
-
-      this.calculateSummary();
     }
   }
 }
