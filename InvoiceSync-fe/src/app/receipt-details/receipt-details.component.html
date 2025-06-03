@@ -96,8 +96,87 @@
     </div>
 
     <div class="grid grid-cols-[repeat(12,_minmax(0,_1fr))] gap-4 p-4 bg-gray-50">
+
+      <div class="col-span-9 p-8 flex justify-center bg-gray-100 rounded-lg">
+        <div id="invoice" class="bg-white w-full max-w-4xl p-6 rounded-sm text-sm border border-gray-300 self-start">
+
+          <div class="flex items-center justify-between mb-6">
+
+          </div>
+
+          <div class="flex justify-between w-full pb-4 pt-4 border-b border-t border-gray-200 mb-6">
+            <h2 class="text-lg font-semibold">Bloček #{{ receiptId }} </h2>
+            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy' }}</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6 relative min-h-[100px]">
+
+            <ng-container>
+              <div class="flex flex-col space-y-1 text-sm">
+                <!-- Meno partnera a tlačidlo -->
+                <div class="flex items-center gap-2">
+                  <p class="font-bold">{{ receiptResponse.partner?.name }}</p>
+                  <button
+                    title="Upraviť údaje partnera"
+                    class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
+                    (click)="openModal()"
+                  >
+                    <svg class="w-4 h-4 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Ostatné údaje -->
+                <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}
+                  , {{ receiptResponse.partner?.city }}</p>
+                <p>DIČ: {{ receiptResponse.partner?.taxId }}</p>
+                <p>IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
+                <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
+              </div>
+            </ng-container>
+          </div>
+
+          <table class="min-w-full border-b border-gray-300 overflow-hidden mb-6">
+            <thead class="text-sm text-gray-500 uppercase bg-[#f9fafb]">
+            <tr>
+              <th class="px-6 py-3 font-medium text-left max-w-[200px] text-xs leading-tight whitespace-nowrap">
+                Produkt
+              </th>
+              <th class="px-6 py-3 font-medium text-right w-[80px] text-xs leading-tight whitespace-nowrap">Množstvo
+              </th>
+              <th class="px-6 py-1 font-medium text-left w-[80px] text-xs leading-tight whitespace-nowrap">MJ</th>
+              <th class="px-3 py-1 font-medium text-right w-[140px] text-xs leading-tight whitespace-nowrap">
+                Jedn. cena <br/> bez DPH
+              </th>
+              <th class="px-6 py-3 font-medium text-right w-[80px] text-xs leading-tight whitespace-nowrap">DPH %</th>
+              <th class="px-6 py-3 font-medium text-right w-[140px] text-xs leading-tight whitespace-nowrap">Spolu bez
+                DPH
+              </th>
+              <th class="px-6 py-3 font-medium text-right w-[120px] text-xs leading-tight whitespace-nowrap">DPH</th>
+              <th class="px-6 py-3 font-medium text-right w-[140px] text-xs leading-tight">Spolu s DPH</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of receiptResponse.items; let i = index"
+                class="border-b border-gray-200">
+              <td class="px-6 py-4 max-w-[200px] break-words">{{ item.name }}</td>
+              <td class="px-6 py-4 text-right">{{ item.quantity }}</td>
+              <td class="px-6 py-4 text-left">{{ item.priceWithoutVAT }}</td>
+              <td class="px-6 py-4 text-right">{{ item.priceWithVAT | number:'1.2-2' }} €</td>
+              <td class="px-6 py-4 text-right">{{ item.vatRate }}%</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+
       <!-- Ľavá karta (658px) -->
-      <div class="col-span-5 p-6 bg-white border border-gray-200 rounded-lg">
+      <div class="col-span-3 p-6 bg-white border border-gray-200 rounded-lg">
         <div class="flex gap-4">
           <!--          <div class="w-1/2">-->
           <!--            <label class="block text-sm mb-1">Suma</label>-->
@@ -109,72 +188,67 @@
           <!--          </div>-->
         </div>
 
-        <div class="flex gap-4">
-          <div class="w-1/2 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">
-              <div class="flex items-center gap-1">
-                Dátum vystavenia*
+        <div>
+          <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+              <span class="font-medium">Success alert!</span> Change a few things up and try submitting again.
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div>
+            <h3 class="text-lg text-gray-400 mb-4">Details:</h3>
+            <div class="flex items-center justify-between mb-6 pb-4 pt-4 border-t border-b border-gray-200">
+              <p class="text-2xl font-bold text-gray-900">{{ receiptResponse.receiptDetails?.totalPrice }} €</p>
+            </div>
+            <div class="space-y-2 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+              <div class="flex items-center space-x-2 text-sm text-gray-600 pb-2">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p><span class="font-medium">Priradené spoločnosti:</span> {{ receiptResponse.company?.name }}</p>
               </div>
-            </label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.date"
-            />
-          </div>
-          <div class="w-1/2" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Dátum splatenia*</label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.datePayment"
-            />
-          </div>
-        </div>
 
-        <div class="flex gap-4">
-          <div class="w-1/2 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">
-              <div class="flex items-center gap-1">
-                Dátum daňovej povinnosti*
+
+              <div class="flex items-center space-x-2 text-sm text-gray-600 pb-2">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                     width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p><span class="font-medium">Dátum vystavenia:</span> {{ receiptResponse.receiptDetails?.datePayment }}
+                </p>
               </div>
-            </label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.dateTax"
-            />
-          </div>
-          <div class="w-1/2">
-            <label class="block text-sm mb-1">Referencia bločka*</label>
-            <input
-              type="text"
-              placeholder="Bloček"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-            />
-          </div>
-        </div>
-
-        <div class="flex gap-4">
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Predakontácia</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>
-          </div>
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Členenie DPH</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"/>
-          </div>
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Členenie KV DPH</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"/>
+              <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
+                        clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                        d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p>
+                  <span class="font-medium">Zaplatené </span>
+                  {{ receiptResponse.receiptDetails?.paidByCard ? 'Kartou' : 'Hotovosťou' }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-
-        <label class="inline-flex items-center cursor-pointer">
+        <label class="inline-flex items-center cursor-pointer mb-4">
           <input
             *ngIf="receiptResponse.receiptDetails"
             type="checkbox"
@@ -192,7 +266,7 @@
             <svg
               class="w-4.5 h-4.5 text-gray-400"
               data-tooltip-target="payment-type-tooltip"
-              data-tooltip-placement="right"
+              data-tooltip-placement="top"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -217,6 +291,26 @@
 
         </label>
 
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Predakontácia</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>
+        </div>
+
+
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Členenie DPH</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"/>
+        </div>
+
+
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Členenie KV DPH</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"/>
+        </div>
+
 
         <div class="invoice-description mb-4" *ngIf="receiptResponse.receiptDetails">
           <label for="message" class="block mb-2 text-sm">Poznámka k faktúre</label>
@@ -224,99 +318,6 @@
           <form>
             <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
               <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 border-gray-200">
-                <div class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse">
-                  <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                           viewBox="0 0 12 20">
-                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
-                              d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6"/>
-                      </svg>
-                      <span class="sr-only">Attach file</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 16 20">
-                        <path
-                          d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
-                      </svg>
-                      <span class="sr-only">Embed map</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 16 20">
-                        <path
-                          d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
-                      </svg>
-                      <span class="sr-only">Upload image</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 16 20">
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                        <path
-                          d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z"/>
-                      </svg>
-                      <span class="sr-only">Format code</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 20 20">
-                        <path
-                          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z"/>
-                      </svg>
-                      <span class="sr-only">Add emoji</span>
-                    </button>
-                  </div>
-                  <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                           viewBox="0 0 21 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
-                      </svg>
-                      <span class="sr-only">Add list</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 20 20">
-                        <path
-                          d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
-                      </svg>
-                      <span class="sr-only">Settings</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 20 20">
-                        <path
-                          d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"/>
-                        <path
-                          d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"/>
-                      </svg>
-                      <span class="sr-only">Timeline</span>
-                    </button>
-                    <button type="button"
-                            class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                           viewBox="0 0 20 20">
-                        <path
-                          d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
-                        <path
-                          d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
-                      </svg>
-                      <span class="sr-only">Download</span>
-                    </button>
-                  </div>
-                </div>
                 <button type="button" data-tooltip-target="tooltip-fullscreen"
                         class="p-2 text-gray-500 rounded-sm cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100">
                   <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -344,162 +345,10 @@
               </div>
             </div>
           </form>
-
-        </div>
-
-        <div class="overflow-x-auto mb-4">
-          <table class="min-w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-500 uppercase bg-[#f9fafb]">
-            <tr>
-              <th scope="col" class="px-6 py-3 font-medium">Názov produktu</th>
-              <th scope="col" class="px-6 py-3 font-medium">Cena</th>
-              <th scope="col" class="px-6 py-3 font-medium">Bez DPH</th>
-              <th scope="col" class="px-6 py-3 font-medium">DPH</th>
-              <th scope="col" class="px-6 py-3 font-medium"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="bg-white border-b border-gray-200" *ngFor="let item of receiptResponse.items">
-              <th scope="row" class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap">
-                {{ item.name }}
-              </th>
-              <td class="px-6 py-4">€{{ item.priceWithVAT }}</td>
-              <td class="px-6 py-4">€{{ item.priceWithoutVAT }}</td>
-              <td class="px-6 py-4">{{ item.vatRate }}%</td>
-              <td class="px-6 py-4"></td>
-            </tr>
-            <!-- New product row -->
-            <tr class="bg-white border-b-1 border-b-gray-200">
-              <td class="px-6 py-2">
-                <input type="text" placeholder="Product name"
-                       class="w-full min-w-46.5 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-2">
-                <input type="text" placeholder="Cena"
-                       class="w-full min-w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-4">
-                <input type="text" placeholder="Category"
-                       class="w-full min-w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-4">
-                <select
-                  class="block w-full  min-w-17 bg-gray-50 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                  <option value="option1">19%</option>
-                  <option value="option2" selected>23%</option>
-                  <option value="option3">25%</option>
-                </select>
-              </td>
-              <td class="px-6 py-4">
-                <button
-                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 px-2.5 rounded-lg whitespace-nowrap">
-                  Uložiť produkt
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="receipts-summary ml-auto max-w-[20rem] mb-4">
-          <h3 class="mb-4">Sumár dokladu</h3>
-          <ul>
-<!--            &lt;!&ndash; 1. Cena bez DPH &ndash;&gt;-->
-<!--            <li class="flex justify-between items-center mb-0.5">-->
-<!--              <p class="text-gray-500 font-light">Cena bez DPH</p>-->
-<!--              <div class="font-medium">€{{ subtotal | number:'1.2-2' }}</div>-->
-<!--            </li>-->
-
-<!--            &lt;!&ndash; 2. DPH &ndash;&gt;-->
-<!--            <li class="flex justify-between items-center mb-0.5">-->
-<!--              <p class="text-gray-500 font-light">DPH</p>-->
-<!--              <div class="font-medium">€{{ totalVAT | number:'1.2-2' }}</div>-->
-<!--            </li>-->
-
-<!--            &lt;!&ndash; 3. Zľava (ak existuje) &ndash;&gt;-->
-<!--            <li class="flex justify-between items-center mb-0.5" *ngIf="getTotalDiscount() !== 0">-->
-<!--              <p class="text-gray-500 font-light">Zľava</p>-->
-<!--              <div class="font-medium text-red-600">−€{{ getTotalDiscount() | number:'1.2-2' }}</div>-->
-<!--            </li>-->
-
-<!--            &lt;!&ndash; 4. Celková cena s DPH &ndash;&gt;-->
-<!--            <li class="flex justify-between items-center pt-2 border-t mt-2">-->
-<!--              <p class="text-black font-bold">Cena celkom s DPH</p>-->
-<!--              <div class="font-medium">€{{ totalPrice | number:'1.2-2' }}</div>-->
-<!--            </li>-->
-          </ul>
         </div>
       </div>
 
-      <div class="col-span-7 p-8 flex justify-center bg-gray-100 rounded-lg">
-        <div class="bg-white w-90 p-6 rounded-sm font-mono text-sm border border-gray-300">
-          <h2 class="text-center text-base font-bold mb-4">Pokladničný doklad</h2>
 
-          <div class="mb-4 text-center leading-tight relative">
-            <div class="inline-flex items-center justify-center gap-1">
-              <p class="font-bold">{{ receiptResponse.partner?.name }}</p>
-              <button
-                title="Upraviť údaje partnera"
-                class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
-                (click)="openModal()"
-              >
-                <svg class="w-4 h-4 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                     width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                        d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </button>
-            </div>
-            <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}
-              , {{ receiptResponse.partner?.city }}</p>
-            <p>DIČ: {{ receiptResponse.partner?.taxId }} IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
-            <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
-            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy' }}</p>
-          </div>
-
-          <table class="w-full mb-4">
-            <thead>
-            <tr class="border-t border-b border-gray-300">
-              <th class="text-left py-1">Tovar</th>
-              <th class="text-right py-1">Suma</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of receiptResponse.items">
-              <td class="py-1">{{ item.name }}</td>
-              <td class="py-1 text-right">
-                <ng-container *ngIf="item.priceWithVAT < 0; else positive">
-                  -€{{ (item.priceWithVAT * -1) | number: '1.2-2' }}
-                </ng-container>
-                <ng-template #positive>
-                  €{{ item.priceWithVAT | number: '1.2-2' }}
-                </ng-template>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-          <div class="border-t border-gray-300 pt-2 space-y-1">
-            <!--            <div class="flex justify-between">-->
-            <!--              <span>Medzisúčet</span>-->
-            <!--              <span>€18.00</span>-->
-            <!--            </div>-->
-            <!--            <div class="flex justify-between">-->
-            <!--              <span>DPH 19%</span>-->
-            <!--              <span>€3.60</span>-->
-            <!--            </div>-->
-            <!--            <div class="flex justify-between">-->
-            <!--              <span>Zľava</span>-->
-            <!--              <span>-€2.00</span>-->
-            <!--            </div>-->
-            <div class="flex justify-between font-bold border-gray-300 pt-2 mt-2">
-              <span>Spolu</span>
-<!--              <span>€{{ it | number:'1.2-2' }}</span>-->
-            </div>
-          </div>
-
-        </div>
-      </div>
     </div>
 
 
