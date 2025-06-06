@@ -1,14 +1,22 @@
 package com.invoicesync.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import java.time.LocalDateTime;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class XmlFileResponseDto {
-    private Long importId;
+
+    private Long id;
+
     private String fileName;
-    private Date createdAt;
+
+    private LocalDateTime createdAt;
+
 }

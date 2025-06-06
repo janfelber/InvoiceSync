@@ -154,19 +154,21 @@
         <div id="companiesDropdown"
              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 shadow-sm">
           <ul class="py-2 text-sm text-black dark:text-black" aria-labelledby="dropdownDefaultButton">
-            <li *ngIf="companyResponse?.content.length > 0">
+            <li *ngIf="companyResponse.content.length > 0">
               <a *ngFor="let company of companyResponse?.content"
                  class="block px-4 py-2 hover:bg-gray-200"
                  (click)="onCompanyChange(company)">
                 {{ company.name }}
               </a>
             </li>
-            <li *ngIf="companyResponse?.content.length === 0" class="block px-4 py-2 text-gray-500 italic">
+            <li *ngIf="companyResponse.content.length === 0" class="block px-4 py-2 text-gray-500 italic">
               Žiadne firmy nie sú k dispozícii
             </li>
           </ul>
         </div>
       </div>
+
+
 
       <!-- Import receipt button -->
       <button
@@ -314,15 +316,36 @@
 
             <!-- upload images -->
             <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
-              <div class="grid grid-cols-3 gap-3">
-                <div *ngFor="let file of multipleFiles" class="relative border rounded p-2 bg-white shadow">
-                  <img [src]="file.preview" alt="preview" class="w-full h-28 object-cover rounded" />
-                  <p class="text-xs text-gray-700 mt-1 truncate">{{ file.file.name }}</p>
-                  <p class="text-[10px] text-gray-400">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div *ngFor="let file of multipleFiles" class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
+                  <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 4v16m-6-8h12" />
+                  </svg>
+                  <div class="flex-1 overflow-hidden">
+                    <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
+                    <p class="text-[11px] text-gray-500">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
+            <div class="grid grid-cols-2 gap-3">
+              <div *ngFor="let file of multipleFiles" class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
+                <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 4v16m-6-8h12" />
+                </svg>
+                <div class="flex-1 overflow-hidden">
+                  <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
+                  <p class="text-[11px] text-gray-500">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -371,25 +394,27 @@
       </thead>
 
       <!-- data present -->
-      <tbody *ngIf="receiptResponse?.content.length > 0; else noData" class="bg-white divide-y divide-gray-200">
-      <tr *ngFor="let receipt of receiptResponse.content">
-        <td class="pl-2 pr-1 py-4">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-        </td>
-        <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-          <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">#{{ receipt.id }}</a>
-        </td>
-        <td class="px-4 py-4">{{ receipt.partner.name }}</td>
-        <td class="px-4 py-4">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
-        <td class="px-4 py-4">{{ receipt.companyName }}</td>
-        <td class="px-4 py-4">{{ receipt.partner.registrationNumber }}</td>
-        <td class="px-4 py-4">{{ receipt.partner.taxId }}</td>
-        <td class="px-4 py-4">{{ receipt.partner.vatId }}</td>
-        <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-          {{ receipt.receiptDetails.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
-        </td>
-      </tr>
-      </tbody>
+      <ng-container *ngIf="receiptResponse.content.length > 0; else noData">
+        <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let receipt of receiptResponse.content!">
+          <td class="pl-2 pr-1 py-4">
+            <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+          </td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+            <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">#{{ receipt.id }}</a>
+          </td>
+          <td class="px-4 py-4">{{ receipt.partner?.name }}</td>
+          <td class="px-4 py-4">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
+          <td class="px-4 py-4">{{ receipt.companyName }}</td>
+          <td class="px-4 py-4">{{ receipt.partner?.registrationNumber }}</td>
+          <td class="px-4 py-4">{{ receipt.partner?.taxId }}</td>
+          <td class="px-4 py-4">{{ receipt.partner?.vatId }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+            {{ receipt.receiptDetails?.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
+          </td>
+        </tr>
+        </tbody>
+      </ng-container>
 
       <!-- no data -->
       <ng-template #noData>

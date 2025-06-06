@@ -14,5 +14,10 @@ export const ApiPaths = {
     FIND_BY_COMPANY: (companyId:number) => `/company/${companyId}`,
     SAVE: '/save',
     UPDATE_BY_ID: (receiptId:number) => `/update/${receiptId}`,
-  }
+  },
+  xmlFile: {
+    BASE: '/xml-file',
+    FIND_ALL_BY_USER: '/user',
+    SAVE: '/save'
+}
 };

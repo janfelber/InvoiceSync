@@ -30,8 +30,12 @@ export class ReceiptsComponent implements OnInit {
   importModalOpen = false;
   isUploading = false;
 
-  public receiptResponse: PageResponseReceiptResponse = {};
-  public companyResponse: PageResponseCompanyResponseDto = {};
+  public receiptResponse: PageResponseReceiptResponse = {
+    content: []
+  };
+  public companyResponse: PageResponseCompanyResponseDto = {
+    content: []
+  };
 
   public selectedCompanyName: string = 'Spoločnosť';
   public selectedCompanyId: any;
