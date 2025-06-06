@@ -1,20 +1,18 @@
 package com.invoicesync.service;
 
-import com.invoicesync.dto.XmlFileRequestDto;
-import com.invoicesync.dto.XmlFileResponseDto;
-import com.invoicesync.module.XmlFile;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
+import com.invoicesync.common.PageResponse;
+import com.invoicesync.dto.XmlFileResponseDto;
 
 public interface XmlFileService {
 
     //save xml file
-    XmlFile saveXmlFile(MultipartFile file) throws IOException;
+    Long saveXmlFile(MultipartFile file, Authentication connectedUser);
 
     //get xml file by user id
-    List<XmlFileResponseDto> getXmlFilesByUserId(Long userId);
+    PageResponse<XmlFileResponseDto> finalAllXmlImportsByUser(int size, int page, Authentication connectedUser);
 
     //get xml file by import id
     String getXmlContentByImportId(Long importId);

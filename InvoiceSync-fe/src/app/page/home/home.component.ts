@@ -33,7 +33,9 @@ export class HomeComponent implements OnInit{
   companyForm!: FormGroup;
   modalOpen = false;
 
-  companyResponse: PageResponseCompanyResponseDto = {};
+  companyResponse: PageResponseCompanyResponseDto = {
+    content: []
+  };
 
   searchText: string = '';
   page: number = 0;

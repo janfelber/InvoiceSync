@@ -4,7 +4,7 @@
 
 import { CompanyResponseDto } from '../models/company-response-dto';
 export interface PageResponseCompanyResponseDto {
-  content?: Array<CompanyResponseDto>;
+  content: Array<CompanyResponseDto>;
   first?: boolean;
   last?: boolean;
   number?: number;

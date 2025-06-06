@@ -1,6 +1,6 @@
 package com.invoicesync.module;
 
-import java.util.Date;
+import com.invoicesync.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,17 +9,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
+@Getter
+@Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "xml_file", schema = "invoice_sync")
-public class XmlFile {
+public class XmlFile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +31,6 @@ public class XmlFile {
 
     @Column(columnDefinition = "XML")
     private String xml_content;
-
-    private Date created_at;
 
     // @ManyToOne
     // @JoinColumn(name = "\"user_id\"")
