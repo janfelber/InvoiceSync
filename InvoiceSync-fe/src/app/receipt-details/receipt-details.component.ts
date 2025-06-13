@@ -73,7 +73,9 @@ export class ReceiptDetailsComponent implements OnInit {
     }
   };
 
-  receiptRequest: ReceiptRequest = {};
+  receiptRequest: ReceiptRequest = {
+    items: []
+  };
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
