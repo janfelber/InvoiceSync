@@ -1,11 +1,11 @@
 package com.invoicesync.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.invoicesync.dto.chartAccount.ClassDTO;
 
 public interface ChartAccountService {
 
-  Map<String, ClassDTO> getChartAccountsByClass(String classId);
+  List<ClassDTO> getAllChartAccountsByClass();
 
 }

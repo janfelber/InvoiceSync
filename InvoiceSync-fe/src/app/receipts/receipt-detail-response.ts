@@ -5,10 +5,11 @@ import {Details} from "./details";
 
 export interface ReceiptDetailResponse {
   id?: number;
+  receiptNumber?: string;
   paymentType?: string
   createdAt?: string;
   receiptDetails?: Details;
-  partner?: Partner;
+  partner: Partner;
   items?: ReceiptItem[];
   company?: Company;
 }

@@ -1,10 +1,9 @@
 package com.invoicesync.service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -23,30 +22,44 @@ public class ChartAccountServiceImpl implements ChartAccountService {
   private final ChartAccountRepository chartAccountRepository;
 
   @Override
-  public Map<String, ClassDTO> getChartAccountsByClass(final String classId) {
+  public List<ClassDTO> getAllChartAccountsByClass() {
     final List<ChartAccount> chartAccounts = chartAccountRepository.findAll();
 
-    // Zoskup a transformuj dáta do požadovaného formátu
-    Map<String, ClassDTO> result = chartAccounts.stream()
-        .filter(chartAccount -> classId.equals(chartAccount.getClassId())) // Filtrovanie kategórie
-        .collect(Collectors.groupingBy(ChartAccount::getClassName,
-            Collector.of(
-                ClassDTO::new,
-                (classDTO, chartAccount) -> {
-                  classDTO.setClassName(chartAccount.getClassName());
+    // Použijeme mapy na zoskupenie dát
+    final Map<String, ClassDTO> classMap = new LinkedHashMap<>();
 
-                  classDTO.getCategories().computeIfAbsent(chartAccount.getCategory(), category -> {
-                    return new CategoryDTO(chartAccount.getCategoryName(), new ArrayList<>());
-                  }).getAccounts().add(new AccountDTO(chartAccount.getAccountId(), chartAccount.getAccountName(), chartAccount.isEditable()));
-                },
-                (left, right) -> {
-                  left.getCategories().putAll(right.getCategories());
-                  return left;
-                }
-            )
-        ));
+    for (final ChartAccount chartAccount : chartAccounts) {
+      // Získaj alebo vytvor ClassDTO
+      final ClassDTO classDTO = classMap.computeIfAbsent(chartAccount.getClassId(), key ->
+          ClassDTO.builder()
+              .classNumber(Integer.parseInt(chartAccount.getClassId()))
+              .className(chartAccount.getClassName())
+              .categories(new ArrayList<>())
+              .build()
+      );
 
-    return result;
+      final CategoryDTO categoryDTO = classDTO.getCategories().stream()
+          .filter(cat -> cat.getCategoryId().equals(chartAccount.getCategory()))
+          .findFirst()
+          .orElseGet(() -> {
+            final CategoryDTO newCategory = CategoryDTO.builder()
+                .categoryId(chartAccount.getCategory())
+                .categoryName(chartAccount.getCategoryName())
+                .accounts(new ArrayList<>())
+                .build();
+            classDTO.getCategories().add(newCategory);
+            return newCategory;
+          });
+
+      categoryDTO.getAccounts().add(AccountDTO.builder()
+          .id(chartAccount.getId())
+          .number(chartAccount.getAccountId())
+          .name(chartAccount.getAccountName())
+          .editable(chartAccount.isEditable())
+          .build());
+    }
+
+    return new ArrayList<>(classMap.values());
   }
 
 }
