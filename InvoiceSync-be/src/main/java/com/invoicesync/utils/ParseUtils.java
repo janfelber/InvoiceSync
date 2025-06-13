@@ -45,6 +45,8 @@ public final class ParseUtils {
 
     return new ReceiptRequest(
         null,
+        null,
+        false,
         companyId,
         parseDateOnly(receiptNode.path("createDate").asText()),     // date
         parseDateOnly(receiptNode.path("issueDate").asText()),      // datePayment

@@ -8,6 +8,10 @@ import jakarta.validation.constraints.NotNull;
 public record ReceiptRequest(
     Long id,
 
+    String receiptNumber,
+
+    boolean isPaidByCard,
+
     @NotNull(message = "100")
     @NotEmpty(message = "100")
     Long companyId,

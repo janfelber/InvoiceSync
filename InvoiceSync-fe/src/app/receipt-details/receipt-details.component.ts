@@ -1,16 +1,21 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {NgClass, NgForOf } from "@angular/common";
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {AxiosService} from "../axios.service";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReceiptRequest} from "../models/receipt-request";
-import {InvoiceService} from "../page/invoices/invoice.service";
 import {ToastrService} from "ngx-toastr";
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {initFlowbite} from 'flowbite'
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ReceiptService} from "../services/receipt.service";
 import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
+import {AccountChartService} from "../services/account-chart.service";
+
+interface Account {
+  id:number,
+  number:string,
+  name:string
+}
 
 @Component({
   selector: 'app-receipt-details',
@@ -19,7 +24,8 @@ import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    MatDialogWindowComponent
+    MatDialogWindowComponent,
+    RouterLink
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
@@ -27,8 +33,8 @@ import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
 export class ReceiptDetailsComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
+    private accountCharts: AccountChartService,
     private route: ActivatedRoute,
-    private invoiceService: InvoiceService,
     private toastr: ToastrService,
   ) {
   }
@@ -38,20 +44,55 @@ export class ReceiptDetailsComponent implements OnInit {
   @ViewChild('successToast') successToast!: ElementRef;
 
   modalOpen = false;
+  drawerOpen = false;
   receipt: any = {};
-  items: ReceiptRequest['items'] = [];
-  partner: any = {};
-  myIdentity: any = {};
-  receiptResponse: ReceiptDetailResponse = {};
+  selectedItemName: string = '';
 
-  receiptRequest: ReceiptRequest = {};
+  items: {
+    accountText?: string;
+    name?: string;
+    quantity?: number;
+    priceWithoutVAT?: number;
+    vatRate?: number;
+    priceWithVAT?: number;
+    accountValue?: string;
+    id?: number;
+  }[] = [];
+
+
+  partner: any = {};
+  receiptResponse: ReceiptDetailResponse = {
+    partner: {
+      city: '',
+      name: '',
+      registrationNumber: '',
+      street: '',
+      taxId: '',
+      vatId: '',
+      zip: ''
+    }
+  };
+
+  receiptRequest: ReceiptRequest = {
+    items: []
+  };
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.receiptId = params.get('id') || '';
     });
-    this.onFetchReceipt();
     initFlowbite();
+    this.onFetchReceipt();
+    this.onFetchAccounts();
+  }
+
+  groupedAccounts: any[] = [];
+
+  onFetchAccounts() {
+    this.accountCharts.finalAll().then(response => {
+      console.log(response.data)
+      this.groupedAccounts = response.data;
+    })
   }
 
   onFetchReceipt() {
@@ -59,7 +100,8 @@ export class ReceiptDetailsComponent implements OnInit {
       receiptId: this.receiptId
     }).then(response => {
       this.receiptResponse = response.data
-      console.log("test", this.receiptResponse);
+      console.log("toto pride", this.receiptResponse)
+      this.items = response.data.items;
       // this.companyId = data.company;
       // this.receipt = data.receiptDetails;
       // this.partner = data.partner;
@@ -67,99 +109,118 @@ export class ReceiptDetailsComponent implements OnInit {
     });
   }
 
-  get subtotal(): number {
-    return this.items?.reduce((sum, item) => sum + (item.priceWithoutVAT * (item.quantity ?? 1)), 0) ?? 0;
-  }
+  async exportReceipt() {
+    // await this.myIdentityCompany();
 
-  get totalVAT(): number {
-    return this.items?.reduce((sum, item) => {
-      const quantity = item.quantity ?? 1;
-      return sum + ((item.priceWithVAT - item.priceWithoutVAT) * quantity);
-    }, 0) ?? 0;
-  }
-
-  get totalPrice(): number {
-    return this.items?.reduce((sum, item) => sum + (item.priceWithVAT * (item.quantity ?? 1)), 0) ?? 0;
-  }
-
-  getTotalDiscount(): number {
-    if (!this.items) return 0;
-
-    return this.items
-      .filter(item => item.priceWithVAT < 0)
-      .reduce((sum, item) => sum + item.priceWithVAT * (item.quantity ?? 1), 0);
-  }
-  getDiscountAmount(item: any): number {
-    if (!item.priceOriginal || item.priceOriginal <= item.priceWithVAT) {
-      return 0;
+    this.receiptRequest = {
+      datePayment: this.receiptResponse?.receiptDetails?.datePayment,
+      receiptNumber: "1234",
+      date: this.receiptResponse.receiptDetails?.date,
+      dateTax: this.receiptResponse.receiptDetails?.dateTax,
+      accounting: this.receiptResponse.receiptDetails?.accountValue,
+      isPaidByCard: this.receiptResponse.receiptDetails?.paidByCard,
+      classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
+      classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
+      description: this.receiptResponse.receiptDetails?.description,
+      partnerName: this.receiptResponse.partner?.name,
+      partnerCity: this.receiptResponse.partner?.city,
+      partnerStreet: this.receiptResponse.partner?.street,
+      partnerZip: this.receiptResponse.partner?.zip,
+      partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
+      partnerTaxId: this.receiptResponse.partner?.taxId,
+      partnerVatId: this.receiptResponse.partner?.vatId,
+      totalPrice: this.receiptResponse.receiptDetails?.totalPrice,
+      items: this.items
     }
-    return item.priceOriginal - item.priceWithVAT;
+
+    console.log("post", this.receiptRequest)
+
+    this.receiptService.exportReceiptPohoda(
+      {
+        receipt: this.receiptRequest
+      }
+    ).then((response) => {
+      this.modalOpen = false;
+      this.toastr.success(
+        'Blocek out',
+        '',
+        {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.receiptRequest.receiptNumber + '.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    })
+      .catch(error => {
+        console.error('Error exporting Excel:', error);
+      });
   }
 
-  // async exportReceipt() {
-  //   // await this.myIdentityCompany();
-  //
-  //   this.receiptRequest = {
-  //     receiptDetails: {
-  //       numberRequested: 'test',
-  //       date: this.receipt.date,
-  //       datePayment: this.receipt.datePayment,
-  //       dateTax: this.receipt.dateTax,
-  //       accountValue: this.receipt.accountValue,
-  //       classificationVAT: this.receipt.classificationVAT,
-  //       classificationKVVAT: this.receipt.classificationKVVAT,
-  //       description: this.receipt.description
-  //     },
-  //     partner: {
-  //       name: this.partner.name,
-  //       city: this.partner.city,
-  //       street: this.partner.street,
-  //       zip: this.partner.zip,
-  //       registrationNumber: this.partner.registrationNumber,
-  //       taxId: this.partner.taxId,
-  //       vatId: this.partner.vatId
-  //     },
-  //     myIdentity: {
-  //       name: this.receiptResponse.company?.name,
-  //       city: this.receiptResponse.company?.city,
-  //       street: this.receiptResponse.company?.street,
-  //       zip: this.receiptResponse.company?.zip,
-  //       taxId: this.receiptResponse.company?.taxId,
-  //       vatId: this.receiptResponse.company?.vatId,
-  //       registrationNumber: this.receiptResponse.company?.registrationNumber
-  //     },
-  //     items: this.items
-  //     };
-  //
-  //   console.log(this.receiptRequest)
-  //
-  //   this.invoiceService.exportPohodaReceipt(this.receiptRequest).subscribe({
-  //     next: (response) => {
-  //       const blob = new Blob([response], {type: 'application/xml'});
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = 'receipt.xml';
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //       window.URL.revokeObjectURL(url);
-  //
-  //       console.log(response)
-  //       this.toastr.success('Export uspesny', 'Informácia',
-  //         {
-  //           timeOut: 1500,
-  //           progressBar: true,
-  //           progressAnimation: 'increasing',
-  //           closeButton: true,
-  //           positionClass: 'toast-top-right',
-  //         });
-  //     },
-  //     error: (error) => {
-  //       console.error('Chyba pri exportovaní faktúry', error);
-  //     }
-  //   });
-  // }
+  selectedAccountsPerItem: { [itemId: number]: Account } = {};
+
+  assignAccountToItem(): void {
+    const selectedAccount = this.selectedAccountsPerItem[this.selectedItemForAccount];
+    if (!selectedAccount) {
+      console.warn('Žiadny účet nie je vybraný pre item:', this.selectedItemForAccount);
+      return;
+    }
+
+    this.items.forEach(item => {
+      if (item.id === this.selectedItemForAccount) {
+        item.accountValue = selectedAccount.number;
+        console.log('Priradený účet', item.accountValue, 'pre item', item.id);
+      }
+    });
+
+    this.closeDrawer();
+    this.selectedItemForAccount = null;
+  }
+
+  onAccountChange(itemId: number, account: Account) {
+    this.selectedAccountsPerItem[itemId] = account;
+    console.log('Zvolený účet:', account.id, 'pre item:', itemId);
+  }
+
+  selectedItemForAccount: any = null;
+
+  openDrawer(item: any): void {
+    this.selectedItemForAccount = item.id;
+
+    this.selectedItemName = item.name;
+    console.log(item)
+
+    if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
+      const matchingAccount = this.groupedAccounts
+          .flatMap(cls => cls.categories)
+          .flatMap(cat => cat.accounts)
+          .find(acc => acc.number === item.accountValue);
+
+      if (matchingAccount) {
+        this.selectedAccountsPerItem[item.id] = matchingAccount;
+      }
+    }
+
+    this.drawerOpen = true;
+  }
+
+  closeDrawer() {
+    this.drawerOpen = false;
+  }
+
 
   openModal() {
     this.modalOpen = true;
@@ -172,27 +233,29 @@ export class ReceiptDetailsComponent implements OnInit {
   async updateReceipt() {
 
     this.receiptRequest = {
-        datePayment:this.receiptResponse?.receiptDetails?.datePayment,
-        date: this.receiptResponse.receiptDetails?.date,
-        dateTax: this.receiptResponse.receiptDetails?.dateTax,
-        accounting: this.receiptResponse.receiptDetails?.accountValue,
-        classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
-        classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
-        description: this.receiptResponse.receiptDetails?.description,
-        partnerName: this.receiptResponse.partner?.name,
-        partnerCity: this.receiptResponse.partner?.city,
-        partnerStreet: this.receiptResponse.partner?.street,
-        partnerZip: this.receiptResponse.partner?.zip,
-        partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
-        partnerTaxId: this.receiptResponse.partner?.taxId,
-        partnerVatId: this.receiptResponse.partner?.vatId,
+      datePayment: this.receiptResponse?.receiptDetails?.datePayment,
+      receiptNumber: this.receiptResponse?.receiptNumber,
+      date: this.receiptResponse.receiptDetails?.date,
+      dateTax: this.receiptResponse.receiptDetails?.dateTax,
+      accounting: this.receiptResponse.receiptDetails?.accountValue,
+      isPaidByCard: this.receiptResponse.receiptDetails?.paidByCard,
+      classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
+      classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
+      description: this.receiptResponse.receiptDetails?.description,
+      partnerName: this.receiptResponse.partner?.name,
+      partnerCity: this.receiptResponse.partner?.city,
+      partnerStreet: this.receiptResponse.partner?.street,
+      partnerZip: this.receiptResponse.partner?.zip,
+      partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
+      partnerTaxId: this.receiptResponse.partner?.taxId,
+      partnerVatId: this.receiptResponse.partner?.vatId,
       items: this.items
-      }
+    }
 
     this.receiptService.updateReceipt({
       receiptId: this.receiptId,
       receipt: this.receiptRequest
-    }).then(() =>{
+    }).then(() => {
       this.modalOpen = false;
       this.toastr.success(
         'Zmeny bločka uložené',

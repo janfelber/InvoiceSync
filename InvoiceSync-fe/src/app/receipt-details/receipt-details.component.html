@@ -4,7 +4,8 @@
       <nav class="flex mb-4 mx-4" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li class="inline-flex items-center">
-            <a href="/home" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+            <a routerLink="/home"
+               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
               <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                    viewBox="0 0 20 20">
                 <path
@@ -20,7 +21,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <a href="/web/receipts"
+              <a routerLink="/web/receipts"
                  class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">Bločky</a>
             </div>
           </li>
@@ -38,7 +39,7 @@
       </nav>
 
       <div class="flex items-center justify-between mb-4 mx-4">
-        <a href="/web/receipts" class="flex items-center space-x-2 text-black no-underline hover:underline">
+        <a routerLink="/web/receipts" class="flex items-center space-x-2 text-black no-underline hover:underline">
           <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,9 +64,14 @@
             <ul class="py-2 px-2 text-sm text-gray-500" aria-labelledby="dropdownDownloadButton">
               <li>
                 <a>
-                  <div class="group px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1 text-gray-500 group-hover:text-black" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z" clip-rule="evenodd"/>
+                  <div
+                    (click)="exportReceipt()"
+                    class="group px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                    <svg class="w-4 h-4 mr-1 text-gray-500 group-hover:text-black" xmlns="http://www.w3.org/2000/svg"
+                         fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
+                            clip-rule="evenodd"/>
                     </svg>
                     <span>Uložiť ako Excel</span>
                   </div>
@@ -76,8 +82,11 @@
           <button
             (click)="updateReceipt()"
             class="flex items-center space-x-2 px-3 py-1.5 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg">
-            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                 fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                    clip-rule="evenodd"/>
               <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
             </svg>
             <span
@@ -88,29 +97,290 @@
     </div>
 
     <div class="grid grid-cols-[repeat(12,_minmax(0,_1fr))] gap-4 p-4 bg-gray-50">
-      <!-- Ľavá karta (658px) -->
-      <div class="col-span-5 p-6 bg-white border border-gray-200 rounded-lg">
-        <div class="flex gap-4">
-          <div class="w-1/2 mb-4">
-            <label class="text-sm mb-1 flex items-center gap-1">
-              Typ platby*
-              <svg
-                class="w-4.5 h-4.5 text-gray-400 "
-                data-tooltip-target="payment-type-tooltip"
-                data-tooltip-placement="right"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
+
+      <div class="col-span-9 flex justify-center bg-gray-100 rounded-xl">
+        <div id="invoice" class="bg-white w-full p-6 rounded-lg text-sm border border-gray-300">
+
+          <div class="flex items-center justify-between mt-4">
+            <img
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYxIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTYxIDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDAuNjU3MiAxOEgzMy40NTcyVjE1LjJIMzUuMjU3MlY2LjhIMzMuNDU3MlY0SDQwLjY1NzJWNi44SDM4Ljg1NzJWMTUuMkg0MC42NTcyVjE4Wk00OC4xNTU2IDEwLjFDNDcuNDQ4OSAxMC4xIDQ2LjY0ODkgMTAuMjMzMyA0NS43NTU2IDEwLjVWMThINDIuMjU1NlY3LjRINDUuMzU1Nkw0NS41NTU2IDguNEM0Ni4xODIzIDcuOTg2NjcgNDYuODIyMyA3LjY4NjY3IDQ3LjQ3NTYgNy41QzQ4LjE0MjMgNy4zIDQ4LjcwMjMgNy4yIDQ5LjE1NTYgNy4ySDUwLjA1NTZDNTAuOTYyMyA3LjIgNTEuNjg4OSA3LjQ3MzMzIDUyLjIzNTYgOC4wMkM1Mi43ODIzIDguNTY2NjcgNTMuMDU1NiA5LjI5MzMzIDUzLjA1NTYgMTAuMlYxOEg0OS41NTU2VjEwLjhDNDkuNTU1NiAxMC42IDQ5LjQ4ODkgMTAuNDMzMyA0OS4zNTU2IDEwLjNDNDkuMjIyMyAxMC4xNjY3IDQ5LjA1NTYgMTAuMSA0OC44NTU2IDEwLjFINDguMTU1NlpNNjEuOTUzMyA3LjRINjUuNjUzM0w2MS42NTMzIDE4SDU3LjY1MzNMNTMuNjUzMyA3LjRINTcuMzUzM0w1OS42NTMzIDE0LjZMNjEuOTUzMyA3LjRaTTc3LjA1OTUgMTVDNzcuMDU5NSAxNiA3Ni43NzI5IDE2Ljc4NjcgNzYuMTk5NSAxNy4zNkM3NS42Mzk1IDE3LjkyIDc0Ljg1OTUgMTguMiA3My44NTk1IDE4LjJINjkuMjU5NUM2OC4yNTk1IDE4LjIgNjcuNDcyOSAxNy45MiA2Ni44OTk1IDE3LjM2QzY2LjMzOTUgMTYuNzg2NyA2Ni4wNTk1IDE2IDY2LjA1OTUgMTVWMTAuNEM2Ni4wNTk1IDkuNCA2Ni4zMzk1IDguNjIgNjYuODk5NSA4LjA2QzY3LjQ3MjkgNy40ODY2NyA2OC4yNTk1IDcuMiA2OS4yNTk1IDcuMkg3My44NTk1Qzc0Ljg1OTUgNy4yIDc1LjYzOTUgNy40ODY2NyA3Ni4xOTk1IDguMDZDNzYuNzcyOSA4LjYyIDc3LjA1OTUgOS40IDc3LjA1OTUgMTAuNFYxNVpNNzMuNTU5NSAxMC43QzczLjU1OTUgMTAuMTY2NyA3My4yOTI5IDkuOSA3Mi43NTk1IDkuOUg3MC4zNTk1QzY5LjgyNjIgOS45IDY5LjU1OTUgMTAuMTY2NyA2OS41NTk1IDEwLjdWMTQuN0M2OS41NTk1IDE1LjIzMzMgNjkuODI2MiAxNS41IDcwLjM1OTUgMTUuNUg3Mi43NTk1QzczLjI5MjkgMTUuNSA3My41NTk1IDE1LjIzMzMgNzMuNTU5NSAxNC43VjEwLjdaTTgzLjI1NzIgNy44VjE4SDc5Ljc1NzJWMTAuNUg3OC4yNTcyVjcuOEg4My4yNTcyWk03OS43NTcyIDMuOEg4My4yNTcyVjYuNkg3OS43NTcyVjMuOFpNOTQuNjYzNCAxNy44QzkyLjE3MDEgMTguMDY2NyA4OS45NzAxIDE4LjIgODguMDYzNCAxOC4yQzg3LjE1NjggMTguMiA4Ni40MzAxIDE3LjkyNjcgODUuODgzNCAxNy4zOEM4NS4zMzY4IDE2LjgzMzMgODUuMDYzNCAxNi4xMDY3IDg1LjA2MzQgMTUuMlYxMC42Qzg1LjA2MzQgOS42IDg1LjM0MzQgOC44MiA4NS45MDM0IDguMjZDODYuNDc2OCA3LjY4NjY3IDg3LjI2MzQgNy40IDg4LjI2MzQgNy40SDk0LjY2MzRWMTAuMUg4OS4zNjM0Qzg4LjgzMDEgMTAuMSA4OC41NjM0IDEwLjM2NjcgODguNTYzNCAxMC45VjE0LjhDODguNTYzNCAxNSA4OC42MzAxIDE1LjE2NjcgODguNzYzNCAxNS4zQzg4Ljg5NjggMTUuNDMzMyA4OS4wNjM0IDE1LjUgODkuMjYzNCAxNS41QzkwLjQ2MzQgMTUuNSA5Mi4yNjM0IDE1LjQgOTQuNjYzNCAxNS4yVjE3LjhaTTEwMC4zNiA5LjdDOTkuODI2MiA5LjcgOTkuNTU5NSA5Ljk2NjY3IDk5LjU1OTUgMTAuNVYxMS42SDEwMi45NlYxMC41QzEwMi45NiA5Ljk2NjY3IDEwMi42OTMgOS43IDEwMi4xNiA5LjdIMTAwLjM2Wk0xMDYuMDYgMTcuOEMxMDMuNDg2IDE4LjA2NjcgMTAxLjE1MyAxOC4yIDk5LjA1OTUgMTguMkM5OC4xNTI5IDE4LjIgOTcuNDI2MiAxNy45MjY3IDk2Ljg3OTUgMTcuMzhDOTYuMzMyOSAxNi44MzMzIDk2LjA1OTUgMTYuMTA2NyA5Ni4wNTk1IDE1LjJWMTAuNEM5Ni4wNTk1IDkuNCA5Ni4zMzk1IDguNjIgOTYuODk5NSA4LjA2Qzk3LjQ3MjkgNy40ODY2NyA5OC4yNTk1IDcuMiA5OS4yNTk1IDcuMkgxMDMuMjZDMTA0LjI2IDcuMiAxMDUuMDQgNy40ODY2NyAxMDUuNiA4LjA2QzEwNi4xNzMgOC42MiAxMDYuNDYgOS40IDEwNi40NiAxMC40VjE0LjFIOTkuNTU5NVYxNC45Qzk5LjU1OTUgMTUuMSA5OS42MjYyIDE1LjI2NjcgOTkuNzU5NSAxNS40Qzk5Ljg5MjkgMTUuNTMzMyAxMDAuMDYgMTUuNiAxMDAuMjYgMTUuNkMxMDEuNTggMTUuNiAxMDMuNTEzIDE1LjUgMTA2LjA2IDE1LjNWMTcuOFpNMTA4LjAzMiAxNS4xQzExMS42ODUgMTUuMyAxMTQuMTU4IDE1LjQgMTE1LjQ1MiAxNS40QzExNS43NTggMTUuNCAxMTUuOTk4IDE1LjMxMzMgMTE2LjE3MiAxNS4xNEMxMTYuMzU4IDE0Ljk1MzMgMTE2LjQ1MiAxNC43MDY3IDExNi40NTIgMTQuNFYxMi42SDExMS44NTJDMTEwLjQ1MiAxMi42IDEwOS40MzIgMTIuMjg2NyAxMDguNzkyIDExLjY2QzEwOC4xNjUgMTEuMDIgMTA3Ljg1MiAxMCAxMDcuODUyIDguNlY4QzEwNy44NTIgNi42IDEwOC4xNjUgNS41ODY2NyAxMDguNzkyIDQuOTZDMTA5LjQzMiA0LjMyIDExMC40NTIgNCAxMTEuODUyIDRIMTE4Ljg3MlY2LjhIMTEyLjY1MkMxMTEuODUyIDYuOCAxMTEuNDUyIDcuMiAxMTEuNDUyIDhWOC40QzExMS40NTIgOS4yIDExMS44NTIgOS42IDExMi42NTIgOS42SDExNi4yNTJDMTE3LjU1OCA5LjYgMTE4LjUxOCA5LjkwNjY3IDExOS4xMzIgMTAuNTJDMTE5Ljc0NSAxMS4xMzMzIDEyMC4wNTIgMTIuMDkzMyAxMjAuMDUyIDEzLjRWMTQuNEMxMjAuMDUyIDE1LjcwNjcgMTE5Ljc0NSAxNi42NjY3IDExOS4xMzIgMTcuMjhDMTE4LjUxOCAxNy44OTMzIDExNy41NTggMTguMiAxMTYuMjUyIDE4LjJDMTE1LjU3MiAxOC4yIDExNC44NTIgMTguMTg2NyAxMTQuMDkyIDE4LjE2TDExMi4yNTIgMTguMDhDMTEwLjg5MiAxOC4wMTMzIDEwOS40ODUgMTcuOTIgMTA4LjAzMiAxNy44VjE1LjFaTTEyNC40NSAyMS42QzEyMy43NDMgMjEuNiAxMjIuODc3IDIxLjUzMzMgMTIxLjg1IDIxLjRWMTguOEgxMjMuNjVDMTI0LjE1NyAxOC44IDEyNC40ODMgMTguNjYgMTI0LjYzIDE4LjM4QzEyNC43OSAxOC4xIDEyNC43NjMgMTcuNzA2NyAxMjQuNTUgMTcuMkwxMjAuNDUgNy40SDEyNC4xNUwxMjYuNjUgMTQuMkwxMjguNzUgNy40SDEzMi40NUwxMjguNDUgMTguNEMxMjguMDYzIDE5LjQ1MzMgMTI3LjU2MyAyMC4yNDY3IDEyNi45NSAyMC43OEMxMjYuMzM3IDIxLjMyNjcgMTI1LjUwMyAyMS42IDEyNC40NSAyMS42Wk0xMzguOTU2IDEwLjFDMTM4LjI1IDEwLjEgMTM3LjQ1IDEwLjIzMzMgMTM2LjU1NiAxMC41VjE4SDEzMy4wNTZWNy40SDEzNi4xNTZMMTM2LjM1NiA4LjRDMTM2Ljk4MyA3Ljk4NjY3IDEzNy42MjMgNy42ODY2NyAxMzguMjc2IDcuNUMxMzguOTQzIDcuMyAxMzkuNTAzIDcuMiAxMzkuOTU2IDcuMkgxNDAuODU2QzE0MS43NjMgNy4yIDE0Mi40OSA3LjQ3MzMzIDE0My4wMzYgOC4wMkMxNDMuNTgzIDguNTY2NjcgMTQzLjg1NiA5LjI5MzMzIDE0My44NTYgMTAuMlYxOEgxNDAuMzU2VjEwLjhDMTQwLjM1NiAxMC42IDE0MC4yOSAxMC40MzMzIDE0MC4xNTYgMTAuM0MxNDAuMDIzIDEwLjE2NjcgMTM5Ljg1NiAxMC4xIDEzOS42NTYgMTAuMUgxMzguOTU2Wk0xNTUuMDU0IDE3LjhDMTUyLjU2MSAxOC4wNjY3IDE1MC4zNjEgMTguMiAxNDguNDU0IDE4LjJDMTQ3LjU0NyAxOC4yIDE0Ni44MjEgMTcuOTI2NyAxNDYuMjc0IDE3LjM4QzE0NS43MjcgMTYuODMzMyAxNDUuNDU0IDE2LjEwNjcgMTQ1LjQ1NCAxNS4yVjEwLjZDMTQ1LjQ1NCA5LjYgMTQ1LjczNCA4LjgyIDE0Ni4yOTQgOC4yNkMxNDYuODY3IDcuNjg2NjcgMTQ3LjY1NCA3LjQgMTQ4LjY1NCA3LjRIMTU1LjA1NFYxMC4xSDE0OS43NTRDMTQ5LjIyMSAxMC4xIDE0OC45NTQgMTAuMzY2NyAxNDguOTU0IDEwLjlWMTQuOEMxNDguOTU0IDE1IDE0OS4wMjEgMTUuMTY2NyAxNDkuMTU0IDE1LjNDMTQ5LjI4NyAxNS40MzMzIDE0OS40NTQgMTUuNSAxNDkuNjU0IDE1LjVDMTUwLjg1NCAxNS41IDE1Mi42NTQgMTUuNCAxNTUuMDU0IDE1LjJWMTcuOFoiIGZpbGw9ImJsYWNrIi8+CjxwYXRoIGQ9Ik0xNi43MDY1IDE0LjI2TDIwLjgxNiAxMS45MDNWNy4wNDI0M0wxNi41ODczIDQuNjU1MTJMMTIuNDE4MiA3LjAzNzgzVjExLjg0NEw4LjMwODU5IDE0LjIwMTFWNC43MTQwNUwxNi42NDY5IDBMMjQuOTI1NiA0LjczMTYzVjE0LjIwMTFMMjAuNzU2NSAxNi42MTdMMTYuNzA2NSAxNC4yNloiIGZpbGw9IiMwMDY3REQiLz4KPHBhdGggZD0iTTEyLjQ1NjUgMTIuMTA0TDE2LjYxNyA5LjY4NzY2TDE2LjU4MDQgMTkuMjIzN0w4LjI5NTk3IDIzLjk0OEwwIDE5LjIwNDVMMC4wMTA3MTk3IDkuNzExMDNMNC4xMzU0MyA3LjMzMDk5TDguMTY5MzUgOS42ODc2Nkw0LjA3NiAxMi4wNDVWMTYuODc3TDguMjk1OTcgMTkuMjkyOUwxMi40NTY1IDE2Ljg3N1YxMi4xMDRaIiBmaWxsPSIjMDA2N0REIi8+Cjwvc3ZnPgo="
+                alt="Logo"
+                class="logo"
+            />
+          </div>
+
+          <div class="flex justify-between w-full pb-4 pt-4 border-b border-t border-gray-200 mb-6 mt-8">
+            <h2 class="text-lg font-semibold">Bloček #{{ receiptId }} </h2>
+            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy' }}</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6 relative min-h-[120px] ">
+
+            <ng-container>
+              <div class="flex flex-col space-y-1 text-sm">
+                <!-- Meno partnera a tlačidlo -->
+                <div class="flex items-center gap-2">
+                  <p class="font-bold">{{ receiptResponse.partner?.name }}</p>
+                  <button
+                    title="Upraviť údaje partnera"
+                    class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
+                    (click)="openModal()"
+                  >
+                    <svg class="w-4 h-4 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Ostatné údaje -->
+                <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}
+                  , {{ receiptResponse.partner?.city }}</p>
+                <p>DIČ: {{ receiptResponse.partner?.taxId }}</p>
+                <p>IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
+                <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
+              </div>
+            </ng-container>
+
+            <div class="text-sm text-neutral-600 text-left   max-w-[150px]">
+              <h3 class="font-bold">Odoberateľ:</h3>
+              <p>{{ receiptResponse.company?.name }}</p>
+              <p>{{ receiptResponse.company?.street }}, {{ receiptResponse.company?.zip }}
+                , {{ receiptResponse.company?.city }}</p>
+              <p>DIČ: {{ receiptResponse.company?.taxId }}</p>
+              <p>IČ DPH: {{ receiptResponse.company?.registrationNumber }}</p>
+              <p>IČO: {{ receiptResponse.company?.vatId }}</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full border border-gray-200 text-sm">
+              <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+              <tr>
+                <th class="px-3 py-2 text-left">Produkt</th>
+                <th class="px-2 py-2 text-right">MJ</th>
+                <th class="px-2 py-2 text-right">Množstvo</th>
+                <th class="px-2 py-2 text-right">Jedn. cena</th>
+                <th class="px-2 py-2 text-right">DPH %</th>
+                <th class="px-2 py-2 text-right">Spolu bez DPH</th>
+                <th class="px-2 py-2 text-right">DPH</th>
+                <th class="px-2 py-2 text-right">Spolu s DPH</th>
+                <th class="px-2 py-2 text-center">Účet</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of receiptResponse.items" class="hover:bg-gray-50 border-t">
+                <td class="px-3 py-2 break-words">
+                  <span class="font-medium">{{ item.name }}</span>
+                  <div *ngIf="item.accountValue" class="text-xs text-green-600">Účet: {{ item.accountValue }}</div>
+                </td>
+                <td class="px-2 py-2 text-right">{{ item.unit }}</td>
+                <td class="px-2 py-2 text-right">{{ item.quantity }}</td>
+                <td class="px-2 py-2 text-right">{{ item.priceWithoutVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.vatRate }} %</td>
+                <td class="px-2 py-2 text-right">{{ item.totalWithoutVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.vat | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.totalWithVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-center">
+                  <button (click)="openDrawer(item)" class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full" title="Priradiť účet">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Drawer -->
+          <div
+            id="drawer-right-example"
+            [class.translate-x-0]="drawerOpen"
+            [class.translate-x-full]="!drawerOpen"
+            class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] p-4 overflow-hidden bg-white w-96
+         transform transition-transform duration-300 ease-in-out translate-x-full
+         flex flex-col"
+            tabindex="-1"
+            aria-labelledby="drawer-right-label"
+          >
+            <h5 id="drawer-right-label"
+                class="inline-flex items-center mb-4 text-sm font-semibold text-gray-600">
+              <svg class="w-4 h-4 me-2.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path
-                  fill-rule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
-                  clip-rule="evenodd"
-                />
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
               </svg>
-            </label>
+              Vyberte účet
+            </h5>
+
+            <button type="button" (click)="closeDrawer()"
+                    class="text-gray-400 hover:bg-gray-100 hover:text-gray-800 rounded-full w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center transition">
+              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+              <span class="sr-only">Zavrieť</span>
+            </button>
+
+            <div class="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+              <div class="space-y-3">
+                <div *ngFor="let accClass of groupedAccounts">
+                  <details class="border border-gray-200 rounded-lg text-sm">
+                    <summary
+                      class="cursor-pointer text-gray-800 px-3 py-2 flex justify-between items-center hover:bg-gray-50 rounded-md transition">
+                      {{ accClass.className }}
+                      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                      </svg>
+                    </summary>
+
+                    <div class="px-3 pb-3 pt-2 bg-gray-50 space-y-3">
+                      <div *ngFor="let cat of accClass.categories">
+                        <div class="text-xs font-medium text-gray-600 mb-1">{{ cat.categoryName }}</div>
+                        <div class="space-y-1 pl-2">
+                          <label
+                            *ngFor="let acc of cat.accounts"
+                            class="flex items-center p-2 border border-gray-200 rounded-md cursor-pointer text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200 relative"
+                            [class.bg-blue-100]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                            [class.border-blue-400]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                          >
+                            <input
+                              type="radio"
+                              name="account-{{ selectedItemForAccount?.id }}"
+                              class="accent-blue-600 hidden"
+                              [value]="acc"
+                              [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                              [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
+                              (change)="onAccountChange(selectedItemForAccount, acc)"
+                            />
+                            {{ acc.number }} - {{ acc.name }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedAccountsPerItem[selectedItemForAccount]" class="mt-4 bg-green-50 border border-green-200 text-green-800 text-sm rounded-md p-3">
+              Pre produkt <strong>{{ selectedItemName }} </strong> bol vybraný účet:
+              <strong>
+                {{ selectedAccountsPerItem[selectedItemForAccount]?.number }} – {{ selectedAccountsPerItem[selectedItemForAccount]?.name }}
+              </strong>
+            </div>
+
+            <div class="mt-4 flex justify-between gap-2">
+              <button
+                  (click)="assignAccountToItem()"
+                  class="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm">
+                Použiť účet
+              </button>
+              <button
+                  (click)="closeDrawer()"
+                  class="flex-1 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition text-sm">
+                Zavrieť
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Ľavá karta (658px) -->
+      <div class="col-span-3 p-6 bg-white border border-gray-200 rounded-lg">
+        <div>
+          <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+            </svg>
+            <span class="sr-only">Info</span>
+            <div>
+              <span class="font-medium">Success alert!</span> Change a few things up and try submitting again.
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div>
+            <h3 class="text-lg text-gray-400 mb-4">Details:</h3>
+            <div class="flex items-center justify-between mb-6 pb-4 pt-4 border-t border-b border-gray-200">
+              <p class="text-2xl font-bold text-gray-900">{{ receiptResponse.receiptDetails?.totalPrice }} €</p>
+            </div>
+            <div class="space-y-2 text-sm text-gray-600 mb-6 pb-6 border-b border-gray-200">
+              <div class="flex items-center space-x-2 text-sm text-gray-600 pb-2">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p><span class="font-medium">Priradené spoločnosti:</span> {{ receiptResponse.company?.name }}</p>
+              </div>
+
+
+              <div class="flex items-center space-x-2 text-sm text-gray-600 pb-2">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                     width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p><span class="font-medium">Dátum vystavenia:</span> {{ receiptResponse.receiptDetails?.datePayment }}
+                </p>
+              </div>
+              <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <svg class="w-5 h-5 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                     height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                        d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
+                        clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                        d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p>
+                  <span class="font-medium">Zaplatené </span>
+                  {{ receiptResponse.receiptDetails?.paidByCard ? 'Kartou' : 'Hotovosťou' }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <label class="inline-flex items-center cursor-pointer mb-4">
+          <input
+            *ngIf="receiptResponse.receiptDetails"
+            type="checkbox"
+            class="sr-only peer"
+            [(ngModel)]="receiptResponse.receiptDetails.paidByCard"
+            [checked]="receiptResponse.receiptDetails.paidByCard"
+            name="isPaidByCard"
+          />
+          <div
+            class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+          </div>
+
+          <span class="ms-3 text-sm font-medium text-gray-900 flex items-center gap-1">
+            Platha Kartou
+            <svg
+              class="w-4.5 h-4.5 text-gray-400"
+              data-tooltip-target="payment-type-tooltip"
+              data-tooltip-placement="top"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24">
+              <path
+                fill-rule="evenodd"
+                d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.008-3.018a1.502 1.502 0 0 1 2.522 1.159v.024a1.44 1.44 0 0 1-1.493 1.418 1 1 0 0 0-1.037.999V14a1 1 0 1 0 2 0v-.539a3.44 3.44 0 0 0 2.529-3.256 3.502 3.502 0 0 0-7-.255 1 1 0 0 0 2 .076c.014-.398.187-.774.48-1.044Zm.982 7.026a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2h-.01Z"
+                clip-rule="evenodd"
+              />
+            </svg>
 
             <div id="payment-type-tooltip" role="tooltip"
                  class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
@@ -119,90 +389,28 @@
               <p class="text-gray-400">musí zodpovedať údajom v doklade.</p>
               <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
-            <form>
-              <select
-                id="countries"
-                class="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-gray-50 h-10.5"
-                name="country"
-              >
-                <option selected disabled>Vyber spôsob</option>
-                <option value="US">Plat. karta</option>
-                <option value="CA">Hotovosť</option>
-              </select>
-            </form>
-          </div>
-          <div class="w-1/2">
-            <label class="block text-sm mb-1">Suma</label>
-            <input
-              type="number"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receipt.amount"
-            />
-          </div>
+          </span>
+
+        </label>
+
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Predakontácia</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>
         </div>
 
-        <div class="flex gap-4">
-          <div class="w-1/2 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">
-              <div class="flex items-center gap-1">
-                Dátum vystavenia*
-              </div>
-            </label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.date"
-            />
-          </div>
-          <div class="w-1/2" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Dátum splatenia*</label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.datePayment"
-            />
-          </div>
+
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Členenie DPH</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"/>
         </div>
 
-        <div class="flex gap-4">
-          <div class="w-1/2 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">
-              <div class="flex items-center gap-1">
-                Dátum daňovej povinnosti*
-              </div>
-            </label>
-            <input
-              type="date"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-              [(ngModel)]="receiptResponse.receiptDetails.dateTax"
-            />
-          </div>
-          <div class="w-1/2">
-            <label class="block text-sm mb-1">Referencia bločka*</label>
-            <input
-              type="text"
-              placeholder="Bloček"
-              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"
-            />
-          </div>
-        </div>
 
-        <div class="flex gap-4">
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Predakontácia</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>
-          </div>
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Členenie DPH</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"/>
-          </div>
-          <div class="w-1/3 mb-4" *ngIf="receiptResponse.receiptDetails">
-            <label class="block text-sm mb-1">Členenie KV DPH</label>
-            <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
-                   [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"/>
-          </div>
+        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">
+          <label class="block text-sm mb-1">Členenie KV DPH</label>
+          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                 [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"/>
         </div>
 
         <div class="invoice-description mb-4" *ngIf="receiptResponse.receiptDetails">
@@ -211,77 +419,17 @@
           <form>
             <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50">
               <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 border-gray-200">
-                <div class="flex flex-wrap items-center divide-gray-200 sm:divide-x sm:rtl:divide-x-reverse">
-                  <div class="flex items-center space-x-1 rtl:space-x-reverse sm:pe-4">
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 20">
-                        <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6"/>
-                      </svg>
-                      <span class="sr-only">Attach file</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
-                      </svg>
-                      <span class="sr-only">Embed map</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
-                      </svg>
-                      <span class="sr-only">Upload image</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-                        <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2ZM6.709 13.809a1 1 0 1 1-1.418 1.409l-2-2.013a1 1 0 0 1 0-1.412l2-2a1 1 0 0 1 1.414 1.414L5.412 12.5l1.297 1.309Zm6-.6-2 2.013a1 1 0 1 1-1.418-1.409l1.3-1.307-1.295-1.295a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1-.001 1.408v.004Z"/>
-                      </svg>
-                      <span class="sr-only">Format code</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM13.5 6a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm3.5 9.5A5.5 5.5 0 0 1 4.6 11h10.81A5.5 5.5 0 0 1 10 15.5Z"/>
-                      </svg>
-                      <span class="sr-only">Add emoji</span>
-                    </button>
-                  </div>
-                  <div class="flex flex-wrap items-center space-x-1 rtl:space-x-reverse sm:ps-4">
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 18">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
-                      </svg>
-                      <span class="sr-only">Add list</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/>
-                      </svg>
-                      <span class="sr-only">Settings</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M18 2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2ZM2 18V7h6.7l.4-.409A4.309 4.309 0 0 1 15.753 7H18v11H2Z"/>
-                        <path d="M8.139 10.411 5.289 13.3A1 1 0 0 0 5 14v2a1 1 0 0 0 1 1h2a1 1 0 0 0 .7-.288l2.886-2.851-3.447-3.45ZM14 8a2.463 2.463 0 0 0-3.484 0l-.971.983 3.468 3.468.987-.971A2.463 2.463 0 0 0 14 8Z"/>
-                      </svg>
-                      <span class="sr-only">Timeline</span>
-                    </button>
-                    <button type="button" class="p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100">
-                      <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
-                        <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
-                      </svg>
-                      <span class="sr-only">Download</span>
-                    </button>
-                  </div>
-                </div>
-                <button type="button" data-tooltip-target="tooltip-fullscreen" class="p-2 text-gray-500 rounded-sm cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100">
-                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"/>
+                <button type="button" data-tooltip-target="tooltip-fullscreen"
+                        class="p-2 text-gray-500 rounded-sm cursor-pointer sm:ms-auto hover:text-gray-900 hover:bg-gray-100">
+                  <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                       viewBox="0 0 19 19">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"/>
                   </svg>
                   <span class="sr-only">Full screen</span>
                 </button>
-                <div id="tooltip-fullscreen" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+                <div id="tooltip-fullscreen" role="tooltip"
+                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip">
                   Show full screen
                   <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
@@ -290,169 +438,18 @@
                 <textarea
                   id="message"
                   name="description"
-                rows="8"
-                class="block w-full px-0 text-sm text-gray-800 bg-white border-0"
-                [(ngModel)]="receiptResponse.receiptDetails.description"
-                placeholder="Poznámka"
+                  rows="8"
+                  class="block w-full px-0 text-sm text-gray-800 bg-white border-0"
+                  [(ngModel)]="receiptResponse.receiptDetails.description"
+                  placeholder="Poznámka"
                 ></textarea>
               </div>
             </div>
           </form>
-
-        </div>
-
-        <div class="overflow-x-auto mb-4">
-          <table class="min-w-full text-sm text-left rtl:text-right text-gray-500">
-            <thead class="text-xs text-gray-500 uppercase bg-[#f9fafb]">
-            <tr>
-              <th scope="col" class="px-6 py-3 font-medium">Názov produktu</th>
-              <th scope="col" class="px-6 py-3 font-medium">Cena</th>
-              <th scope="col" class="px-6 py-3 font-medium">Bez DPH</th>
-              <th scope="col" class="px-6 py-3 font-medium">DPH</th>
-              <th scope="col" class="px-6 py-3 font-medium"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="bg-white border-b border-gray-200" *ngFor="let item of receiptResponse.items">
-              <th scope="row" class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap">
-                {{ item.name }}
-              </th>
-              <td class="px-6 py-4">€{{ item.priceWithVAT }}</td>
-              <td class="px-6 py-4">€{{ item.priceWithoutVAT }}</td>
-              <td class="px-6 py-4">{{ item.vatRate }}%</td>
-              <td class="px-6 py-4"></td>
-            </tr>
-            <!-- New product row -->
-            <tr class="bg-white border-b-1 border-b-gray-200">
-              <td class="px-6 py-2">
-                <input type="text" placeholder="Product name"
-                       class="w-full min-w-46.5 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-2">
-                <input type="text" placeholder="Cena"
-                       class="w-full min-w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-4">
-                <input type="text" placeholder="Category"
-                       class="w-full min-w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-sm bg-gray-50">
-              </td>
-              <td class="px-6 py-4">
-                <select
-                  class="block w-full  min-w-17 bg-gray-50 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                  <option value="option1">19%</option>
-                  <option value="option2" selected>23%</option>
-                  <option value="option3">25%</option>
-                </select>
-              </td>
-              <td class="px-6 py-4">
-                <button
-                  class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium py-2 px-2.5 rounded-lg whitespace-nowrap">
-                  Uložiť produkt
-                </button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="receipts-summary ml-auto max-w-[20rem] mb-4">
-          <h3 class="mb-4">Sumár dokladu</h3>
-          <ul>
-            <!-- 1. Cena bez DPH -->
-            <li class="flex justify-between items-center mb-0.5">
-              <p class="text-gray-500 font-light">Cena bez DPH</p>
-              <div class="font-medium">€{{ subtotal | number:'1.2-2' }}</div>
-            </li>
-
-            <!-- 2. DPH -->
-            <li class="flex justify-between items-center mb-0.5">
-              <p class="text-gray-500 font-light">DPH</p>
-              <div class="font-medium">€{{ totalVAT | number:'1.2-2' }}</div>
-            </li>
-
-            <!-- 3. Zľava (ak existuje) -->
-            <li class="flex justify-between items-center mb-0.5" *ngIf="getTotalDiscount() !== 0">
-              <p class="text-gray-500 font-light">Zľava</p>
-              <div class="font-medium text-red-600">−€{{ getTotalDiscount() | number:'1.2-2' }}</div>
-            </li>
-
-            <!-- 4. Celková cena s DPH -->
-            <li class="flex justify-between items-center pt-2 border-t mt-2">
-              <p class="text-black font-bold">Cena celkom s DPH</p>
-              <div class="font-medium">€{{ totalPrice | number:'1.2-2' }}</div>
-            </li>
-          </ul>
-        </div>
-    </div>
-
-      <div class="col-span-7 p-8 flex justify-center bg-gray-100 rounded-lg">
-        <div class="bg-white w-90 p-6 rounded-sm font-mono text-sm border border-gray-300">
-          <h2 class="text-center text-base font-bold mb-4">Pokladničný doklad</h2>
-
-          <div class="mb-4 text-center leading-tight relative">
-            <div class="inline-flex items-center justify-center gap-1">
-              <p class="font-bold">{{ receiptResponse.partner?.name }}</p>
-              <button
-                      title="Upraviť údaje partnera"
-                      class="text-xs text-gray-500 hover:text-blue-600 focus:outline-none"
-                      (click)="openModal()"
-              >
-                <svg class="w-4 h-4 hover:cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                     width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                        d="M15.514 3.293a1 1 0 0 0-1.415 0L12.151 5.24a.93.93 0 0 1 .056.052l6.5 6.5a.97.97 0 0 1 .052.056L20.707 9.9a1 1 0 0 0 0-1.415l-5.193-5.193ZM7.004 8.27l3.892-1.46 6.293 6.293-1.46 3.893a1 1 0 0 1-.603.591l-9.494 3.355a1 1 0 0 1-.98-.18l6.452-6.453a1 1 0 0 0-1.414-1.414l-6.453 6.452a1 1 0 0 1-.18-.98l3.355-9.494a1 1 0 0 1 .591-.603Z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </button>
-            </div>
-            <p>{{ receiptResponse.partner?.street }}, {{ receiptResponse.partner?.zip }}, {{ receiptResponse.partner?.city }}</p>
-            <p>DIČ: {{ receiptResponse.partner?.taxId }} IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
-            <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
-            <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy'}}</p>
-          </div>
-
-          <table class="w-full mb-4">
-            <thead>
-            <tr class="border-t border-b border-gray-300">
-              <th class="text-left py-1">Tovar</th>
-              <th class="text-right py-1">Suma</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of receiptResponse.items">
-              <td class="py-1">{{ item.name }}</td>
-              <td class="py-1 text-right">
-                <ng-container *ngIf="item.priceWithVAT < 0; else positive">
-                  -€{{ (item.priceWithVAT * -1) | number: '1.2-2' }}
-                </ng-container>
-                <ng-template #positive>
-                  €{{ item.priceWithVAT | number: '1.2-2' }}
-                </ng-template>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-
-          <div class="border-t border-gray-300 pt-2 space-y-1">
-<!--            <div class="flex justify-between">-->
-<!--              <span>Medzisúčet</span>-->
-<!--              <span>€18.00</span>-->
-<!--            </div>-->
-<!--            <div class="flex justify-between">-->
-<!--              <span>DPH 19%</span>-->
-<!--              <span>€3.60</span>-->
-<!--            </div>-->
-<!--            <div class="flex justify-between">-->
-<!--              <span>Zľava</span>-->
-<!--              <span>-€2.00</span>-->
-<!--            </div>-->
-            <div class="flex justify-between font-bold border-gray-300 pt-2 mt-2">
-              <span>Spolu</span>
-              <span>€{{ totalPrice | number:'1.2-2' }}</span>
-            </div>
-          </div>
-
         </div>
       </div>
+
+
     </div>
 
 
@@ -463,7 +460,7 @@
     >
       <form #partnerForm="ngForm" *ngIf="receiptResponse.receiptDetails">
         <div class="grid gap-4 mb-6 grid-cols-2">
-          <div class="col-span-2" >
+          <div class="col-span-2">
             <label for="companyName" class="block text-sm font-medium text-gray-900">Názov dodávateľa</label>
             <input
               id="companyName"
@@ -559,11 +556,14 @@
         </div>
         <hr class="h-px my-4 bg-gray-200 border-0">
         <button type="submit"
-                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 (click)="updateReceipt()"
         >
-          <svg class="me-1 -ms-2 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+          <svg class="me-1 -ms-2 w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+                  d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+                  clip-rule="evenodd"/>
             <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
           </svg>
           Uložiť
