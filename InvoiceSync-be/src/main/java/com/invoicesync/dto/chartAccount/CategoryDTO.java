@@ -1,5 +1,6 @@
 package com.invoicesync.dto.chartAccount;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,6 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
+
+  private String categoryId;
   private String categoryName;
-  private List<AccountDTO> accounts;
+
+  private List<AccountDTO> accounts = new ArrayList<>();
 }

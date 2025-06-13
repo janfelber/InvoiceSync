@@ -1,7 +1,7 @@
 package com.invoicesync.dto.chartAccount;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassDTO {
+
+  private int classNumber;
   private String className;
-  private Map<String, CategoryDTO> categories = new HashMap<>();
+
+  private List<CategoryDTO> categories = new ArrayList<>();
 }

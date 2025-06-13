@@ -20,5 +20,9 @@ export const ApiPaths = {
     BASE: '/xml-file',
     FIND_ALL_BY_USER: '/user',
     SAVE: '/save'
+  },
+  chartOfAccounts: {
+    BASE: '/chart-account',
+    ALL: '/all'
   }
 };

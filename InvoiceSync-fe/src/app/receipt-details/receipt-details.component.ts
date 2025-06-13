@@ -1,16 +1,21 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {NgClass, NgForOf} from "@angular/common";
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {NgForOf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {AxiosService} from "../axios.service";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReceiptRequest} from "../models/receipt-request";
-import {InvoiceService} from "../page/invoices/invoice.service";
 import {ToastrService} from "ngx-toastr";
 import {CommonModule} from '@angular/common';
 import {initFlowbite} from 'flowbite'
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ReceiptService} from "../services/receipt.service";
 import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
+import {AccountChartService} from "../services/account-chart.service";
+
+interface Account {
+  id:number,
+  number:string,
+  name:string
+}
 
 @Component({
   selector: 'app-receipt-details',
@@ -19,7 +24,8 @@ import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    MatDialogWindowComponent
+    MatDialogWindowComponent,
+    RouterLink
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
@@ -27,6 +33,7 @@ import {ReceiptDetailResponse} from "../receipts/receipt-detail-response";
 export class ReceiptDetailsComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
+    private accountCharts: AccountChartService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
   ) {
@@ -37,22 +44,53 @@ export class ReceiptDetailsComponent implements OnInit {
   @ViewChild('successToast') successToast!: ElementRef;
 
   modalOpen = false;
+  drawerOpen = false;
   receipt: any = {};
-  items: ReceiptRequest['items'] = [];
-  partner: any = {};
-  myIdentity: any = {};
-  receiptResponse: ReceiptDetailResponse = {};
+  selectedItemName: string = '';
 
-  receiptRequest: ReceiptRequest = {
-    items: []
+  items: {
+    accountText?: string;
+    name?: string;
+    quantity?: number;
+    priceWithoutVAT?: number;
+    vatRate?: number;
+    priceWithVAT?: number;
+    accountValue?: string;
+    id?: number;
+  }[] = [];
+
+
+  partner: any = {};
+  receiptResponse: ReceiptDetailResponse = {
+    partner: {
+      city: '',
+      name: '',
+      registrationNumber: '',
+      street: '',
+      taxId: '',
+      vatId: '',
+      zip: ''
+    }
   };
+
+  receiptRequest: ReceiptRequest = {};
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.receiptId = params.get('id') || '';
     });
-    this.onFetchReceipt();
     initFlowbite();
+    this.onFetchReceipt();
+    this.onFetchAccounts();
+  }
+
+  groupedAccounts: any[] = [];
+
+  onFetchAccounts() {
+    this.accountCharts.finalAll().then(response => {
+      console.log(response.data)
+      this.groupedAccounts = response.data;
+    })
   }
 
   onFetchReceipt() {
@@ -61,6 +99,7 @@ export class ReceiptDetailsComponent implements OnInit {
     }).then(response => {
       this.receiptResponse = response.data
       console.log("toto pride", this.receiptResponse)
+      this.items = response.data.items;
       // this.companyId = data.company;
       // this.receipt = data.receiptDetails;
       // this.partner = data.partner;
@@ -89,16 +128,7 @@ export class ReceiptDetailsComponent implements OnInit {
       partnerTaxId: this.receiptResponse.partner?.taxId,
       partnerVatId: this.receiptResponse.partner?.vatId,
       totalPrice: this.receiptResponse.receiptDetails?.totalPrice,
-      items: this.receiptResponse.items?.map(item => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity ?? 1,
-        priceWithoutVat: item.priceWithoutVAT ?? 0,
-        vatRate: item.vatRate ?? 20,
-        accountValue: item.accountValue ?? undefined,
-        priceWithVat: item.priceWithVAT ?? 0,
-        accountText: item.accountText ?? undefined
-      })) ?? []
+      items: this.items
     }
 
     console.log("post", this.receiptRequest)
@@ -137,6 +167,58 @@ export class ReceiptDetailsComponent implements OnInit {
         console.error('Error exporting Excel:', error);
       });
   }
+
+  selectedAccountsPerItem: { [itemId: number]: Account } = {};
+
+  assignAccountToItem(): void {
+    const selectedAccount = this.selectedAccountsPerItem[this.selectedItemForAccount];
+    if (!selectedAccount) {
+      console.warn('Žiadny účet nie je vybraný pre item:', this.selectedItemForAccount);
+      return;
+    }
+
+    this.items.forEach(item => {
+      if (item.id === this.selectedItemForAccount) {
+        item.accountValue = selectedAccount.number;
+        console.log('Priradený účet', item.accountValue, 'pre item', item.id);
+      }
+    });
+
+    this.closeDrawer();
+    this.selectedItemForAccount = null;
+  }
+
+  onAccountChange(itemId: number, account: Account) {
+    this.selectedAccountsPerItem[itemId] = account;
+    console.log('Zvolený účet:', account.id, 'pre item:', itemId);
+  }
+
+  selectedItemForAccount: any = null;
+
+  openDrawer(item: any): void {
+    this.selectedItemForAccount = item.id;
+
+    this.selectedItemName = item.name;
+    console.log(item)
+
+    if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
+      const matchingAccount = this.groupedAccounts
+          .flatMap(cls => cls.categories)
+          .flatMap(cat => cat.accounts)
+          .find(acc => acc.number === item.accountValue);
+
+      if (matchingAccount) {
+        this.selectedAccountsPerItem[item.id] = matchingAccount;
+      }
+    }
+
+    this.drawerOpen = true;
+  }
+
+  closeDrawer() {
+    this.drawerOpen = false;
+  }
+
 
   openModal() {
     this.modalOpen = true;

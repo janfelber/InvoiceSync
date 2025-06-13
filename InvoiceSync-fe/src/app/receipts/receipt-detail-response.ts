@@ -9,7 +9,7 @@ export interface ReceiptDetailResponse {
   paymentType?: string
   createdAt?: string;
   receiptDetails?: Details;
-  partner?: Partner;
+  partner: Partner;
   items?: ReceiptItem[];
   company?: Company;
 }
