@@ -4,7 +4,8 @@
       <nav class="flex mb-4 mx-4" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li class="inline-flex items-center">
-            <a href="/home" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+            <a routerLink="/home"
+               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
               <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                    viewBox="0 0 20 20">
                 <path
@@ -20,7 +21,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <a href="/web/receipts"
+              <a routerLink="/web/receipts"
                  class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">Bločky</a>
             </div>
           </li>
@@ -38,7 +39,7 @@
       </nav>
 
       <div class="flex items-center justify-between mb-4 mx-4">
-        <a href="/web/receipts" class="flex items-center space-x-2 text-black no-underline hover:underline">
+        <a routerLink="/web/receipts" class="flex items-center space-x-2 text-black no-underline hover:underline">
           <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,18 +98,22 @@
 
     <div class="grid grid-cols-[repeat(12,_minmax(0,_1fr))] gap-4 p-4 bg-gray-50">
 
-      <div class="col-span-9 p-8 flex justify-center bg-gray-100 rounded-lg">
-        <div id="invoice" class="bg-white w-full max-w-4xl p-6 rounded-sm text-sm border border-gray-300 self-start">
+      <div class="col-span-9 flex justify-center bg-gray-100 rounded-xl">
+        <div id="invoice" class="bg-white w-full p-6 rounded-lg text-sm border border-gray-300">
 
-          <div class="flex items-center justify-between mb-6">
-
+          <div class="flex items-center justify-between mt-4">
+            <img
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYxIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTYxIDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDAuNjU3MiAxOEgzMy40NTcyVjE1LjJIMzUuMjU3MlY2LjhIMzMuNDU3MlY0SDQwLjY1NzJWNi44SDM4Ljg1NzJWMTUuMkg0MC42NTcyVjE4Wk00OC4xNTU2IDEwLjFDNDcuNDQ4OSAxMC4xIDQ2LjY0ODkgMTAuMjMzMyA0NS43NTU2IDEwLjVWMThINDIuMjU1NlY3LjRINDUuMzU1Nkw0NS41NTU2IDguNEM0Ni4xODIzIDcuOTg2NjcgNDYuODIyMyA3LjY4NjY3IDQ3LjQ3NTYgNy41QzQ4LjE0MjMgNy4zIDQ4LjcwMjMgNy4yIDQ5LjE1NTYgNy4ySDUwLjA1NTZDNTAuOTYyMyA3LjIgNTEuNjg4OSA3LjQ3MzMzIDUyLjIzNTYgOC4wMkM1Mi43ODIzIDguNTY2NjcgNTMuMDU1NiA5LjI5MzMzIDUzLjA1NTYgMTAuMlYxOEg0OS41NTU2VjEwLjhDNDkuNTU1NiAxMC42IDQ5LjQ4ODkgMTAuNDMzMyA0OS4zNTU2IDEwLjNDNDkuMjIyMyAxMC4xNjY3IDQ5LjA1NTYgMTAuMSA0OC44NTU2IDEwLjFINDguMTU1NlpNNjEuOTUzMyA3LjRINjUuNjUzM0w2MS42NTMzIDE4SDU3LjY1MzNMNTMuNjUzMyA3LjRINTcuMzUzM0w1OS42NTMzIDE0LjZMNjEuOTUzMyA3LjRaTTc3LjA1OTUgMTVDNzcuMDU5NSAxNiA3Ni43NzI5IDE2Ljc4NjcgNzYuMTk5NSAxNy4zNkM3NS42Mzk1IDE3LjkyIDc0Ljg1OTUgMTguMiA3My44NTk1IDE4LjJINjkuMjU5NUM2OC4yNTk1IDE4LjIgNjcuNDcyOSAxNy45MiA2Ni44OTk1IDE3LjM2QzY2LjMzOTUgMTYuNzg2NyA2Ni4wNTk1IDE2IDY2LjA1OTUgMTVWMTAuNEM2Ni4wNTk1IDkuNCA2Ni4zMzk1IDguNjIgNjYuODk5NSA4LjA2QzY3LjQ3MjkgNy40ODY2NyA2OC4yNTk1IDcuMiA2OS4yNTk1IDcuMkg3My44NTk1Qzc0Ljg1OTUgNy4yIDc1LjYzOTUgNy40ODY2NyA3Ni4xOTk1IDguMDZDNzYuNzcyOSA4LjYyIDc3LjA1OTUgOS40IDc3LjA1OTUgMTAuNFYxNVpNNzMuNTU5NSAxMC43QzczLjU1OTUgMTAuMTY2NyA3My4yOTI5IDkuOSA3Mi43NTk1IDkuOUg3MC4zNTk1QzY5LjgyNjIgOS45IDY5LjU1OTUgMTAuMTY2NyA2OS41NTk1IDEwLjdWMTQuN0M2OS41NTk1IDE1LjIzMzMgNjkuODI2MiAxNS41IDcwLjM1OTUgMTUuNUg3Mi43NTk1QzczLjI5MjkgMTUuNSA3My41NTk1IDE1LjIzMzMgNzMuNTU5NSAxNC43VjEwLjdaTTgzLjI1NzIgNy44VjE4SDc5Ljc1NzJWMTAuNUg3OC4yNTcyVjcuOEg4My4yNTcyWk03OS43NTcyIDMuOEg4My4yNTcyVjYuNkg3OS43NTcyVjMuOFpNOTQuNjYzNCAxNy44QzkyLjE3MDEgMTguMDY2NyA4OS45NzAxIDE4LjIgODguMDYzNCAxOC4yQzg3LjE1NjggMTguMiA4Ni40MzAxIDE3LjkyNjcgODUuODgzNCAxNy4zOEM4NS4zMzY4IDE2LjgzMzMgODUuMDYzNCAxNi4xMDY3IDg1LjA2MzQgMTUuMlYxMC42Qzg1LjA2MzQgOS42IDg1LjM0MzQgOC44MiA4NS45MDM0IDguMjZDODYuNDc2OCA3LjY4NjY3IDg3LjI2MzQgNy40IDg4LjI2MzQgNy40SDk0LjY2MzRWMTAuMUg4OS4zNjM0Qzg4LjgzMDEgMTAuMSA4OC41NjM0IDEwLjM2NjcgODguNTYzNCAxMC45VjE0LjhDODguNTYzNCAxNSA4OC42MzAxIDE1LjE2NjcgODguNzYzNCAxNS4zQzg4Ljg5NjggMTUuNDMzMyA4OS4wNjM0IDE1LjUgODkuMjYzNCAxNS41QzkwLjQ2MzQgMTUuNSA5Mi4yNjM0IDE1LjQgOTQuNjYzNCAxNS4yVjE3LjhaTTEwMC4zNiA5LjdDOTkuODI2MiA5LjcgOTkuNTU5NSA5Ljk2NjY3IDk5LjU1OTUgMTAuNVYxMS42SDEwMi45NlYxMC41QzEwMi45NiA5Ljk2NjY3IDEwMi42OTMgOS43IDEwMi4xNiA5LjdIMTAwLjM2Wk0xMDYuMDYgMTcuOEMxMDMuNDg2IDE4LjA2NjcgMTAxLjE1MyAxOC4yIDk5LjA1OTUgMTguMkM5OC4xNTI5IDE4LjIgOTcuNDI2MiAxNy45MjY3IDk2Ljg3OTUgMTcuMzhDOTYuMzMyOSAxNi44MzMzIDk2LjA1OTUgMTYuMTA2NyA5Ni4wNTk1IDE1LjJWMTAuNEM5Ni4wNTk1IDkuNCA5Ni4zMzk1IDguNjIgOTYuODk5NSA4LjA2Qzk3LjQ3MjkgNy40ODY2NyA5OC4yNTk1IDcuMiA5OS4yNTk1IDcuMkgxMDMuMjZDMTA0LjI2IDcuMiAxMDUuMDQgNy40ODY2NyAxMDUuNiA4LjA2QzEwNi4xNzMgOC42MiAxMDYuNDYgOS40IDEwNi40NiAxMC40VjE0LjFIOTkuNTU5NVYxNC45Qzk5LjU1OTUgMTUuMSA5OS42MjYyIDE1LjI2NjcgOTkuNzU5NSAxNS40Qzk5Ljg5MjkgMTUuNTMzMyAxMDAuMDYgMTUuNiAxMDAuMjYgMTUuNkMxMDEuNTggMTUuNiAxMDMuNTEzIDE1LjUgMTA2LjA2IDE1LjNWMTcuOFpNMTA4LjAzMiAxNS4xQzExMS42ODUgMTUuMyAxMTQuMTU4IDE1LjQgMTE1LjQ1MiAxNS40QzExNS43NTggMTUuNCAxMTUuOTk4IDE1LjMxMzMgMTE2LjE3MiAxNS4xNEMxMTYuMzU4IDE0Ljk1MzMgMTE2LjQ1MiAxNC43MDY3IDExNi40NTIgMTQuNFYxMi42SDExMS44NTJDMTEwLjQ1MiAxMi42IDEwOS40MzIgMTIuMjg2NyAxMDguNzkyIDExLjY2QzEwOC4xNjUgMTEuMDIgMTA3Ljg1MiAxMCAxMDcuODUyIDguNlY4QzEwNy44NTIgNi42IDEwOC4xNjUgNS41ODY2NyAxMDguNzkyIDQuOTZDMTA5LjQzMiA0LjMyIDExMC40NTIgNCAxMTEuODUyIDRIMTE4Ljg3MlY2LjhIMTEyLjY1MkMxMTEuODUyIDYuOCAxMTEuNDUyIDcuMiAxMTEuNDUyIDhWOC40QzExMS40NTIgOS4yIDExMS44NTIgOS42IDExMi42NTIgOS42SDExNi4yNTJDMTE3LjU1OCA5LjYgMTE4LjUxOCA5LjkwNjY3IDExOS4xMzIgMTAuNTJDMTE5Ljc0NSAxMS4xMzMzIDEyMC4wNTIgMTIuMDkzMyAxMjAuMDUyIDEzLjRWMTQuNEMxMjAuMDUyIDE1LjcwNjcgMTE5Ljc0NSAxNi42NjY3IDExOS4xMzIgMTcuMjhDMTE4LjUxOCAxNy44OTMzIDExNy41NTggMTguMiAxMTYuMjUyIDE4LjJDMTE1LjU3MiAxOC4yIDExNC44NTIgMTguMTg2NyAxMTQuMDkyIDE4LjE2TDExMi4yNTIgMTguMDhDMTEwLjg5MiAxOC4wMTMzIDEwOS40ODUgMTcuOTIgMTA4LjAzMiAxNy44VjE1LjFaTTEyNC40NSAyMS42QzEyMy43NDMgMjEuNiAxMjIuODc3IDIxLjUzMzMgMTIxLjg1IDIxLjRWMTguOEgxMjMuNjVDMTI0LjE1NyAxOC44IDEyNC40ODMgMTguNjYgMTI0LjYzIDE4LjM4QzEyNC43OSAxOC4xIDEyNC43NjMgMTcuNzA2NyAxMjQuNTUgMTcuMkwxMjAuNDUgNy40SDEyNC4xNUwxMjYuNjUgMTQuMkwxMjguNzUgNy40SDEzMi40NUwxMjguNDUgMTguNEMxMjguMDYzIDE5LjQ1MzMgMTI3LjU2MyAyMC4yNDY3IDEyNi45NSAyMC43OEMxMjYuMzM3IDIxLjMyNjcgMTI1LjUwMyAyMS42IDEyNC40NSAyMS42Wk0xMzguOTU2IDEwLjFDMTM4LjI1IDEwLjEgMTM3LjQ1IDEwLjIzMzMgMTM2LjU1NiAxMC41VjE4SDEzMy4wNTZWNy40SDEzNi4xNTZMMTM2LjM1NiA4LjRDMTM2Ljk4MyA3Ljk4NjY3IDEzNy42MjMgNy42ODY2NyAxMzguMjc2IDcuNUMxMzguOTQzIDcuMyAxMzkuNTAzIDcuMiAxMzkuOTU2IDcuMkgxNDAuODU2QzE0MS43NjMgNy4yIDE0Mi40OSA3LjQ3MzMzIDE0My4wMzYgOC4wMkMxNDMuNTgzIDguNTY2NjcgMTQzLjg1NiA5LjI5MzMzIDE0My44NTYgMTAuMlYxOEgxNDAuMzU2VjEwLjhDMTQwLjM1NiAxMC42IDE0MC4yOSAxMC40MzMzIDE0MC4xNTYgMTAuM0MxNDAuMDIzIDEwLjE2NjcgMTM5Ljg1NiAxMC4xIDEzOS42NTYgMTAuMUgxMzguOTU2Wk0xNTUuMDU0IDE3LjhDMTUyLjU2MSAxOC4wNjY3IDE1MC4zNjEgMTguMiAxNDguNDU0IDE4LjJDMTQ3LjU0NyAxOC4yIDE0Ni44MjEgMTcuOTI2NyAxNDYuMjc0IDE3LjM4QzE0NS43MjcgMTYuODMzMyAxNDUuNDU0IDE2LjEwNjcgMTQ1LjQ1NCAxNS4yVjEwLjZDMTQ1LjQ1NCA5LjYgMTQ1LjczNCA4LjgyIDE0Ni4yOTQgOC4yNkMxNDYuODY3IDcuNjg2NjcgMTQ3LjY1NCA3LjQgMTQ4LjY1NCA3LjRIMTU1LjA1NFYxMC4xSDE0OS43NTRDMTQ5LjIyMSAxMC4xIDE0OC45NTQgMTAuMzY2NyAxNDguOTU0IDEwLjlWMTQuOEMxNDguOTU0IDE1IDE0OS4wMjEgMTUuMTY2NyAxNDkuMTU0IDE1LjNDMTQ5LjI4NyAxNS40MzMzIDE0OS40NTQgMTUuNSAxNDkuNjU0IDE1LjVDMTUwLjg1NCAxNS41IDE1Mi42NTQgMTUuNCAxNTUuMDU0IDE1LjJWMTcuOFoiIGZpbGw9ImJsYWNrIi8+CjxwYXRoIGQ9Ik0xNi43MDY1IDE0LjI2TDIwLjgxNiAxMS45MDNWNy4wNDI0M0wxNi41ODczIDQuNjU1MTJMMTIuNDE4MiA3LjAzNzgzVjExLjg0NEw4LjMwODU5IDE0LjIwMTFWNC43MTQwNUwxNi42NDY5IDBMMjQuOTI1NiA0LjczMTYzVjE0LjIwMTFMMjAuNzU2NSAxNi42MTdMMTYuNzA2NSAxNC4yNloiIGZpbGw9IiMwMDY3REQiLz4KPHBhdGggZD0iTTEyLjQ1NjUgMTIuMTA0TDE2LjYxNyA5LjY4NzY2TDE2LjU4MDQgMTkuMjIzN0w4LjI5NTk3IDIzLjk0OEwwIDE5LjIwNDVMMC4wMTA3MTk3IDkuNzExMDNMNC4xMzU0MyA3LjMzMDk5TDguMTY5MzUgOS42ODc2Nkw0LjA3NiAxMi4wNDVWMTYuODc3TDguMjk1OTcgMTkuMjkyOUwxMi40NTY1IDE2Ljg3N1YxMi4xMDRaIiBmaWxsPSIjMDA2N0REIi8+Cjwvc3ZnPgo="
+                alt="Logo"
+                class="logo"
+            />
           </div>
 
-          <div class="flex justify-between w-full pb-4 pt-4 border-b border-t border-gray-200 mb-6">
+          <div class="flex justify-between w-full pb-4 pt-4 border-b border-t border-gray-200 mb-6 mt-8">
             <h2 class="text-lg font-semibold">Bloček #{{ receiptId }} </h2>
             <p>{{ receiptResponse.receiptDetails?.date | date:'dd-MM-yyyy' }}</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6 relative min-h-[100px]">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6 relative min-h-[120px] ">
 
             <ng-container>
               <div class="flex flex-col space-y-1 text-sm">
@@ -137,57 +142,154 @@
                 <p>IČO: {{ receiptResponse.partner?.vatId }}</p>
               </div>
             </ng-container>
+
+            <div class="text-sm text-neutral-600 text-left   max-w-[150px]">
+              <h3 class="font-bold">Odoberateľ:</h3>
+              <p>{{ receiptResponse.company?.name }}</p>
+              <p>{{ receiptResponse.company?.street }}, {{ receiptResponse.company?.zip }}
+                , {{ receiptResponse.company?.city }}</p>
+              <p>DIČ: {{ receiptResponse.company?.taxId }}</p>
+              <p>IČ DPH: {{ receiptResponse.company?.registrationNumber }}</p>
+              <p>IČO: {{ receiptResponse.company?.vatId }}</p>
+            </div>
           </div>
 
-          <table class="min-w-full border-b border-gray-300 overflow-hidden mb-6">
-            <thead class="text-sm text-gray-500 uppercase bg-[#f9fafb]">
-            <tr>
-              <th class="px-6 py-3 font-medium text-left max-w-[200px] text-xs leading-tight whitespace-nowrap">
-                Produkt
-              </th>
-              <th class="px-6 py-3 font-medium text-right w-[80px] text-xs leading-tight whitespace-nowrap">Množstvo
-              </th>
-              <th class="px-6 py-1 font-medium text-left w-[80px] text-xs leading-tight whitespace-nowrap">MJ</th>
-              <th class="px-3 py-1 font-medium text-right w-[140px] text-xs leading-tight whitespace-nowrap">
-                Jedn. cena <br/> bez DPH
-              </th>
-              <th class="px-6 py-3 font-medium text-right w-[80px] text-xs leading-tight whitespace-nowrap">DPH %</th>
-              <th class="px-6 py-3 font-medium text-right w-[140px] text-xs leading-tight whitespace-nowrap">Spolu bez
-                DPH
-              </th>
-              <th class="px-6 py-3 font-medium text-right w-[120px] text-xs leading-tight whitespace-nowrap">DPH</th>
-              <th class="px-6 py-3 font-medium text-right w-[140px] text-xs leading-tight">Spolu s DPH</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let item of receiptResponse.items; let i = index"
-                class="border-b border-gray-200">
-              <td class="px-6 py-4 max-w-[200px] break-words">{{ item.name }}</td>
-              <td class="px-6 py-4 text-right">{{ item.quantity }}</td>
-              <td class="px-6 py-4 text-left">{{ item.priceWithoutVAT }}</td>
-              <td class="px-6 py-4 text-right">{{ item.priceWithVAT | number:'1.2-2' }} €</td>
-              <td class="px-6 py-4 text-right">{{ item.vatRate }}%</td>
-            </tr>
-            </tbody>
-          </table>
+          <div class="overflow-x-auto">
+            <table class="w-full border border-gray-200 text-sm">
+              <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+              <tr>
+                <th class="px-3 py-2 text-left">Produkt</th>
+                <th class="px-2 py-2 text-right">MJ</th>
+                <th class="px-2 py-2 text-right">Množstvo</th>
+                <th class="px-2 py-2 text-right">Jedn. cena</th>
+                <th class="px-2 py-2 text-right">DPH %</th>
+                <th class="px-2 py-2 text-right">Spolu bez DPH</th>
+                <th class="px-2 py-2 text-right">DPH</th>
+                <th class="px-2 py-2 text-right">Spolu s DPH</th>
+                <th class="px-2 py-2 text-center">Účet</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let item of receiptResponse.items" class="hover:bg-gray-50 border-t">
+                <td class="px-3 py-2 break-words">
+                  <span class="font-medium">{{ item.name }}</span>
+                  <div *ngIf="item.accountValue" class="text-xs text-green-600">Účet: {{ item.accountValue }}</div>
+                </td>
+                <td class="px-2 py-2 text-right">{{ item.unit }}</td>
+                <td class="px-2 py-2 text-right">{{ item.quantity }}</td>
+                <td class="px-2 py-2 text-right">{{ item.priceWithoutVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.vatRate }} %</td>
+                <td class="px-2 py-2 text-right">{{ item.totalWithoutVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.vat | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-right">{{ item.totalWithVAT | number:'1.2-2' }} €</td>
+                <td class="px-2 py-2 text-center">
+                  <button (click)="openDrawer(item)" class="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full" title="Priradiť účet">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
 
+          <!-- Drawer -->
+          <div
+            id="drawer-right-example"
+            [class.translate-x-0]="drawerOpen"
+            [class.translate-x-full]="!drawerOpen"
+            class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] p-4 overflow-hidden bg-white w-96
+         transform transition-transform duration-300 ease-in-out translate-x-full
+         flex flex-col"
+            tabindex="-1"
+            aria-labelledby="drawer-right-label"
+          >
+            <h5 id="drawer-right-label"
+                class="inline-flex items-center mb-4 text-sm font-semibold text-gray-600">
+              <svg class="w-4 h-4 me-2.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              Vyberte účet
+            </h5>
+
+            <button type="button" (click)="closeDrawer()"
+                    class="text-gray-400 hover:bg-gray-100 hover:text-gray-800 rounded-full w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center transition">
+              <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+              </svg>
+              <span class="sr-only">Zavrieť</span>
+            </button>
+
+            <div class="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+              <div class="space-y-3">
+                <div *ngFor="let accClass of groupedAccounts">
+                  <details class="border border-gray-200 rounded-lg text-sm">
+                    <summary
+                      class="cursor-pointer text-gray-800 px-3 py-2 flex justify-between items-center hover:bg-gray-50 rounded-md transition">
+                      {{ accClass.className }}
+                      <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                      </svg>
+                    </summary>
+
+                    <div class="px-3 pb-3 pt-2 bg-gray-50 space-y-3">
+                      <div *ngFor="let cat of accClass.categories">
+                        <div class="text-xs font-medium text-gray-600 mb-1">{{ cat.categoryName }}</div>
+                        <div class="space-y-1 pl-2">
+                          <label
+                            *ngFor="let acc of cat.accounts"
+                            class="flex items-center p-2 border border-gray-200 rounded-md cursor-pointer text-sm text-gray-700 hover:bg-blue-50 transition-colors duration-200 relative"
+                            [class.bg-blue-100]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                            [class.border-blue-400]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                          >
+                            <input
+                              type="radio"
+                              name="account-{{ selectedItemForAccount?.id }}"
+                              class="accent-blue-600 hidden"
+                              [value]="acc"
+                              [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                              [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
+                              (change)="onAccountChange(selectedItemForAccount, acc)"
+                            />
+                            {{ acc.number }} - {{ acc.name }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedAccountsPerItem[selectedItemForAccount]" class="mt-4 bg-green-50 border border-green-200 text-green-800 text-sm rounded-md p-3">
+              Pre produkt <strong>{{ selectedItemName }} </strong> bol vybraný účet:
+              <strong>
+                {{ selectedAccountsPerItem[selectedItemForAccount]?.number }} – {{ selectedAccountsPerItem[selectedItemForAccount]?.name }}
+              </strong>
+            </div>
+
+            <div class="mt-4 flex justify-between gap-2">
+              <button
+                  (click)="assignAccountToItem()"
+                  class="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm">
+                Použiť účet
+              </button>
+              <button
+                  (click)="closeDrawer()"
+                  class="flex-1 border border-gray-300 py-2 rounded-md hover:bg-gray-100 transition text-sm">
+                Zavrieť
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
 
       <!-- Ľavá karta (658px) -->
       <div class="col-span-3 p-6 bg-white border border-gray-200 rounded-lg">
-        <div class="flex gap-4">
-          <!--          <div class="w-1/2">-->
-          <!--            <label class="block text-sm mb-1">Suma</label>-->
-          <!--            <input-->
-          <!--              type="number"-->
-          <!--              class="w-full border border-gray-300 rounded-md p-2 bg-gray-50"-->
-          <!--              [(ngModel)]="receipt.amount"-->
-          <!--            />-->
-          <!--          </div>-->
-        </div>
-
         <div>
           <div class="flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
             <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +412,6 @@
           <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
                  [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"/>
         </div>
-
 
         <div class="invoice-description mb-4" *ngIf="receiptResponse.receiptDetails">
           <label for="message" class="block mb-2 text-sm">Poznámka k faktúre</label>

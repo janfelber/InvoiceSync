@@ -10,7 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDTO {
-  private String accountId;
-  private String accountName;
+
+  private Long id;
+
+  private String number;
+
+  private String name;
+
   private boolean editable;
 }
