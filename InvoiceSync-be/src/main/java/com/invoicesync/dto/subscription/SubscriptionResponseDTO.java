@@ -1,6 +1,8 @@
 package com.invoicesync.dto.subscription;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,11 +14,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubscriptionResponseDTO {
-  private Long userId;
+
+  private String userId;
+
   private String subscriptionPlan;
+
   private boolean subscribed;
+
   private LocalDateTime startDate;
+
   private LocalDateTime endDate;
+
   private int monthlyUsageLimit;
+
+  private BigDecimal subscriptionPrice;
+
+  private List<String> features;
 
 }
