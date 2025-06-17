@@ -6,7 +6,9 @@ import { CommonModule } from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {SubscriptionModalComponent} from "../subscription-modal/subscription-modal.component";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {SubscriptionService} from "../services/subscription.service";
+import {initFlowbite} from "flowbite";
 
 @Component({
   selector: 'app-invoice-limiter',
@@ -28,6 +30,8 @@ export class InvoiceLimiterComponent implements OnInit{
 
   constructor(
     private http: HttpClient,
+    private subscriptionService: SubscriptionService,
+    private router: Router,
     private axiosService: AxiosService
   ) {
     loadStripe('pk_test_51RLMmHLJ07OMo5e7sbeecGQ7cQqTM4Tgg48aI6rP31iTRQXUbH1aVvLRwygvObxwIEjzqiALOR75ojqAm12C9YYk00tjs1CTkq').then(stripe => {
@@ -38,6 +42,7 @@ export class InvoiceLimiterComponent implements OnInit{
   ngOnInit() {
     this.getSubscriptionPlan()
     this.getUserLimits();
+    initFlowbite();
   }
 
   closeUpgradeEssentials() {
@@ -51,55 +56,58 @@ export class InvoiceLimiterComponent implements OnInit{
   }
 
   userLimit = {
-    totalLimit: 0,
-    remainingLimit: 0
-  };
+    usedLimit: 0,
+    totalLimit: 0
+  }
 
   subscriptionPlan = {
     subscription: "",
-    endDate: ""
+    endDate: "",
+    price: "",
+    features: []
+  }
+
+
+  goToPricing(): void {
+    this.closeUpgradeEssentials()
+    this.router.navigate(['/pricing']);
   }
 
 
   getSubscriptionPlan() {
-    this.axiosService.request(
-      'GET',
-      `/api/v1/subscription/user/plan`,
-      null,
-    ).then(response => {
+    this.subscriptionService.getUserSubscriptionDetail()
+    .then(response => {
       const data = response.data;
       this.subscriptionPlan.subscription = data.subscriptionPlan
       this.subscriptionPlan.endDate = data.endDate
-      console.log("sub", data);
+      this.subscriptionPlan.price = data.subscriptionPrice
+      this.subscriptionPlan.features = data.features
+      console.log("subscription", data);
     });
   }
 
   getUserLimits() {
     this.axiosService.request(
       'GET',
-      `/api/v1/subscription/user/limit`,
+      `/subscription/user/limit`,
       null,
     ).then(response => {
       this.userLimit = response.data;
+      console.log("user limit", response.data);
     });
   }
 
   get usedPercentage(): number {
     if (this.userLimit.totalLimit === 0) return 0;
-    const used = this.userLimit.totalLimit - this.userLimit.remainingLimit;
-    return Math.round((used / this.userLimit.totalLimit) * 100);
+    return Math.round((this.userLimit.usedLimit / this.userLimit.totalLimit) * 100);
   }
 
 
   proceedToEssentials() {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
 
     this.http.post<{ id: string }>(
       'http://localhost:8080/stripe/create-checkout-session',
       {},
-      {headers: headers}
     ).subscribe(async (res) => {
       if (this.stripe) {
         await this.stripe.redirectToCheckout({sessionId: res.id});
@@ -108,19 +116,26 @@ export class InvoiceLimiterComponent implements OnInit{
   }
 
 
-  premium() {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
+  async subscribe(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE'): Promise<void> {
+    const token = localStorage.getItem('token');
 
-    this.http.post<{ id: string }>(
-      'http://localhost:8080/stripe/premium',
-      {},
-      {headers: headers}
-    ).subscribe(async (res) => {
+    try {
+      const response = await this.axiosService.request(
+        'POST',
+        'http://localhost:8080/stripe/premium',
+        { plan },
+        {
+          'Content-Type': 'application/json'
+        }
+      );
+
       if (this.stripe) {
-        await this.stripe.redirectToCheckout({sessionId: res.id});
+        await this.stripe.redirectToCheckout({ sessionId: response.data.id });
       }
-    });
+    } catch (error) {
+      console.error('Chyba pri Stripe subscribe:', error);
+    }
   }
+
+  protected readonly RouterLink = RouterLink;
 }

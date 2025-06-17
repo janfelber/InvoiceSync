@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LimitResponseDTO {
+
+  private int usedLimit;
+
   private int totalLimit;
-  private int remainingLimit;
 }
