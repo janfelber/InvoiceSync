@@ -39,6 +39,27 @@ export class InvoiceLimiterComponent implements OnInit{
     });
   }
 
+  limits = [
+    {
+      label: 'Spracovania',
+      used: 20,
+      total: 50,
+      color: 'blue'
+    },
+    {
+      label: 'Vytvorené faktúry',
+      used: 20,
+      total: 50,
+      color: 'amber'
+    },
+    {
+      label: 'Blokované faktúry',
+      used: 20,
+      total: 50,
+      color: 'red'
+    }
+  ];
+
   ngOnInit() {
     this.getSubscriptionPlan()
     this.getUserLimits();
@@ -57,7 +78,13 @@ export class InvoiceLimiterComponent implements OnInit{
 
   userLimit = {
     usedLimit: 0,
-    totalLimit: 0
+    totalLimit: 0,
+    invoiceCreateLimit: 0,
+    invoiceCreateUsed: 0,
+    invoiceExportLimit: 0,
+    invoiceExportUsed: 0,
+    receiptExportLimit: 0,
+    receiptExportUsed: 0
   }
 
   subscriptionPlan = {
@@ -117,12 +144,11 @@ export class InvoiceLimiterComponent implements OnInit{
 
 
   async subscribe(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE'): Promise<void> {
-    const token = localStorage.getItem('token');
 
     try {
       const response = await this.axiosService.request(
         'POST',
-        'http://localhost:8080/stripe/premium',
+        'http://localhost:8080/subscription/subscribe',
         { plan },
         {
           'Content-Type': 'application/json'

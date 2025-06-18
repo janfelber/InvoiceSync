@@ -1,10 +1,8 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../environments/environment";
-import {HttpClient} from "@angular/common/http";
 import {AxiosService} from "../axios.service";
 import {ApiPaths} from "./api-paths";
-import {CompanyRequest} from "../servicesss/models/company-request";
-import {SubscriptionRequest} from "../servicesss/models/SubscriptionRequest";
+import {SubscriptionRequest} from "../servicesss/models/subscription-request";
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +25,11 @@ export class SubscriptionService {
     return this.axiosService.request('GET', url, null);
   }
 
+  /**
+   * Create a subscription session
+   */
   subscribe(request: SubscriptionRequest): Promise<any> {
-    return this.axiosService.request(
-      'POST',
-      `${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`,
-      request
-    );
+    const url = `${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`;
+    return this.axiosService.request('POST', url, request);
   }
 }

@@ -14,7 +14,6 @@ import com.invoicesync.dto.subscription.LimitResponseDTO;
 import com.invoicesync.dto.subscription.SubscriptionResponseDTO;
 import com.invoicesync.service.StripeService;
 import com.invoicesync.service.SubscriptionService;
-import com.invoicesync.subscription.SubscriptionPlan;
 import com.stripe.exception.StripeException;
 
 import lombok.AllArgsConstructor;
@@ -34,28 +33,21 @@ public class SubscriptionController {
   }
 
   @PostMapping("/subscribe")
-  public ResponseEntity<Map<String, String>> createSubscription(@RequestBody final Map<String, String> request,
-      final Authentication connectedUser) {
+  public ResponseEntity<Map<String, Object>> createCheckout(@RequestBody final Map<String, String> request,
+      final Authentication connectedUser)
+      throws StripeException {
     final String planName = request.get("plan");
-    final SubscriptionPlan plan;
 
-    try {
-      plan = SubscriptionPlan.valueOf(planName.toUpperCase());
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().body(Map.of("error", "Invalid subscription plan"));
-    }
-
-    // Napr. FREE má null cenu, netreba Stripe
-    if (plan == SubscriptionPlan.FREE) {
+    if ("FREE".equals(planName)) {
       subscriptionService.createFreeSubscriptionForUser(connectedUser);
-      return ResponseEntity.ok(Map.of("message", "Free subscription activated"));
+      return ResponseEntity.ok(Map.of("message", "FREE plan activated"));
     }
 
     try {
-      final String checkoutUrl = stripeService.createCheckoutSession(plan.getPriceId(), connectedUser);
-      return ResponseEntity.ok(Map.of("url", checkoutUrl));
-    } catch (StripeException e) {
-      return ResponseEntity.status(500).body(Map.of("error", "Failed to create Stripe session"));
+      final Map<String, Object> response = stripeService.createCheckoutSession(planName, connectedUser);
+      return ResponseEntity.ok(response);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
     }
   }
 

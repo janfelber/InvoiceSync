@@ -60,7 +60,7 @@
             </ul>
           </div>
           <button
-            (click)="onChooseSubscription('FREE')"
+            (click)="subscribe('FREE')"
             class="mt-8 w-full text-white bg-gray-700 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Vyskúšať zdarma
           </button>
@@ -81,7 +81,7 @@
             </ul>
           </div>
           <button
-            (click)="onChooseSubscription('ESSENTIALS')"
+            (click)="subscribe('ESSENTIALS')"
             class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Vybrať plán
           </button>
@@ -100,7 +100,9 @@
               <li>✔ Export do (Pohody, Omega)</li>
             </ul>
           </div>
-          <button class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          <button
+            (click)="subscribe('PRO')"
+            class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Vybrať plán
           </button>
         </div>
@@ -118,7 +120,9 @@
               <li>✔ Export do (Pohody, Omega)</li>
             </ul>
           </div>
-          <button class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+          <button
+            (click)="subscribe('ENTERPRISE')"
+            class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Vybrať plán
           </button>
         </div>

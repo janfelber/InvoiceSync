@@ -14,4 +14,16 @@ public class LimitResponseDTO {
   private int usedLimit;
 
   private int totalLimit;
+
+  private int invoiceExportLimit;
+
+  private int invoiceExportUsed;
+
+  private int receiptExportLimit;
+
+  private int receiptExportUsed;
+
+  private int invoiceCreateLimit;
+
+  private int invoiceCreateUsed;
 }
