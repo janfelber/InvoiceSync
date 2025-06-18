@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {SubscriptionService} from "../services/subscription.service";
 import {initFlowbite} from "flowbite";
 import {Router} from "@angular/router";
-import {loadStripe} from "@stripe/stripe-js";
+import {loadStripe, Stripe} from "@stripe/stripe-js";
+import {environment} from "../../environments/environment";
+import {SubscriptionRequest} from "../servicesss/models/subscription-request";
 
 @Component({
   selector: 'app-pricing',
@@ -12,7 +14,7 @@ import {loadStripe} from "@stripe/stripe-js";
 })
 export class PricingComponent implements OnInit{
 
-  private stripe: any;
+  private stripe: Stripe | null = null;
 
   constructor(
     private subscriptionService: SubscriptionService,
@@ -23,16 +25,39 @@ export class PricingComponent implements OnInit{
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     initFlowbite();
+    const stripeKey = environment.stripePublicKey;
+    if (!stripeKey) {
+      console.error('Stripe public key nie je definovaný v environment.ts');
+      return;
+    }
+
+    this.stripe = await loadStripe(stripeKey);
+    if (!this.stripe) {
+      console.error('Nepodarilo sa načítať Stripe.js');
+    }
   }
 
-  onChooseSubscription(subscription: string) {
-    this.subscriptionService.subscribe({ plan: subscription }).then(async (res) => {
-      if (this.stripe) {
-        await this.stripe.redirectToCheckout({ sessionId: res.id }); // res.id musí byť session ID
+  async subscribe(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE'): Promise<void> {
+    try {
+      const request: SubscriptionRequest = { plan };
+      const response = await this.subscriptionService.subscribe(request);
+
+      if (plan === 'FREE') {
+        console.log(response.data.message); // "FREE plan activated"
+        this.router.navigate(['/web/limiter']);
+        return;
       }
-    });
+
+      if (this.stripe) {
+        await this.stripe.redirectToCheckout({ sessionId: response.data.id });
+      } else {
+        console.error('Stripe is not loaded.');
+      }
+    } catch (error) {
+      console.error('Chyba pri Stripe subscribe:', error);
+    }
   }
 
 }

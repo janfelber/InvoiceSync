@@ -1,6 +1,7 @@
 package com.invoicesync.service;
 
 import static com.invoicesync.specification.SubscriptionSpecification.withUserId;
+import static com.invoicesync.subscription.SubscriptionPlan.NONE;
 
 import java.math.BigDecimal;
 
@@ -32,18 +33,23 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         .orElseGet(() -> {
           final Subscription empty = new Subscription();
           empty.setCreatedBy(userId);
-          empty.setSubscriptionPlan(SubscriptionPlan.NONE);
+          empty.setSubscriptionPlan(NONE);
           empty.setSubscriptionActive(false);
           empty.setStartDate(null);
           empty.setEndDate(null);
           empty.setSubscriptionPrice(BigDecimal.ZERO);
-          empty.setMonthlyInvoiceLimit(0);
+          empty.setMonthlyInvoiceExportLimit(NONE.getMonthlyInvoiceExportLimit());
+          empty.setMonthlyInvoiceCreateLimit(NONE.getMonthlyInvoiceCreateLimit());
+          empty.setMonthlyReceiptExportLimit(NONE.getMonthlyReceiptExportLimit());
+          empty.setMonthlyUsedInvoiceExportLimit(0);
+          empty.setMonthlyUsedInvoiceCreateLimit(0);
+          empty.setMonthlyUsedReceiptExportLimit(0);
           return empty;
         });
 
     final SubscriptionPlan plan = subscription.getSubscriptionPlan() != null
         ? subscription.getSubscriptionPlan()
-        : SubscriptionPlan.NONE;
+        : NONE;
 
     return new SubscriptionResponseDTO(
         subscription.getCreatedBy(),
@@ -51,7 +57,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Boolean.TRUE.equals(subscription.getSubscriptionActive()),
         subscription.getStartDate(),
         subscription.getEndDate(),
-        subscription.getMonthlyInvoiceLimit(),
+        subscription.getMonthlyUsedReceiptExportLimit(),
         subscription.getSubscriptionPrice(),
         plan.getFeatures()
     );
@@ -69,10 +75,30 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         .findOne(withUserId(connectedUser.getName()))
         .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + connectedUser.getName()));
 
-    final int totalLimit = subscription.getMonthlyInvoiceLimit();
-    final int usedLimit = subscription.getUsedAmount();
+    final int totalLimit = subscription.getMonthlyInvoiceExportLimit() + subscription.getMonthlyInvoiceCreateLimit()
+        + subscription.getMonthlyReceiptExportLimit();
+    final int usedLimit =
+        subscription.getMonthlyUsedInvoiceExportLimit() + subscription.getMonthlyUsedInvoiceCreateLimit()
+            + subscription.getMonthlyUsedReceiptExportLimit();
 
-    return new LimitResponseDTO(usedLimit, totalLimit);
+    final int invoiceExportLimit = subscription.getMonthlyInvoiceExportLimit();
+    final int invoiceCreateLimit = subscription.getMonthlyInvoiceCreateLimit();
+    final int receiptExportLimit = subscription.getMonthlyReceiptExportLimit();
+
+    final int invoiceExportUsedLimit = subscription.getMonthlyUsedInvoiceExportLimit();
+    final int invoiceCreateUsedLimit = subscription.getMonthlyUsedInvoiceCreateLimit();
+    final int receiptExportUsedLimit = subscription.getMonthlyUsedReceiptExportLimit();
+
+    return new LimitResponseDTO(
+        usedLimit,
+        totalLimit,
+        invoiceExportLimit,
+        invoiceExportUsedLimit,
+        receiptExportLimit,
+        receiptExportUsedLimit,
+        invoiceCreateLimit,
+        invoiceCreateUsedLimit
+    );
   }
 
 }

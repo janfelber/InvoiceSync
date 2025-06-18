@@ -56,13 +56,28 @@ public class Subscription extends BaseEntity {
   @Column(name = "end_date")
   private LocalDateTime endDate;
 
-  @Column(name = "monthly_invoice_limit")
-  private Integer monthlyInvoiceLimit;
+  @Column(name = "monthly_invoice_export_limit")
+  private Integer monthlyInvoiceExportLimit;
+
+  @Column(name = "monthly_used_invoice_export")
+  private Integer monthlyUsedInvoiceExportLimit;
+
+  @Column(name = "monthly_receipt_export_limit")
+  private Integer monthlyReceiptExportLimit;
+
+  @Column(name = "monthly_used_receipt_export_limit")
+  private Integer monthlyUsedReceiptExportLimit;
+
+  @Column(name = "monthly_invoice_create_limit")
+  private Integer monthlyInvoiceCreateLimit;
+
+  @Column(name = "monthly_used_invoice_create_limit")
+  private Integer monthlyUsedInvoiceCreateLimit;
 
   @Column(name = "subscription_price")
   private BigDecimal subscriptionPrice;
 
-  @Column(name = "used_amount")
-  private Integer usedAmount;
+  @Column(name = "total_limit")
+  private Integer totalLimit;
 
 }
