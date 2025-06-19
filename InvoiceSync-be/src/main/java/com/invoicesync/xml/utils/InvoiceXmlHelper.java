@@ -13,12 +13,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.invoicesync.dto.identity.MyIdentityDTO;
-import com.invoicesync.dto.identity.PartnerDto;
-import com.invoicesync.dto.invoice.pohoda.InvoiceItemDTO;
-import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDetailsDTO;
-import com.invoicesync.dto.receipt.pohoda.ReceiptItemDto;
-import com.invoicesync.dto.receipt.pohoda.ReceiptRequestDetailsDTO;
+import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.PartnerDto;
+import com.invoicesync.invoice.dto.InvoiceItemDTO;
+import com.invoicesync.invoice.dto.InvoiceRequestDetailsDTO;
+import com.invoicesync.receipt.dto.ReceiptItemDto;
+import com.invoicesync.receipt.dto.ReceiptRequestDetailsDTO;
 
 @Component
 public class InvoiceXmlHelper {

@@ -1,12 +1,14 @@
 package com.invoicesync.xml.service;
 
-import com.invoicesync.service.XmlFileService;
-import com.invoicesync.xml.processing.XMLProcessor;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+
+import org.springframework.stereotype.Service;
+
+import com.invoicesync.xml.processing.XMLProcessor;
+import com.invoicesync.xmlFile.XmlFileService;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor

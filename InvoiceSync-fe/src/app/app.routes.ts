@@ -1,20 +1,18 @@
 import { Routes } from '@angular/router';
-import { Invoices } from './page/invoices/invoices.component';
-import { InvoiceInspect } from './invoice-inspect/invoice-inspect.component';
-import { LoginComponent } from './page/login/login.component';
-import { RegisterComponent } from './page/register/register.component';
-import { authGuard } from './services/auth/auth.guard';
+import { Invoices } from './pages/invoices/invoices.component';
+import { InvoiceInspect } from './features/invoice/invoice-inspect/invoice-inspect.component';
+import { LoginComponent } from './core/auth/login/login.component';
+import { RegisterComponent } from './core/auth/register/register.component';
+import { authGuard } from './core/services/auth/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
-import {HomeComponent} from "./page/home/home.component";
-import {XmlConvertorComponent} from "./xml-page/xml-convertor.component";
-import {AdminComponent} from "./admin/admin.component";
-import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
-import {ReceiptsComponent} from "./receipts/receipts.component";
-import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.component";
-import {CompanyDetailsComponent} from "./company-details/company-details.component";
-import {InvoiceLimiterComponent} from "./invoice-limiter/invoice-limiter.component";
-import {CreateNewInvoice} from "./create-new-invoice/create-new-invoice.component";
-import {PricingComponent} from "./pricing/pricing.component";
+import {HomeComponent} from "./pages/home/home.component";
+import {XmlConvertorComponent} from "./pages/xml-page/xml-convertor.component";
+import {ReceiptsComponent} from "./pages/receipts/receipts.component";
+import {ReceiptDetailsComponent} from "./features/receipt/receipt-details/receipt-details.component";
+import {CompanyDetailsComponent} from "./features/home/company-details/company-details.component";
+import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.component";
+import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
+import {PricingComponent} from "./pages/pricing/pricing.component";
 
 export const routes: Routes = [
   {

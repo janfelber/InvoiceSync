@@ -1,0 +1,67 @@
+import {Component, OnInit} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import {AuthenticationRequest} from "../../models/authentication-request";
+import {AuthenticationReponse} from "../../models/authentication-reponse";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import {AuthenticationService} from "../../services/authentication.service";
+import {Router} from "@angular/router";
+import { RouterModule } from '@angular/router';
+import {KeycloakService} from "../../keycloak/keycloak.service";
+
+@Component({
+    selector: 'app-login',
+  imports: [
+    MatIconModule,
+    FormsModule,
+    CommonModule,
+    RouterModule,
+  ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
+})
+export class LoginComponent implements OnInit{
+  // authRequest: AuthenticationRequest = {};
+  // otpCode: any;
+  // authResponse: AuthenticationReponse = {};
+
+  constructor(
+    private keycloakService: KeycloakService
+  ) {
+  }
+
+  async ngOnInit(): Promise<void> {
+    await this.keycloakService.init()
+    await this.keycloakService.login();
+  }
+
+  // authenticate() {
+  //   this.authService.login(this.authRequest)
+  //     .subscribe(
+  //       {
+  //         next: (response) => {
+  //           this.authResponse = response;
+  //           if (!this.authResponse.mfaEnabled) {
+  //             localStorage.setItem('token', this.authResponse.access_token as string);
+  //             this.router.navigate(['xml-import']);
+  //           }
+  //         }
+  //       }
+  //     );
+  // }
+
+  // verifyCode() {
+  //   const verifyRequest: VerificationRequest = {
+  //     login: this.authRequest.login,
+  //     code: this.otpCode
+  //   };
+  //   this.authService.verifyCode(verifyRequest)
+  //     .subscribe({
+  //       next: (response) => {
+  //           localStorage.setItem('token', response.access_token as string);
+  //           console.log(response.access_token)
+  //           this.router.navigate(['welcome']);
+  //       }
+  //     })
+  // }
+}
