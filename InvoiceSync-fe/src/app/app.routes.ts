@@ -14,6 +14,7 @@ import {ReceiptDetailsComponent} from "./receipt-details/receipt-details.compone
 import {CompanyDetailsComponent} from "./company-details/company-details.component";
 import {InvoiceLimiterComponent} from "./invoice-limiter/invoice-limiter.component";
 import {CreateNewInvoice} from "./create-new-invoice/create-new-invoice.component";
+import {PricingComponent} from "./pricing/pricing.component";
 
 export const routes: Routes = [
   {
@@ -68,6 +69,10 @@ export const routes: Routes = [
         component: InvoiceLimiterComponent
       }
     ]
+  },
+  {
+    path: 'pricing',
+    component: PricingComponent
   },
   //admin layout
   // {
