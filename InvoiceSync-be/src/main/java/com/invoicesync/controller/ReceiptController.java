@@ -23,6 +23,7 @@ import com.invoicesync.common.PageResponse;
 import com.invoicesync.dto.receipt.reponse.ReceiptDetailDto;
 import com.invoicesync.dto.receipt.reponse.ReceiptResponseDto;
 import com.invoicesync.dto.record.ReceiptRequest;
+import com.invoicesync.exception.LimitExceededException;
 import com.invoicesync.module.Receipt;
 import com.invoicesync.service.InvoiceXmlService;
 import com.invoicesync.service.ReceiptService;
@@ -34,15 +35,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/receipt")
 public class ReceiptController {
 
-  // private final InvoiceXmlService invoiceXmlService;
   private final InvoiceXmlService invoiceXmlService;
-  // private final CurrentUserService currentUserService;
   private final ReceiptService receiptService;
 
   @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request) {
+  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request,
+      final Authentication connectedUser) {
     try {
-      final byte[] excel = invoiceXmlService.generatePohodaReceiptExcel(request);
+      final byte[] excel = invoiceXmlService.generatePohodaReceiptExcel(request, connectedUser);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.setContentType(
@@ -50,10 +50,11 @@ public class ReceiptController {
       headers.setContentDisposition(
           ContentDisposition.attachment().filename(request.receiptNumber() + ".xlsx").build());
 
-      System.out.println("receipt created");
       return new ResponseEntity<>(excel, headers, HttpStatus.OK);
+    } catch (LimitExceededException e) {
+      return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }
 

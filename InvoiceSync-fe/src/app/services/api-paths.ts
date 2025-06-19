@@ -24,5 +24,10 @@ export const ApiPaths = {
   chartOfAccounts: {
     BASE: '/chart-account',
     ALL: '/all'
+  },
+  subscription: {
+    BASE: '/subscription',
+    USER_PLAN: '/user/plan',
+    SUBSCRIBE: '/subscribe',
   }
 };

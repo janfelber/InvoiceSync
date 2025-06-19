@@ -16,11 +16,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 
 import com.invoicesync.dto.invoice.pohoda.InvoiceRequestDTO;
 import com.invoicesync.dto.record.ReceiptRequest;
+import com.invoicesync.subscription.LimitType;
 import com.invoicesync.xml.utils.InvoiceXmlHelper;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,12 @@ import lombok.RequiredArgsConstructor;
 public class InvoiceXmlServiceImpl implements InvoiceXmlService{
 
   private final InvoiceXmlHelper xmlHelper;
+
+  private final SubscriptionService subscriptionService;
+
+  private final LimitGuardService limitGuardService;
+
+  private final UserService userService;
 
   @Override
   public byte[] generatePohodaInvoiceXml(final InvoiceRequestDTO invoiceRequestDTO) throws Exception {
@@ -55,7 +63,10 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
   }
 
   @Override
-  public byte[] generatePohodaReceiptExcel(final ReceiptRequest request) throws Exception {
+  public byte[] generatePohodaReceiptExcel(final ReceiptRequest request, final Authentication connectedUser)
+      throws Exception {
+
+    limitGuardService.checkLimit(connectedUser, LimitType.RECEIPT_EXPORT);
 
     System.out.printf("typ platby%s%n", request.isPaidByCard());
 
@@ -101,6 +112,8 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
       row.createCell(21).setCellValue(request.classificationKVVAT());
 
       workbook.write(out);
+
+      userService.incrementUsed(connectedUser, LimitType.RECEIPT_EXPORT);
       return out.toByteArray();
     }
   }
