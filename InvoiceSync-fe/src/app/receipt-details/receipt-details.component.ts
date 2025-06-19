@@ -166,7 +166,32 @@ export class ReceiptDetailsComponent implements OnInit {
       window.URL.revokeObjectURL(url);
     })
       .catch(error => {
-        console.error('Error exporting Excel:', error);
+        if (error.response?.status === 429) {
+          const message = 'Mesačný limit pre export bločkov vyčerpaný.';
+          this.toastr.warning(
+            message,
+            '',
+            {
+              timeOut: 5000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              closeButton: true,
+              positionClass: 'toast-top-right',
+            });
+        } else {
+          console.log(error.response.data)
+          this.toastr.error(
+            'Chyba pri exporte',
+            '',
+            {
+              timeOut: 3000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              closeButton: true,
+              positionClass: 'toast-top-right',
+            });
+          console.error('Error exporting Excel:', error);
+        }
       });
   }
 
