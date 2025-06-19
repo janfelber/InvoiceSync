@@ -8,8 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { provideToastr } from 'ngx-toastr';
-import {KeycloakService} from "../keycloak/keycloak.service";
-import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
+import {KeycloakService} from "./core/keycloak/keycloak.service";
+import {HttpTokenInterceptor} from "./core/interceptor/http-token.interceptor";
 
 export function kcFactory(kcService: KeycloakService) {
   return () => kcService.init();

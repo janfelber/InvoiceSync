@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AxiosService } from "../axios.service";
+import { AxiosService } from "../core/axios.service";
 import { NgForOf, NgIf } from "@angular/common";
 import { ToastrService } from 'ngx-toastr';
-import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
+import {MatDialogWindowComponent} from "../shared/mat-dialog-window/mat-dialog-window.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router, RouterOutlet} from "@angular/router";
 import {CommonModule} from "@angular/common";
-import {SideNavComponent} from "../../redesign/side-nav-redesign/side-nav.component";
+import {SideNavComponent} from "../side-nav/side-nav.component";
 
 @Component({
     selector: 'app-layout',

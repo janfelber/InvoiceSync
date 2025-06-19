@@ -1,6 +1,7 @@
 package com.invoicesync.auth;
 
-import com.invoicesync.user.Role;
+import com.invoicesync.deprecated.user.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
