@@ -1,14 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {initFlowbite} from 'flowbite'
 import {NgForOf, NgIf} from "@angular/common";
-import {AxiosService} from "../../../core/axios.service";
-
-import { GroupedAccounts  } from "./chart-account.model"
-import {MatDialog} from "@angular/material/dialog";
+import ApexCharts from 'apexcharts';
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CompanyService} from "../../../core/services/company.service";
+import {AccountChartService} from "../../../core/services/account-chart.service";
+
 
 @Component({
   selector: 'app-company-details',
@@ -17,41 +16,184 @@ import {CompanyService} from "../../../core/services/company.service";
     NgIf,
     FormsModule,
     MatDialogWindowComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink
   ],
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css'
 })
-export class CompanyDetailsComponent implements OnInit{
+export class CompanyDetailsComponent implements OnInit, AfterViewInit {
 
-  constructor(
-    private axiosService: AxiosService,
-    private route: ActivatedRoute,
-    private companyService: CompanyService,
-    private router: Router
-    ) {
-  }
+  loadingCompany = false;
+  editCompanyModalOpen = false
+  deleteCompanyModalOpen = false
 
-  selectedClassIndex: number | null = null;
-  subClasses: string[] = [];
-  companyId : any = null
+  accounts: any = []
   company: any = {};
   editedCompany: any = {};
-  loadingCompany = false;
-  editCompanyModalOpen= false
-  deleteCompanyModalOpen = false
+
+  searchTerm: string = '';
+  selectedAccount: any = null;
+  companyId: any = null
+  private chart: ApexCharts | undefined;
+
+  constructor(
+    private route: ActivatedRoute,
+    private companyService: CompanyService,
+    private accountCharts: AccountChartService,
+    private router: Router
+  ) {
+  }
+
+  ngAfterViewInit(): void {
+    const options = {
+      chart: {
+        height: 420,
+        type: 'area',
+        fontFamily: 'Inter, sans-serif',
+        foreColor: '#6b7280',
+        toolbar: {
+          show: false
+        },
+        animations: {
+          enabled: true,
+          easing: 'easeOutCubic',       // svižný, dynamický efekt "výstrelu"
+          speed: 1200,                  // celková dĺžka animácie v ms (rýchla)
+          animateGradually: {
+            enabled: true,
+            delay: 150                // malé oneskorenie medzi jednotlivými bodmi pre plynulosť
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 500                  // rýchlejšia dynamická animácia pre zmeny dát
+          }
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.4,
+          opacityTo: 0.05,
+          stops: [0, 90, 100]
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      tooltip: {
+        style: {
+          fontSize: '14px',
+          fontFamily: 'Inter, sans-serif',
+        },
+      },
+      grid: {
+        show: false,
+      },
+      series: [
+        {
+          name: 'Revenue',
+          data: [6356, 6218, 6156, 6526, 6356, 6256, 6056],
+          color: '#1a56db'
+        },
+        {
+          name: 'Revenue (previous period)',
+          data: [6556, 6725, 6424, 6356, 6586, 6756, 6616],
+          color: '#fdba8c'
+        }
+      ],
+      xaxis: {
+        categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+        labels: {
+          show: false
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          show: false
+        }
+      },
+      yaxis: {
+        show: true,
+        labels: {
+          style: {
+            colors: ['#6b7280'],
+            fontSize: '14px',
+            fontWeight: 500,
+          },
+        },
+      },
+      stroke: {
+        width: 6,
+        curve: 'smooth'
+      },
+      legend: {
+        fontSize: '14px',
+        fontWeight: 500,
+        fontFamily: 'Inter, sans-serif',
+        labels: {
+          colors: ['#6b7280']
+        },
+        itemMargin: {
+          horizontal: 10
+        }
+      },
+      responsive: [
+        {
+          breakpoint: 1024,
+          options: {
+            xaxis: {
+              labels: {
+                show: false
+              }
+            }
+          }
+        }
+      ]
+    };
+
+    if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+      const chart = new ApexCharts(document.getElementById("area-chart"), options);
+      chart.render();
+    }
+  }
+
+
+  onFetchAccounts() {
+    this.accountCharts.finalAll().then(response => {
+      this.accounts = response.data;
+    })
+  }
+
+  openClasses: { [classNumber: number]: boolean } = {};
+  openCategories: { [categoryId: string]: boolean } = {};
+
+  toggleClass(classNumber: number): void {
+    this.openClasses[classNumber] = !this.openClasses[classNumber];
+  }
+
+  isClassOpen(classNumber: number): boolean {
+    return !!this.openClasses[classNumber];
+  }
+
+  toggleCategory(categoryId: string): void {
+    this.openCategories[categoryId] = !this.openCategories[categoryId];
+  }
+
+  isCategoryOpen(categoryId: string): boolean {
+    return !!this.openCategories[categoryId];
+  }
+
+  selectAccount(account: any): void {
+    this.selectedAccount = {...account}; // kopírovanie pre editáciu bez ovplyvnenia pôvodného objektu
+  }
 
   ngOnInit(): void {
     initFlowbite();
-    this.onFetchChartAccounts0();
-    this.onFetchChartAccounts1();
-    this.onFetchChartAccounts2();
-    this.onFetchChartAccounts3();
-    this.onFetchChartAccounts4();
-    this.onFetchChartAccounts5();
-    this.onFetchChartAccounts6();
-    this.onFetchChartAccounts7();
-
     this.route.paramMap.subscribe(params => {
       console.log(params.get('id'))
       this.companyId = params.get('id') || '';
@@ -83,28 +225,8 @@ export class CompanyDetailsComponent implements OnInit{
       });
   }
 
-
-  selectedClassName = 'Učtová trieda';
-  protected classes =
-    [
-    'DLHODOBÝ MAJETOK',
-    'MAJETOK',
-    'INANČNÉ ÚČTY',
-    'ZÚČTOVACIE VZŤAHY',
-    'KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY',
-    'NÁKLADY',
-    'VÝNOSY',
-    'UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY'
-    ]
-
-  onClassSelect(index: number) {
-    this.selectedClassIndex = index;
-    console.log(this.selectedClassIndex)
-    this.selectedClassName = this.classes[index];
-  }
-
   openEditModal() {
-    this.editedCompany = { ...this.company };
+    this.editedCompany = {...this.company};
     this.editCompanyModalOpen = true
   }
 
@@ -125,10 +247,10 @@ export class CompanyDetailsComponent implements OnInit{
 
     this.companyService.updateCompany(
       {
-        companyId:  this.company.id,
-        company:    this.editedCompany
+        companyId: this.company.id,
+        company: this.editedCompany
       }
-      )
+    )
       .then((updatedCompany) => {
         this.company = updatedCompany;
         console.log(this.editedCompany)
@@ -140,10 +262,10 @@ export class CompanyDetailsComponent implements OnInit{
       });
   }
 
-  deleteCompany():void {
+  deleteCompany(): void {
     this.companyService.deleteCompany(
       {
-        companyId:this.companyId
+        companyId: this.companyId
       }
     )
       .then(() => {
@@ -156,151 +278,4 @@ export class CompanyDetailsComponent implements OnInit{
       });
   }
 
-  protected readonly Object = Object;
-  openCategories: Set<string> = new Set();
-  protected accounts0: GroupedAccounts = {};
-  protected accounts1: GroupedAccounts = {};
-  protected accounts2: GroupedAccounts = {};
-  protected accounts3: GroupedAccounts = {};
-  protected accounts4: GroupedAccounts = {};
-  protected accounts5: GroupedAccounts = {};
-  protected accounts6: GroupedAccounts = {};
-  protected accounts7: GroupedAccounts = {};
-
-  toggleCategory(category: string): void {
-    if (this.openCategories.has(category)) {
-      this.openCategories.delete(category);
-    } else {
-      this.openCategories.add(category);
-    }
-  }
-
-  isCategoryOpen(category: string): boolean {
-    return this.openCategories.has(category);
-    }
-
-
-  onFetchChartAccounts0() {
-    const params = {
-      classId: "0"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts0 = response.data;
-    });
-  }
-
-  onFetchChartAccounts1() {
-    const params = {
-      classId: "1"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts1 = response.data;
-    });
-  }
-
-  onFetchChartAccounts2() {
-    const params = {
-      classId: "2"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts2 = response.data;
-    });
-  }
-
-  onFetchChartAccounts3() {
-    const params = {
-      classId: "3"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts3 = response.data;
-    });
-  }
-
-  onFetchChartAccounts4() {
-    const params = {
-      classId: "4"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts4 = response.data;
-    });
-  }
-
-  onFetchChartAccounts5() {
-    const params = {
-      classId: "5"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts5 = response.data;
-    });
-  }
-
-  onFetchChartAccounts6() {
-    const params = {
-      classId: "6"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts6 = response.data;
-    });
-  }
-
-  onFetchChartAccounts7() {
-    const params = {
-      classId: "7"
-    };
-
-    this.axiosService.request(
-      'GET',
-      `/api/v1/chart-account/categories`,
-      null,
-      { params }
-    ).then(response => {
-      this.accounts7 = response.data;
-    });
-  }
-
-  onEdit() {
-    console.log("edit")
-  }
 }

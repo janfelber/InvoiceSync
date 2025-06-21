@@ -1,2 +1,3 @@
 @import "tailwindcss";
 @import "flowbite";
+@source "../node_modules/flowbite";
