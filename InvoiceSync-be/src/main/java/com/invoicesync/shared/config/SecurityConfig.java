@@ -32,7 +32,8 @@ public class SecurityConfig {
                             "/swagger-ui.html",
                             "/swagger-ui/**",
                             "/stripe/webhook",
-                            "/stripe/create-checkout-session"
+                            "/stripe/create-checkout-session",
+                            "/email-subscribe/subscribe"
                         )
                                 .permitAll()
                                 .anyRequest()

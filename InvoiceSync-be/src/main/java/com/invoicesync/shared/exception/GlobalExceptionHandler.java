@@ -12,4 +12,9 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleLimitExceededException(LimitExceededException ex) {
     return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.getMessage());
   }
+
+  @ExceptionHandler(EmailAlreadySubscribedException.class)
+  public ResponseEntity<String> handleEmailAlreadySubscribedException(final EmailAlreadySubscribedException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+  }
 }

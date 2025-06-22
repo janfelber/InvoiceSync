@@ -13,6 +13,7 @@ import {CompanyDetailsComponent} from "./features/home/company-details/company-d
 import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.component";
 import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
 import {PricingComponent} from "./pages/pricing/pricing.component";
+import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'web/limiter',
         component: InvoiceLimiterComponent
+      },
+      {
+        path: 'web/mobile-app',
+        component: MobileAppComponent
       }
     ]
   },
