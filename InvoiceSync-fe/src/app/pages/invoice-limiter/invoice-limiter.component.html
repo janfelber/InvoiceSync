@@ -157,9 +157,9 @@
         <h4 class="font-semibold text-xl mb-4">Aktuálny plán benefity</h4>
         <div class="flex mb-6">
 
-          <ul role="list">
-            <li *ngFor="let benefit of subscriptionPlan.features" class="flex items-center mb-2">
-              <svg class="w-5 h-5 text-green-600 me-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <ul role="list" class="grid grid-cols-2 gap-x-10 gap-y-2">
+            <li *ngFor="let benefit of subscriptionPlan.features" class="flex items-start">
+              <svg class="w-5 h-5 text-green-600 me-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
               {{ benefit }}
@@ -177,7 +177,7 @@
         </button>
 
           <button *ngIf="subscriptionPlan.subscription === 'FREE'"
-                  class="flex items-center space-x-2 px-3 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg ">
+                  class="flex items-center space-x-2 px-3 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg " (click)="openUpgradeEssentials()">
             <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                  fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
@@ -185,12 +185,12 @@
                     clip-rule="evenodd"/>
             </svg>
 
-            <span class="text-white" (click)="openUpgradeEssentials()">Upgrade na Essentials</span>
+            <span class="text-white">Upgrade na Essentials</span>
           </button>
 
 
           <button *ngIf="subscriptionPlan.subscription === 'ESSENTIALS'"
-                  class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg ">
+                  class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg " (click)="proceedToEssentials()">
             <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                  fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd"
@@ -198,7 +198,7 @@
                     clip-rule="evenodd"/>
             </svg>
 
-            <span class="text-white" (click)="proceedToEssentials()">Upgrade na PRO</span>
+            <span class="text-white">Upgrade na PRO</span>
           </button>
         </div>
       </div>
