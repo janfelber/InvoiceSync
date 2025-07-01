@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.company.Company;
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
-import com.invoicesync.shared.dto.identity.PartnerDto;
 import com.invoicesync.receipt.dto.DetailDto;
 import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
+import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.PartnerDto;
 
 @Service
 public class ReceiptMapper {
@@ -99,6 +99,7 @@ public class ReceiptMapper {
             .build())
         .items(itemDtos)
         .company(MyIdentityDTO.builder()
+            .id(receipt.getCompany().getId())
             .name(receipt.getCompany().getName())
             .city(receipt.getCompany().getCity())
             .street(receipt.getCompany().getStreet())

@@ -23,7 +23,9 @@ export const ApiPaths = {
   },
   chartOfAccounts: {
     BASE: '/chart-account',
-    ALL: '/all'
+    FIND_BY_COMPANY: (companyId:number) => `/${companyId}/accounts `,
+    SAVE: '/save',
+    IMPORT_ACCOUNTS: '/import',
   },
   subscription: {
     BASE: '/subscription',

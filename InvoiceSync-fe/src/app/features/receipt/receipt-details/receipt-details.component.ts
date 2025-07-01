@@ -83,13 +83,14 @@ export class ReceiptDetailsComponent implements OnInit {
     });
     initFlowbite();
     this.onFetchReceipt();
-    this.onFetchAccounts();
   }
 
   groupedAccounts: any[] = [];
 
   onFetchAccounts() {
-    this.accountCharts.finalAll().then(response => {
+    this.accountCharts.findAccountsByCompany({
+      companyId: this.companyId,
+    }).then(response => {
       console.log(response.data)
       this.groupedAccounts = response.data;
     })
@@ -102,7 +103,7 @@ export class ReceiptDetailsComponent implements OnInit {
       this.receiptResponse = response.data
       console.log("toto pride", this.receiptResponse)
       this.items = response.data.items;
-      // this.companyId = data.company;
+      this.companyId = response.data.company!.id;
       // this.receipt = data.receiptDetails;
       // this.partner = data.partner;
       // this.items = data.items;
@@ -223,6 +224,7 @@ export class ReceiptDetailsComponent implements OnInit {
   selectedItemForAccount: any = null;
 
   openDrawer(item: any): void {
+    this.onFetchAccounts();
     this.selectedItemForAccount = item.id;
 
     this.selectedItemName = item.name;

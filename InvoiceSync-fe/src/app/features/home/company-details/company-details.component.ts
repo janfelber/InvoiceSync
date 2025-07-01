@@ -1,12 +1,15 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {initFlowbite} from 'flowbite'
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import ApexCharts from 'apexcharts';
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CompanyService} from "../../../core/services/company.service";
 import {AccountChartService} from "../../../core/services/account-chart.service";
+import {MatDialogTutorialComponent} from "../../../shared/mat-dialog-tutorial/mat-dialog-tutorial.component";
+import {accountsTutorialsByApp} from "../../../shared/tutorials/ExportAccoutsTutorial";
+import {ChartAccountRequest} from "../../../core/models/ChartAccountRequest";
 
 
 @Component({
@@ -17,7 +20,9 @@ import {AccountChartService} from "../../../core/services/account-chart.service"
     FormsModule,
     MatDialogWindowComponent,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    NgClass,
+    MatDialogTutorialComponent
   ],
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css'
@@ -27,6 +32,13 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
   loadingCompany = false;
   editCompanyModalOpen = false
   deleteCompanyModalOpen = false
+  accountsImportModalOpen = false
+  isUploading = false;
+  isTutorialOpen = false;
+  showDetails = false;
+  importFinished = false;
+
+  addedAccounts: { accountId: string; accountName: string }[] = [];
 
   accounts: any = []
   company: any = {};
@@ -37,10 +49,40 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
   companyId: any = null
   private chart: ApexCharts | undefined;
 
+  autoClassId = '';
+  autoClassName = '';
+  autoCategoryId = '';
+  autoCategoryName = '';
+
+  accountsTutorialsByApp = accountsTutorialsByApp;
+  availableApps = Object.keys(this.accountsTutorialsByApp);
+  activeTabValue: 'create' | 'importExternal' = 'create';
+  externalFile: File | null = null;
+
+  newAccount: ChartAccountRequest = {
+    companyId: 0,
+    accountId: '',
+    accountName: '',
+  }
+
+
+  set activeTab(tab: 'create' | 'importExternal') {
+    this.activeTabValue = tab;
+    if (tab === 'create') {
+      this.externalFile = null
+    } else {
+      this.externalFile = null;
+    }
+  }
+
+  get activeTab(): 'create' | 'importExternal' {
+    return this.activeTabValue;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private companyService: CompanyService,
-    private accountCharts: AccountChartService,
+    private accountChartsService: AccountChartService,
     private router: Router
   ) {
   }
@@ -164,9 +206,53 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
 
 
   onFetchAccounts() {
-    this.accountCharts.finalAll().then(response => {
+    this.accountChartsService.findAccountsByCompany({
+      companyId: this.companyId,
+    }).then(response => {
       this.accounts = response.data;
+      console.log(this.accounts)
     })
+  }
+
+  onAccountIdChange() {
+    const id = this.newAccount.accountId;
+    if (id?.length >= 3) {
+      const prefix = id.substring(0, 3);
+      this.autoCategoryId = prefix;
+      this.autoCategoryName = this.mapCategoryName(prefix);
+
+      this.autoClassId = prefix.charAt(0);
+      this.autoClassName = this.mapClassName(this.autoClassId);
+    } else {
+      this.autoCategoryId = this.autoCategoryName = this.autoClassId = this.autoClassName = '';
+    }
+  }
+
+  mapClassName(classId: string): string {
+    const map: Record<string, string> = {
+      '0': 'Dlhodobý majetok',
+      '1': 'Zásoby',
+      '2': 'Finančné účty',
+      '3': 'Zúčtovacie vzťahy',
+      '4': 'Kapitálové účty',
+      '5': 'Náklady',
+      '6': 'Výnosy',
+      '7': 'Uzávierkové účty',
+      '8': 'Vnútropodnikové účty',
+      '9': 'Ostatné účty'
+    }
+    return map[classId] || '';
+  }
+
+  mapCategoryName(categoryId: string): string {
+    const map: Record<string, string> = {
+      '501': 'Spotreba materiálu',
+      '343': 'Daň z pridanej hodnoty',
+      '602': 'Tržby za služby',
+      '321': 'Dodávatelia',
+    }
+
+    return map[categoryId] || '';
   }
 
   openClasses: { [classNumber: number]: boolean } = {};
@@ -225,6 +311,42 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
       });
   }
 
+  async onCreateAccounts(): Promise<void> {
+    this.isUploading = true;
+    this.importFinished = false;
+    try {
+      console.log('Active Tab:', this.activeTab);
+      if (this.activeTab === 'importExternal') {
+        if (this.externalFile) {
+          const imported = await this.accountChartsService.importChartOfAccounts({
+            files: [this.externalFile],
+            companyId: this.companyId
+          });
+
+          this.addedAccounts = imported.data ?? [];
+          console.log(this.addedAccounts)
+        }
+      }
+      if (this.activeTab === 'create') {
+        this.newAccount.companyId = this.companyId;
+          await this.accountChartsService.saveChartAccount(this.newAccount)
+
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.isUploading = false;
+      this.importFinished = true;
+    }
+  }
+
+  onExternalFileUpload(event: any): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.externalFile = input.files[0];
+    }
+  }
+
   openEditModal() {
     this.editedCompany = {...this.company};
     this.editCompanyModalOpen = true
@@ -240,6 +362,23 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
 
   closeDeleteModal() {
     this.deleteCompanyModalOpen = false
+  }
+
+  openAccountsImportModal() {
+    this.accountsImportModalOpen = true
+  }
+
+  closeAccountsImportModal() {
+    this.accountsImportModalOpen = false
+  }
+
+  openTutorialModal() {
+    this.accountsImportModalOpen = false
+    this.isTutorialOpen = true
+  }
+
+  closeTutorialModal() {
+    this.isTutorialOpen = false
   }
 
   editCompany(): void {

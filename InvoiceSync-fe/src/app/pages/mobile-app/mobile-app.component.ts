@@ -15,7 +15,7 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./mobile-app.component.css']
 })
 export class MobileAppComponent implements OnInit {
-  targetDate = new Date('2025-07-30T00:00:00');
+  targetDate = new Date('2025-08-30T00:00:00');
   intervalId: any;
 
   days: string = '00';

@@ -1,0 +1,1850 @@
+[
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "012000",
+    "accountName": "Aktivované náklady na vývoj",
+    "category": "01",
+    "categoryName": "Dlhodobý nehmotný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "013000",
+    "accountName": "Softvér",
+    "category": "01",
+    "categoryName": "Dlhodobý nehmotný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "014000",
+    "accountName": "Oceniteľné práva",
+    "category": "01",
+    "categoryName": "Dlhodobý nehmotný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "015000",
+    "accountName": "Goodwill",
+    "category": "01",
+    "categoryName": "Dlhodobý nehmotný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "019000",
+    "accountName": "Ostatný dlhodobý nehmotný majetok",
+    "category": "01",
+    "categoryName": "Dlhodobý nehmotný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "021000",
+    "accountName": "Stavby",
+    "category": "02",
+    "categoryName": "Dlhodobý hmotný majetok - odpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "022000",
+    "accountName": "Samostatné hnuteľné veci a súbory hnuteľných vecí",
+    "category": "02",
+    "categoryName": "Dlhodobý hmotný majetok - odpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "025000",
+    "accountName": "Pestovateľské celky trvalých porastov",
+    "category": "02",
+    "categoryName": "Dlhodobý hmotný majetok - odpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "026000",
+    "accountName": "Základné stádo a ťažné zvieratá",
+    "category": "02",
+    "categoryName": "Dlhodobý hmotný majetok - odpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "029000",
+    "accountName": "Ostatný dlhodobý hmotný majetok",
+    "category": "02",
+    "categoryName": "Dlhodobý hmotný majetok - odpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "031000",
+    "accountName": "Pozemky",
+    "category": "03",
+    "categoryName": "Dlhodobý hmotný majetok - neodpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "032000",
+    "accountName": "Umelecké diela a zbierky",
+    "category": "03",
+    "categoryName": "Dlhodobý hmotný majetok - neodpisovaný"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "041000",
+    "accountName": "Obstaranie dlhodobého nehmotného majetku",
+    "category": "04",
+    "categoryName": "Obstaranie dlhodobého majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "042000",
+    "accountName": "Obstaranie dlhodobého hmotného majetku",
+    "category": "04",
+    "categoryName": "Obstaranie dlhodobého majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "043000",
+    "accountName": "Obstaranie dlhodobého finančného majetku",
+    "category": "04",
+    "categoryName": "Obstaranie dlhodobého majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "051000",
+    "accountName": "Poskytnuté preddavky na dlhodobý nehmotný majetok",
+    "category": "05",
+    "categoryName": "Poskytnuté preddavky na dlhodobý majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "052000",
+    "accountName": "Poskytnuté preddavky na dlhodobý hmotný majetok",
+    "category": "05",
+    "categoryName": "Poskytnuté preddavky na dlhodobý majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "053000",
+    "accountName": "Poskytnuté preddavky na dlhodobý finančný majetok",
+    "category": "05",
+    "categoryName": "Poskytnuté preddavky na dlhodobý majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "061000",
+    "accountName": "Podielové cenné papiere a podiely v dcérskej účtovnej jednotke",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "062000",
+    "accountName": "Podielové cenné papiere a podiely v spoločnosti alebo družstve s podielovou účasťou",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "063000",
+    "accountName": "Realizovateľné cenné papiere a podiely",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "065000",
+    "accountName": "Dlhové cenné papiere držané do splatnosti",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "066000",
+    "accountName": "Pôžičky prepojeným účtovným jednotkám a účtovným jednotkám v rámci podielovej účasti",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "067000",
+    "accountName": "Ostatné pôžičky",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "069000",
+    "accountName": "Ostatný dlhodobý finančný majetok",
+    "category": "06",
+    "categoryName": "Dlhodobý finančný majetok"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "072000",
+    "accountName": "Oprávky k aktivovaným nákladom na vývoj",
+    "category": "07",
+    "categoryName": "Oprávky k dlhodobému nehmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "073000",
+    "accountName": "Oprávky k softvéru",
+    "category": "07",
+    "categoryName": "Oprávky k dlhodobému nehmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "074000",
+    "accountName": "Oprávky k oceniteľným právam",
+    "category": "07",
+    "categoryName": "Oprávky k dlhodobému nehmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "075000",
+    "accountName": "Oprávky ku goodwillu",
+    "category": "07",
+    "categoryName": "Oprávky k dlhodobému nehmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "079000",
+    "accountName": "Oprávky k ostatnému dlhodobému nehmotnému majetku",
+    "category": "07",
+    "categoryName": "Oprávky k dlhodobému nehmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "081000",
+    "accountName": "Oprávky k stavbám",
+    "category": "08",
+    "categoryName": "Oprávky k dlhodobému hmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "082000",
+    "accountName": "Oprávky k samostatným hnuteľným veciam a k súboru hnuteľných vecí",
+    "category": "08",
+    "categoryName": "Oprávky k dlhodobému hmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "085000",
+    "accountName": "Oprávky k pestovateľským celkom trvalých porastov",
+    "category": "08",
+    "categoryName": "Oprávky k dlhodobému hmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "086000",
+    "accountName": "Oprávky k základnému stádu a ťažným zvieratám",
+    "category": "08",
+    "categoryName": "Oprávky k dlhodobému hmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "089000",
+    "accountName": "Oprávky k ostatnému dlhodobému hmotnému majetku",
+    "category": "08",
+    "categoryName": "Oprávky k dlhodobému hmotnému majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "091000",
+    "accountName": "Opravné položky k dlhodobému nehmotnému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "092000",
+    "accountName": "Opravné položky k dlhodobému hmotnému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "093000",
+    "accountName": "Opravné položky k nedokončenému dlhodobému nehmotnému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "094000",
+    "accountName": "Opravné položky k nedokončenému dlhodobému hmotnému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "095000",
+    "accountName": "Opravné položky k poskytnutým preddavkom na dlhodobý majetok",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "096000",
+    "accountName": "Opravné položky k dlhodobému finančnému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "097000",
+    "accountName": "Opravné položky k nadobudnutému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "0",
+    "className": "DLHODOBÝ MAJETOK",
+    "accountId": "098000",
+    "accountName": "Oprávky k opravnej položke k nadobudnutému majetku",
+    "category": "09",
+    "categoryName": "Opravné položky k majetku"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "111000",
+    "accountName": "Obstaranie materiálu",
+    "category": "11",
+    "categoryName": "Materiál"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "112000",
+    "accountName": "Materiál na sklade",
+    "category": "11",
+    "categoryName": "Materiál"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "119000",
+    "accountName": "Materiál na ceste",
+    "category": "11",
+    "categoryName": "Materiál"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "121000",
+    "accountName": "Nedokončená výroba",
+    "category": "12",
+    "categoryName": "Zásoby vlastnej výroby"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "122000",
+    "accountName": "Polotovary vlastnej výroby",
+    "category": "12",
+    "categoryName": "Zásoby vlastnej výroby"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "123000",
+    "accountName": "Výrobky",
+    "category": "12",
+    "categoryName": "Zásoby vlastnej výroby"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "124000",
+    "accountName": "Zvieratá",
+    "category": "12",
+    "categoryName": "Zásoby vlastnej výroby"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "131000",
+    "accountName": "Obstaranie tovaru",
+    "category": "13",
+    "categoryName": "Tovar"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "132000",
+    "accountName": "Tovar na sklade a v predajniach",
+    "category": "13",
+    "categoryName": "Tovar"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "133000",
+    "accountName": "Nehnuteľnosť na predaj",
+    "category": "13",
+    "categoryName": "Tovar"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "139000",
+    "accountName": "Tovar na ceste",
+    "category": "13",
+    "categoryName": "Tovar"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "191000",
+    "accountName": "Opravné položky k materiálu",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "192000",
+    "accountName": "Opravné položky k nedokončenej výrobe",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "193000",
+    "accountName": "Opravné položky k polotovarom vlastnej výroby",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "194000",
+    "accountName": "Opravné položky k výrobkom",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "195000",
+    "accountName": "Opravné položky k zvieratám",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": "1",
+    "className": "ZÁSOBY",
+    "accountId": "196000",
+    "accountName": "Opravné položky k tovaru",
+    "category": "19",
+    "categoryName": "Opravné položky k zásobám"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "211000",
+    "accountName": "Pokladnica",
+    "category": "21",
+    "categoryName": "Peniaze"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "213000",
+    "accountName": "Ceniny",
+    "category": "21",
+    "categoryName": "Peniaze"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "221000",
+    "accountName": "Bankové účty",
+    "category": "22",
+    "categoryName": "Účty v bankách"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "231000",
+    "accountName": "Krátkodobé bankové úvery",
+    "category": "23",
+    "categoryName": "Bežné bankové úvery"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "232000",
+    "accountName": "Eskontné úvery",
+    "category": "23",
+    "categoryName": "Bežné bankové úvery"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "241000",
+    "accountName": "Vydané krátkodobé dlhopisy",
+    "category": "24",
+    "categoryName": "Iné krátkodobé finančné výpomoci"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "249000",
+    "accountName": "Ostatné krátkodobé finančné výpomoci",
+    "category": "24",
+    "categoryName": "Iné krátkodobé finančné výpomoci"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "251000",
+    "accountName": "Majetkové cenné papiere na obchodovanie",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "252000",
+    "accountName": "Vlastné akcie a vlastné obchodné podiely",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "253000",
+    "accountName": "Dlhové cenné papiere na obchodovanie",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "255000",
+    "accountName": "Vlastné dlhopisy",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "256000",
+    "accountName": "Dlhové cenné papiere so splatnosťou do jedného roka držané do splatnosti",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "257000",
+    "accountName": "Ostatné realizovateľné cenné papiere",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "259000",
+    "accountName": "Obstaranie krátkodobého finančného majetku",
+    "category": "25",
+    "categoryName": "Krátkodobý finančný majetok"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "261000",
+    "accountName": "Peniaze na ceste",
+    "category": "26",
+    "categoryName": "Prevody medzi finančnými účtami"
+  },
+  {
+    "classId": 2,
+    "className": "FINANČNÉ ÚČTY",
+    "accountId": "291000",
+    "accountName": "Opravné položky ku krátkodobému finančnému majetku",
+    "category": "29",
+    "categoryName": "Opravné položky ku krátkodobému finančnému majetku"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "311000",
+    "accountName": "Odberatelia",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "312000",
+    "accountName": "Zmenky na inkaso",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "313000",
+    "accountName": "Pohľadávky za eskontované cenné papiere",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "314000",
+    "accountName": "Poskytnuté preddavky",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "315000",
+    "accountName": "Ostatné pohľadávky",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "316000",
+    "accountName": "Čistá hodnota zákazky",
+    "category": "31",
+    "categoryName": "Pohľadávky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "321000",
+    "accountName": "Dodávatelia",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "322000",
+    "accountName": "Zmenky na úhradu",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "323000",
+    "accountName": "Krátkodobé rezervy",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "324000",
+    "accountName": "Prijaté preddavky",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "325000",
+    "accountName": "Ostatné záväzky",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "326000",
+    "accountName": "Nevyfakturované dodávky",
+    "category": "32",
+    "categoryName": "Záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "331000",
+    "accountName": "Zamestnanci",
+    "category": "33",
+    "categoryName": "Zúčtovanie so zamestnancami a orgánmi sociálneho poistenia a zdravotného poistenia"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "333000",
+    "accountName": "Ostatné záväzky voči zamestnancom",
+    "category": "33",
+    "categoryName": "Zúčtovanie so zamestnancami a orgánmi sociálneho poistenia a zdravotného poistenia"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "335000",
+    "accountName": "Pohľadávky voči zamestnancom",
+    "category": "33",
+    "categoryName": "Zúčtovanie so zamestnancami a orgánmi sociálneho poistenia a zdravotného poistenia"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "336000",
+    "accountName": "Zúčtovanie s orgánmi soc. zabezpečenia a zdr. poistenia",
+    "category": "33",
+    "categoryName": "Zúčtovanie so zamestnancami a orgánmi sociálneho poistenia a zdravotného poistenia"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "341000",
+    "accountName": "Daň z príjmov",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "342000",
+    "accountName": "Ostatné priame dane",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "343000",
+    "accountName": "Daň z pridanej hodnoty",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "345000",
+    "accountName": "Ostatné dane a poplatky",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "346000",
+    "accountName": "Dotácie zo štátneho rozpočtu",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "347000",
+    "accountName": "Ostatné dotácie",
+    "category": "34",
+    "categoryName": "Zúčtovanie daní a dotácií"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "351000",
+    "accountName": "Pohľadávky voči prepojeným účtovným jednotkám a účtovným jednotkám v rámci podielovej účasti",
+    "category": "35",
+    "categoryName": "Pohľadávky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "353000",
+    "accountName": "Pohľadávky za upísané vlastné imanie",
+    "category": "35",
+    "categoryName": "Pohľadávky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "354000",
+    "accountName": "Pohľadávky voči spoločníkom a členom pri úhrade straty",
+    "category": "35",
+    "categoryName": "Pohľadávky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "355000",
+    "accountName": "Ostatné pohľadávky voči spoločníkom a členom",
+    "category": "35",
+    "categoryName": "Pohľadávky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "358000",
+    "accountName": "Pohľadávky voči účastníkom združenia",
+    "category": "35",
+    "categoryName": "Pohľadávky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "361000",
+    "accountName": "Záväzky voči prepojeným účtovným jednotkám a účtovným jednotkám v rámci podielovej účasti",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "364000",
+    "accountName": "Záväzky voči spoločníkom a členom pri rozdeľovaní zisku",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "365000",
+    "accountName": "Ostatné záväzky voči spoločníkom a členom",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "366000",
+    "accountName": "Záväzky voči spoločníkom a členom zo závislej činnosti",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "367000",
+    "accountName": "Záväzky z upísaných nesplatených cenných papierov a vkladov",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "368000",
+    "accountName": "Záväzky voči účastníkom združenia",
+    "category": "36",
+    "categoryName": "Záväzky voči spoločníkom a združeniu"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "371000",
+    "accountName": "Pohľadávky z predaja podniku",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "372000",
+    "accountName": "Záväzky z kúpy podniku",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "373000",
+    "accountName": "Pohľadávky a záväzky z pevných termínových operácií",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "374000",
+    "accountName": "Pohľadávky z nájmu",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "375000",
+    "accountName": "Pohľadávky z vydaných dlhopisov",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "376000",
+    "accountName": "Nakúpené opcie",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "377000",
+    "accountName": "Predané opcie",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "378000",
+    "accountName": "Iné pohľadávky",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "379000",
+    "accountName": "Iné záväzky",
+    "category": "37",
+    "categoryName": "Iné pohľadávky a iné záväzky"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "381000",
+    "accountName": "Náklady budúcich období",
+    "category": "38",
+    "categoryName": "Časové rozlíšenie nákladov a výnosov"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "382000",
+    "accountName": "Komplexné náklady budúcich období",
+    "category": "38",
+    "categoryName": "Časové rozlíšenie nákladov a výnosov"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "383000",
+    "accountName": "Výdavky budúcich období",
+    "category": "38",
+    "categoryName": "Časové rozlíšenie nákladov a výnosov"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "384000",
+    "accountName": "Výnosy budúcich období",
+    "category": "38",
+    "categoryName": "Časové rozlíšenie nákladov a výnosov"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "385000",
+    "accountName": "Príjmy budúcich období",
+    "category": "38",
+    "categoryName": "Časové rozlíšenie nákladov a výnosov"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "391000",
+    "accountName": "Opravné položky k pohľadávkam",
+    "category": "39",
+    "categoryName": "Opravná položka k zúčtovacím vzťahom a vnútorné zúčtovanie"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "395000",
+    "accountName": "Vnútorné zúčtovanie",
+    "category": "39",
+    "categoryName": "Opravná položka k zúčtovacím vzťahom a vnútorné zúčtovanie"
+  },
+  {
+    "classId": 3,
+    "className": "ZÚČTOVACIE VZŤAHY",
+    "accountId": "398000",
+    "accountName": "Spojovací účet pri združení",
+    "category": "39",
+    "categoryName": "Opravná položka k zúčtovacím vzťahom a vnútorné zúčtovanie"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "411000",
+    "accountName": "Základné imanie",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "412000",
+    "accountName": "Emisné ážio",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "413000",
+    "accountName": "Ostatné kapitálové fondy",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "414000",
+    "accountName": "Oceňovacie rozdiely z precenenia majetku a záväzkov",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "415000",
+    "accountName": "Oceňovacie rozdiely z kapitálových účastín",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "416000",
+    "accountName": "Oceňovacie rozdiely z precenenia pri zlúčení, splynutí a rozdelení",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "417000",
+    "accountName": "Zákonný rezervný fond z kapitálových vkladov",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "418000",
+    "accountName": "Nedeliteľný fond z kapitálových vkladov",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "419000",
+    "accountName": "Zmeny základného imania",
+    "category": "41",
+    "categoryName": "Základné imanie a kapitálové fondy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "421000",
+    "accountName": "Zákonný rezervný fond",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "422000",
+    "accountName": "Nedeliteľný fond",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "423000",
+    "accountName": "Štatutárne fondy",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "427000",
+    "accountName": "Ostatné fondy",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "428000",
+    "accountName": "Nerozdelený zisk minulých rokov",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "429000",
+    "accountName": "Neuhradená strata minulých rokov",
+    "category": "42",
+    "categoryName": "Fondy zo zisku a prevedené výsledky hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "431000",
+    "accountName": "Výsledok hospodárenia v schvaľovaní",
+    "category": "43",
+    "categoryName": "Výsledok hospodárenia"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "451000",
+    "accountName": "Rezervy zákonné",
+    "category": "45",
+    "categoryName": "Rezervy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "459000",
+    "accountName": "Ostatné rezervy",
+    "category": "45",
+    "categoryName": "Rezervy"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "461000",
+    "accountName": "Bankové úvery",
+    "category": "46",
+    "categoryName": "Bankové úvery"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "471000",
+    "accountName": "Dlhodobé záväzky voči prepojeným účtovným jednotkám a účtovným jednotkám v rámci podielovej účasti",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "472000",
+    "accountName": "Záväzky zo sociálneho fondu",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "473000",
+    "accountName": "Vydané dlhopisy",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "474000",
+    "accountName": "Záväzky z nájmu",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "475000",
+    "accountName": "Dlhodobé prijaté preddavky",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "476000",
+    "accountName": "Dlhodobé nevyfakturované dodávky",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "478000",
+    "accountName": "Dlhodobé zmenky na úhradu",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "479000",
+    "accountName": "Ostatné dlhodobé záväzky",
+    "category": "47",
+    "categoryName": "Dlhodobé záväzky"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "481000",
+    "accountName": "Odložený daňový záväzok a odložená daňová pohľadávka",
+    "category": "48",
+    "categoryName": "Odložený daňový záväzok a odložená daňová pohľadávka"
+  },
+  {
+    "classId": 4,
+    "className": "KAPITÁLOVÉ ÚČTY A DLHODOBÉ ZÁVÄZKY",
+    "accountId": "491000",
+    "accountName": "Vlastné imanie fyzickej osoby - podnikateľa",
+    "category": "49",
+    "categoryName": "Fyzická osoba - podnikateľ"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "501000",
+    "accountName": "Spotreba materiálu",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "502000",
+    "accountName": "Spotreba energie",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "503000",
+    "accountName": "Spotreba ostatných neskladovateľných dodávok",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "504000",
+    "accountName": "Predaný tovar",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "505000",
+    "accountName": "Tvorba a zúčtovanie opravných položiek k zásobám",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "507000",
+    "accountName": "Predaná nehnuteľnosť",
+    "category": "50",
+    "categoryName": "Spotrebované nákupy"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "511000",
+    "accountName": "Opravy a udržiavanie",
+    "category": "51",
+    "categoryName": "Služby"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "512000",
+    "accountName": "Cestovné",
+    "category": "51",
+    "categoryName": "Služby"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "513000",
+    "accountName": "Náklady na reprezentáciu",
+    "category": "51",
+    "categoryName": "Služby"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "518000",
+    "accountName": "Ostatné služby",
+    "category": "51",
+    "categoryName": "Služby"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "521000",
+    "accountName": "Mzdové náklady",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "522000",
+    "accountName": "Príjmy spoločníkov a členov zo závislej činnosti",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "523000",
+    "accountName": "Odmeny členom orgánov spoločnosti a družstva",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "524000",
+    "accountName": "Zákonné sociálne poistenie",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "525000",
+    "accountName": "Ostatné sociálne poistenie",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "526000",
+    "accountName": "Sociálne náklady fyzickej osoby - podnikateľa",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "527000",
+    "accountName": "Zákonné sociálne náklady",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "528000",
+    "accountName": "Ostatné sociálne náklady",
+    "category": "52",
+    "categoryName": "Osobné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "531000",
+    "accountName": "Daň z motorových vozidiel",
+    "category": "53",
+    "categoryName": "Dane a poplatky"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "532000",
+    "accountName": "Daň z nehnuteľnosti",
+    "category": "53",
+    "categoryName": "Dane a poplatky"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "538000",
+    "accountName": "Ostatné dane a poplatky",
+    "category": "53",
+    "categoryName": "Dane a poplatky"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "541000",
+    "accountName": "Zostatková cena predaného dlh. nehmot. majetku a dlh. hmot. majetku",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "542000",
+    "accountName": "Predaný materiál",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "543000",
+    "accountName": "Dary",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "544000",
+    "accountName": "Zmluvné pokuty, penále a úroky z omeškania",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "545000",
+    "accountName": "Ostatné pokuty, penále a úroky z omeškania",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "546000",
+    "accountName": "Odpis pohľadávky",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "547000",
+    "accountName": "Tvorba a zúčtovanie opravných položiek k pohľadávkam",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "548000",
+    "accountName": "Ostatné náklady na hospodársku činnosť",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "549000",
+    "accountName": "Manká a škody",
+    "category": "54",
+    "categoryName": "Iné náklady na hospodársku činnosť"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "551000",
+    "accountName": "Odpis dlhodobého nehmotného a dlhodobého hmotného majetku",
+    "category": "55",
+    "categoryName": "Odpisy a opravné položky k dlhodobému majetku"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "553000",
+    "accountName": "Tvorba a zúčtovanie opravných položiek k dlhodobému majetku",
+    "category": "55",
+    "categoryName": "Odpisy a opravné položky k dlhodobému majetku"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "555000",
+    "accountName": "Zúčtovanie komplexných nákladov budúcich období",
+    "category": "55",
+    "categoryName": "Odpisy a opravné položky k dlhodobému majetku"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "557000",
+    "accountName": "Zúčtovanie oprávky k opravnej položke k nadobudnutému majetku",
+    "category": "55",
+    "categoryName": "Odpisy a opravné položky k dlhodobému majetku"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "561000",
+    "accountName": "Predané cenné papiere a podiely",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "562000",
+    "accountName": "Úroky",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "563000",
+    "accountName": "Kurzové straty",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "564000",
+    "accountName": "Náklady na precenenie cenných papierov",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "565000",
+    "accountName": "Tvorba a zúčtovanie opravných položiek k finančnému majetku",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "566000",
+    "accountName": "Náklady na krátkodobý finančný majetok",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "567000",
+    "accountName": "Náklady na derivátové operácie",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "568000",
+    "accountName": "Ostatné finančné náklady",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "569000",
+    "accountName": "Manká a škody na finančnom majetku",
+    "category": "56",
+    "categoryName": "Finančné náklady"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "591000",
+    "accountName": "Splatná daň z príjmov",
+    "category": "59",
+    "categoryName": "Daň z príjmov a prevodové účty"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "592000",
+    "accountName": "Odložená daň z príjmov",
+    "category": "59",
+    "categoryName": "Daň z príjmov a prevodové účty"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "595000",
+    "accountName": "Dodatočné odvody dane z príjmov",
+    "category": "59",
+    "categoryName": "Daň z príjmov a prevodové účty"
+  },
+  {
+    "classId": 5,
+    "className": "NÁKLADY",
+    "accountId": "596000",
+    "accountName": "Prevod podielov na výsledku hospodárenia spoločníkom",
+    "category": "59",
+    "categoryName": "Daň z príjmov a prevodové účty"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "611000",
+    "accountName": "Zmena stavu nedokončenej výroby",
+    "category": "61",
+    "categoryName": "Zmeny stavu vnútroorganizačných zásob"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "612000",
+    "accountName": "Zmena stavu polotovarov",
+    "category": "61",
+    "categoryName": "Zmeny stavu vnútroorganizačných zásob"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "613000",
+    "accountName": "Zmena stavu výrobkov",
+    "category": "61",
+    "categoryName": "Zmeny stavu vnútroorganizačných zásob"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "614000",
+    "accountName": "Zmena stavu zvierat",
+    "category": "61",
+    "categoryName": "Zmeny stavu vnútroorganizačných zásob"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "621000",
+    "accountName": "Aktivácia materiálu a tovaru",
+    "category": "62",
+    "categoryName": "Aktivácia"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "622000",
+    "accountName": "Aktivácia vnútroorganizačných služieb",
+    "category": "62",
+    "categoryName": "Aktivácia"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "623000",
+    "accountName": "Aktivácia dlhodobého nehmotného majetku",
+    "category": "62",
+    "categoryName": "Aktivácia"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "624000",
+    "accountName": "Aktivácia dlhodobého hmotného majetku",
+    "category": "62",
+    "categoryName": "Aktivácia"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "641000",
+    "accountName": "Tržby z predaja dlh. nehmotného a dlh. hmotného majetku",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "642000",
+    "accountName": "Tržby z predaja materiálu",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "644000",
+    "accountName": "Zmluvné pokuty, penále a úroky z omeškania",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "645000",
+    "accountName": "Ostatné pokuty, penále a úroky z omeškania",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "646000",
+    "accountName": "Výnosy z odpísaných pohľadávok",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "648000",
+    "accountName": "Ostatné výnosy z hospodárskej činnosti",
+    "category": "64",
+    "categoryName": "Iné výnosy z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "655000",
+    "accountName": "Zúčtovanie komplexných nákladov budúcich období",
+    "category": "65",
+    "categoryName": "Zúčtovanie niektorých položiek z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "657000",
+    "accountName": "Zúčtovanie oprávky k opravnej položke k nadobudnutému majetku",
+    "category": "65",
+    "categoryName": "Zúčtovanie niektorých položiek z hospodárskej činnosti"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "661000",
+    "accountName": "Tržby z predaja cenných papierov a podielov",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "662000",
+    "accountName": "Úroky",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "663000",
+    "accountName": "Kurzové zisky",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "664000",
+    "accountName": "Výnosy z precenenia cenných papierov",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "665000",
+    "accountName": "Výnosy z dlhodobého finančného majetku",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "666000",
+    "accountName": "Výnosy z krátkodobého finančného majetku",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "667000",
+    "accountName": "Výnosy z derivátových operácií",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 6,
+    "className": "VÝNOSY",
+    "accountId": "668000",
+    "accountName": "Ostatné finančné výnosy",
+    "category": "66",
+    "categoryName": "Finančné výnosy"
+  },
+  {
+    "classId": 7,
+    "className": "UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY",
+    "accountId": "701000",
+    "accountName": "Začiatočný účet súvahový",
+    "category": "70",
+    "categoryName": "Súvahové uzávierkové účty"
+  },
+  {
+    "classId": 7,
+    "className": "UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY",
+    "accountId": "702000",
+    "accountName": "Konečný účet súvahový",
+    "category": "70",
+    "categoryName": "Súvahové uzávierkové účty"
+  },
+  {
+    "classId": 7,
+    "className": "UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY",
+    "accountId": "710000",
+    "accountName": "Účet ziskov a strát",
+    "category": "71",
+    "categoryName": "Výsledkový uzávierkový účet"
+  },
+  {
+    "classId": 7,
+    "className": "UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY",
+    "accountId": "711000",
+    "accountName": "Začiatočný účet nákladov a výnosov",
+    "category": "71",
+    "categoryName": "Výsledkový uzávierkový účet"
+  },
+  {
+    "classId": 7,
+    "className": "UZÁVIERKOVÉ ÚČTY A PODSÚVAHOVÉ ÚČTY",
+    "accountId": "799000",
+    "accountName": "Evidenčný účet",
+    "category": "75-79",
+    "categoryName": "Podsúvahové účty"
+  }
+]
