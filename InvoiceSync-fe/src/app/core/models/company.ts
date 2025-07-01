@@ -4,7 +4,7 @@
 
 export interface Company {
   city?: string;
-  id?: number;
+  id: number;
   lastModifiedBy?: string;
   lastModifiedDate?: string;
   name?: string;
