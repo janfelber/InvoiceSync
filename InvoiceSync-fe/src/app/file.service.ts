@@ -1,7 +1,6 @@
 import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {InvoiceRequest} from "./models/invoice-request";
 
 @Injectable({
   providedIn: 'root'
