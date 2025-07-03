@@ -34,6 +34,18 @@ export class FileService {
     });
   }
 
+  uploadTest(formData: FormData){
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("token")}`
+    });
+
+    return this.http.post(`${this.server}/api/v1/convert/to-pohoda`, formData, {
+      headers: headers,
+      responseType: 'blob'
+    });
+  }
+
+
   uploadPdf(formData: FormData): Observable<HttpEvent<string[]>> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
