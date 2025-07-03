@@ -35,6 +35,12 @@ export const navbarDataRedesign = [
     layout: 'default'
   },
   {
+    routerLink: 'web/convertor',
+    iconComponent: IconReceiptsComponent,
+    label: 'Konvertor',
+    layout: 'default'
+  },
+  {
     routerLink: 'users',
     label: 'Users',
     layout: 'admin',

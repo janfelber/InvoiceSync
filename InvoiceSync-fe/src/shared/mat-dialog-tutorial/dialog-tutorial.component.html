@@ -1,0 +1,58 @@
+<div
+  *ngIf="show"
+  (click)="onBackdropClick($event)"
+  class="modal-overlay fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+>
+  <div class="relative p-4 w-full max-w-[990px] h-[78vh]" (click)="$event.stopPropagation()">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow-sm flex flex-col h-full overflow-hidden">
+
+      <!-- Modal header -->
+      <div class="flex items-center justify-end p-2 border-b border-gray-200">
+        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex items-center justify-center" (click)="onClose()">
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </div>
+
+      <!-- Tutorial Content -->
+      <div class="flex-1 flex flex-col">
+
+        <!-- Image/Video part -->
+        <div class="h-[500px] bg-gray-100 flex items-center justify-center">
+          <!-- Tu daj obrazok alebo video -->
+          <img src="https://via.placeholder.com/600x300" alt="Tutorial Preview" class="max-h-full object-contain">
+        </div>
+
+        <!-- Text + Arrows -->
+        <div class="bg-white p-4 flex items-center justify-between border-t border-gray-200 min-h-[150px]">
+          <!-- Left arrow -->
+          <button (click)="prevTutorial()" class="flex items-center justify-center">
+            <div class="bg-gray-100 rounded-xl p-2 flex items-center justify-center w-10 h-20 hover:bg-gray-200">
+              <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </div>
+          </button>
+
+          <!-- Tutorial text -->
+          <div class="flex-1 text-center px-4 flex items-center justify-center">
+            <p class="text-gray-700">{{ currentTutorialText }}</p>
+          </div>
+
+          <!-- Right arrow -->
+          <button (click)="nextTutorial()" class="flex items-center justify-center">
+            <div class="bg-gray-100 rounded-xl p-2 flex items-center justify-center w-10 h-20 hover:bg-gray-200">
+              <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
