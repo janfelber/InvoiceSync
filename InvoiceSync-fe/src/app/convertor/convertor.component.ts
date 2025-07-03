@@ -2,9 +2,7 @@ import {Component, EventEmitter, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {HttpErrorResponse} from "@angular/common/http";
 import {FileService} from "../file.service";
-import {AxiosService} from "../axios.service";
 import {FormsModule} from "@angular/forms";
-import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {DialogTutorialComponent} from "../../shared/mat-dialog-tutorial/dialog-tutorial.component";
 import {RouterLink} from "@angular/router";
 
@@ -91,4 +89,5 @@ export class ConvertorComponent {
   removeFile(): void {
     this.fileName = '';
   }
+
 }

@@ -14,6 +14,7 @@ import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.c
 import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
 import {PricingComponent} from "./pages/pricing/pricing.component";
 import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
+import {ConvertorComponent} from "./convertor/convertor.component";
 
 export const routes: Routes = [
   {
@@ -70,6 +71,10 @@ export const routes: Routes = [
       {
         path: 'web/mobile-app',
         component: MobileAppComponent
+      },
+      {
+        path: 'web/data-transfer',
+        component: ConvertorComponent
       }
     ]
   },
