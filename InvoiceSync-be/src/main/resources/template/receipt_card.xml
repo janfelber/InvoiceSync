@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13203.7 (28.11.2022)" application="Transformace" note="Užívateľský export" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<int:intDoc version="2.0" xmlns:int="http://www.stormware.cz/schema/version_2/intDoc.xsd">
+			<int:intDocHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:number>
+					<typ:numberRequested>22DPH00009</typ:numberRequested>
+				</int:number>
+				<int:symVar>2122000005</int:symVar>
+				<int:date>2022-01-13</int:date>
+				<int:dateTax>2022-01-13</int:dateTax>
+				<int:dateAccounting>2022-01-13</int:dateAccounting>
+				<int:dateKVDPH>2022-01-13</int:dateKVDPH>
+				<int:accounting>
+					<typ:ids>aInt</typ:ids>
+				</int:accounting>
+				<int:classificationVAT>
+					<typ:ids>DDsl§69</typ:ids>
+				</int:classificationVAT>
+				<int:classificationKVDPH>
+					<typ:ids>B1</typ:ids>
+				</int:classificationKVDPH>
+				<int:text>Priznanie DPH z nadobudnutia služby, FP č.  70220005</int:text>
+				<int:partnerIdentity>
+					<typ:address>
+						<typ:company>NOVIKO s.r.o.</typ:company>
+						<typ:city>Brno</typ:city>
+						<typ:street>Palackého třída 163</typ:street>
+						<typ:zip>612 00</typ:zip>
+						<typ:ico>28433092</typ:ico>
+						<typ:dic>28433092</typ:dic>
+						<typ:icDph>CZ28433092</typ:icDph>
+					</typ:address>
+				</int:partnerIdentity>
+				<int:myIdentity>
+					<typ:address>
+						<typ:company>Firma Test</typ:company>
+						<typ:surname></typ:surname>
+						<typ:city>Test</typ:city>
+						<typ:street>Ulica</typ:street>
+						<typ:number>11</typ:number>
+						<typ:zip>111 11</typ:zip>
+						<typ:ico>11111111</typ:ico>
+						<typ:dic>1111111111</typ:dic>
+						<typ:icDph>SK1111111111</typ:icDph>
+					</typ:address>
+				</int:myIdentity>
+				<int:liquidation>false</int:liquidation>
+				<int:originalDocumentNumber>2122000005</int:originalDocumentNumber>
+				<int:markRecord>true</int:markRecord>
+			</int:intDocHeader>
+			<int:intDocDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:intDocItem>
+					<int:text>Vymeranie DPH, FP č.  70220005</int:text>
+					<int:quantity>1.0</int:quantity>
+					<int:coefficient>1.0</int:coefficient>
+					<int:payVAT>false</int:payVAT>
+					<int:rateVAT>high</int:rateVAT>
+					<int:discountPercentage>0.0</int:discountPercentage>
+					<int:homeCurrency>
+						<typ:unitPrice>319.43</typ:unitPrice>
+						<typ:price>319.43</typ:price>
+						<typ:priceVAT>63.89</typ:priceVAT>
+						<typ:priceSum>383.32</typ:priceSum>
+					</int:homeCurrency>
+					<int:classificationVAT>
+						<typ:ids>DDsl§69</typ:ids>
+					</int:classificationVAT>
+					<int:classificationKVDPH>
+						<typ:ids>B1</typ:ids>
+					</int:classificationKVDPH>
+					<int:PDP>false</int:PDP>
+				</int:intDocItem>
+			</int:intDocDetail>
+			<int:intDocSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:roundingDocument>none</int:roundingDocument>
+				<int:roundingVAT>none</int:roundingVAT>
+				<int:homeCurrency>
+					<typ:priceNone>0</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>319.43</typ:priceHigh>
+					<typ:priceHighVAT>63.89</typ:priceHighVAT>
+					<typ:priceHighSum>383.32</typ:priceHighSum>
+					<typ:price3>0</typ:price3>
+					<typ:price3VAT>0</typ:price3VAT>
+					<typ:price3Sum>0</typ:price3Sum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</int:homeCurrency>
+			</int:intDocSummary>
+		</int:intDoc>
+	</dat:dataPackItem>
+</dat:dataPack>

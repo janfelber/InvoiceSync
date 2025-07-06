@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReceiptRequest} from "../../../core/models/receipt-request";
 import {ToastrService} from "ngx-toastr";
@@ -35,8 +35,18 @@ export class ReceiptDetailsComponent implements OnInit {
     private receiptService: ReceiptService,
     private accountCharts: AccountChartService,
     private route: ActivatedRoute,
+    private fb: FormBuilder,
     private toastr: ToastrService,
   ) {
+  }
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.receiptId = params.get('id') || '';
+    });
+    initFlowbite();
+    this.initForm();
+    this.onFetchReceipt();
   }
 
   receiptId: any = null;
@@ -47,6 +57,9 @@ export class ReceiptDetailsComponent implements OnInit {
   drawerOpen = false;
   receipt: any = {};
   selectedItemName: string = '';
+
+  receiptForm!: FormGroup;
+  groupedAccounts: any[] = [];
 
   items: {
     accountText?: string;
@@ -77,15 +90,58 @@ export class ReceiptDetailsComponent implements OnInit {
     items: []
   };
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.receiptId = params.get('id') || '';
+
+
+  private initForm(): void {
+    this.receiptForm = this.fb.group({
+      receiptDetails: this.fb.group({
+        numberRequested: ['neviem ci toto pojde'],
+        date: ['', Validators.required],
+        paidByCard: [false],
+        datePayment: [''],
+        dateTax: [''],
+        accountValue: [''],
+        classificationVAT: [''],
+        classificationKVVAT: [''],
+        description: ['']
+      }),
+      partner: this.fb.group({
+        name: ['', Validators.required],
+        city: [''],
+        street: [''],
+        zip: [''],
+        registrationNumber: [''],
+        taxId: [''],
+        vatId: ['']
+      }),
+      myIdentity: this.fb.group({
+        id: [null],
+        name: ['', Validators.required],
+        surname: [''],
+        city: [''],
+        street: [''],
+        streetNumber: [''],
+        zip: [''],
+        registrationNumber: [''],
+        taxId: [''],
+        vatId: ['']
+      }),
+      items: this.fb.array([])
     });
-    initFlowbite();
-    this.onFetchReceipt();
   }
 
-  groupedAccounts: any[] = [];
+  createItem(itemData: any): FormGroup {
+    return this.fb.group({
+      id: [itemData.id],
+      accountText: [itemData.accountText],
+      name: [itemData.name],
+      quantity: [itemData.quantity],
+      priceWithoutVAT: [itemData.priceWithoutVAT],
+      vatRate: [itemData.vatRate],
+      priceWithVAT: [itemData.priceWithVAT],
+      accountValue: [itemData.accountValue],
+    });
+  }
 
   onFetchAccounts() {
     this.accountCharts.findAccountsByCompany({
@@ -97,17 +153,105 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   onFetchReceipt() {
-    this.receiptService.getReceiptById({
-      receiptId: this.receiptId
-    }).then(response => {
-      this.receiptResponse = response.data
-      console.log("toto pride", this.receiptResponse)
-      this.items = response.data.items;
-      this.companyId = response.data.company!.id;
-      // this.receipt = data.receiptDetails;
-      // this.partner = data.partner;
-      // this.items = data.items;
-    });
+    this.receiptService.getReceiptById({ receiptId: this.receiptId })
+      .then(response => {
+        this.receiptResponse = response.data;
+
+        this.items = this.receiptResponse.items || [];
+        this.companyId = this.receiptResponse.company?.id ?? null;
+
+        if (this.receiptResponse.company) {
+          this.receiptForm.get('myIdentity')?.patchValue(this.receiptResponse.company);
+        }
+
+        if (this.receiptResponse.receiptDetails) {
+          this.receiptForm.get('receiptDetails')?.patchValue(this.receiptResponse.receiptDetails);
+        }
+
+        if (this.receiptResponse.partner) {
+          this.receiptForm.get('partner')?.patchValue(this.receiptResponse.partner);
+        }
+
+        const itemsFA = this.receiptForm.get('items') as FormArray;
+        itemsFA.clear();  // vymaž existujúce ak sú
+        this.receiptResponse.items?.forEach((item: any) => {
+          itemsFA.push(this.createItem(item));
+        });
+
+        // Tu vypíš formu:
+        console.log('Celá forma:', this.receiptForm.value);
+        console.log('myIdentity:', this.receiptForm.get('myIdentity')?.value);
+        console.log('receiptDetails:', this.receiptForm.get('receiptDetails')?.value);
+        console.log('partner:', this.receiptForm.get('partner')?.value);
+      })
+      .catch(error => {
+        console.error('Chyba pri načítaní bločku:', error);
+      });
+  }
+
+  async exportReceiptXml() {
+    if (this.receiptForm.invalid) {
+      this.toastr.error('Formulár obsahuje chyby, oprav ich prosím.');
+      return;
+    }
+
+    const formValue = this.receiptForm.value;
+
+    const receiptRequest = {
+      receiptDetails: formValue.receiptDetails,
+      partner: formValue.partner,
+      myIdentity: formValue.myIdentity,
+      items: formValue.items,
+    };
+
+    console.log("Posielam na export:", receiptRequest);
+
+    try {
+      const response = await this.receiptService.exportReceiptPohoda({ receipt: receiptRequest });
+
+      this.modalOpen = false;
+      this.toastr.success('Bloček exportovaný úspešne', '', {
+        timeOut: 3000,
+        progressBar: true,
+        progressAnimation: 'increasing',
+        closeButton: true,
+        positionClass: 'toast-top-right',
+      });
+
+      const blob = new Blob([response.data], { type: 'application/xml' });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+
+      a.download = `receipt_${new Date().toISOString()}.xml`;
+
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      window.URL.revokeObjectURL(url);
+
+    } catch (error: any) {
+      if (error.response?.status === 429) {
+        this.toastr.warning('Mesačný limit pre export bločkov vyčerpaný.', '', {
+          timeOut: 5000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+      } else {
+        console.error('Chyba pri exporte:', error);
+        this.toastr.error('Chyba pri exporte', '', {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+      }
+    }
   }
 
   async exportReceipt() {
@@ -115,7 +259,7 @@ export class ReceiptDetailsComponent implements OnInit {
 
     this.receiptRequest = {
       datePayment: this.receiptResponse?.receiptDetails?.datePayment,
-      receiptNumber: "1234",
+      receiptNumber: "testCard",
       date: this.receiptResponse.receiptDetails?.date,
       dateTax: this.receiptResponse.receiptDetails?.dateTax,
       accounting: this.receiptResponse.receiptDetails?.accountValue,

@@ -5,23 +5,16 @@ import java.util.List;
 import com.invoicesync.shared.dto.identity.MyIdentityDTO;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record ReceiptRequestDTO(
+    ReceiptRequestDetailsDTO receiptDetails,
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ReceiptRequestDTO {
+    PartnerDto partner,
 
-  private ReceiptRequestDetailsDTO receiptDetails;
+    MyIdentityDTO myIdentity,
+    List<ReceiptItemDto> items
+) {
 
-  private PartnerDto partner;
-
-  private MyIdentityDTO myIdentity;
-
-  private List<ReceiptItemDto> items;
-
+  public boolean isPaidByCard() {
+    return receiptDetails != null && receiptDetails.isPaidByCard();
+  }
 }

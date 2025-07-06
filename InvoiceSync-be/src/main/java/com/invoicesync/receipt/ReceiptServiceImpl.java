@@ -119,6 +119,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     try {
 
       final String receiptId = decodeQRCode(qrCodeImage.getInputStream());
+      System.out.println(receiptId);
 
       final String response = sendPostRequest(receiptId);
 

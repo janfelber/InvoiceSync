@@ -17,6 +17,8 @@ public class ReceiptRequestDetailsDTO {
 
   private String datePayment;
 
+  private boolean isPaidByCard;
+
   private String dateTax;
 
   private String accountValue;

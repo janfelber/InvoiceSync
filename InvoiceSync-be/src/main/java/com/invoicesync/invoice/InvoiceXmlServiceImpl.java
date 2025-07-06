@@ -19,14 +19,17 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.invoicesync.invoice.dto.InvoiceRequestDTO;
 import com.invoicesync.receipt.dto.ReceiptRequest;
+import com.invoicesync.receipt.dto.ReceiptRequestDTO;
 import com.invoicesync.subscription.SubscriptionService;
 import com.invoicesync.subscription.UserService;
 import com.invoicesync.subscription.enums.LimitType;
 import com.invoicesync.subscription.guard.LimitGuardService;
-import com.invoicesync.xml.utils.InvoiceXmlHelper;
+import com.invoicesync.xml.utils.XmlHelper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InvoiceXmlServiceImpl implements InvoiceXmlService{
 
-  private final InvoiceXmlHelper xmlHelper;
+  private final XmlHelper xmlHelper;
 
   private final SubscriptionService subscriptionService;
 
@@ -63,6 +66,63 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
     transformer.transform(new DOMSource(doc), new StreamResult(outputStream));
 
     return outputStream.toByteArray();
+  }
+
+  @Override
+  public byte[] generatePohodaExpenseReceiptXml(final ReceiptRequestDTO request, final Authentication connectedUser)
+      throws Exception {
+
+    final String templatePath = resolveTemplatePath(request);
+
+    final File xmlFile = new File(templatePath);
+    final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    dbFactory.setNamespaceAware(true);
+    final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+    final Document doc = dBuilder.parse(xmlFile);
+    doc.getDocumentElement().normalize();
+
+    if (!request.isPaidByCard()) {
+      xmlHelper.updateCashReceiptDetails(doc, request.receiptDetails());
+      xmlHelper.updateCashReceiptMyIdentity(doc, request.myIdentity());
+      xmlHelper.updateCashReceiptPartner(doc, request.partner());
+      xmlHelper.updateCashReceiptItems(doc, request.items());
+    } else {
+      xmlHelper.updateCardReceiptDetails(doc, request.receiptDetails());
+      xmlHelper.updateCardReceiptMyIdentity(doc, request.myIdentity());
+      xmlHelper.updateCardReceiptPartner(doc, request.partner());
+      xmlHelper.updateCardReceiptItems(doc, request.items());
+    }
+
+    removeWhitespaceNodes(doc);
+
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.transform(new DOMSource(doc), new StreamResult(outputStream));
+
+    return outputStream.toByteArray();
+  }
+
+  private void removeWhitespaceNodes(final Node node) {
+    final NodeList children = node.getChildNodes();
+    for (int i = children.getLength() - 1; i >= 0; i--) {
+      final Node child = children.item(i);
+      if (child.getNodeType() == Node.TEXT_NODE && child.getTextContent().trim().isEmpty()) {
+        node.removeChild(child);
+      } else if (child.hasChildNodes()) {
+        removeWhitespaceNodes(child);
+      }
+    }
+  }
+
+  private String resolveTemplatePath(final ReceiptRequestDTO receipt) {
+    if (receipt.isPaidByCard()) {
+      System.out.println("Paid by card");
+      return "src/main/resources/template/receipt_card.xml";
+    } else {
+      System.out.println("Paid by cash");
+      return "src/main/resources/template/Pokladna.xml";
+    }
   }
 
   @Override
