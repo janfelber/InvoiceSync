@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="53753020" key="b95a3675-559c-40c9-9c09-b6c6d39530a5" programVersion="13901.13 (14.1.2025)" application="Transformace" note="Užívateľský export, X = Označené, X = Označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<int:intDoc version="2.0" xmlns:int="http://www.stormware.cz/schema/version_2/intDoc.xsd">
+			<int:intDocHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:number>
+					<typ:numberRequested>24PK036</typ:numberRequested>
+				</int:number>
+				<int:symVar>24036</int:symVar>
+				<int:date>2024-11-08</int:date>
+				<int:dateTax>2024-11-08</int:dateTax>
+				<int:dateAccounting>2024-11-08</int:dateAccounting>
+				<int:accounting>
+					<typ:ids>501PHL 80%</typ:ids>
+				</int:accounting>
+				<int:classificationVAT>
+					<typ:ids>PD</typ:ids>
+				</int:classificationVAT>
+				<int:classificationKVDPH>
+					<typ:ids>B3</typ:ids>
+				</int:classificationKVDPH>
+				<int:text>platba PK - spotreba PHL 80% 39,15L*1,509€</int:text>
+				<int:partnerIdentity>
+					<typ:address linkToAddress="true">
+						<typ:company>OMV Slovensko s.r.o.</typ:company>
+						<typ:city>Bratislava 5</typ:city>
+						<typ:street>Einsteinova 25</typ:street>
+						<typ:zip>851 01</typ:zip>
+						<typ:ico>00604381</typ:ico>
+						<typ:icDph>SK2020491407</typ:icDph>
+					</typ:address>
+				</int:partnerIdentity>
+				<int:myIdentity>
+					<typ:address>
+						<typ:company>MOptik s.r.o.</typ:company>
+						<typ:city>Vráble</typ:city>
+						<typ:street>Sídl.Lúky </typ:street>
+						<typ:number>1136/70</typ:number>
+						<typ:zip>952 01</typ:zip>
+						<typ:ico>53753020</typ:ico>
+						<typ:dic>2121484244</typ:dic>
+						<typ:icDph>SK2121484244</typ:icDph>
+					</typ:address>
+				</int:myIdentity>
+				<int:liquidation>false</int:liquidation>
+				<int:lock2>false</int:lock2>
+				<int:markRecord>true</int:markRecord>
+			</int:intDocHeader>
+			<int:intDocDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:intDocItem>
+					<int:text>platba PK - spotreba PHL 80% 39,15L*1,509€ (daňová časť 80 %)</int:text>
+					<int:quantity>1.0</int:quantity>
+					<int:coefficient>1.0</int:coefficient>
+					<int:payVAT>false</int:payVAT>
+					<int:rateVAT>high</int:rateVAT>
+					<int:discountPercentage>0.0</int:discountPercentage>
+					<int:homeCurrency>
+						<typ:unitPrice>39.38</typ:unitPrice>
+						<typ:price>39.38</typ:price>
+						<typ:priceVAT>7.88</typ:priceVAT>
+						<typ:priceSum>47.26</typ:priceSum>
+					</int:homeCurrency>
+					<int:PDP>false</int:PDP>
+				</int:intDocItem>
+				<int:intDocItem>
+					<int:text>platba PK - spotreba PHL 80% 39,15L*1,509€ (nedaňová časť 20 %)</int:text>
+					<int:quantity>1.0</int:quantity>
+					<int:coefficient>1.0</int:coefficient>
+					<int:payVAT>false</int:payVAT>
+					<int:rateVAT>high</int:rateVAT>
+					<int:discountPercentage>0.0</int:discountPercentage>
+					<int:homeCurrency>
+						<typ:unitPrice>9.85</typ:unitPrice>
+						<typ:price>9.85</typ:price>
+						<typ:priceVAT>1.97</typ:priceVAT>
+						<typ:priceSum>11.82</typ:priceSum>
+					</int:homeCurrency>
+					<int:accounting>
+						<typ:ids>501999</typ:ids>
+					</int:accounting>
+					<int:classificationVAT>
+						<typ:ids>PN</typ:ids>
+						<typ:classificationVATType>nonSubsume</typ:classificationVATType>
+					</int:classificationVAT>
+					<int:PDP>false</int:PDP>
+				</int:intDocItem>
+			</int:intDocDetail>
+			<int:intDocSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<int:roundingDocument>none</int:roundingDocument>
+				<int:roundingVAT>none</int:roundingVAT>
+				<int:homeCurrency>
+					<typ:priceNone>0</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>49.23</typ:priceHigh>
+					<typ:priceHighVAT>9.85</typ:priceHighVAT>
+					<typ:priceHighSum>59.08</typ:priceHighSum>
+					<typ:price3>0</typ:price3>
+					<typ:price3VAT>0</typ:price3VAT>
+					<typ:price3Sum>0</typ:price3Sum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</int:homeCurrency>
+			</int:intDocSummary>
+		</int:intDoc>
+	</dat:dataPackItem>
+</dat:dataPack>

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.invoicesync.invoice.dto.InvoiceRequestDTO;
 import com.invoicesync.invoice.InvoiceXmlService;
-import com.invoicesync.xml.utils.InvoiceXmlHelper;
+import com.invoicesync.invoice.dto.InvoiceRequestDTO;
+import com.invoicesync.xml.utils.XmlHelper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/pohoda")
 public class PohodaController {
 
-  private final InvoiceXmlHelper xmlHelper;
+  private final XmlHelper xmlHelper;
 
   private final InvoiceXmlService invoiceXmlService;
 

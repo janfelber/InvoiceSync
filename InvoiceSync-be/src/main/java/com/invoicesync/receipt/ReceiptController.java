@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.invoice.InvoiceXmlService;
 import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
+import com.invoicesync.receipt.dto.ReceiptRequestDTO;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
-import com.invoicesync.invoice.InvoiceXmlService;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.shared.exception.LimitExceededException;
 
@@ -53,6 +54,27 @@ public class ReceiptController {
       return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @PostMapping("/export/receipt")
+  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
+      final Authentication connectedUser) {
+    try {
+      final byte[] xmlData = invoiceXmlService.generatePohodaExpenseReceiptXml(receiptRequestDTO, connectedUser);
+      System.out.println(receiptRequestDTO);
+
+      final HttpHeaders headers = new HttpHeaders();
+      headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
+      headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
+
+      return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
+    } catch (Exception e) {
+      // Tu daj logovanie podla tvojej logovacej knižnice alebo system.err
+      System.err.println("Chyba pri generovani Pohoda XML: " + e.getMessage());
+      e.printStackTrace();
+      // Prípadne môžeš vyhodiť runtime exception alebo vrátiť null
+      throw new RuntimeException("Nepodarilo sa vygenerovať Pohoda XML", e);
     }
   }
 

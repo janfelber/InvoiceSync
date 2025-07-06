@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13203.7 (28.11.2022)" application="Transformace" note="Užívateľský export" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<vch:voucher version="2.0" xmlns:vch="http://www.stormware.cz/schema/version_2/voucher.xsd">
+			<vch:voucherHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<vch:voucherType>expense</vch:voucherType>
+				<vch:cashAccount>
+					<typ:ids>HP</typ:ids>
+				</vch:cashAccount>
+				<vch:number>
+					<typ:numberRequested>22HV00001</typ:numberRequested>
+				</vch:number>
+				<vch:date>2025-05-06</vch:date>
+				<vch:datePayment>2025-05-06</vch:datePayment>
+				<vch:dateTax>2025-05-06</vch:dateTax>
+				<vch:accounting>
+					<typ:ids>4V</typ:ids>
+				</vch:accounting>
+				<vch:classificationVAT>
+					<typ:ids>PD</typ:ids>
+				</vch:classificationVAT>
+				<vch:classificationKVDPH>
+					<typ:ids>B1</typ:ids>
+				</vch:classificationKVDPH>
+				<vch:text>Hotovosť výdaj</vch:text>
+				<vch:myIdentity>
+					<typ:address>
+						<typ:company>Firma Test</typ:company>
+						<typ:surname></typ:surname>
+						<typ:city>Test</typ:city>
+						<typ:street>Ulica</typ:street>
+						<typ:number>11</typ:number>
+						<typ:zip>111 11</typ:zip>
+						<typ:ico>11111111</typ:ico>
+						<typ:dic>1111111111</typ:dic>
+						<typ:icDph>SK1111111111</typ:icDph>
+					</typ:address>
+				</vch:myIdentity>
+				<vch:markRecord>true</vch:markRecord>
+			</vch:voucherHeader>
+			<vch:voucherDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+			</vch:voucherDetail>
+			<vch:voucherSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<vch:roundingDocument>none</vch:roundingDocument>
+				<vch:roundingVAT>noneEveryRate</vch:roundingVAT>
+				<vch:homeCurrency>
+					<typ:priceNone>0</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>40</typ:priceHigh>
+					<typ:priceHighVAT>8</typ:priceHighVAT>
+					<typ:priceHighSum>48</typ:priceHighSum>
+					<typ:price3>0</typ:price3>
+					<typ:price3VAT>0</typ:price3VAT>
+					<typ:price3Sum>0</typ:price3Sum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</vch:homeCurrency>
+			</vch:voucherSummary>
+		</vch:voucher>
+	</dat:dataPackItem>
+</dat:dataPack>
