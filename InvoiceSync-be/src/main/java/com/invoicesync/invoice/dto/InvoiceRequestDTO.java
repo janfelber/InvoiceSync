@@ -2,26 +2,24 @@ package com.invoicesync.invoice.dto;
 
 import java.util.List;
 
+import com.invoicesync.invoice.InvoiceType;
+import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.shared.dto.identity.MyIdentityDTO;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record InvoiceRequestDTO(
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class InvoiceRequestDTO {
+    InvoiceRequestDetailsDTO invoiceDetails,
 
-  private InvoiceRequestDetailsDTO invoiceDetails;
+    PartnerDto partner,
 
-  private PartnerDto partner;
+    MyIdentityDTO myIdentity,
 
-  private List<InvoiceItemDTO> items;
+    List<ReceiptItemDto> items
 
-  private MyIdentityDTO myIdentity;
+) {
 
+  public InvoiceType invoiceType() {
+    return invoiceDetails.invoiceType();
+  }
 }

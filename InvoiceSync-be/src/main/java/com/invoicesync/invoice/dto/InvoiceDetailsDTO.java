@@ -9,18 +9,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoiceResponseDetailsDTO {
+public class InvoiceDetailsDTO {
 
   private String invoiceNumber;
 
   private String variableSymbol;
 
-  private String pairingSymbol;
-
   private String issueDate;
 
   private String taxDate;
 
+  private String accountingDate;
+
   private String dueDate;
+
+  private String status;
+
+  private String invoiceType;
 
 }

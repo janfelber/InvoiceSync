@@ -1,7 +1,7 @@
 package com.invoicesync.subscription.enums;
 
 public enum LimitType {
-  INVOICE_EXPORT,
+  INVOICE_PROCESS,
   RECEIPT_EXPORT,
   INVOICE_CREATE
 }

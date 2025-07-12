@@ -2,7 +2,7 @@ package com.invoicesync.xml.utils;
 
 import static com.invoicesync.xml.utils.PohodaXmlConstants.*;
 import static com.invoicesync.xml.utils.PohodaXmlConstants.General.*;
-import static com.invoicesync.xml.utils.PohodaXmlParentTagNames.*;
+import static com.invoicesync.xml.utils.PohodaXmlParentTagNames.NUMBER;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,7 +14,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.invoicesync.invoice.dto.InvoiceItemDTO;
 import com.invoicesync.invoice.dto.InvoiceRequestDetailsDTO;
 import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.receipt.dto.ReceiptRequestDetailsDTO;
@@ -24,48 +23,53 @@ import com.invoicesync.shared.dto.identity.PartnerDto;
 @Component
 public class XmlHelper {
 
-  public void updateInvoiceDetails(final Document doc, final InvoiceRequestDetailsDTO invoiceRequestDetailsDTO) {
-    replaceTextContent(doc, INVOICE_TYPE, invoiceRequestDetailsDTO.getInvoiceType(), null);
-    replaceTextContent(doc, INVOICE_NUMBER, invoiceRequestDetailsDTO.getInvoiceNumber(),
+  public void updateInvoiceDetails(final Document doc, final InvoiceRequestDetailsDTO invoice) {
+    replaceTextContent(doc, INVOICE_NUMBER, invoice.numberRequested(),
         NUMBER);
-    replaceTextContent(doc, VARIABLE_SYMBOL, invoiceRequestDetailsDTO.getVariableSymbol(), null);
-    replaceTextContent(doc, PAIRING_SYMBOL, invoiceRequestDetailsDTO.getPairingSymbol(), null);
-    replaceTextContent(doc, DATE, invoiceRequestDetailsDTO.getDateIssue(), null);
-    replaceTextContent(doc, DATE_TAX, invoiceRequestDetailsDTO.getDateTax(), null);
-    replaceTextContent(doc, DATE_ACCOUNTING, invoiceRequestDetailsDTO.getDateAccounting(), null);
-    replaceTextContent(doc, DATE_DUE, invoiceRequestDetailsDTO.getDateDue(), null);
+    replaceTextContent(doc, VARIABLE_SYMBOL, invoice.variableSymbol(), null);
+    replaceTextContent(doc, PAIRING_SYMBOL, invoice.originalDocument(), null);
+    replaceTextContent(doc, DATE, invoice.issueDate(), null);
+    replaceTextContent(doc, DATE_TAX, invoice.taxDate(), null);
+    replaceTextContent(doc, DATE_ACCOUNTING, invoice.accountingDate(), null);
+    replaceTextContent(doc, DATE_DUE, invoice.dueDate(), null);
+    replaceTextContent(doc, ACCOUNT_VALUE, invoice.accountValue(), ReceivedInvoice.ACCOUNTING);
+    replaceTextContent(doc, ACCOUNT_VALUE, invoice.classificationVAT(),
+        ReceivedInvoice.CLASSIFICATION_VAT);
+    replaceTextContent(doc, ACCOUNT_VALUE, invoice.classificationKVVAT(),
+        ReceivedInvoice.CLASSIFICATION_KV_VAT);
+    replaceTextContent(doc, ReceivedInvoice.TEXT, invoice.description(), null);
   }
 
-  public void updateMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
-    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), MY_IDENTITY);
-    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), MY_IDENTITY);
-    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), MY_IDENTITY);
-    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), MY_IDENTITY);
-    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), MY_IDENTITY);
+  public void updateInvoiceMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
+    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), ReceivedInvoice.MY_IDENTITY);
     replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
-        MY_IDENTITY);
-    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), MY_IDENTITY);
-    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), MY_IDENTITY);
+        ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), ReceivedInvoice.MY_IDENTITY);
   }
 
   public void updatePartner(final Document doc, final PartnerDto partnerDTO) {
-    replaceTextContent(doc, NAME, partnerDTO.getName(), PARTNER);
-    replaceTextContent(doc, CITY, partnerDTO.getCity(), PARTNER);
-    replaceTextContent(doc, STREET, partnerDTO.getStreet(), PARTNER);
-    replaceTextContent(doc, ZIP, partnerDTO.getZip(), PARTNER);
-    replaceTextContent(doc, REGISTRATION_NUMBER, partnerDTO.getRegistrationNumber(), PARTNER);
-    replaceTextContent(doc, TAX_ID, partnerDTO.getTaxId(), PARTNER);
-    replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), PARTNER);
+    replaceTextContent(doc, COMPANY, partnerDTO.getName(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, CITY, partnerDTO.getCity(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, STREET, partnerDTO.getStreet(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, ZIP, partnerDTO.getZip(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, REGISTRATION_NUMBER, partnerDTO.getRegistrationNumber(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, TAX_ID, partnerDTO.getTaxId(), ReceivedInvoice.PARTNER);
+    replaceTextContent(doc, VAT_ID, partnerDTO.getVatId(), ReceivedInvoice.PARTNER);
   }
 
-  public void updateInvoiceItems(final Document doc, final List<InvoiceItemDTO> items) {
-    final Element invoiceItemsParent = (Element) doc.getElementsByTagName(INVOICE_DETAIL)
+  public void updateInvoiceItems(final Document doc, final List<ReceiptItemDto> items) {
+    final Element invoiceItemsParent = (Element) doc.getElementsByTagName(ReceivedInvoice.DETAIL)
         .item(0);
-    for (final InvoiceItemDTO item : items) {
-      final Element invoiceItem = doc.createElement(INVOICE_ITEM);
+    for (final ReceiptItemDto item : items) {
+      final Element invoiceItem = doc.createElement(ReceivedInvoice.ITEM);
 
       // Set the relevant fields for the invoiceItem
-      createElementAndAppend(doc, invoiceItem, TEXT, "test");
+      createElementAndAppend(doc, invoiceItem, TEXT, item.getName());
       createElementAndAppend(doc, invoiceItem, QUANTITY,
           String.valueOf(item.getQuantity()));
       createElementAndAppend(doc, invoiceItem, COEFFICIENT, "1");
@@ -73,15 +77,24 @@ public class XmlHelper {
       createElementAndAppend(doc, invoiceItem, RATE_VAT, "high");
       createElementAndAppend(doc, invoiceItem, DISCOUNT_PERCENTAGE, "0");
 
+      final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());  // Sadza DPH, napr. 19
+
+      // Cena bez DPH
+      final BigDecimal priceWithoutVAT = item.getPriceWithoutVAT();
+
+      // Vypočítať DPH ako čiastku (t.j. podiel z ceny bez DPH)
+      final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
+          .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
       // Handle homeCurrency and pricing
-      final Element homeCurrency = doc.createElement(HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPrice()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPrice()));
-      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(item.getPriceVAT()));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceSum()));
+      final Element homeCurrency = doc.createElement(ReceivedInvoice.HOME_CURRENCY);
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceWithVAT()));
       invoiceItem.appendChild(homeCurrency);
 
-      final Element accounting = doc.createElement(ACCOUNTING);
+      final Element accounting = doc.createElement(ReceivedInvoice.ACCOUNTING);
       createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
       invoiceItem.appendChild(accounting);
 

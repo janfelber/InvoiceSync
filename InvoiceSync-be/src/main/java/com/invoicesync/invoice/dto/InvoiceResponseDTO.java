@@ -1,26 +1,32 @@
 package com.invoicesync.invoice.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
+import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class InvoiceResponseDTO {
 
   private Long id;
 
-  private Date importDate;
+  private LocalDateTime createAt;
 
-  private InvoiceResponseDetailsDTO invoiceDetails;
+  private InvoiceDetailsDTO invoiceDetails;
 
   private PartnerDto partner;
 
-  private String status;
+  private List<ReceiptItemDto> items;
 
-  private Long company;
+  private String companyName;
 
 }

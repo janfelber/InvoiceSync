@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="Windows-1250"?>
+<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="14002.4 (27.6.2025)" application="Transformace" note="Užívateľský export, X = Moje označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+	<dat:dataPackItem version="2.0" id="Usr01 (001)">
+		<inv:invoice version="2.0" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd">
+			<inv:invoiceHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<inv:invoiceType>receivedInvoice</inv:invoiceType>
+				<inv:number>
+					<typ:numberRequested>FZ180008</typ:numberRequested>
+				</inv:number>
+				<inv:symVar>128180174</inv:symVar>
+				<inv:originalDocument>128180174</inv:originalDocument>
+				<inv:date>2018-10-31</inv:date>
+				<inv:dateTax>2018-10-31</inv:dateTax>
+				<inv:dateAccounting>2018-10-31</inv:dateAccounting>
+				<inv:dateDue>2018-11-30</inv:dateDue>
+				<inv:accounting>
+					<typ:ids>BEZ321100</typ:ids>
+				</inv:accounting>
+				<inv:classificationVAT>
+					<typ:ids>PN</typ:ids>
+					<typ:classificationVATType>nonSubsume</typ:classificationVATType>
+				</inv:classificationVAT>
+				<inv:text>Faktúra dodávateľa</inv:text>
+				<inv:partnerIdentity>
+					<typ:address linkToAddress="true">
+						<typ:company>HENRY SCHEIN s.r.o.</typ:company>
+						<typ:division></typ:division>
+						<typ:city>Brno</typ:city>
+						<typ:street>Palackého třída 163</typ:street>
+						<typ:zip>612 00</typ:zip>
+						<typ:ico>28433092</typ:ico>
+						<typ:dic>CZ28433092</typ:dic>
+						<typ:icDph>CZ28433092</typ:icDph>
+						<typ:country>
+							<typ:ids>CZ</typ:ids>
+						</typ:country>
+					</typ:address>
+				</inv:partnerIdentity>
+				<inv:myIdentity>
+					<typ:address>
+						<typ:company>Firma Test</typ:company>
+						<typ:surname></typ:surname>
+						<typ:city>Test</typ:city>
+						<typ:street>Ulica</typ:street>
+						<typ:number>11</typ:number>
+						<typ:zip>111 11</typ:zip>
+						<typ:ico>11111111</typ:ico>
+						<typ:dic>1111111111</typ:dic>
+						<typ:icDph>SK1111111111</typ:icDph>
+					</typ:address>
+				</inv:myIdentity>
+				<inv:paymentType>
+					<typ:ids>Príkazom</typ:ids>
+					<typ:paymentType>draft</typ:paymentType>
+				</inv:paymentType>
+				<inv:symConst>0308</inv:symConst>
+				<inv:liquidation>
+					<typ:amountHome>1297.35</typ:amountHome>
+				</inv:liquidation>
+				<inv:lock2>false</inv:lock2>
+				<inv:markRecord>true</inv:markRecord>
+			</inv:invoiceHeader>
+			<inv:invoiceDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+			</inv:invoiceDetail>
+			<inv:invoiceSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
+				<inv:roundingDocument>none</inv:roundingDocument>
+				<inv:roundingVAT>noneEveryRate</inv:roundingVAT>
+				<inv:homeCurrency>
+					<typ:priceNone>1297.35</typ:priceNone>
+					<typ:priceLow>0</typ:priceLow>
+					<typ:priceLowVAT>0</typ:priceLowVAT>
+					<typ:priceLowSum>0</typ:priceLowSum>
+					<typ:priceHigh>0</typ:priceHigh>
+					<typ:priceHighVAT>0</typ:priceHighVAT>
+					<typ:priceHighSum>0</typ:priceHighSum>
+					<typ:round>
+						<typ:priceRound>0</typ:priceRound>
+					</typ:round>
+				</inv:homeCurrency>
+			</inv:invoiceSummary>
+		</inv:invoice>
+	</dat:dataPackItem>
+</dat:dataPack>
