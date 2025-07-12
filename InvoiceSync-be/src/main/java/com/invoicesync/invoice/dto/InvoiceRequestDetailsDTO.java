@@ -1,30 +1,33 @@
 package com.invoicesync.invoice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.invoicesync.invoice.InvoiceType;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class InvoiceRequestDetailsDTO {
+public record InvoiceRequestDetailsDTO(
+    String numberRequested,
 
-  private String invoiceType;
+    String variableSymbol,
 
-  private String invoiceNumber;
+    String originalDocument,
 
-  private String variableSymbol;
+    String issueDate,
 
-  private String pairingSymbol;
+    String taxDate,
 
-  private String dateIssue;
+    String accountingDate,
 
-  private String dateTax;
+    String dueDate,
 
-  private String dateDue;
+    String accountValue,
 
-  private String dateAccounting;
+    String classificationVAT,
+
+    String classificationKVVAT,
+
+    String description,
+
+    String status,
+
+    InvoiceType invoiceType
+) {
 
 }

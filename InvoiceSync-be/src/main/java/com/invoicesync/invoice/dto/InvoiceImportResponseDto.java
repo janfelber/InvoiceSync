@@ -15,7 +15,7 @@ public class InvoiceImportResponseDto {
 
   private Date importDate;
 
-  private InvoiceResponseDetailsDTO invoiceDetails;
+  private InvoiceDetailsDTO invoiceDetails;
 
   private PartnerDto partner;
 

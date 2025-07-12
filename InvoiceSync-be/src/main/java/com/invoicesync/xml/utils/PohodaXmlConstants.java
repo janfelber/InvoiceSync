@@ -7,8 +7,6 @@ public final class PohodaXmlConstants {
 
   public static class General {
 
-    public static final String INVOICE_TYPE = "inv:invoiceType";
-
     public static final String INVOICE_NUMBER = "typ:numberRequested";
 
     public static final String VARIABLE_SYMBOL = "inv:symVar";
@@ -66,6 +64,28 @@ public final class PohodaXmlConstants {
   public static final String RATE_VAT = "inv:rateVAT";
 
   public static final String DISCOUNT_PERCENTAGE = "inv:discountPercentage";
+
+  public static class ReceivedInvoice {
+
+    public static final String ACCOUNTING = "inv:accounting";
+
+    public static final String CLASSIFICATION_VAT = "inv:classificationVAT";
+
+    public static final String CLASSIFICATION_KV_VAT = "inv:classificationKVVAT";
+
+    public static final String TEXT = "inv:text";
+
+    public static final String MY_IDENTITY = "inv:myIdentity";
+
+    public static final String PARTNER = "inv:partnerIdentity";
+
+    public static final String DETAIL = "inv:invoiceDetail";
+
+    public static final String ITEM = "inv:invoiceItem";
+
+    public static final String HOME_CURRENCY = "inv:homeCurrency";
+
+  }
 
   // receipt
 

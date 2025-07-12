@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.invoice.InvoiceXmlService;
+import com.invoicesync.invoice.PohodaXmlService;
 import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptRequestDTO;
@@ -34,14 +34,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/receipt")
 public class ReceiptController {
 
-  private final InvoiceXmlService invoiceXmlService;
+  private final PohodaXmlService pohodaXmlService;
   private final ReceiptService receiptService;
 
   @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request,
       final Authentication connectedUser) {
     try {
-      final byte[] excel = invoiceXmlService.generatePohodaReceiptExcel(request, connectedUser);
+      final byte[] excel = pohodaXmlService.generatePohodaReceiptExcel(request, connectedUser);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.setContentType(
@@ -61,7 +61,7 @@ public class ReceiptController {
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
       final Authentication connectedUser) {
     try {
-      final byte[] xmlData = invoiceXmlService.generatePohodaExpenseReceiptXml(receiptRequestDTO, connectedUser);
+      final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
       System.out.println(receiptRequestDTO);
 
       final HttpHeaders headers = new HttpHeaders();

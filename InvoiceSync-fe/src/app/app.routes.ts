@@ -15,6 +15,7 @@ import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new
 import {PricingComponent} from "./pages/pricing/pricing.component";
 import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
 import {ConvertorComponent} from "./convertor/convertor.component";
+import {ErrorComponent} from "./shared/error/error.component";
 
 export const routes: Routes = [
   {
@@ -30,11 +31,6 @@ export const routes: Routes = [
         path: 'home',
         component: HomeComponent,
         pathMatch: "full"
-      },
-      {
-        path: '',
-        redirectTo: 'xml-convertor',
-        pathMatch: 'full'
       },
       {
         path: 'web/receipts',
@@ -75,13 +71,14 @@ export const routes: Routes = [
       {
         path: 'web/data-transfer',
         component: ConvertorComponent
-      }
+      },
     ]
   },
   {
     path: 'pricing',
     component: PricingComponent
   },
+  { path: 'error', component: ErrorComponent },
   //admin layout
   // {
   //

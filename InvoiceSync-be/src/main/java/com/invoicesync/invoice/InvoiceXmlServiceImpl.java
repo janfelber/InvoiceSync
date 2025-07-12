@@ -1,5 +1,7 @@
 package com.invoicesync.invoice;
 
+import static com.invoicesync.invoice.InvoiceType.RECEIVED;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -35,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceXmlServiceImpl implements InvoiceXmlService{
+public class InvoiceXmlServiceImpl implements PohodaXmlService {
 
   private final XmlHelper xmlHelper;
 
@@ -46,8 +48,8 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
   private final UserService userService;
 
   @Override
-  public byte[] generatePohodaInvoiceXml(final InvoiceRequestDTO invoiceRequestDTO) throws Exception {
-    final File xmlFile = new File("src/main/resources/template/invoice_template.xml");
+  public byte[] generatePohodaInvoiceXml(final InvoiceRequestDTO request) throws Exception {
+    final File xmlFile = new File("src/main/resources/template/PriFaktury.xml");
     final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
     final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
     final Document doc = dBuilder.parse(xmlFile);
@@ -55,10 +57,14 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
     dbFactory.setNamespaceAware(true);
     doc.getDocumentElement().normalize();
 
-    xmlHelper.updateInvoiceDetails(doc, invoiceRequestDTO.getInvoiceDetails());
-    xmlHelper.updateMyIdentity(doc, invoiceRequestDTO.getMyIdentity());
-    xmlHelper.updatePartner(doc, invoiceRequestDTO.getPartner());
-    xmlHelper.updateInvoiceItems(doc, invoiceRequestDTO.getItems());
+    if (request.invoiceType() == RECEIVED) {
+      xmlHelper.updateInvoiceDetails(doc, request.invoiceDetails());
+      xmlHelper.updateInvoiceMyIdentity(doc, request.myIdentity());
+      xmlHelper.updatePartner(doc, request.partner());
+      xmlHelper.updateInvoiceItems(doc, request.items());
+    }
+
+    removeWhitespaceNodes(doc);
 
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     final Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -69,8 +75,10 @@ public class InvoiceXmlServiceImpl implements InvoiceXmlService{
   }
 
   @Override
-  public byte[] generatePohodaExpenseReceiptXml(final ReceiptRequestDTO request, final Authentication connectedUser)
+  public byte[] generateReceiptXml(final ReceiptRequestDTO request, final Authentication connectedUser)
       throws Exception {
+
+    limitGuardService.checkLimit(connectedUser, LimitType.RECEIPT_EXPORT);
 
     final String templatePath = resolveTemplatePath(request);
 

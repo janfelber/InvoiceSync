@@ -3,7 +3,7 @@ import { NgForOf } from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatDialogWindowComponent } from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {initFlowbite} from 'flowbite'
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private companyService: CompanyService,
     private toastr: ToastrService) {
   }
@@ -102,8 +103,16 @@ export class HomeComponent implements OnInit{
         console.log(this.companyResponse.content)
       })
       .catch(error => {
-        console.error("Chyba pri načítaní firiem:", error);
-        alert("Nepodarilo sa načítať firmy.");
+        console.error('Error while fetching companies', error);
+
+        // Presmeruj podľa typu chyby
+        if (error?.response?.status === 401) {
+          this.router.navigate(['/unauthorized']);
+        } else if (error?.response?.status === 403) {
+          this.router.navigate(['/forbidden']);
+        } else {
+          this.router.navigate(['/error']);
+        }
       });
   }
 

@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,13 +48,13 @@ import com.invoicesync.shared.utils.ParseUtils;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
 
-  private final WebClient webClient;
+  @Qualifier("ekasaWebClient")
+  private final WebClient ekasaClient;
 
   private final CompanyRepository companyRepository;
   //
@@ -63,6 +65,19 @@ public class ReceiptServiceImpl implements ReceiptService {
   // private final CurrentUserService currentUserService;
 
   private final ReceiptMapper receiptMapper;
+
+  @Autowired
+  public ReceiptServiceImpl(
+      @Qualifier("ekasaWebClient") final WebClient ekasaClient,
+      final CompanyRepository companyRepository,
+      final ReceiptRepository receiptRepository,
+      final ReceiptMapper receiptMapper
+  ) {
+    this.ekasaClient = ekasaClient;
+    this.companyRepository = companyRepository;
+    this.receiptRepository = receiptRepository;
+    this.receiptMapper = receiptMapper;
+  }
 
   @Override
   public PageResponse<ReceiptResponseDto> findAllReceiptsByUser(final int page, final int size,
@@ -226,7 +241,7 @@ public class ReceiptServiceImpl implements ReceiptService {
   public String sendPostRequest(final String receiptId) {
     try {
 
-      return webClient.post()
+      return ekasaClient.post()
           .contentType(MediaType.APPLICATION_JSON)
           .bodyValue("{ \"receiptId\": \"" + receiptId + "\" }")
           .retrieve()

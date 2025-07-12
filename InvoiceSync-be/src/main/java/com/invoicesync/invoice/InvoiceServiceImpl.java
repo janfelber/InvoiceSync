@@ -1,28 +1,39 @@
 package com.invoicesync.invoice;
 
-import java.io.IOException;
+import static com.invoicesync.invoice.InvoiceSpecification.withCompanyId;
+
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.company.CompanyRepository;
-import com.invoicesync.shared.dto.identity.PartnerDto;
-import com.invoicesync.invoice.dto.InvoiceResponseDetailsDTO;
 import com.invoicesync.invoice.dto.InvoiceImportResponseDto;
-import com.invoicesync.ocr.service.OCRService;
+import com.invoicesync.invoice.dto.InvoiceResponseDTO;
+import com.invoicesync.ocr.OCRService;
+import com.invoicesync.shared.common.PageResponse;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceImportServiceImpl implements InvoiceImportService {
+public class InvoiceServiceImpl implements InvoiceService {
 
-  private final InvoiceImportRepository invoiceImportRepository;
+  private final InvoiceRepository invoiceRepository;
 
   private final CompanyRepository companyRepository;
 
   private final OCRService ocrService;
+
+  private final InvoiceMapper invoiceMapper;
+
+  @Value("${openai.api.key}")
+  private String openAiApiKey;
 
   @Override
   public List<InvoiceImportResponseDto> getInoivceImportsByUserId(Long userId) {
@@ -56,8 +67,74 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     return null;
   }
 
-  public InvoiceImport saveInvoice(final MultipartFile file, final Long companyId) throws IOException {
-    // final InvoiceImport invoiceImport = new InvoiceImport();
+  @Override
+  public InvoiceImportResponseDto getInvoiceById(final Long id) {
+    return null;
+  }
+
+  // @Override
+  // public Long saveInvoice(final MultipartFile file, final Authentication connectedUser) {
+  //
+  //   try {
+  //     /* 1. OCR */
+  //     final String extractedText = ocrService.extractTextFromPDF(file, connectedUser);
+  //
+  //     /* 2. Prompt */
+  //     final String prompt = """
+  //         Extract the following fields from the invoice text and return them in JSON format:
+  //         - Invoice Number
+  //         - Date of Issue
+  //         - Date of Delivery
+  //         - Variable Symbol
+  //         - Supplier VAT ID
+  //         - Supplier Registration Number
+  //         - Invoice Items (description, quantity, unit price, total)
+  //
+  //         Invoice text:
+  //         """ + extractedText;
+  //
+  //     final Map<String, Object> requestBody = Map.of(
+  //         "model", "gpt-4o-mini",
+  //         "messages", List.of(
+  //             Map.of(
+  //                 "role", "user",
+  //                 "content", prompt
+  //             )
+  //         )
+  //     );
+  //
+  //     /* 3. Volanie OpenAI a získanie JSON reťazca (blokujúco) */
+  //     final InvoiceController.OpenAiResponse llmResponse = openAiClient.post()
+  //         .uri("/chat/completions")
+  //         .header("Authorization", "Bearer " + openAiApiKey)
+  //         .header("Content-Type", "application/json")
+  //         .bodyValue(requestBody)
+  //         .retrieve()
+  //         .bodyToMono(InvoiceController.OpenAiResponse.class)
+  //         .block();                               //  ← blokujeme v servise
+  //
+  //     if (llmResponse == null || llmResponse.getChoices().isEmpty()) {
+  //       throw new IllegalStateException("Empty response from OpenAI");
+  //     }
+  //
+  //     final String json = llmResponse.getChoices().get(0).getMessage().getContent();
+  //
+  //     /* 4. Parse JSON → DTO */
+  //     final InvoiceDto dto = objectMapper.readValue(json, InvoiceDto.class);
+  //
+  //     /* 5. DTO → Entity a persist */
+  //     final Invoice entity = mapToEntity(dto, connectedUser);
+  //     invoiceRepository.save(entity);
+  //
+  //     return entity.getId();
+  //
+  //   } catch (Exception e) {
+  //     // môžeš zalogovať a hodiť vlastnú výnimku
+  //     throw new RuntimeException("Invoice processing failed", e);
+  //   }
+  // }
+
+  // final InvoiceImport invoiceImport = new InvoiceImport();
     // final String ocrText = ocrService.extractTextFromPDF(file);
     // final String pdfName = file.getOriginalFilename();
     // final Long userId = ((UserDemo) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
@@ -103,41 +180,56 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     //
     // return invoiceImportRepository.save(invoiceImport);
 
-    return null;
-  }
+  // @Override
+  // public InvoiceImportResponseDto getInvoiceById(Long id) {
+  //   return invoiceImportRepository.findById(id)
+  //       .map(invoiceImport -> new InvoiceImportResponseDto(
+  //           invoiceImport.getId(),
+  //           invoiceImport.getImport_date(),
+  //           new InvoiceDetailsDTO(
+  //               invoiceImport.getInvoice_number(),
+  //               invoiceImport.getVariable_symbol(),
+  //               invoiceImport.getVariable_symbol(),
+  //               invoiceImport.getIssue_date(),
+  //               invoiceImport.getTax_date(),
+  //               invoiceImport.getDue_date()
+  //           ),
+  //           new PartnerDto(
+  //               invoiceImport.getPartner_name(),
+  //               invoiceImport.getPartner_city(),
+  //               invoiceImport.getPartner_street(),
+  //               invoiceImport.getPartner_zip(),
+  //               invoiceImport.getPartner_registration_number(),
+  //               invoiceImport.getPartner_tax_id(),
+  //               invoiceImport.getPartner_vat_id()
+  //           ),
+  //           invoiceImport.getStatus(),
+  //           invoiceImport.getCompany().getId()
+  //       ))
+  //       .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + id + " not found"));
+  //   return null;
+  // }
 
   @Override
-  public InvoiceImportResponseDto getInvoiceById(Long id) {
-    return invoiceImportRepository.findById(id)
-        .map(invoiceImport -> new InvoiceImportResponseDto(
-            invoiceImport.getId(),
-            invoiceImport.getImport_date(),
-            new InvoiceResponseDetailsDTO(
-                invoiceImport.getInvoice_number(),
-                invoiceImport.getVariable_symbol(),
-                invoiceImport.getVariable_symbol(),
-                invoiceImport.getIssue_date(),
-                invoiceImport.getTax_date(),
-                invoiceImport.getDue_date()
-            ),
-            new PartnerDto(
-                invoiceImport.getPartner_name(),
-                invoiceImport.getPartner_city(),
-                invoiceImport.getPartner_street(),
-                invoiceImport.getPartner_zip(),
-                invoiceImport.getPartner_registration_number(),
-                invoiceImport.getPartner_tax_id(),
-                invoiceImport.getPartner_vat_id()
-            ),
-            invoiceImport.getStatus(),
-            invoiceImport.getCompany().getId()
-        ))
-        .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + id + " not found"));
-  }
+  public PageResponse<InvoiceResponseDTO> findInvoicesByCompanyId(final int page, final int size,
+      final Long companyId,
+      final Authentication connectedUser) {
+    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Page<Invoice> invoices = invoiceRepository.findAll(withCompanyId(companyId), pageable);
 
-  @Override
-  public List<InvoiceImportResponseDto> getInvoiceImportsByCompanyIdCurrentUser(final Long companyId,
-      final Long currentUserId) {
+    final List<InvoiceResponseDTO> invoiceResponse = invoices.stream()
+        .map(invoiceMapper::toInvoiceTableResponse)
+        .toList();
+    return new PageResponse<>(
+        invoiceResponse,
+        invoices.getNumber(),
+        invoices.getSize(),
+        invoices.getTotalElements(),
+        invoices.getTotalPages(),
+        invoices.isFirst(),
+        invoices.isLast()
+    );
+  }
     // return invoiceImportRepository.findByCompanyIdAndUserId(companyId, currentUserId)
     //     .stream()
     //     .map(invoiceImport -> new InvoiceImportResponseDto(
@@ -164,8 +256,5 @@ public class InvoiceImportServiceImpl implements InvoiceImportService {
     //         invoiceImport.getCompany().getId()
     //     ))
     //     .collect(Collectors.toList());
-
-    return null;
-  }
 
 }
