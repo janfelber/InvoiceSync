@@ -3,7 +3,7 @@ package com.invoicesync.receipt.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.MyIdentity;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +26,6 @@ public class ReceiptDetailDto {
 
   private List<ReceiptItemDto> items;
 
-  private MyIdentityDTO company;
+  private MyIdentity company;
 
 }

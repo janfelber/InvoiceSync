@@ -36,14 +36,15 @@ public class OCRServiceImpl implements OCRService {
 
   private final UserService userService;
 
-  public String extractTextFromPDF(final MultipartFile file, final Authentication connectedUser) throws IOException {
-
+  public String extractTextFromPDF(final MultipartFile file, final Authentication connectedUser) {
     try (PDDocument document = PDDocument.load(file.getInputStream())) {
       final List<BufferedImage> images = renderPdfToImages(document);
       final List<ByteString> imageBytes = convertImagesToByteStrings(images);
       final String extractedText = runOcr(imageBytes);
       userService.incrementUsed(connectedUser, LimitType.INVOICE_PROCESS);
       return extractedText;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 

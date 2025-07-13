@@ -17,7 +17,7 @@ import org.w3c.dom.NodeList;
 import com.invoicesync.invoice.dto.InvoiceRequestDetailsDTO;
 import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.receipt.dto.ReceiptRequestDetailsDTO;
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.MyIdentity;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 @Component
@@ -40,16 +40,16 @@ public class XmlHelper {
     replaceTextContent(doc, ReceivedInvoice.TEXT, invoice.description(), null);
   }
 
-  public void updateInvoiceMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
-    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
+  public void updateInvoiceMyIdentity(final Document doc, final MyIdentity myIdentity) {
+    replaceTextContent(doc, COMPANY, myIdentity.getName(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentity.getCity(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentity.getStreet(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentity.getStreetNumber(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentity.getZip(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentity.getRegistrationNumber(),
         ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), ReceivedInvoice.MY_IDENTITY);
-    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentity.getTaxId(), ReceivedInvoice.MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentity.getVatId(), ReceivedInvoice.MY_IDENTITY);
   }
 
   public void updatePartner(final Document doc, final PartnerDto partnerDTO) {
@@ -127,28 +127,28 @@ public class XmlHelper {
     replaceTextContent(doc, ReceiptCard.TEXT, receiptRequestDetailsDTO.getDescription(), null);
   }
 
-  public void updateCashReceiptMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
-    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
+  public void updateCashReceiptMyIdentity(final Document doc, final MyIdentity myIdentity) {
+    replaceTextContent(doc, COMPANY, myIdentity.getName(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentity.getCity(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentity.getStreet(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentity.getStreetNumber(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentity.getZip(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentity.getRegistrationNumber(),
         ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), ReceiptCash.MY_IDENTITY);
-    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentity.getTaxId(), ReceiptCash.MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentity.getVatId(), ReceiptCash.MY_IDENTITY);
   }
 
-  public void updateCardReceiptMyIdentity(final Document doc, final MyIdentityDTO myIdentityDTO) {
-    replaceTextContent(doc, COMPANY, myIdentityDTO.getName(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, CITY, myIdentityDTO.getCity(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, STREET, myIdentityDTO.getStreet(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, STREET_NUMBER, myIdentityDTO.getStreetNumber(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, ZIP, myIdentityDTO.getZip(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentityDTO.getRegistrationNumber(),
+  public void updateCardReceiptMyIdentity(final Document doc, final MyIdentity myIdentity) {
+    replaceTextContent(doc, COMPANY, myIdentity.getName(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, CITY, myIdentity.getCity(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, STREET, myIdentity.getStreet(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, STREET_NUMBER, myIdentity.getStreetNumber(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, ZIP, myIdentity.getZip(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, REGISTRATION_NUMBER, myIdentity.getRegistrationNumber(),
         ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, TAX_ID, myIdentityDTO.getTaxId(), ReceiptCard.MY_IDENTITY);
-    replaceTextContent(doc, VAT_ID, myIdentityDTO.getVatId(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, TAX_ID, myIdentity.getTaxId(), ReceiptCard.MY_IDENTITY);
+    replaceTextContent(doc, VAT_ID, myIdentity.getVatId(), ReceiptCard.MY_IDENTITY);
   }
 
   public void updateCashReceiptPartner(final Document doc, final PartnerDto partnerDTO) {

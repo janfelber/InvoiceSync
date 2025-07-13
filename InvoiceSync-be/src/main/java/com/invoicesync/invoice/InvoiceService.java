@@ -1,21 +1,18 @@
 package com.invoicesync.invoice;
 
-import java.util.List;
-
 import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.invoice.dto.InvoiceImportResponseDto;
-import com.invoicesync.invoice.dto.InvoiceResponseDTO;
+import com.invoicesync.invoice.dto.InvoiceResponse;
+import com.invoicesync.invoice.dto.InvoiceResponseTable;
 import com.invoicesync.shared.common.PageResponse;
 
 public interface InvoiceService {
 
-  List<InvoiceImportResponseDto> getInoivceImportsByUserId(Long userId);
+  Long saveInvoice(final MultipartFile file, final Long companyId, final Authentication connectedUser);
 
-  // Long saveInvoice(final MultipartFile file, final Authentication connectedUser);
+  InvoiceResponse findById(Long invoiceId);
 
-  InvoiceImportResponseDto getInvoiceById(Long id);
-
-  PageResponse<InvoiceResponseDTO> findInvoicesByCompanyId(int size, int page, Long companyId,
+  PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(int size, int page, Long companyId,
       Authentication connectedUser);
 }

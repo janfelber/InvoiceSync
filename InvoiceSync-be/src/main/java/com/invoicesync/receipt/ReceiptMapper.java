@@ -11,7 +11,7 @@ import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptItemDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.MyIdentity;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 @Service
@@ -98,7 +98,7 @@ public class ReceiptMapper {
             .vatId(receipt.getPartnerVatId())
             .build())
         .items(itemDtos)
-        .company(MyIdentityDTO.builder()
+        .company(MyIdentity.builder()
             .id(receipt.getCompany().getId())
             .name(receipt.getCompany().getName())
             .city(receipt.getCompany().getCity())
