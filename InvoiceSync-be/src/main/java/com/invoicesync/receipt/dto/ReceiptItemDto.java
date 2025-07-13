@@ -15,9 +15,9 @@ public class ReceiptItemDto {
 
   private Long id;
 
-  private String accountText;
-
   private String name;
+
+  private String accountText;
 
   private int quantity;
 

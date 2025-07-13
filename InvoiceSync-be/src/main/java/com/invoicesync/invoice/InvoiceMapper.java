@@ -1,14 +1,23 @@
 package com.invoicesync.invoice;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.invoice.dto.InvoiceDetailsDTO;
-import com.invoicesync.invoice.dto.InvoiceResponseDTO;
+import com.invoicesync.invoice.dto.InvoiceDetails;
+import com.invoicesync.invoice.dto.InvoiceRequest;
+import com.invoicesync.invoice.dto.InvoiceResponse;
+import com.invoicesync.invoice.dto.InvoiceResponseTable;
+import com.invoicesync.receipt.dto.ReceiptItemDto;
+import com.invoicesync.shared.dto.identity.MyIdentity;
+import com.invoicesync.shared.dto.identity.PartnerDto;
 
 @Service
 public class InvoiceMapper {
 
   public Invoice toInvoice(final InvoiceRequest request) {
+
     final Invoice invoice = Invoice.builder()
         .id(request.id())
         .invoiceNumber(request.numberRequested())
@@ -17,28 +26,89 @@ public class InvoiceMapper {
         .taxDate(request.taxDate())
         .accountingDate(request.accountingDate())
         .dueDate(request.dueDate())
-        .partnerName(request.partnerName())
-        .partnerStreet(request.partnerStreet())
-        .partnerCity(request.partnerCity())
-        .partnerZip(request.partnerZip())
         .partnerRegistrationNumber(request.partnerRegistrationNumber())
-        .partnerVatId(request.partnerVatId())
-        .partnerTaxId(request.partnerTaxId())
+        .status("UNPROCESSED")
+        .invoiceType("NONE")
         .build();
+
+    final List<InvoiceItem> items = request.items().stream()
+        .map(itemRequest -> {
+          final InvoiceItem item = new InvoiceItem();
+          item.setName(itemRequest.name());
+          item.setInvoice(invoice);
+          return item;
+        })
+        .toList();
+
+    invoice.setItems(items);
 
     return invoice;
   }
 
-  public InvoiceResponseDTO toInvoiceTableResponse(final Invoice invoice) {
-    return InvoiceResponseDTO.builder()
+  public InvoiceResponseTable toInvoiceTableResponse(final Invoice invoice) {
+    return InvoiceResponseTable.builder()
         .id(invoice.getId())
         .createAt(invoice.getCreatedDate())
-        .invoiceDetails(InvoiceDetailsDTO.builder()
+        .invoiceDetails(InvoiceDetails.builder()
             .invoiceNumber(invoice.getInvoiceNumber())
             .variableSymbol(invoice.getVariableSymbol( ))
             .issueDate(invoice.getIssueDate())
             .status(invoice.getStatus())
             .invoiceType(invoice.getInvoiceType())
+            .build())
+        .partner(PartnerDto.builder()
+            .name(invoice.getPartnerName())
+            .build())
+        .build();
+  }
+
+  public InvoiceResponse toInvoiceResponse(final Invoice invoice) {
+    final List<ReceiptItemDto> items = invoice.getItems().stream()
+        .map(item -> ReceiptItemDto.builder()
+            .id(item.getId())
+            .accountText(item.getAccountText())
+            .name(item.getName())
+            .quantity(item.getQuantity())
+            .priceWithoutVAT(item.getPriceWithoutVAT())
+            .vatRate(item.getVatRate())
+            .priceWithVAT(item.getPriceWithVAT())
+            .accountValue(item.getAccountValue())
+            .build())
+        .collect(Collectors.toList());
+
+    return InvoiceResponse.builder()
+        .id(invoice.getId())
+        .createdAt(invoice.getCreatedDate())
+        .invoiceDetails(InvoiceDetails.builder()
+            .invoiceNumber(invoice.getInvoiceNumber())
+            .variableSymbol(invoice.getVariableSymbol())
+            .issueDate(invoice.getIssueDate())
+            .taxDate(invoice.getTaxDate())
+            .accountingDate(invoice.getAccountingDate())
+            .dueDate(invoice.getDueDate())
+            .status(invoice.getStatus())
+            .invoiceType(invoice.getInvoiceType())
+            .build())
+        .partner(PartnerDto.builder()
+            .name(invoice.getPartnerName())
+            .city(invoice.getPartnerCity())
+            .street(invoice.getPartnerStreet())
+            .zip(invoice.getPartnerZip())
+            .registrationNumber(invoice.getPartnerRegistrationNumber())
+            .taxId(invoice.getPartnerTaxId())
+            .vatId(invoice.getPartnerVatId())
+            .build())
+        .items(items)
+        .myIdentity(MyIdentity.builder()
+            .id(invoice.getCompany().getId())
+            .name(invoice.getCompany().getName())
+            .city(invoice.getCompany().getCity())
+            .street(invoice.getCompany().getStreet())
+            .streetNumber(invoice.getCompany().getStreetNumber())
+            .zip(invoice.getCompany().getZip())
+            .registrationNumber(invoice.getCompany().getRegistrationNumber())
+            .taxId(invoice.getCompany().getTaxId())
+            .vatId(invoice.getCompany().getVatId())
             .build())
         .build();
   }

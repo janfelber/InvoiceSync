@@ -2,7 +2,7 @@ package com.invoicesync.receipt.dto;
 
 import java.util.List;
 
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.MyIdentity;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 public record ReceiptRequestDTO(
@@ -10,7 +10,7 @@ public record ReceiptRequestDTO(
 
     PartnerDto partner,
 
-    MyIdentityDTO myIdentity,
+    MyIdentity myIdentity,
     List<ReceiptItemDto> items
 ) {
 

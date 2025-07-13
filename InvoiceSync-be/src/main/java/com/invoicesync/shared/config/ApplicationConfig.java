@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
-import net.sourceforge.tess4j.Tesseract;
 
 @Configuration
 @RequiredArgsConstructor
@@ -33,16 +32,6 @@ public class ApplicationConfig {
     @Bean
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public Tesseract tesseract() {
-        final Tesseract tesseract = new Tesseract();
-        // nastav jazyk – napr. slovenčina + angličtina
-        tesseract.setLanguage("slk+eng");
-        // nastav cestu k traineddata súborom
-        tesseract.setDatapath("/usr/share/tesseract-ocr/4.00/tessdata/"); // alebo iná platná cesta
-        return tesseract;
     }
 
     @Bean

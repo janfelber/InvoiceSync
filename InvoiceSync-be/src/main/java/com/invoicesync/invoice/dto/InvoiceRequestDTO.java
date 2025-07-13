@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.invoicesync.invoice.InvoiceType;
 import com.invoicesync.receipt.dto.ReceiptItemDto;
-import com.invoicesync.shared.dto.identity.MyIdentityDTO;
+import com.invoicesync.shared.dto.identity.MyIdentity;
 import com.invoicesync.shared.dto.identity.PartnerDto;
 
 public record InvoiceRequestDTO(
@@ -13,7 +13,7 @@ public record InvoiceRequestDTO(
 
     PartnerDto partner,
 
-    MyIdentityDTO myIdentity,
+    MyIdentity myIdentity,
 
     List<ReceiptItemDto> items
 
