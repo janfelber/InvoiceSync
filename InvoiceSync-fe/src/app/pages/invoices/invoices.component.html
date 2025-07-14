@@ -1,263 +1,361 @@
-<!--TODO - refactor to be component based-->
-<!--<app-header-company></app-header-company>-->
+<main>
+  <div class="pt-13 mx-4 mt-6">
+    <div class="header">
+      <nav class="flex mb-4" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <li class="inline-flex items-center">
+            <a routerLink="/home" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+              <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path
+                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+              </svg>
+              Domov
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 text-gray-700 hover:text-blue-600 mx-1" aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Dokumenty</span>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Faktúry</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
 
-<!--<div class="header-company">-->
-<!--  <div class="company-dropdown">-->
-<!--    <div class="dropdown" style="position: relative; display: inline-block;">-->
-<!--      <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"-->
-<!--              aria-haspopup="true" aria-expanded="false">-->
-<!--        {{ selectedCompanyName }}-->
-<!--        <i class="fas fa-chevron-down"-->
-<!--           style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #667085;"></i>-->
-<!--      </button>-->
-<!--      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length > 0">-->
-<!--        <button class="dropdown-item" type="button" *ngFor="let data of companies"-->
-<!--                (click)="onSelectCompany(data)"> {{ data.name }}-->
-<!--        </button>-->
-<!--        <button class="dropdown-item" type="button" (click)="openDialog()">-->
-<!--          <i class="fal fa-plus"></i>-->
-<!--          <span> Pridať spolocnost</span>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length === 0">-->
-<!--        <button class="dropdown-item" type="button" (click)="openDialog()">-->
-<!--          <i class="fal fa-plus"></i>-->
-<!--          <span> Pridať spolocnost</span>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="action-button">-->
-<!--    <button type="button" class="btn filter-button btn-sm">-->
-<!--      <img class="icon" src="assets/icons/invoice_icon.svg" alt="test">-->
-<!--      <span>Faktury</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</div>-->
+      <div class="flex items-center justify-between mb-4">
+        <h1 class="text-xl font-semibold text-black">Moje Bločky</h1>
+      </div>
 
+      <div class="flex flex-wrap gap-4 mb-4 w-full">
+        <!-- Total Receipts -->
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
+          <div class="mb-2">
+            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>
+          </div>
+          <div class="text-2xl font-bold tracking-tight">
+            TBA
+          </div>
+          <p class="text-sm text-muted-foreground">
+            Všetky bločky
+          </p>
+        </div>
 
-<div class="body">
-  <div class="home-page-container">
-    <div class="invoices-page-title" *ngIf="hasInvoicesDashboardFeature">
-      <p>Faktúry</p>
+        <!-- This Month -->
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
+          <div class="mb-2">
+            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>
+          </div>
+          <div class="text-2xl font-bold tracking-tight">
+            TBA
+          </div>
+          <p class="text-sm text-muted-foreground">
+            TBA
+          </p>
+        </div>
+
+        <!-- Total Amount -->
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
+          <div class="mb-2">
+            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>
+          </div>
+          <div class="text-2xl font-bold tracking-tight">
+            TBA
+          </div>
+          <p class="text-sm text-muted-foreground">
+            Súhrnná hodnota
+          </p>
+        </div>
+
+        <!-- Last Import -->
+        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
+          <div class="mb-2">
+            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>
+          </div>
+          <div class="text-2xl font-bold tracking-tight">
+          </div>
+          <p class="text-sm text-muted-foreground">
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="invoices-dashboard" *ngIf="hasInvoicesDashboardFeature">
-      <div class="col-2 invoices-counter">
-        <div class="item">
-          <p class="title">CURRENT</p>
-          <p class="value">$10,123.10</p>
-        </div>
-        <div class="divider"></div>
-        <div class="item">
-          <p class="title">1-30 DAYS PAST DUE</p>
-          <p class="value">$7,777.10</p>
-        </div>
-        <div class="divider"></div>
-        <div class="item">
-          <p class="title">31-60 DAYS PAST DUE</p>
-          <p class="value">$8,123.10</p>
-        </div>
-        <div class="divider"></div>
-        <div class="item">
-          <p class="title">61-90 DAYS PAST DUE</p>
-          <p class="value">$100,777.10</p>
-        </div>
-        <div class="divider"></div>
-        <div class="item">
-          <p class="title">90+ DAYS PAST DUE</p>
-          <p class="value">$123.10</p>
+
+    <div class="flex items-center justify-between w-full border-b border-gray-200 pb-5">
+      <div class="flex items-center gap-3">
+        <form class="w-[384px]">
+          <label for="simple-search" class="sr-only">Search</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+
+            <!-- search -->
+            <input type="text" id="simple-search" name="search"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 pe-12 h-10"
+                   placeholder="Vyhľadávanie" required/>
+
+            <button type="submit"
+                    class="absolute top-0 end-0 h-full px-3 text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+              Search
+            </button>
+          </div>
+        </form>
+
+        <button id="dropdownFilterButton"
+                data-dropdown-toggle="filterDropdown"
+                data-dropdown-delay="500"
+                type="button"
+                class="group w-[100px] h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">
+          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors"
+               xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z"/>
+          </svg>
+          Filter
+          <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
+               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="m1 1 4 4 4-4"/>
+          </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow ">
+          <h6 class="mb-3 text-sm font-medium text-gray-900 ">
+            Category
+          </h6>
+          <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+            <li class="flex items-center">
+              <input id="apple" type="checkbox" value=""
+                     class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500   focus:ring-2  " />
+              <label for="apple" class="ml-2 text-sm font-medium text-gray-900 ">
+                Apple (56)
+              </label>
+            </li>
+            <li class="flex items-center">
+              <input id="fitbit" type="checkbox" value=""
+                     class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500   focus:ring-2  " />
+              <label for="fitbit" class="ml-2 text-sm font-medium text-gray-900 ">
+                Fitbit (56)
+              </label>
+            </li>
+            <li class="flex items-center">
+              <input id="dell" type="checkbox" value=""
+                     class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500
+                      focus:ring-2  " />
+              <label for="dell" class="ml-2 text-sm font-medium text-gray-900 ">
+                Dell (56)
+              </label>
+            </li>
+            <li class="flex items-center">
+              <input id="asus" type="checkbox" value="" checked
+                     class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500   focus:ring-2  " />
+              <label for="asus" class="ml-2 text-sm font-medium text-gray-900 ">
+                Asus (97)
+              </label>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="col invoices-chart">
-        <div class="invoices-chart-container">
-          <canvas id="invoices-chart"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="table-actions">
-      <div class="left-buttons" >
-        <!-- TODO: probably needs saving filter state -->
-        <p class="unprocessed function-text" *ngIf="demo" [class.active]="activeTab === 'UNPROCESSED'" >
-          <span class="tab-text" (click)="filterImports('UNPROCESSED')">Nespracované faktúry</span>
-        </p>
-        <p class="processed function-text" *ngIf="demo" [class.active]="activeTab === 'PROCESSED'">
-          <span class="tab-text" (click)="filterImports('PROCESSED')">Spracované faktúry</span>
-        </p>
-        <p class="all function-text" *ngIf="demo"[class.active]="activeTab === 'all'">
-          <span class="tab-text" (click)="allImports()">Všetky faktúry</span>
-        </p>
-      </div>
-      <!-- TODO: end of filter state -->
-      <div class="right-actions">
-        <p class="invoices-import-function filter">
-              <div class="dropdown" style="position: relative; display: inline-block; padding: 10px">
-                <button class="btn db-button dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                  {{ selectedCompanyName }}
-                  <i class="fas fa-chevron-down"
-                     style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #667085;"></i>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length > 0">
-                  <button class="dropdown-item" type="button" *ngFor="let data of companies"
-                          (click)="onSelectCompany(data)"> {{ data.name }}
-                  </button>
-                  <button class="dropdown-item" type="button" (click)="openDialog()">
-                    <i class="fal fa-plus"></i>
-                    <span> Pridať spolocnost</span>
-                  </button>
-                </div>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" *ngIf="companies.length === 0">
-                  <button class="dropdown-item" type="button" (click)="openDialog()">
-                    <i class="fal fa-plus"></i>
-                    <span> Pridať spolocnost</span>
-                  </button>
-                </div>
-              </div>
-        <p
-          class="invoices-import-function"
-          (click)="selectedCompanyName !== 'Vyber spoločnosť' && onFileSelected()"
-          [class.disabled]="selectedCompanyName === 'Vyber spoločnosť'">
-          <mat-icon>add</mat-icon>
-          <span
-            matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"
-            [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'"
-            style="display: inline-block;"
-            class="import-text">
-            Importuj nový súbor
-          </span>
-        </p>
-      </div>
+
+
+
+      <!-- Import invoice button -->
+      <button
+        type="button"
+        class="w-41 h-9.5 text-sm text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
+      >
+        <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+                d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
+                clip-rule="evenodd"/>
+          <path fill-rule="evenodd"
+                d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
+                clip-rule="evenodd"/>
+        </svg>
+        Importovať faktúru
+      </button>
     </div>
   </div>
-  <div class="col">
-    <div class="table">
-      <div class="table-head">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Search..."
-          style="width: 12rem; height: 2rem; font-size: 0.75rem; font-weight: 500;"/>
-        <!--          <div class="table-title">-->
-        <!--            <h5>Faktury</h5>-->
-        <!--            <span class="users-count">zobrazenych {{ recordRange }} z {{ filteredInvoiceImports.length }}</span>-->
-        <!--          </div>-->
-        <!--          <div class="pagination-container">-->
-        <!--            <div class="page-number">-->
-        <!--              <label for="page-size" style="font-size: 13px;">-->
-        <!--                Page {{ currentPage }} / {{ totalPages }}-->
-        <!--              </label>-->
-        <!--              <i>-->
-        <!--              <span class="fas fa-caret-left"-->
-        <!--                    [class.disabled]="currentPage === 1"-->
-        <!--                    (click)="goToPage(1)">-->
-        <!--              </span>-->
-        <!--              </i>-->
-        <!--              <input-->
-        <!--                type="number"-->
-        <!--                [(ngModel)]="currentPageInput"-->
-        <!--                (keyup.enter)="jumpToPage()"-->
-        <!--                [min]="1"-->
-        <!--                [max]="totalPages"-->
-        <!--                class="pagination-input"-->
-        <!--                style="width: 5rem; height: 2rem; font-size: 0.75rem; font-weight: 500; text-align: center"/>-->
-        <!--              <i class="fas fa-caret-right"-->
-        <!--                 [class.disabled]="currentPage === totalPages"-->
-        <!--                 (click)="goToPage(currentPage + 1)">-->
-        <!--              </i>-->
-        <!--            </div>-->
-        <!--            <div class="page-size">-->
-        <!--              <label for="page-size" class="page-size-label">Page Size</label>-->
-        <!--              <div class="custom-select-wrapper">-->
-        <!--                <select-->
-        <!--                  id="page-size"-->
-        <!--                  [(ngModel)]="rowsPerPage"-->
-        <!--                  (change)="goToPage(1)"-->
-        <!--                  class="custom-select">-->
-        <!--                  <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>-->
-        <!--                </select>-->
-        <!--                <span class="select-icon">-->
-        <!--              <i class="fas fa-chevron-down"></i>-->
-        <!--            </span>-->
-        <!--              </div>-->
-        <!--            </div>-->
-        <!--          </div>-->
-      </div>
-      <!--        <div class="table-actions">-->
-      <!--          <button class="import-button"-->
-      <!--                  matTooltip="{{ selectedCompanyName === 'Vyber spoločnosť' ? 'Vyberte spoločnosť pred importom' : null }}"-->
-      <!--                  [matTooltipDisabled]="selectedCompanyName !== 'Vyber spoločnosť'" style="display: inline-block;"-->
-      <!--                  (click)="onFileSelected()"-->
-      <!--                  [disabled]="selectedCompanyName === 'Vyber spoločnosť'">-->
-      <!--            <i class="fal fa-plus"></i>-->
-      <!--            <span>Import</span>-->
-      <!--          </button>-->
-      <!--        </div>-->
-      <div class="table-container">
-        <table class="data-table">
-          <thead>
-          <tr>
-            <th class="header-item" style="width: 2%; text-align: center;">
-              <mat-checkbox class="rounded-checkbox" (change)="toggleSelectAll($event)"></mat-checkbox>
-            </th>
-            <th
-              class="header-item"
-              *ngFor="let header of headers1"
-              [style.width]="header.width">
-              {{ header.name }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngIf="isLoading" style="text-align: center; vertical-align: middle;">
-            <td class="cell" colspan="6" style="text-align: center; vertical-align: middle;">
-              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                <mat-spinner diameter="30" color="accent"></mat-spinner>
-              </div>
-            </td>
-          </tr>
-          <ng-container *ngIf="!isLoading">
-            <tr *ngFor="let import of paginatedImports; let last = last">
-              <td class="cell" style="text-align: center;" [ngClass]="{'last-row': last}">
-                <mat-checkbox
-                  [(ngModel)]="import.selected"
-                  (change)="onRowCheckboxChange(import)">
-                </mat-checkbox>
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                <div class="status" [ngClass]="{
-                    'status-unprocessed': import.status === 'UNPROCESSED',
-                    'status-processed': import.status === 'PROCESSED'
-                  }">
-                  {{ getInvoiceStatus(import.status) }}
-                </div>
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.partner.name }}
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                <a [routerLink]="['/invoices', import.id]"
-                   class="text-link">
-                  {{ import.invoiceDetails.invoiceNumber }}
+
+
+  <!-- Table Container -->
+  <div class="w-full">
+    <div class="flex items-center justify-between p-4">
+    </div>
+
+    <table class="min-w-full text-sm text-left text-gray-900 border-b border-gray-200">
+      <thead class="text-xs uppercase bg-gray-50 text-gray-500">
+      <tr>
+        <th class="pl-2 pr-1 py-3">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+        </th>
+        <th class="px-4 py-3 font-semibold">Číslo faktúry</th>
+        <th class="px-4 py-3 font-semibold">Variabilný symbol</th>
+        <th class="px-4 py-3 font-semibold">Dodávateľ</th>
+        <th class="px-4 py-3 font-semibold">Dátum splatnosti</th>
+        <th class="px-4 py-3 font-semibold">Cena (€)</th>
+        <th class="px-4 py-3 font-semibold">Status</th>
+        <th class="px-4 py-3 font-semibold">Typ faktúry</th>
+        <th class="px-4 py-3 font-semibold"> </th>
+      </tr>
+      </thead>
+
+      <!-- data present -->
+      <ng-container>
+        <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let invoice of invoices" class="hover:bg-gray-100 transition-colors duration-150">
+          <td class="pl-2 pr-1 py-4">
+            <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+          </td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.name }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.date }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.price }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.var }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.supplier }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.type }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.dueDate }}</td>
+          <td class="px-4 py-3 flex items-center">
+            <button [id]="'dropdown-button-' + invoice.id"
+                    [attr.data-dropdown-toggle]="'dropdown-' + invoice.id"
+                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none"
+                    type="button">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+              </svg>
+            </button>
+            <div [id]="'dropdown-' + invoice.id"
+                 class="hidden z-10 w-40 bg-white rounded divide-y divide-gray-100 shadow">
+              <ul class="py-2 px-2 text-sm text-gray-500" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">
+                <li>
+                  <a>
+                    <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>Edit</span>
+                    </div>
+                  </a>
+                </li>
+
+                <li>
+                  <a (click)="previewInvoice(invoice.id)">
+                    <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>Náhľad</span>
+                    </div>
+                  </a>
+                </li>
+
+              </ul>
+              <div class=" p-2">
+                <a>
+                  <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                      <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-red-500">Zmazať</span>
+                  </div>
                 </a>
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.invoiceDetails.variableSymbol }}
-              </td>
-              <td class="cell" [ngClass]="{'last-row': last}">
-                {{ import.importDate | date:'dd.MM.yyyy' }}
-              </td>
-              <td class="cell test" [ngClass]="{'last-row': last}">
-                <div class="invoice-date">{{ import.invoiceDetails.issueDate }}</div>
-                <div class="invoice-due">{{ import.invoiceDetails.dueDate }}</div>
-              </td>
-            </tr>
-            </ng-container>
-            <tr *ngIf="!isLoading && paginatedImports.length === 0">
-              <td class="cell" colspan="6" style="text-align: center;">Ziadne faktury pre vybranu firmu</td>
-            </tr>
-            </tbody>
-          </table>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </ng-container>
+
+      <!-- no data -->
+      <ng-template #noData>
+        <tbody>
+        <tr>
+          <td colspan="9" class="px-4 py-8 text-center text-gray-500 text-sm">
+            <div class="flex flex-col items-center justify-center gap-2">
+              <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
+              </svg>
+              <span>Nenašli sa žiadne bločky pre zadané kritériá.</span>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </ng-template>
+    </table>
+    <div class="border-b border-gray-200 pb-5">
+      <div class="mx-4 mt-4 flex items-center justify-between">
+        <!-- TODO implement pagination -->
+        <div class="text-sm text-gray-600">
+          <!--          Zobrazuje {{ (currentPage - 1) * itemsPerPage + 1 }} –-->
+          <!--          {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }}-->
+          <!--          z {{ totalItems }} záznamov-->
+          Zobrazuje 1-15 of 1000
+        </div>
+
+        <!-- Pravá strana: Paginácia -->
+        <div class="flex items-center gap-4">
+          <nav aria-label="navigation">
+            <!--            <ul class="flex items-center -space-x-px h-8 text-sm">-->
+            <!--              &lt;!&ndash; Predchádzajúce tlačidlo &ndash;&gt;-->
+            <!--              <li>-->
+            <!--                <a href="#" (click)="changePage(currentPage - 1)"-->
+            <!--                   [class.disabled]="currentPage === 1"-->
+            <!--                   class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700     ">-->
+            <!--                  <span class="sr-only">Previous</span>-->
+            <!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
+            <!--                       fill="none" viewBox="0 0 6 10">-->
+            <!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+            <!--                          d="M5 1 1 5l4 4"/>-->
+            <!--                  </svg>-->
+            <!--                </a>-->
+            <!--              </li>-->
+
+            <!--              &lt;!&ndash; Čísla strán &ndash;&gt;-->
+            <!--              <li *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">-->
+            <!--                <a href="#" (click)="changePage(page)"-->
+            <!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ">-->
+            <!--                  {{ page }}-->
+            <!--                </a>-->
+            <!--              </li>-->
+
+            <!--              &lt;!&ndash; Ďalšie tlačidlo &ndash;&gt;-->
+            <!--              <li>-->
+            <!--                <a href="#" (click)="changePage(currentPage + 1)"-->
+            <!--                   [class.disabled]="currentPage === totalPages"-->
+            <!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700     ">-->
+            <!--                  <span class="sr-only">Next</span>-->
+            <!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
+            <!--                       fill="none" viewBox="0 0 6 10">-->
+            <!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+            <!--                          d="m1 9 4-4-4-4"/>-->
+            <!--                  </svg>-->
+            <!--                </a>-->
+            <!--              </li>-->
+            <!--            </ul>-->
+          </nav>
         </div>
       </div>
     </div>
   </div>
+
+</main>

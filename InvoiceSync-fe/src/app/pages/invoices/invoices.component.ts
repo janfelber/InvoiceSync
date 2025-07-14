@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {FileService} from "../../file.service";
 import {InvoiceService} from "./invoice.service";
 import {AxiosService} from "../../core/axios.service";
@@ -9,12 +9,13 @@ import { CommonModule } from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatCheckbox} from "@angular/material/checkbox";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 import {MatProgressSpinner} from "@angular/material/progress-spinner";
 import {MatTooltip} from "@angular/material/tooltip";
+import {initDropdowns, initFlowbite} from "flowbite";
 
 //TODO: filter state
 interface ImportItem {
@@ -22,23 +23,37 @@ interface ImportItem {
   company_id: number;
 }
 
+export interface Invoice {
+  id: number;
+  name: string;           // napr. „Faktúra č. 10/2024/123“
+  date: string;           // ISO alebo „DD.MM.YYYY“
+  dueDate: string;
+  amount: number;         // v € – pre demo stačí number
+  status: 'PAID' | 'UNPAID' | 'PARTIAL';
+  var: string;
+  supplier: string;
+  price: string;
+  type: string;
+}
+
 @Component({
     selector: 'app-test',
-    imports: [
-        DatePipe,
-        MatIcon,
-        ReactiveFormsModule,
-        FormsModule,
-        CommonModule,
-        MatCheckbox,
-        RouterLink,
-        MatProgressSpinner,
-        MatTooltip
-    ],
+  imports: [
+    DatePipe,
+    MatIcon,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatCheckbox,
+    RouterLink,
+    MatProgressSpinner,
+    MatTooltip,
+    MatDialogWindowComponent
+  ],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.css'
 })
-export class Invoices {
+export class Invoices implements OnInit, AfterViewInit{
 
   protected filenames: string[] = [];
 
@@ -85,7 +100,8 @@ export class Invoices {
     private invoiceService: InvoiceService,
     private axiosService: AxiosService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router,
   ) {
   }
 
@@ -93,7 +109,60 @@ export class Invoices {
   ngOnInit(): void {
     this.onFetchAllImports();
     this.onFetchCompanies();
+    initFlowbite();
   }
+
+  ngAfterViewInit() {
+    // prvý render
+    initDropdowns();
+  }
+
+  editInvoice(id: number) {
+    this.router.navigate(['/invoices/edit', id]);
+  }
+
+  previewInvoice(id: number) {
+    this.router.navigate(['web/receipts/', id]);
+  }
+
+  invoices: Invoice[] = [
+    {
+      "id": 78,
+      "name": "Faktúra č. 10/2024/123",
+      "date": "2024-05-15",
+      "dueDate": "2024-06-14",
+      "amount": 281.02,
+      "status": "UNPAID",
+      "var": "231000602",
+      "supplier": "CANIS SAFETY a.s.",
+      "price": "281.02",
+      "type": "EXPENSE"
+    },
+    {
+      "id": 77,
+      "name": "Faktúra č. 11/2024/567",
+      "date": "2024-05-18",
+      "dueDate": "2024-06-17",
+      "amount": 950.00,
+      "status": "PAID",
+      "var": "241100567",
+      "supplier": "MONMARKO s.r.o.",
+      "price": "950.00",
+      "type": "EXPENSE"
+    },
+    {
+      "id": 76,
+      "name": "Faktúra č. 12/2024/890",
+      "date": "2024-05-20",
+      "dueDate": "2024-06-19",
+      "amount": 1200.75,
+      "status": "PARTIAL",
+      "var": "250890001",
+      "supplier": "PA-MI s.r.o.",
+      "price": "1200.75",
+      "type": "REVENUE"
+    }
+  ]
 
   toggleSelectAll(event: any): void {
     const isChecked = event.checked;
