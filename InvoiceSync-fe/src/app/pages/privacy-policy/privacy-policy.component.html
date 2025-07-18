@@ -1,0 +1,330 @@
+<div class="flex flex-col min-h-screen bg-white">
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50">
+    <nav class="bg-white border-gray-200 ">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="" class="flex items-center">
+          <img src="../../../assets/SmallLogo.svg" class="mr-3 h-6 sm:h-9" alt="InvoiceSync Logo"/>
+          <span class="self-center text-xl font-semibold whitespace-nowrap ">InvoiceSync</span>
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200   "
+                aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+        </button>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+          <ul
+            class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+            <li>
+              <a routerLink="/web/home"
+                 routerLinkActive="md:text-blue-700 md: "
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Domov</a>
+            </li>
+            <li>
+              <a routerLink="/web/privacy"
+                 routerLinkActive="md:text-blue-700 md: "
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Ochrana
+                súkromia</a>
+            </li>
+            <li>
+              <a routerLink="/pricing"
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Cenník</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="grow">
+    <section class="py-10 bg-white lg:py-24">
+      <div class="max-w-4xl px-4 mx-auto format lg:px-4">
+        <h1 class="mb-6 text-3xl font-bold text-gray-900 lg:text-4xl"> Privacy policy</h1>
+        <p class="mb-10 text-lg text-gray-600 lg:text-lg">
+          Read about the privacy policy for InvoiceSync. If you have a question please
+          <a class="mx-2 font-normal text-blue-600 no-underline hover:underline" href="/contact/">contact us</a>
+          and we will help you out as soon as we can.
+        </p>
+        <hr class="my-12 border-gray-200 ">
+        <p>Ďakujeme, že ste sa rozhodli byť súčasťou našej komunity v InvoiceSync Inc. („<strong>Spoločnosť</strong>“, „<strong>my</strong>“,
+          „<strong>nás</strong>“, „<strong>naše</strong>"). Zaväzujeme sa chrániť vaše osobné údaje a vaše právo na
+          súkromie. Ak máte akékoľvek otázky alebo obavy týkajúce sa tohto oznámenia o ochrane osobných údajov alebo
+          našich postupov pri spracúvaní osobných údajov, kontaktujte nás prostredníctvom <a
+            class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://flowbite.com/contact/">kontaktného
+            formulára</a>.</p>
+        <p>Keď navštívite našu webovú stránku <a class="text-blue-600 no-underline dark:text-blue-400 hover:underline"
+                                                 href="https://flowbite.com">https://flowbite.com</a> („<strong>Webová
+          stránka</strong>“) alebo všeobecne využívate niektorú z našich služieb („<strong>Služby</strong>“, ktoré
+          zahŕňajú aj Webovú stránku), vážime si, že nám dôverujete so svojimi osobnými údajmi. Ochranu vášho súkromia
+          berieme veľmi vážne. V tomto oznámení o ochrane osobných údajov sa vám snažíme čo najzrozumiteľnejšie
+          vysvetliť, aké údaje zbierame, ako ich používame a aké práva v súvislosti s nimi máte. Dúfame, že si nájdete
+          čas na jeho dôkladné prečítanie, pretože je to dôležité. Ak nesúhlasíte s niektorým z bodov tohto oznámenia,
+          prosíme, aby ste naše Služby prestali používať.</p>
+
+        <p>Toto oznámenie o ochrane osobných údajov sa vzťahuje na všetky informácie zhromaždené prostredníctvom našich
+          Služieb (ktoré, ako bolo uvedené vyššie, zahŕňajú aj našu Webovú stránku), ako aj na súvisiace služby, predaj,
+          marketingové aktivity a podujatia.</p>
+        <p><strong>Please read this privacy notice carefully as it will help you understand what we do with the
+          information that we collect.</strong></p>
+        <h2 class="mb-4 h4">OBSAH</h2>
+        <ol>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" fragment="#1"
+                 (click)="navigateToSection('1')">AKÉ INFORMÁCIE
+            ZHROMAŽĎUJEME?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#2">AKO POUŽÍVAME VAŠE
+            INFORMÁCIE?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#3">BUDÚ VAŠE INFORMÁCIE
+            ZDIEĽANÉ S NIEKÝM?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#4">POUŽÍVAME SÚBORY COOKIE
+            A INÉ SLEDOVACIE TECHNOLÓGIE?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#5">AKÝ JE NÁŠ POSTOJ K
+            WEBOVÝM STRÁNKAM TRETÍCH STRÁN?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#6">AKO DLHO UCHOVÁVAME
+            VAŠE INFORMÁCIE?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#7">AKÉ MÁTE PRÁVA NA
+            OCHRANU SÚKROMIA?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#8">AKÉ MÁTE MOŽNOSTI
+            KONTROLY "DO-NOT-TRACK" FUNKCIÍ?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#9">AKTUALIZUJEME TOTO
+            OZNÁMENIE?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#10">AKO NÁS MÔŽETE
+            KONTAKTOVAŤ OHĽADOM TOHTO OZNÁMENIA?</a></li>
+          <li><a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="#11">AKO MÔŽETE
+            SKONTROLOVAŤ, AKTUALIZOVAŤ ALEBO VYMAZAŤ ÚDAJE, KTORÉ O VÁS ZHROMAŽĎUJEME?</a></li>
+        </ol>
+        <h2 id="1" class="mb-4 h4">1. AKÉ INFORMÁCIE ZHROMAŽĎUJEME?</h2>
+        <p><strong>Stručne</strong>: Zhromažďujeme osobné údaje, ktoré nám poskytnete.</p>
+        <p>Zhromažďujeme osobné údaje, ktoré nám dobrovoľne poskytnete, keď sa zaregistrujete na našej webovej stránke,
+          prejavíte záujem o získanie informácií o nás alebo našich produktoch a službách, zúčastníte sa aktivít na
+          webovej stránke alebo nás inak kontaktujete.</p>
+        <p>Osobné údaje, ktoré zhromažďujeme, závisia od kontextu vašej interakcie s nami a s webovou stránkou, od
+          volieb, ktoré urobíte, a od produktov a funkcií, ktoré používate. Medzi zhromažďované osobné údaje môžu patriť
+          napríklad:</p>
+        <p><strong>Osobné údaje, ktoré nám poskytnete</strong>. Zhromažďujeme mená, e-mailové adresy, heslá a ďalšie
+          podobné informácie.</p>
+        <p><strong>Údaje o platbách</strong>. Môžeme zhromažďovať údaje potrebné na spracovanie vašej platby, ak
+          vykonáte nákup, ako napríklad číslo vášho platobného nástroja (napr. číslo kreditnej karty) a bezpečnostný kód
+          priradený k platobnému nástroju. Všetky platobné údaje sú uložené spoločnosťou Stripe. Ich zásady ochrany
+          osobných údajov nájdete tu:
+          <a class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://stripe.com/privacy/"
+             rel="nofollow">https://stripe.com/privacy/</a>.
+        </p>
+        <p>Všetky osobné údaje, ktoré nám poskytnete, musia byť pravdivé, úplné a presné. Ste povinný nás informovať o
+          akýchkoľvek zmenách týchto osobných údajov.</p>
+        <p><strong>Automaticky zhromažďované informácie</strong></p>
+        <p><strong>Stručne</strong>: Niektoré informácie — ako napríklad vaša IP adresa a/alebo vlastnosti prehliadača a
+          zariadenia — sa zhromažďujú automaticky pri návšteve našej webovej stránky.</p>
+        <p>Automaticky zhromažďujeme určité informácie, keď navštívite, používate alebo prehliadate našu webovú stránku.
+          Tieto informácie neodhaľujú vašu konkrétnu identitu (ako napríklad vaše meno alebo kontaktné údaje), ale môžu
+          zahŕňať údaje o zariadení a používaní, ako napríklad vašu IP adresu, vlastnosti prehliadača a zariadenia,
+          operačný systém, jazykové preferencie, odkazujúce URL adresy, názov zariadenia, krajinu, polohu, informácie o
+          tom,
+          ako a kedy používate našu webovú stránku, a ďalšie technické údaje. Tieto informácie sú primárne potrebné na
+          zachovanie bezpečnosti a prevádzky našej webovej stránky, ako aj na interné analytické a výkaznícke účely.</p>
+        <p>Rovnako ako mnohé iné spoločnosti zhromažďujeme informácie aj prostredníctvom súborov cookie a podobných
+          technológií.</p>
+
+        <h2 id="2" class="mb-4 h4">2. AKO POUŽÍVAME VAŠE INFORMÁCIE?</h2>
+        <p><strong>Stručne</strong>: Vaše informácie spracúvame na základe oprávnených obchodných záujmov, plnenia
+          zmluvy s
+          vami, dodržiavania našich zákonných povinností a/alebo na základe vášho súhlasu.</p>
+        <p>Osobné údaje zhromaždené prostredníctvom našej webovej stránky používame na rôzne obchodné účely opísané
+          nižšie.
+          Vaše osobné údaje spracúvame na tieto účely na základe našich oprávnených obchodných záujmov, aby sme s vami
+          uzavreli alebo splnili zmluvu, na základe vášho súhlasu a/alebo z dôvodu plnenia našich zákonných povinností.
+          Pri
+          každom účele uvedenom nižšie uvádzame konkrétny právny základ, o ktorý sa opierame.</p>
+        <ul>
+          <li><strong>Požiadať o spätnú väzbu</strong>. Vaše údaje môžeme použiť na žiadosť o spätnú väzbu a na
+            kontaktovanie ohľadom vášho používania našej webovej stránky.
+          </li>
+          <li><strong>Na umožnenie komunikácie medzi používateľmi</strong>. Vaše údaje môžeme použiť na umožnenie
+            komunikácie medzi používateľmi so súhlasom každého používateľa.
+          </li>
+          <li><strong>Na správu používateľských účtov</strong>. Vaše údaje môžeme použiť na správu účtov a ich
+            udržiavanie v aktívnom stave.
+          </li>
+          <li><strong>Na zasielanie administratívnych informácií</strong>. Vaše osobné údaje môžeme použiť na zasielanie
+            informácií o produktoch, službách, nových funkciách a/alebo o zmenách našich podmienok, zmlúv a zásad.
+          </li>
+          <li><strong>Na ochranu našich služieb</strong>. Vaše údaje môžeme použiť ako súčasť našich opatrení na
+            udržiavanie bezpečnosti webovej stránky (napr. monitorovanie a prevencia podvodov).
+          </li>
+          <li><strong>Na vymáhanie našich podmienok, zmlúv a zásad, za obchodnými účelmi, z dôvodu právnych a
+            regulačných požiadaviek alebo v súvislosti s našou zmluvou</strong>.
+          </li>
+          <li><strong>Na reagovanie na právne požiadavky a predchádzanie škodám</strong>. Ak dostaneme predvolanie alebo
+            inú právnu požiadavku, môžeme preskúmať údaje, ktoré máme, aby sme určili, ako reagovať.
+          </li>
+          <li><strong>Na vybavenie a správu vašich objednávok</strong>. Vaše údaje môžeme použiť na vybavenie a správu
+            objednávok, platieb, vrátení tovaru a výmien uskutočnených prostredníctvom webovej stránky.
+          </li>
+          <li><strong>Na poskytovanie a zjednodušenie poskytovania služieb používateľovi</strong>. Vaše údaje môžeme
+            použiť na poskytnutie požadovanej služby.
+          </li>
+          <li><strong>Na odpovedanie na otázky používateľov / poskytovanie podpory</strong>. Vaše údaje môžeme použiť na
+            odpovedanie na vaše otázky a riešenie akýchkoľvek problémov pri používaní našich služieb.
+          </li>
+          <li><strong>Na zasielanie marketingových a propagačných správ</strong>. My a/alebo naši marketingoví partneri
+            tretích strán môžeme použiť osobné údaje, ktoré nám poskytnete, na marketingové účely, ak je to v súlade s
+            vašimi marketingovými preferenciami. Napríklad keď prejavíte záujem o získanie informácií o nás alebo o
+            našej webovej stránke, prihlásite sa na odber marketingu alebo nás inak kontaktujete, zhromažďujeme od vás
+            osobné údaje. Z odberu marketingových e-mailov sa môžete kedykoľvek odhlásiť (viď nižšie časť „AKÉ MÁTE
+            PRÁVA NA OCHRANU SÚKROMIA“).
+          </li>
+
+        </ul>
+        <h2 id="3" class="mb-4 h4">3. BUDE VAŠE INFORMÁCIE NIEKTO ZDIEĽAŤ?</h2>
+        <p><strong>Stručne povedané</strong>: Vaše údaje zdieľame iba s vaším súhlasom, kvôli splneniu zákonných
+          povinností, poskytnutiu služieb, ochrane vašich práv alebo naplneniu obchodných záväzkov.</p>
+        <p>Vaše údaje môžeme spracúvať alebo zdieľať na základe týchto právnych dôvodov:</p>
+        <ul>
+          <li><strong>Súhlas</strong>: Vaše údaje môžeme spracúvať, ak ste nám dali výslovný súhlas na ich použitie na
+            konkrétny účel.
+          </li>
+          <li><strong>Oprávnené záujmy</strong>: Vaše údaje môžeme spracúvať, ak je to primerane nevyhnutné na
+            dosiahnutie našich oprávnených obchodných záujmov.
+          </li>
+          <li><strong>Plnenie zmluvy</strong>: Ak sme s vami uzavreli zmluvu, vaše osobné údaje môžeme spracúvať za
+            účelom splnenia podmienok tejto zmluvy.
+          </li>
+          <li><strong>Právne povinnosti</strong>: Vaše údaje môžeme zverejniť, ak to vyžaduje zákon, vládne
+            nariadenie, súdne konanie, súdny príkaz alebo právny proces, napríklad v reakcii na súdne predvolanie
+            (vrátane prípadov, keď si to vyžadujú verejné orgány na účely národnej bezpečnosti alebo presadzovania
+            práva).
+          </li>
+          <li><strong>Zásadné záujmy</strong>: Vaše údaje môžeme zverejniť, ak sa domnievame, že je to potrebné na
+            vyšetrovanie, predchádzanie alebo prijatie opatrení v súvislosti s porušením našich zásad, podvodom,
+            ohrozením bezpečnosti osôb, nelegálnou činnosťou alebo ako dôkaz v právnom spore, do ktorého sme zapojení.
+          </li>
+        </ul>
+        <p>Konkrétne môžeme spracúvať alebo zdieľať vaše osobné údaje v týchto situáciách:</p>
+        <ul>
+          <li><strong>Obchodné prevody</strong>. Vaše údaje môžeme zdieľať alebo preniesť v rámci rokovaní alebo v
+            súvislosti so zlúčením, predajom aktív spoločnosti, financovaním alebo akvizíciou časti či celej našej
+            spoločnosti inou firmou.
+          </li>
+        </ul>
+
+        <h2 id="4" class="mb-4 h4">4. POUŽÍVAME COOKIES A INÉ SLEDOVACIE TECHNOLÓGIE?</h2>
+        <p><strong>Stručne povedané</strong>: Môžeme používať cookies a iné technológie sledovania na zhromažďovanie a
+          ukladanie vašich informácií.</p>
+        <p>Môžeme používať cookies a podobné technológie sledovania (ako sú webové majáky a pixely), aby sme získali
+          prístup k informáciám alebo ich uložili. Podrobné informácie o tom, ako tieto technológie používame a ako
+          môžete niektoré cookies odmietnuť, nájdete v našom Oznámení o používaní cookies.</p>
+
+
+        <h2 id="5" class="mb-4 h4">5. AKÝ JE NÁŠ POSTOJ K WEBOVÝM STRÁNKAM A SLUŽBÁM TRETÍCH STRÁN?</h2>
+        <p><strong>Stručne povedané</strong>: Nenesieme zodpovednosť za spracovanie vašich údajov zo strany tretích
+          strán, ktoré nie sú pod našou kontrolou, hoci ich služby môžu byť dostupné prostredníctvom našej Webovej
+          stránky.</p>
+        <p>Naša Webová stránka môže obsahovať odkazy na webové stránky, služby alebo aplikácie tretích strán (napr.
+          platobné brány ako Stripe, poskytovatelia analytiky ako Google).
+          Tieto tretie strany môžu zbierať údaje o vás nezávisle od nás. Nemáme kontrolu nad ich zásadami ochrany
+          osobných údajov a nezodpovedáme za spôsob, akým spracúvajú osobné údaje. Odporúčame vám prečítať si zásady
+          ochrany osobných údajov príslušnej tretej strany a kontaktovať ju priamo v prípade akýchkoľvek otázok alebo
+          požiadaviek.</p>
+
+        <h2 id="6" class="mb-4 h4">6. AKO DLHO UCHOVÁVAME VAŠE INFORMÁCIE?</h2>
+        <p><strong>Stručne povedané</strong>: Vaše informácie uchovávame tak dlho, ako je to potrebné na splnenie účelov
+          uvedených v tomto oznámení o ochrane osobných údajov, pokiaľ zákon nevyžaduje inak.</p>
+        <p>Vaše osobné údaje budeme uchovávať len po dobu nevyhnutnú na účely stanovené v tomto oznámení o ochrane
+          osobných údajov, pokiaľ dlhšia doba uchovávania nie je požadovaná alebo povolená zákonom (napr. daňové,
+          účtovné alebo iné právne požiadavky). Žiadny účel uvedený v tomto oznámení nevyžaduje, aby sme vaše osobné
+          údaje uchovávali dlhšie, než je doba, počas ktorej máte u nás účet.</p>
+        <p>Keď už nebudeme mať oprávnený obchodný dôvod na spracovanie vašich osobných údajov, tieto údaje buď vymažeme,
+          alebo anonymizujeme. Ak to nie je možné (napríklad preto, že vaše osobné údaje sú uložené v záložných
+          archívoch), bezpečne ich uložíme a izolujeme od ďalšieho spracovania, kým ich nebude možné vymazať.</p>
+
+
+        <h2 id="7" class="mb-4 h4">7. AKÉ MÁTE PRÁVA NA OCHRANU SÚKROMIA?</h2>
+        <p><strong>Stručne povedané</strong>: V niektorých regiónoch, ako napríklad v Európskom hospodárskom priestore,
+          máte práva, ktoré vám umožňujú väčší prístup k vašim osobným údajom a kontrolu nad nimi. Svoj účet si môžete
+          kedykoľvek prezrieť, upraviť alebo zrušiť.</p>
+        <p>V určitých regiónoch (napríklad v Európskom hospodárskom priestore) máte podľa platných právnych predpisov o
+          ochrane údajov určité práva. Môžu zahŕňať právo (i) požiadať o prístup a získať kópiu svojich osobných údajov,
+          (ii) požiadať o opravu alebo vymazanie; (iii) obmedziť spracovanie svojich osobných údajov; a (iv) ak je to
+          relevantné, na prenosnosť údajov. V určitých prípadoch máte tiež právo namietať voči spracovaniu vašich
+          osobných údajov. Na podanie takejto žiadosti použite <a
+            class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://flowbite.com">kontaktné
+            údaje</a> uvedené nižšie. Vašu žiadosť posúdime a budeme sa ňou riadiť v súlade s platnými zákonmi na
+          ochranu údajov.</p>
+        <p>Ak sa pri spracovaní vašich osobných údajov spoliehame na váš súhlas, máte právo tento súhlas kedykoľvek
+          odvolať. Upozorňujeme, že to nebude mať vplyv na zákonnosť spracovania pred jeho odvolaním, ani na
+          spracovanie, ktoré sa vykonáva na základe iných zákonných dôvodov ako je súhlas.</p>
+        <p>Ak máte trvalý pobyt v Európskom hospodárskom priestore a domnievate sa, že vaše osobné údaje spracúvame
+          nezákonne, máte tiež právo podať sťažnosť u miestneho dozorného orgánu na ochranu údajov. Ich kontaktné údaje
+          nájdete tu: <a class="text-blue-600 no-underline dark:text-blue-400 hover:underline"
+                         href="http://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm">http://ec.europa.eu/justice/data-protection/bodies/authorities/index_en.htm</a>.
+        </p>
+        <p>Ak máte trvalý pobyt vo Švajčiarsku, kontaktné údaje švajčiarskeho dozorného úradu nájdete tu: <a
+          class="text-blue-600 no-underline dark:text-blue-400 hover:underline"
+          href="https://www.edoeb.admin.ch/edoeb/en/home.html">https://www.edoeb.admin.ch/edoeb/en/home.html</a>.</p>
+        <p>Ak máte otázky alebo pripomienky týkajúce sa vašich práv na ochranu osobných údajov, môžete nás <a
+          class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://flowbite.com/contact/">kontaktovať
+          tu</a>.</p>
+        <p><strong>Informácie o účte</strong></p>
+        <p>Ak si chcete kedykoľvek prezrieť alebo zmeniť informácie vo svojom účte alebo účet zrušiť, môžete:</p>
+        <ul>
+          <li>Prihláste sa do svojho účtu a aktualizujte svoje používateľské nastavenia.</li>
+          <li>Kontaktujte nás pomocou uvedených kontaktných údajov.</li>
+        </ul>
+        <p>Po vašej žiadosti o zrušenie účtu ho deaktivujeme alebo odstránime spolu s vašimi údajmi z našich aktívnych
+          databáz. Niektoré informácie však môžeme uchovať vo svojich súboroch, aby sme zabránili podvodom, riešili
+          technické problémy, pomáhali pri vyšetrovaniach, uplatňovali naše Podmienky používania a/alebo dodržiavali
+          platné právne predpisy.</p>
+        <p><strong>Cookies a podobné technológie</strong>: Väčšina webových prehliadačov je predvolene nastavená na
+          prijímanie cookies. Ak si želáte, môžete si svoj prehliadač nastaviť tak, aby cookies vymazával alebo ich
+          odmietal. Ak sa rozhodnete cookies odstrániť alebo zablokovať, niektoré funkcie alebo služby našej webovej
+          stránky nemusia správne fungovať. Ak si želáte odmietnuť záujmovo orientovanú reklamu od inzerentov na našej
+          webovej stránke, navštívte <a class="text-blue-600 no-underline dark:text-blue-400 hover:underline"
+                                        href="http://www.aboutads.info/choices/">http://www.aboutads.info/choices/</a>.
+        </p>
+        <p><strong>Odhlásenie sa z e-mailového marketingu</strong>: Z odberu marketingových e-mailov sa môžete
+          kedykoľvek odhlásiť kliknutím na odkaz „Odhlásiť sa“ v našich e-mailoch alebo nás môžete kontaktovať
+          prostredníctvom nižšie uvedených údajov. Následne vás odstránime zo zoznamu marketingových e-mailov — stále
+          vás však môžeme kontaktovať v súvislosti so službami, ktoré sú nevyhnutné na správu vášho účtu, odpovede na
+          požiadavky na podporu alebo iné nekomerčné účely. Ak sa chcete úplne odhlásiť, môžete tiež:</p>
+
+        <h2 id="8" class="mb-4 h4">8. MOŽNOSTI OVládANIA FUNKCIE "NEZAZNAMENAŤ" (DO-NOT-TRACK)</h2>
+        <p>Väčšina webových prehliadačov a niektoré mobilné operačné systémy a aplikácie obsahujú funkciu alebo
+          nastavenie "Nezaznamenávať" ("DNT"), ktoré môžete aktivovať, aby ste vyjadrili svoje súkromné preferencie, že
+          nechcete, aby boli monitorované a zhromažďované údaje o vašich online prehliadacích aktivitách. V súčasnosti
+          však neexistuje jednotný technologický štandard na rozpoznávanie a implementáciu signálov DNT. Preto
+          momentálne nereagujeme na signály DNT z prehliadača ani na iné mechanizmy, ktoré automaticky komunikujú váš
+          výber, že nechcete byť online sledovaní. Ak bude v budúcnosti prijatý štandard pre online sledovanie, ktorý
+          budeme musieť dodržiavať, o tejto zmene vás budeme informovať v aktualizovanej verzii tohto oznámenia o
+          ochrane osobných údajov.</p>
+
+        <h2 id="9" class="mb-4 h4">10. AKTUALIZUJEME TOTO OZNÁMENIE?</h2>
+        <p><strong>Stručne</strong>: Áno, toto oznámenie budeme aktualizovať podľa potreby, aby sme dodržiavali platné
+          zákony.</p>
+        <p>Toto oznámenie o ochrane osobných údajov môžeme čas od času aktualizovať. Aktualizovaná verzia bude označená
+          novým dátumom „Revidované“ a nadobudne účinnosť hneď, ako bude prístupná. Ak urobíme podstatné zmeny v tomto
+          oznámení, môžeme vás o tom informovať buď výrazným oznámením o týchto zmenách, alebo priamo zaslaním
+          upozornenia. Odporúčame vám pravidelne si prezerať toto oznámenie, aby ste boli informovaní o tom, ako
+          chránime vaše údaje.</p>
+
+        <h2 id="10" class="mb-4 h4">11. AKO NÁS MÔŽETE KONTAKTOVAŤ OHĽADOM TOHTO OZNÁMENIA?</h2>
+        <p>Ak máte otázky alebo pripomienky k tomuto oznámeniu, môžete nás <a
+          class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://flowbite.com/contact/">kontaktovať
+          tu</a>
+
+          <!-- TODO add address -->
+          <!--          a toto je naša poštová adresa:</p>-->
+          <!--        <p>InvoiceSync Inc. Str. Constantin Titel Petrescu Timisoara, Timis 300103 Rumunsko</p>-->
+
+        <h2 id="11" class="mb-4 h4">12. AKO MÔŽETE SKONTROLOVAŤ, AKTUALIZOVAŤ ALEBO VYMAZAŤ ÚDAJE, KTORÉ O VÁS
+          ZHROMAŽĎUJEME?</h2>
+        <p>Na základe platných zákonov vašej krajiny môžete mať právo požiadať o prístup k osobným údajom, ktoré od vás
+          zhromažďujeme, tieto údaje zmeniť alebo v niektorých prípadoch vymazať. Ak chcete požiadať o kontrolu,
+          aktualizáciu alebo vymazanie svojich osobných údajov, navštívte prosím: <a
+            class="text-blue-600 no-underline dark:text-blue-400 hover:underline" href="https://flowbite.com/contact/">https://flowbite.com/contact/</a>.
+          Na vašu žiadosť odpovieme do 30 dní.</p>
+      </div>
+    </section>
+  </main>
+</div>

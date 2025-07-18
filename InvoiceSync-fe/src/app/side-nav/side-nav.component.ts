@@ -35,6 +35,13 @@ export class SideNavComponent {
       (this.userId === 0 || !item.hideIfNotZero)
     );
   }
+
+  closeDropdown() {
+    const dropdown = document.getElementById('dropdown-user');
+    if (dropdown) {
+      dropdown.classList.add('hidden');
+    }
+  }
 }
 
 function decodeToken(token: string | null) {

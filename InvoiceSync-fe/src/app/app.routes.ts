@@ -16,6 +16,7 @@ import {PricingComponent} from "./pages/pricing/pricing.component";
 import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
 import {ConvertorComponent} from "./convertor/convertor.component";
 import {ErrorComponent} from "./shared/error/error.component";
+import {PrivacyPolicyComponent} from "./pages/privacy-policy/privacy-policy.component";
 
 export const routes: Routes = [
   {
@@ -71,12 +72,16 @@ export const routes: Routes = [
       {
         path: 'web/data-transfer',
         component: ConvertorComponent
-      },
+      }
     ]
   },
   {
     path: 'pricing',
     component: PricingComponent
+  },
+  {
+    path: 'web/privacy',
+    component: PrivacyPolicyComponent
   },
   { path: 'error', component: ErrorComponent },
   //admin layout
