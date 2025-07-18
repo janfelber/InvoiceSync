@@ -1,0 +1,11 @@
+Extract the following fields from the invoice text and return them in JSON format:
+- Invoice Number
+- Date of Issue
+- Date of Delivery
+- Variable Symbol
+- Supplier VAT ID
+- Supplier Registration Number
+- Invoice Items (description, quantity, unit price, total)
+
+Invoice text:
+{{INVOICE_TEXT}}

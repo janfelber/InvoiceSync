@@ -28,29 +28,67 @@
             </button>
           </div>
           <!--TODO implement user dropdown menu-->
-          <!--          <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm" id="dropdown-user">-->
-          <!--            <div class="px-4 py-3" role="none">-->
-          <!--              <p class="text-sm text-gray-900" role="none">-->
-          <!--                Neil Sims-->
-          <!--              </p>-->
-          <!--              <p class="text-sm font-medium text-gray-900 truncate" role="none">-->
-          <!--              </p>-->
-          <!--            </div>-->
-          <!--            <ul class="py-1" role="none">-->
-          <!--              <li>-->
-          <!--                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Dashboard</a>-->
-          <!--              </li>-->
-          <!--              <li>-->
-          <!--                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>-->
-          <!--              </li>-->
-          <!--              <li>-->
-          <!--                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Earnings</a>-->
-          <!--              </li>-->
-          <!--              <li>-->
-          <!--                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>-->
-          <!--              </li>-->
-          <!--            </ul>-->
-          <!--          </div>-->
+                    <div class="absolute right-0 hidden z-10 w-60 bg-white rounded divide-y divide-gray-100 shadow" id="dropdown-user">
+                      <ul class="py-2 px-2 text-sm text-gray-500" role="none">
+<!--                        <li>-->
+<!--                          <a>-->
+<!--                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
+<!--                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
+<!--                                <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>-->
+<!--                              </svg>-->
+<!--                              <span>Účet</span>-->
+<!--                            </div>-->
+<!--                          </a>-->
+<!--                        </li>-->
+                        <li>
+                          <a routerLink="/web/privacy">
+                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+                              </svg>
+                              <span>Ochrana súkromia</span>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a routerLink="/web/limiter">
+                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                              </svg>
+                              <span>Predplatné</span>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+<!--                       <div class="py-2 px-2" role="none" >-->
+<!--                        <a >-->
+<!--                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
+<!--                            <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
+<!--                              <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>-->
+<!--                            </svg>-->
+<!--                            <span>Help Guide</span>-->
+<!--                          </div>-->
+
+<!--                        </a>-->
+<!--                        <p class="text-sm font-medium text-gray-900 truncate" role="none">-->
+<!--                        </p>-->
+<!--                      </div>-->
+                      <div class="py-2 px-2" role="none">
+                        <a>
+                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 hover:text-black text-sm">
+                            <svg class="w-4 h-4 mr-1.5 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                            </svg>
+                            <span class="text-red-500">Odhlasiť sa</span>
+                          </div>
+                        </a>
+                        <p class="text-sm font-medium text-gray-900 truncate" role="none">
+                        </p>
+                      </div>
+                    </div>
+
         </div>
       </div>
     </div>
@@ -147,15 +185,16 @@
           <span class="ml-3">Prevod údajov</span>
         </a>
       </li>
-      <li>
+      <li data-tooltip-target="coming-soon-settings">
         <a routerLink=""
-           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
+           class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 rounded-lg group"
+           tabindex="-1" aria-disabled="true">
           <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " fill="currentColor"
                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path clip-rule="evenodd" fill-rule="evenodd"
                   d="M8.34 1.804A1 1 0 019.32 1h1.36a1 1 0 01.98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 011.262.125l.962.962a1 1 0 01.125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 01.804.98v1.361a1 1 0 01-.804.98l-1.473.295a6.95 6.95 0 01-.587 1.416l.834 1.25a1 1 0 01-.125 1.262l-.962.962a1 1 0 01-1.262.125l-1.25-.834a6.953 6.953 0 01-1.416.587l-.294 1.473a1 1 0 01-.98.804H9.32a1 1 0 01-.98-.804l-.295-1.473a6.957 6.957 0 01-1.416-.587l-1.25.834a1 1 0 01-1.262-.125l-.962-.962a1 1 0 01-.125-1.262l.834-1.25a6.957 6.957 0 01-.587-1.416l-1.473-.294A1 1 0 011 10.68V9.32a1 1 0 01.804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 01.125-1.262l.962-.962A1 1 0 015.38 3.03l1.25.834a6.957 6.957 0 011.416-.587l.294-1.473zM13 10a3 3 0 11-6 0 3 3 0 016 0z"></path>
           </svg>
-          <span class="ml-3">Settings</span>
+          <span class="ml-3">Nastavenia</span>
         </a>
       </li>
       <li>
@@ -231,6 +270,18 @@
   <div id="coming-soon-help" role="tooltip"
        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
     Podporna čoskoro dostupná
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+
+  <div id="coming-soon-settings" role="tooltip"
+       class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+    Nastavenia čoskoro dostupné
+    <div class="tooltip-arrow" data-popper-arrow></div>
+  </div>
+
+  <div id="coming-soon-guide" role="tooltip"
+       class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+    Sprievodca čoskoro dostupný
     <div class="tooltip-arrow" data-popper-arrow></div>
   </div>
 </aside>
