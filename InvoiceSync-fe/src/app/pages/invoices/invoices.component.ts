@@ -39,16 +39,10 @@ export interface Invoice {
 @Component({
     selector: 'app-test',
   imports: [
-    DatePipe,
-    MatIcon,
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    MatCheckbox,
     RouterLink,
-    MatProgressSpinner,
-    MatTooltip,
-    MatDialogWindowComponent
   ],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.css'

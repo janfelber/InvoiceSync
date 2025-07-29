@@ -35,5 +35,11 @@ export const ApiPaths = {
   emailSubscribe: {
     BASE: '/email-subscribe',
     SUBSCRIBE: '/subscribe',
+  },
+  convert: {
+    BASE: '/convert',
+    FIND_ALL_BY_USER: '/imports',
+    UPLOAD: '/save',
+    BY_ID: (convertId: number) => `/${convertId}`,
   }
 };
