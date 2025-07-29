@@ -14,9 +14,10 @@ import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.c
 import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
 import {PricingComponent} from "./pages/pricing/pricing.component";
 import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
-import {ConvertorComponent} from "./convertor/convertor.component";
+import {ConvertorComponent} from "./pages/convertor/convertor.component";
 import {ErrorComponent} from "./shared/error/error.component";
 import {PrivacyPolicyComponent} from "./pages/privacy-policy/privacy-policy.component";
+import {DataTransferComponent} from "./pages/data-transfer/data-transfer.component";
 
 export const routes: Routes = [
   {
@@ -26,7 +27,6 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: 'home',
@@ -71,8 +71,12 @@ export const routes: Routes = [
       },
       {
         path: 'web/data-transfer',
+        component: DataTransferComponent
+      },
+      {
+        path: 'web/data-transfer/:id',
         component: ConvertorComponent
-      }
+      },
     ]
   },
   {

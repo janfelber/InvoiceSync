@@ -27,7 +27,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     req -> req.requestMatchers(
                             "/api/v1/auth/**",
-                            "/invoice/**",
                             "/v3/api-docs",
                             "/v3/api-docs/**",
                             "/swagger-ui.html",
