@@ -39,16 +39,10 @@ export interface Invoice {
 @Component({
     selector: 'app-test',
   imports: [
-    DatePipe,
-    MatIcon,
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    MatCheckbox,
     RouterLink,
-    MatProgressSpinner,
-    MatTooltip,
-    MatDialogWindowComponent
   ],
     templateUrl: './invoices.component.html',
     styleUrl: './invoices.component.css'
@@ -352,7 +346,6 @@ export class Invoices implements OnInit, AfterViewInit{
   downloadFile(importId: number) {
     this.axiosService.request('GET', `/file/generateZip/${importId}`, null, { responseType: 'blob' })
       .then((response) => {
-        console.log(response);
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -438,7 +431,6 @@ export class Invoices implements OnInit, AfterViewInit{
       `/api/v1/imports/company/${company.id}/current-user`,
       null,
     ).then(response => {
-      console.log(response.data);
       //update imports
       this.filteredInvoiceImports = response.data;
     }).catch(error => {

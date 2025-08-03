@@ -1,3 +1,25 @@
 @import "tailwindcss";
 @import "flowbite";
 @source "../node_modules/flowbite";
+
+@keyframes pulse-error {
+  0%   { background-color: #fefce8; } /* yellow-50 */
+  50%  { background-color: #fde047; } /* yellow-300 */
+  100% { background-color: #fefce8; }
+}
+
+.pulse-error-once {
+  animation: pulse-error 1s ease-in-out;
+  border-radius: 0.375rem;
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+}
