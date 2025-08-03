@@ -8,9 +8,9 @@ import {HttpHeaders} from "@angular/common/http";
   providedIn: 'root'
 })
 
-export class ConvertService {
+export class DataTransferService {
 
-  private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.convert.BASE;
+  private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.data_transfer.BASE;
 
   constructor(
     private axiosService: AxiosService
@@ -24,14 +24,14 @@ export class ConvertService {
 
     return this.axiosService.request(
       'GET',
-      `${this.baseUrl}${ApiPaths.convert.FIND_ALL_BY_USER}${queryString}`,
+      `${this.baseUrl}${ApiPaths.data_transfer.FIND_ALL_BY_USER}${queryString}`,
       null
     )
   }
 
   getConvertById(params: {convertId: number}): Promise<any> {
     return this.axiosService.request(
-      'GET', `${this.baseUrl}${ApiPaths.convert.BY_ID(params.convertId)}`, null
+      'GET', `${this.baseUrl}${ApiPaths.data_transfer.BY_ID(params.convertId)}`, null
     )
   }
 
@@ -44,8 +44,28 @@ export class ConvertService {
 
     return this.axiosService.request(
       'POST',
-      `${this.baseUrl}${ApiPaths.convert.UPLOAD}`,
+      `${this.baseUrl}${ApiPaths.data_transfer.UPLOAD}`,
       formData
     );
   }
+
+  saveMapping(convertId: number, mappings: any[]): Promise<any> {
+    return this.axiosService.request(
+      'POST',
+      `${this.baseUrl}${ApiPaths.data_transfer.UPDATE_MAPPING(convertId)}`,
+      mappings
+    )
+  }
+
+  downloadConvert(convertId:number): Promise<any> {
+    return this.axiosService.request(
+      'GET',
+      `${this.baseUrl}${ApiPaths.data_transfer.DOWNLOAD(convertId)}`,
+      null,
+      {
+        responseType: 'blob'
+      }
+    )
+  }
+
 }

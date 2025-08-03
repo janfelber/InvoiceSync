@@ -1,4 +1,4 @@
-package com.invoicesync.convert.dto;
+package com.invoicesync.datatransfer.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConvertMappingDto {
+public class DataTransferHeaderMappingDto {
 
   private Long id;
 

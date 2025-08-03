@@ -14,10 +14,12 @@ import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.c
 import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
 import {PricingComponent} from "./pages/pricing/pricing.component";
 import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
-import {ConvertorComponent} from "./pages/convertor/convertor.component";
+import {DataTransferMappingComponent} from "./pages/data-transfer-mapping/data-transfer-mapping.component";
 import {ErrorComponent} from "./shared/error/error.component";
 import {PrivacyPolicyComponent} from "./pages/privacy-policy/privacy-policy.component";
-import {DataTransferComponent} from "./pages/data-transfer/data-transfer.component";
+import {DataTransferTableComponent} from "./pages/data-transfer-table/data-transfer-table.component";
+import {ContactFormComponent} from "./contact-form/contact-form.component";
+import {DataTransferDetailComponent} from "./pages/data-trasnfer-detail/data-transfer-detail.component";
 
 export const routes: Routes = [
   {
@@ -71,17 +73,21 @@ export const routes: Routes = [
       },
       {
         path: 'web/data-transfer',
-        component: DataTransferComponent
+        component: DataTransferTableComponent
       },
       {
         path: 'web/data-transfer/:id',
-        component: ConvertorComponent
+        component: DataTransferDetailComponent
       },
     ]
   },
   {
     path: 'pricing',
     component: PricingComponent
+  },
+  {
+    path: 'contact',
+    component: ContactFormComponent
   },
   {
     path: 'web/privacy',

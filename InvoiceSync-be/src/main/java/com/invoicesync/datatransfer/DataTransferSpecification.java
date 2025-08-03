@@ -1,10 +1,10 @@
-package com.invoicesync.convert;
+package com.invoicesync.datatransfer;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class ConvertSpecification {
+public class DataTransferSpecification {
 
-  public static Specification<Convert> withUserId(String userId) {
+  public static Specification<DataTransfer> withUserId(final String userId) {
     return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("createdBy"), userId);
   }
 

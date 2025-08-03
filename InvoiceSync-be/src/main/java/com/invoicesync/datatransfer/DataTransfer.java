@@ -1,10 +1,7 @@
-package com.invoicesync.convert;
+package com.invoicesync.datatransfer;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import com.invoicesync.shared.common.BaseEntity;
 
@@ -12,6 +9,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,19 +23,18 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "convert_import", schema = "invoice_sync")
-public class Convert extends BaseEntity {
+@Table(name = "data_transfer", schema = "invoice_sync")
+public class DataTransfer extends BaseEntity {
 
   @Column(name = "file_name")
   private String fileName;
 
-
-  @JdbcTypeCode(SqlTypes.JSON)
-  @Column(name = "data_json")
+  @Column(name = "data_json", columnDefinition = "TEXT")
   private String data;
 
   @OneToMany(mappedBy = "convert", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<ConvertMapping> mappings = new ArrayList<>();
+  @OrderBy("createdDate ASC")
+  private List<DataTransferHeader> mappings = new ArrayList<>();
 
   private String status;
 

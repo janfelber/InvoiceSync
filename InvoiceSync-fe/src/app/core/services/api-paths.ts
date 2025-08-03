@@ -36,10 +36,12 @@ export const ApiPaths = {
     BASE: '/email-subscribe',
     SUBSCRIBE: '/subscribe',
   },
-  convert: {
+  data_transfer: {
     BASE: '/convert',
     FIND_ALL_BY_USER: '/imports',
     UPLOAD: '/save',
     BY_ID: (convertId: number) => `/${convertId}`,
+    UPDATE_MAPPING: (convertId: number) => `/${convertId}/mapping`,
+    DOWNLOAD: (convertId: number) => `/${convertId}/download`,
   }
 };

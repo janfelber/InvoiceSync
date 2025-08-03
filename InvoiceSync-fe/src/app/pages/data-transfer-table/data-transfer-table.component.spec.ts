@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataTransferComponent } from './data-transfer.component';
+import { DataTransferTableComponent } from './data-transfer-table.component';
 
 describe('DataTransferComponent', () => {
-  let component: DataTransferComponent;
-  let fixture: ComponentFixture<DataTransferComponent>;
+  let component: DataTransferTableComponent;
+  let fixture: ComponentFixture<DataTransferTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataTransferComponent]
+      imports: [DataTransferTableComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DataTransferComponent);
+    fixture = TestBed.createComponent(DataTransferTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
