@@ -147,7 +147,6 @@ export class ReceiptDetailsComponent implements OnInit {
     this.accountCharts.findAccountsByCompany({
       companyId: this.companyId,
     }).then(response => {
-      console.log(response.data)
       this.groupedAccounts = response.data;
     })
   }

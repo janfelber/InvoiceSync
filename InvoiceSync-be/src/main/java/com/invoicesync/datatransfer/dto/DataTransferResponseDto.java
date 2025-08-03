@@ -1,4 +1,4 @@
-package com.invoicesync.convert.dto;
+package com.invoicesync.datatransfer.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConvertResponseDto {
+public class DataTransferResponseDto {
   private Long id;
 
   private String fileName;
@@ -21,7 +21,7 @@ public class ConvertResponseDto {
 
   private String status;
 
-  private List<ConvertMappingDto> mappings;
+  private List<DataTransferHeaderMappingDto> mappings;
 
   private String data;
 }

@@ -45,7 +45,6 @@ export class PricingComponent implements OnInit{
       const response = await this.subscriptionService.subscribe(request);
 
       if (plan === 'FREE') {
-        console.log(response.data.message); // "FREE plan activated"
         this.router.navigate(['/web/limiter']);
         return;
       }

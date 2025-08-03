@@ -1,10 +1,11 @@
-package com.invoicesync.convert;
+package com.invoicesync.datatransfer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ConvertRepository extends JpaRepository<Convert, Long>, JpaSpecificationExecutor<Convert> {
+public interface DataTransferRepository
+    extends JpaRepository<DataTransfer, Long>, JpaSpecificationExecutor<DataTransfer> {
 
 }

@@ -1,33 +1,30 @@
-package com.invoicesync.convert;
+package com.invoicesync.datatransfer;
+
+import com.invoicesync.shared.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
+@Getter
+@Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "convert_mapping", schema = "invoice_sync")
-public class ConvertMapping {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+@Table(name = "data_transfer_header", schema = "invoice_sync")
+public class DataTransferHeader extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(name = "convert_import_id", nullable = false)
-  private Convert convert;
+  private DataTransfer dataTransfer;
 
   @Column(name = "original_header")
   private String originalHeader;
