@@ -1,0 +1,28 @@
+<div class="w-full min-h-screen flex flex-col">
+
+  <div *ngIf="excelColumns.length > 8" class="text-sm text-gray-500 italic px-2 pb-1">
+    Tabuľka môže obsahovať viac stĺpcov – potiahnite do strany →
+  </div>
+
+  <div class="flex-1 overflow-auto rounded-lg border border-gray-200">
+    <table class="min-w-full border-collapse">
+      <thead class="sticky top-0 bg-gray-100 z-10">
+      <tr class="text-gray-700 text-sm">
+        <th *ngFor="let col of excelColumns"
+            class="px-3 py-2 text-left font-semibold whitespace-nowrap border-b border-gray-300">
+          {{ col }}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let row of excelSheet; let rowIndex = index"
+          class="hover:bg-gray-50 text-sm">
+        <td *ngFor="let col of excelColumns"
+            class="px-3 py-2 whitespace-nowrap border-b border-r border-gray-200">
+          {{ row[col] || '' }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

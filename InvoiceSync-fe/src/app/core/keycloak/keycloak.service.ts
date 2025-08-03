@@ -40,6 +40,8 @@ export class KeycloakService {
       console.log('User is authecicated')
       this._profile = (await this.keycloak?.loadUserProfile()) as UserProfile;
       this._profile.token = this.keycloak?.token;
+
+      console.log(this._profile.token)
     }
 
   }

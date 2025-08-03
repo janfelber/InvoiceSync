@@ -1,0 +1,234 @@
+<div class="flex flex-col bg-white">
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50">
+    <nav class="bg-white border-gray-200 ">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="" class="flex items-center">
+          <img src="../../../assets/SmallLogo.svg" class="mr-3 h-6 sm:h-9" alt="InvoiceSync Logo"/>
+          <span class="self-center text-xl font-semibold whitespace-nowrap ">InvoiceSync</span>
+        </a>
+        <button data-collapse-toggle="navbar-default" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200   "
+                aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+        </button>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+          <ul
+            class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+            <li>
+              <a routerLink="/web/home"
+                 routerLinkActive="md:text-blue-700 md: "
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Domov</a>
+            </li>
+            <li>
+              <a routerLink="/web/privacy"
+                 routerLinkActive="md:text-blue-700 md: "
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Ochrana
+                súkromia</a>
+            </li>
+            <li>
+              <a routerLink="/pricing"
+                 class="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">Cenník</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 ">Kontaktujte nás</h2>
+    <p class="mb-8 lg:mb-16 font-light text-center text-gray-500  sm:text-xl">Máte technický problém? Chcete nám poslať spätnú väzbu k beta funkcii? Dajte nám vedieť.</p>
+    <div class="lg:col-span-7">
+      <form (ngSubmit)="submit()" [formGroup]="form"
+            class="rounded-2xl bg-white shadow-sm border border-slate-200 p-6 lg:p-8">
+        <!-- stavové hlášky -->
+        <div *ngIf="sent()" class="mb-4 rounded-lg bg-green-50 border border-green-200 text-green-800 p-3 text-sm">
+          Ďakujeme! Vaša správa bola odoslaná.
+        </div>
+        <div *ngIf="serverError()" class="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-800 p-3 text-sm">
+          {{ serverError() }}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="mb-1 block text-sm font-medium text-slate-700">Meno</label>
+            <input type="text" formControlName="name" placeholder="Ján"
+                   class="block w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500">
+          </div>
+
+          <div>
+            <label class="mb-1 block text-sm font-medium text-slate-700">Priezvisko</label>
+            <input type="text" formControlName="name" placeholder="Novák"
+                   class="block w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="mb-1 w-full block text-sm font-medium text-slate-700">E‑mail</label>
+          <input type="email" formControlName="email" placeholder="jan.novak@example.com"
+                 class="block w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                 [class.border-red-400]="fieldInvalid('email')">
+          <p *ngIf="fieldInvalid('email')" class="mt-1 text-xs text-red-600">Zadajte platný e‑mail.</p>
+        </div>
+
+        <div>
+          <label class="mb-1 w-full block text-sm font-medium text-slate-700">Predmet</label>
+          <input type="text" formControlName="email" placeholder="Názov predmetu"
+                 class="block w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500">
+        </div>
+
+        <div class="mt-4">
+          <label class="mb-1 block text-sm font-medium text-slate-700">Správa</label>
+          <textarea rows="6" formControlName="message" placeholder="Ako vám vieme pomôcť?"
+                    class="block w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500"
+                    [class.border-red-400]="fieldInvalid('message')"></textarea>
+          <p *ngIf="fieldInvalid('message')" class="mt-1 text-xs text-red-600">
+            Správa musí mať aspoň 10 znakov.
+          </p>
+        </div>
+
+        <div class="mt-4 flex items-start space-x-3">
+          <input id="consent" type="checkbox" formControlName="consent"
+                 class="mt-1 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+          <label for="consent" class="text-sm text-slate-600">
+            Súhlasím so spracovaním osobných údajov na účely kontaktovania.
+          </label>
+        </div>
+
+        <div class="mt-6 flex items-center gap-3">
+          <button type="submit"
+                  class="inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-60"
+                  [disabled]="!canSubmit()">
+            <svg *ngIf="sending()" class="mr-2 h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+            </svg>
+            Odoslať správu
+          </button>
+
+          <button type="button"
+                  class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-700 hover:bg-slate-50"
+                  (click)="form.reset({ topic: 'support', consent: false })">
+            Vymazať
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="bg-gray-50 ">
+    <div class="py-8 px-4 mx-auto max-w-screen text-center lg:py-16">
+      <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 ">
+        Prihláste sa na odber noviniek
+      </h2>
+      <p class="mb-8 font-light text-gray-500 sm:text-xl">
+        Prihláste sa na odber noviniek a buďte medzi prvými, ktorí sa dozvedia o nových funkciách a aktualizáciách našej aplikácie.
+      </p>
+      <form action="#" class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+        <div class="relative w-full sm:w-auto">
+          <input
+            type="email"
+            id="email"
+            class="block w-full px-4 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg sm:rounded-r-none focus:ring-primary-500 focus:border-primary-500      "
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full sm:w-auto px-5 py-3 text-sm font-medium text-white bg-blue-700 rounded-lg sm:rounded-l-none hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300   "
+        >
+          Odoberať
+        </button>
+      </form>
+      <p class="text-sm text-gray-500">Prihlásením na odber súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov spoločnosti.</p>
+    </div>
+  </section>
+</div>
+
+
+
+<footer class="bg-white ">
+  <div class="mx-auto w-full max-w-screen-xl">
+    <div class="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
+      <div>
+        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase ">Company</h2>
+        <ul class="text-gray-500  font-medium">
+          <li class="mb-4">
+            <a href="#" class=" hover:underline">About</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Careers</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Brand Center</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Blog</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase ">Help center</h2>
+        <ul class="text-gray-500  font-medium">
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Discord Server</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Twitter</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Facebook</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase ">Legal</h2>
+        <ul class="text-gray-500  font-medium">
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Licensing</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase ">Download</h2>
+        <ul class="text-gray-500  font-medium">
+          <li class="mb-4">
+            <a href="#" class="hover:underline">iOS</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Android</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">Windows</a>
+          </li>
+          <li class="mb-4">
+            <a href="#" class="hover:underline">MacOS</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="mx-auto max-w-screen-xl text-center mb-12">
+      <a href="#" class="flex justify-center items-center text-2xl font-semibold text-gray-900 mb-4">
+        <img src="../../../assets/SmallLogo.svg" class="mr-3 h-6 sm:h-9" alt="InvoiceSync Logo"/>
+        InvoiceSync
+      </a>
+      <span class="text-sm text-gray-500 sm:text-center ">© 2025-2025 <a href="#" class="hover:underline">Flowbite™</a>. All Rights Reserved.</span>
+    </div>
+  </div>
+</footer>
