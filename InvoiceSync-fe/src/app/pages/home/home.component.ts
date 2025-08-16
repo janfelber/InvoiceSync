@@ -104,15 +104,6 @@ export class HomeComponent implements OnInit{
       })
       .catch(error => {
         console.error('Error while fetching companies', error);
-
-        // Presmeruj podľa typu chyby
-        if (error?.response?.status === 401) {
-          this.router.navigate(['/unauthorized']);
-        } else if (error?.response?.status === 403) {
-          this.router.navigate(['/forbidden']);
-        } else {
-          this.router.navigate(['/error']);
-        }
       });
   }
 

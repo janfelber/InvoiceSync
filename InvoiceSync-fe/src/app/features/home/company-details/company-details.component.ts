@@ -47,6 +47,7 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
   searchTerm: string = '';
   selectedAccount: any = null;
   companyId: any = null
+  companyName: any = null;
   private chart: ApexCharts | undefined;
 
   autoClassId = '';
@@ -280,6 +281,10 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     initFlowbite();
+
+    this.route.queryParamMap.subscribe(params => {
+      this.companyName = params.get('name');
+    });
     this.route.paramMap.subscribe(params => {
       console.log(params.get('id'))
       this.companyId = params.get('id') || '';

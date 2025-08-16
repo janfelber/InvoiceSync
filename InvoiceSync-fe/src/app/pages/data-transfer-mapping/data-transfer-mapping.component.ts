@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {DataTransferService} from "../../core/services/data-transfer.service";
 import {initFlowbite} from "flowbite";
+import {delay} from "rxjs";
 
 @Component({
   selector: 'data-transfer-mapping',
@@ -23,18 +24,23 @@ export class DataTransferMappingComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    initFlowbite();
     this.route.paramMap.subscribe(params => {
       this.convertId = params.get('id') || '';
+      if (this.convertId) {
+        this.onFetchConvert()
+      }
+      else {
+        console.error('<UNK>');
+      }
     });
-        initFlowbite();
-        this.onFetchConvert();
     }
 
-  fileName: string = '';
   convertId: any = null
   toConvert: any = null
   excelSheet: any[] = [];
   excelColumns: string[] = [];
+  loadingMappingFile = false
 
   mappedHeadersOptions = [
     "Číslo",
@@ -52,18 +58,27 @@ export class DataTransferMappingComponent implements OnInit{
   ];
 
   onFetchConvert() {
+    this.loadingMappingFile = true;
+
     this.convertService.getConvertById({
       convertId: this.convertId
     })
       .then(response => {
-        this.toConvert = response.data.mappings
-        this.excelSheet = response.data.data
+        setTimeout(() => {
+          this.toConvert = response.data.mappings
+          this.excelSheet = response.data.data
 
-        this.excelSheet = JSON.parse(response.data.data);
+          this.excelSheet = JSON.parse(response.data.data);
+          if (this.excelSheet.length > 0) {
+            this.excelColumns = Object.keys(this.excelSheet[0]);
+          }
 
-        if (this.excelSheet.length > 0) {
-          this.excelColumns = Object.keys(this.excelSheet[0]);
-        }
+          this.loadingMappingFile = false;
+        }, 2000);
+      })
+      .catch(error => {
+        console.error('Chyba pri načítavaní mapovacieho suboru:', error);
+        this.loadingMappingFile = false;
       })
   }
 
