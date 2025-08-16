@@ -32,7 +32,7 @@ public class DataTransfer extends BaseEntity {
   @Column(name = "data_json", columnDefinition = "TEXT")
   private String data;
 
-  @OneToMany(mappedBy = "convert", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "dataTransfer", cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("createdDate ASC")
   private List<DataTransferHeader> mappings = new ArrayList<>();
 

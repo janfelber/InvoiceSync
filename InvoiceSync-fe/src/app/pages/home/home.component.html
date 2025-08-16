@@ -165,7 +165,7 @@
           </div>
         </td>
         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-          <a [routerLink]="['/web/company', company.id]" class="text-blue-600 hover:underline font-medium">
+          <a [routerLink]="['/web/company', company.id]" [queryParams]="{ name: company.name }" class="text-blue-600 hover:underline font-medium">
             {{company.name }}
           </a>
         </th>

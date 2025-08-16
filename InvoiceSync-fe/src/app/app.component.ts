@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
+import {KeycloakService} from "./core/keycloak/keycloak.service";
 
 interface SideNavToggle {
   screenWidth: number;
