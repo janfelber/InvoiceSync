@@ -3,16 +3,19 @@ package com.invoicesync.company;
 import static com.invoicesync.company.dto.specification.CompanySpecification.withUserId;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
+import com.invoicesync.feature.Feature;
 import com.invoicesync.shared.common.PageResponse;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -26,10 +29,20 @@ public class CompanyServiceImpl implements CompanyService {
 
   private final CompanyMapper companyMapper;
 
+  public static boolean hasFeature(final Authentication authentication, final Feature feature) {
+    final Jwt jwt = (Jwt) authentication.getPrincipal();
+    final List<String> roles = (List<String>) ((Map<String, Object>) jwt.getClaim("realm_access")).get("roles");
+    return roles.contains(feature.getRoleName());
+  }
+
   @Override
   public PageResponse<CompanyResponseDto> findAllCompaniesByUser(final int page, int size,
       final Authentication connectedUser) {
     // final UserDemo user = ((UserDemo) connectedUser.getPrincipal());
+    final Jwt jwt = (Jwt) connectedUser.getPrincipal();
+    final List<String> roles = (List<String>) ((Map<String, Object>) jwt.getClaim("realm_access")).get("roles");
+    System.out.println("Roles: " + roles);
+
     if (size < 1) {
       size = 1;
     }

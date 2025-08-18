@@ -23,17 +23,19 @@ import {DataTransferDetailComponent} from "./pages/data-trasnfer-detail/data-tra
 
 export const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
     path: '',
     component: LayoutComponent,
     children: [
       {
         path: 'home',
         component: HomeComponent,
+        canActivate: [authGuard],
+        data: { roles: ['BASIC_USER'] },
         pathMatch: "full"
+      },
+      {
+        path: 'forbidden',
+        component: ErrorComponent
       },
       {
         path: 'web/receipts',
@@ -50,6 +52,8 @@ export const routes: Routes = [
       {
         path: 'invoices',
         component: Invoices,
+        canActivate: [authGuard],
+        data: { roles: ['BASIC_USER'] }
       },
       {
         path: 'invoices/:id',
@@ -61,7 +65,9 @@ export const routes: Routes = [
       },
       {
         path: 'xml-convertor',
-        component: XmlConvertorComponent
+        canActivate: [authGuard],
+        component: XmlConvertorComponent,
+        data: { roles: ['EKON_FEATURE'] }
       },
       {
         path: 'web/limiter',

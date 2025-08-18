@@ -24,6 +24,14 @@ export class KeycloakService {
     return this._keycloak
   }
 
+  getUserRoles(): string[] {
+    return this.keycloak?.realmAccess?.roles || [];
+  }
+
+  isSuperAdmin(): boolean {
+    return this.getUserRoles().includes('superadmin');
+  }
+
   getUserProfile(): UserProfile | undefined {
     return this._profile
   }
@@ -51,7 +59,7 @@ export class KeycloakService {
   }
 
   logout() {
-    return this.keycloak?.logout({redirectUri: 'http:localhost:4200'})
+    return this.keycloak?.logout()
   }
 
 }

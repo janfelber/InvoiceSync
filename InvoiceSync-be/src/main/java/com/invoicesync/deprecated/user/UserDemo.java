@@ -32,7 +32,7 @@ import lombok.Setter;
 @AllArgsConstructor
 // @Entity
 // @Table(name = "user_credential", schema = "invoice_sync")
-//@EntityListeners(AuditingEntityListener.class)
+// @EntityListeners(AuditingEntityListener.class)
 public class UserDemo implements UserDetails, Principal {
 
     @Id

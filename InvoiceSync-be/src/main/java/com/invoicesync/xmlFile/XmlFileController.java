@@ -40,10 +40,10 @@ public class XmlFileController {
         return ResponseEntity.ok(xmlFileService.finalAllXmlImportsByUser(page, size, connectedUser));
     }
 
-    @GetMapping("/content/{importId}")
-    public String getXmlContentByImportId(@PathVariable final Long importId) {
-        return xmlFileService.getXmlContentByImportId(importId);
-    }
+    // @GetMapping("/content/{importId}")
+    // public String getXmlContentByImportId(@PathVariable final Long importId) {
+    //     return xmlFileService.getXmlContentByImportId(importId);
+    // }
 
     @PostMapping("/save")
     public ResponseEntity<List<Long>> saveXmlFiles(@RequestParam("file") final MultipartFile[] files,
