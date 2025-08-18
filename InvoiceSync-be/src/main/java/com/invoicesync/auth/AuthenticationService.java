@@ -1,11 +1,25 @@
 package com.invoicesync.auth;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+
+import com.invoicesync.feature.Feature;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    // private final UserCredentialRepository repository;
+  public boolean hasFeature(final Authentication authentication, final Feature feature) {
+    final Jwt jwt = (Jwt) authentication.getPrincipal();
+    final List<String> roles = (List<String>) ((Map<String, Object>) jwt.getClaim("realm_access")).get("roles");
+    return roles.contains(feature.getRoleName());
+  }
+
+  // private final UserCredentialRepository repository;
     //
     // private final TokenRepository tokenRepository;
     //

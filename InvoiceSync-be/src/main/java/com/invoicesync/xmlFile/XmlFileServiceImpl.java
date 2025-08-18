@@ -14,7 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.auth.AuthenticationService;
+import com.invoicesync.feature.Feature;
 import com.invoicesync.shared.common.PageResponse;
+import com.invoicesync.shared.exception.FeatureMissingException;
 import com.invoicesync.xmlFile.dto.XmlFileRequest;
 import com.invoicesync.xmlFile.dto.XmlFileResponseDto;
 
@@ -28,8 +31,15 @@ public class XmlFileServiceImpl implements XmlFileService {
 
     private final XmlMapper xmlMapper;
 
+    private AuthenticationService user;
+
     @Override
     public Long saveXmlFile(final MultipartFile file, final Authentication connectedUser) {
+
+        if (user.hasFeature(connectedUser, Feature.EKON_SPECIALTY)) {
+            throw new FeatureMissingException("User is missing" + Feature.EKON_SPECIALTY + " feature");
+        }
+
         try {
             final String filename = file.getOriginalFilename();
             final String xmlContent = new String(file.getBytes(), StandardCharsets.UTF_8);
@@ -45,6 +55,11 @@ public class XmlFileServiceImpl implements XmlFileService {
     @Override
     public PageResponse<XmlFileResponseDto> finalAllXmlImportsByUser(final int page, final int size,
         final Authentication connectedUser) {
+
+        if (user.hasFeature(connectedUser, Feature.EKON_SPECIALTY)) {
+            throw new FeatureMissingException("User is missing" + Feature.EKON_SPECIALTY + " feature");
+        }
+
         final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         final Page<XmlFile> xmlFiles = xmlFileRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
@@ -64,6 +79,7 @@ public class XmlFileServiceImpl implements XmlFileService {
 
     @Override
     public String getXmlContentByImportId(Long importId) {
+
         return xmlFileRepository.findById(importId)
                 .map(XmlFile::getXml_content)
                 .orElseThrow(() -> new IllegalArgumentException("Xml file not found"));

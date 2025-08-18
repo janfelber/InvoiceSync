@@ -1,56 +1,49 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { CommonModule } from "@angular/common";
 import {NgComponentOutlet, NgForOf, NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
-import {navbarDataRedesign} from "./nav-data-redesign";
+import {MENU_ITEMS, navbarDataRedesign} from "./nav-data-redesign";
+import {MenuItem} from "./MenuItem";
+import {KeycloakService} from "../core/keycloak/keycloak.service";
+import {IconService} from "./icons/icon.service";
 
 @Component({
     selector: 'app-side-nav',
   imports: [
-    RouterLinkActive,
     RouterLink,
     NgOptimizedImage,
-    CommonModule
+    CommonModule,
+    RouterLinkActive
   ],
     templateUrl: './side-nav.component.html',
     styleUrl: './side-nav.component.css'
 })
-export class SideNavComponent {
-  navData = navbarDataRedesign;
+export class SideNavComponent implements OnInit {
+  menu: MenuItem[] = [];
+  dropdownStates: { [key: string]: boolean } = {};
 
-  @Input() layout: string = 'default';
+  constructor(private keycloakService: KeycloakService, protected iconService: IconService) {}
 
-  token = localStorage.getItem('token');
-  userId: number | null = null;
-
-  constructor() {
-    const userData = decodeToken(this.token);
-    this.userId = userData?.userId ?? null;
+  ngOnInit(): void {
+    const userRoles = this.keycloakService.getUserRoles();
+    this.menu = this.filterMenu(MENU_ITEMS, userRoles);
   }
 
-
-  get filteredNavBarData() {
-    return this.navData.filter(item =>
-      item.layout === this.layout &&
-      (this.userId === 0 || !item.hideIfNotZero)
-    );
+  private filterMenu(items: MenuItem[], roles: string[]): MenuItem[] {
+    return items
+      .filter(item => item.roles.some(role => roles.includes(role)))
+      .map(item => ({
+        ...item,
+        children: item.children ? this.filterMenu(item.children, roles) : undefined
+      }))
+      .filter(item => item.children === undefined || item.children.length > 0); // odstráni prázdne dropdowny
   }
 
-  closeDropdown() {
-    const dropdown = document.getElementById('dropdown-user');
-    if (dropdown) {
-      dropdown.classList.add('hidden');
-    }
+  toggleDropdown(label: string) {
+    this.dropdownStates[label] = !this.dropdownStates[label];
   }
-}
 
-function decodeToken(token: string | null) {
-  if (!token) return null;
-  try {
-    const payload = token.split('.')[1];
-    return JSON.parse(atob(payload));
-  } catch (e) {
-    console.error('Invalid token', e);
-    return null;
+  logout() {
+    this.keycloakService.logout();
   }
 }

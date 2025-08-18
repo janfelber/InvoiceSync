@@ -17,4 +17,9 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleEmailAlreadySubscribedException(final EmailAlreadySubscribedException ex) {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
   }
+
+  @ExceptionHandler(FeatureMissingException.class)
+  public ResponseEntity<String> handleFeatureMissingException(final FeatureMissingException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(ex.getMessage());
+  }
 }
