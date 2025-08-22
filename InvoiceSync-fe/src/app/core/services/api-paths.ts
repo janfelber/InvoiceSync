@@ -43,5 +43,9 @@ export const ApiPaths = {
     BY_ID: (convertId: number) => `/${convertId}`,
     UPDATE_MAPPING: (convertId: number) => `/${convertId}/mapping`,
     DOWNLOAD: (convertId: number) => `/${convertId}/download`,
+  },
+  stats: {
+    BASE: '/stats',
+    FIND_BASIC_STATS: (companyId:number) => `/basic-stats/${companyId}`,
   }
 };

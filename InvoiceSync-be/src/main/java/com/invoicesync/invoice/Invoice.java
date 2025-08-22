@@ -9,6 +9,8 @@ import com.invoicesync.shared.common.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -74,8 +76,9 @@ public class Invoice extends BaseEntity {
   @Column(name = "partner_vat_id")
   private String partnerVatId;
 
-  @Column(name = "status")
-  private String status;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "invoice_status")
+  private InvoiceStatus status;
 
   @Column(name = "invoice_type")
   private String invoiceType;

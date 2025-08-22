@@ -133,7 +133,7 @@
                   </div>
                   <div>
                     <p class="text-sm text-blue-900">Celkový počet faktúr</p>
-                    <p class="text-lg font-semibold text-gray-900">455</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ stats?.totalInvoices }}</p>
                   </div>
                 </div>
 
@@ -149,7 +149,7 @@
 
                   <div>
                     <p class="text-sm text-red-900">Nespracované faktúry</p>
-                    <p class="text-lg font-semibold text-gray-900">1,285</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedInvoices }}</p>
                   </div>
                 </div>
 
@@ -166,7 +166,7 @@
                   </div>
                   <div>
                     <p class="text-sm text-blue-900">Celkový počet bločkov</p>
-                    <p class="text-lg font-semibold text-gray-900">124</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ stats?.totalReceipts }}</p>
                   </div>
                 </div>
 
@@ -186,7 +186,7 @@
                   </div>
                   <div>
                     <p class="text-sm text-red-900">Nespracované bločky</p>
-                    <p class="text-lg font-semibold text-gray-900">2</p>
+                    <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedReceipts }}</p>
                   </div>
                 </div>
               </div>

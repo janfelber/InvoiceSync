@@ -5,11 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.invoicesync.company.Company;
+import com.invoicesync.invoice.InvoiceStatus;
 import com.invoicesync.shared.common.BaseEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -99,4 +102,8 @@ public class Receipt extends BaseEntity {
 
   @Column(name = "is_paid_by_card")
   private boolean isPaidByCard;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "receipt_status")
+  private InvoiceStatus status;
 }
