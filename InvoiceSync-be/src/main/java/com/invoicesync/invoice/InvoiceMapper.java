@@ -27,7 +27,7 @@ public class InvoiceMapper {
         .accountingDate(request.accountingDate())
         .dueDate(request.dueDate())
         .partnerRegistrationNumber(request.partnerRegistrationNumber())
-        .status("UNPROCESSED")
+        .status(InvoiceStatus.UNPROCESSED)
         .invoiceType("NONE")
         .build();
 
@@ -53,7 +53,7 @@ public class InvoiceMapper {
             .invoiceNumber(invoice.getInvoiceNumber())
             .variableSymbol(invoice.getVariableSymbol( ))
             .issueDate(invoice.getIssueDate())
-            .status(invoice.getStatus())
+            .status(String.valueOf(invoice.getStatus()))
             .invoiceType(invoice.getInvoiceType())
             .build())
         .partner(PartnerDto.builder()
@@ -86,7 +86,7 @@ public class InvoiceMapper {
             .taxDate(invoice.getTaxDate())
             .accountingDate(invoice.getAccountingDate())
             .dueDate(invoice.getDueDate())
-            .status(invoice.getStatus())
+            .status(String.valueOf(invoice.getStatus()))
             .invoiceType(invoice.getInvoiceType())
             .build())
         .partner(PartnerDto.builder()

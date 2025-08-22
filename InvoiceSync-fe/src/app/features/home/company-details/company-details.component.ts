@@ -10,6 +10,8 @@ import {AccountChartService} from "../../../core/services/account-chart.service"
 import {MatDialogTutorialComponent} from "../../../shared/mat-dialog-tutorial/mat-dialog-tutorial.component";
 import {accountsTutorialsByApp} from "../../../shared/tutorials/ExportAccoutsTutorial";
 import {ChartAccountRequest} from "../../../core/models/ChartAccountRequest";
+import {StatsService} from "../../../core/services/stats.service";
+import {StatsResponse} from "../../../core/models/stats-response";
 
 
 @Component({
@@ -49,6 +51,7 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
   companyId: any = null
   companyName: any = null;
   private chart: ApexCharts | undefined;
+  stats: StatsResponse | null = null;
 
   autoClassId = '';
   autoClassName = '';
@@ -84,6 +87,7 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private companyService: CompanyService,
     private accountChartsService: AccountChartService,
+    private statsService: StatsService,
     private router: Router
   ) {
   }
@@ -289,11 +293,20 @@ export class CompanyDetailsComponent implements OnInit, AfterViewInit {
       console.log(params.get('id'))
       this.companyId = params.get('id') || '';
       if (this.companyId) {
+        this.onFetchStats();
         this.onFetchCompany();
       } else {
         console.error('Company ID is missing!');
       }
     });
+  }
+
+  onFetchStats() {
+    this.statsService.getBasicStatsForCompany({ companyId: this.companyId })
+      .then(response => {
+        this.stats = response.data;
+        console.log(this.stats)
+      });
   }
 
   onFetchCompany() {
