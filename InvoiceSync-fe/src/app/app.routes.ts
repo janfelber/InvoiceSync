@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
 import { Invoices } from './pages/invoices/invoices.component';
-import { InvoiceInspect } from './features/invoice/invoice-inspect/invoice-inspect.component';
-import { LoginComponent } from './core/auth/login/login.component';
-import { RegisterComponent } from './core/auth/register/register.component';
 import { authGuard } from './core/services/auth/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
 import {HomeComponent} from "./pages/home/home.component";
@@ -20,6 +17,7 @@ import {PrivacyPolicyComponent} from "./pages/privacy-policy/privacy-policy.comp
 import {DataTransferTableComponent} from "./pages/data-transfer-table/data-transfer-table.component";
 import {ContactFormComponent} from "./contact-form/contact-form.component";
 import {DataTransferDetailComponent} from "./pages/data-trasnfer-detail/data-transfer-detail.component";
+import {InvoiceDisplay} from "./features/invoice/invoice-inspect/invoice-inspect.component";
 
 export const routes: Routes = [
   {
@@ -56,8 +54,8 @@ export const routes: Routes = [
         data: { roles: ['BASIC_USER'] }
       },
       {
-        path: 'invoices/:id',
-        component: InvoiceInspect
+        path: 'web/invoices/:id',
+        component: InvoiceDisplay
       },
       {
         path: 'invoice/new',

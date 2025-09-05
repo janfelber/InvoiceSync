@@ -156,6 +156,8 @@ export class ReceiptDetailsComponent implements OnInit {
       .then(response => {
         this.receiptResponse = response.data;
 
+        console.log(this.receiptResponse);
+
         this.items = this.receiptResponse.items || [];
         this.companyId = this.receiptResponse.company?.id ?? null;
 

@@ -1,6 +1,7 @@
 package com.invoicesync.invoice;
 
 import static com.invoicesync.invoice.InvoiceSpecification.withCompanyId;
+import static com.invoicesync.invoice.InvoiceSpecification.withUserId;
 
 import java.util.Arrays;
 import java.util.List;
@@ -226,6 +227,29 @@ public class InvoiceServiceImpl implements InvoiceService {
         .toList();
     return new PageResponse<>(
         invoiceResponseTable,
+        invoices.getNumber(),
+        invoices.getSize(),
+        invoices.getTotalElements(),
+        invoices.getTotalPages(),
+        invoices.isFirst(),
+        invoices.isLast()
+    );
+  }
+
+  @Override
+  public PageResponse<InvoiceResponseTable> findAllInvoicesByUser(final int page, final int size,
+      final Authentication connectedUser) {
+    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Page<Invoice> invoices = invoiceRepository.findAll(withUserId(connectedUser.getName()), pageable);
+
+    System.out.println("Invoices: " + invoices.getContent());
+
+    final List<InvoiceResponseTable> invoiceResponse = invoices.stream()
+        .map(invoiceMapper::toInvoiceTableResponse)
+        .toList();
+
+    return new PageResponse<>(
+        invoiceResponse,
         invoices.getNumber(),
         invoices.getSize(),
         invoices.getTotalElements(),

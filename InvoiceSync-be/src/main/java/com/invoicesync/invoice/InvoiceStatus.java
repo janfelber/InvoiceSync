@@ -1,10 +1,18 @@
 package com.invoicesync.invoice;
 
+import lombok.Getter;
+
+@Getter
 public enum InvoiceStatus {
 
-  UNPROCESSED,
+  UNPROCESSED("Unprocessed"),
+  PROCESSED("Processed"),
+  ERROR("Error");
 
-  PROCESSED,
+  private final String label;
 
-  ERROR
+  InvoiceStatus(final String label) {
+    this.label = label;
+  }
+
 }

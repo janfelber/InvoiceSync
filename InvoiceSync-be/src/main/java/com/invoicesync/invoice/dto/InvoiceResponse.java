@@ -28,6 +28,6 @@ public class InvoiceResponse {
 
   private List<ReceiptItemDto> items;
 
-  private MyIdentity myIdentity;
+  private MyIdentity company;
 
 }

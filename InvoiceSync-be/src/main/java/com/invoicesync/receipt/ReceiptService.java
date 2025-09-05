@@ -10,7 +10,7 @@ import com.invoicesync.shared.common.PageResponse;
 
 public interface ReceiptService {
 
-   PageResponse<ReceiptResponseDto> findAllReceiptsByUser(int size, int page, Authentication connectedUser);
+   PageResponse<ReceiptResponseDto> findAllReceiptsByUser(int page, int size, Authentication connectedUser);
 
    PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int size, int page, Long companyId,
        Authentication connectedUser);
