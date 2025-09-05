@@ -1,125 +1,48 @@
 import {Component, OnInit} from '@angular/core';
-import {AxiosService} from "../../../core/axios.service";
-import {ActivatedRoute} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
-import {InvoiceService} from "../../../pages/invoices/invoice.service";
-import {InvoiceRequest} from "../../../core/models/invoice-request";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {initFlowbite} from "flowbite";
+import {InvoiceService} from "../../../core/services/invoice.service";
+import {InvoiceDetailResponse} from "../../../pages/invoices/invoice-detail-response";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {InvoiceInspect} from "../invoice-info/invoice-info.component";
+import {
+  DataTransferExcelInspectComponent
+} from "../../../pages/data-transfer-excel-inspect/data-transfer-excel-inspect.component";
+import {DataTransferMappingComponent} from "../../../pages/data-transfer-mapping/data-transfer-mapping.component";
+import {InvoiceDocumentsComponent} from "../invoice-documents/invoice-documents.component";
 
 @Component({
-    selector: 'app-invoice-inspect',
-    imports: [FormsModule, CommonModule],
-    templateUrl: './invoice-inspect.component.html',
-    styleUrl: './invoice-inspect.component.css'
+  selector: 'invoice-inspect',
+  standalone: true,
+  imports: [
+    RouterLink,
+    ReactiveFormsModule,
+    FormsModule,
+    InvoiceInspect,
+    DataTransferExcelInspectComponent,
+    DataTransferMappingComponent,
+    InvoiceDocumentsComponent,
+  ],
+  templateUrl: './invoice-inspect.component.html',
+  styleUrl: './invoice-inspect.component.css'
 })
-export class InvoiceInspect implements OnInit {
+export class InvoiceDisplay implements OnInit{
 
   constructor(
-    private axiosService: AxiosService,
     private route: ActivatedRoute,
-    private invoiceService: InvoiceService
   ) {
+
   }
 
-  importId: string = '';
-  companyId: any = null;
-  invoice: any = {};
-  partner: any = {};
-  myIdentity: any = {};
-  items: any = [];
+  invoiceId: any = null;
 
-  invoiceRequest: InvoiceRequest = {};
-
+  public invoice: InvoiceDetailResponse = {};
 
   ngOnInit(): void {
+    initFlowbite();
     this.route.paramMap.subscribe(params => {
-      this.importId = params.get('id') || '';
-    });
-    this.onFetchInvoice();
-  }
-
-  async exportIssued() {
-    await this.infoCompany();
-
-    this.invoiceRequest = {
-      invoiceDetails: {
-        invoiceType: 'receivedInvoice',
-        invoiceNumber: this.invoice.invoiceNumber,
-        variableSymbol: this.invoice.variableSymbol,
-        pairingSymbol: this.invoice.variableSymbol,
-        dateInvoice: this.invoice.issueDate,
-        dateTax: this.invoice.issueDate,
-        dateDue: this.invoice.dueDate,
-        dateAccounting: this.invoice.issueDate
-      },
-      partner: {
-        name: this.partner.name,
-        city: this.partner.city,
-        street: this.partner.street,
-        zip: this.partner.zip,
-        registrationNumber: this.partner.registrationNumber,
-        taxId: this.partner.taxId,
-        vatId: this.partner.vatId
-      },
-      items: this.items,
-      myIdentity: this.myIdentity
-    };
-
-    this.invoiceService.exportPohodaInvoice(this.invoiceRequest).subscribe({
-      next: (response) => {
-        const blob = new Blob([response], {type: 'application/xml'});
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'invoice.xml';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        console.error('Chyba pri exportovaní faktúry', error);
-      }
+      this.invoiceId = params.get('id') || '';
     });
   }
 
-  async infoCompany() {
-    try {
-      const response = await this.axiosService.request(
-        "GET",
-        `/api/v1/company/info/${this.companyId}`,
-        null
-      );
-      this.myIdentity = response.data;
-    } catch (error) {
-      console.error('Error fetching company info', error);
-    }
-  }
-
-  getTotalPrice(): number {
-    return this.items.reduce((total: number, item: any) => total + (item.price + item.priceVAT), 0);
-  }
-
-  getTotalSumWithoutVat(): number {
-    return this.items.reduce((total: number, item: any) => total + item.price, 0);
-  }
-
-  onFetchInvoice(): void {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/import/${this.importId}`,
-      null
-    ).then(response => {
-        const data = response.data;
-        this.companyId = data.company;
-        this.invoice = {
-          issueDate: data.invoiceDetails.issueDate,
-          deliveryDate: data.invoiceDetails.taxDate,
-          dueDate: data.invoiceDetails.dueDate,
-          variableSymbol: data.invoiceDetails.variableSymbol,
-        }
-        this.partner = data.partner;
-      }
-    )
-  }
 }

@@ -129,7 +129,7 @@ export class DataTransferTableComponent implements OnInit, AfterViewInit {
       case 'PROCESSED':
         return 'Spracované';
       case 'UNPROCESSED':
-        return 'Chyba';
+        return 'Nespracované';
       default:
         return 'Neznámy stav';
     }

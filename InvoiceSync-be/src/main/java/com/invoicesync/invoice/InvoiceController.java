@@ -31,7 +31,15 @@ public class InvoiceController {
     this.invoiceService = invoiceService;
   }
 
-  @GetMapping("/company/{company-id}")
+  @GetMapping("/user")
+  public ResponseEntity<PageResponse<InvoiceResponseTable>> findAllInvoicesByUser(
+      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      final Authentication connectedUser) {
+    return ResponseEntity.ok(invoiceService.findAllInvoicesByUser(page, size, connectedUser));
+  }
+
+  @GetMapping("/{company-id}/invoices")
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findInvoicesByCompanyId(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,

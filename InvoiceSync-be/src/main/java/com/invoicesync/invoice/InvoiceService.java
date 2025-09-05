@@ -15,4 +15,7 @@ public interface InvoiceService {
 
   PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(int size, int page, Long companyId,
       Authentication connectedUser);
+
+  PageResponse<InvoiceResponseTable> findAllInvoicesByUser(int size, int page,
+      Authentication connectedUser);
 }

@@ -36,6 +36,12 @@ export const ApiPaths = {
     BASE: '/email-subscribe',
     SUBSCRIBE: '/subscribe',
   },
+  invoice: {
+    BASE: '/invoice',
+    FIND_ALL_BY_USER: '/user',
+    FIND_BY_COMPANY: (companyId:number) => `/${companyId}/invoices`,
+    BY_ID: (invoiceId:number) => `/${invoiceId}`,
+  },
   data_transfer: {
     BASE: '/convert',
     FIND_ALL_BY_USER: '/imports',
