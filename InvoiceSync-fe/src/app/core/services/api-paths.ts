@@ -41,6 +41,8 @@ export const ApiPaths = {
     FIND_ALL_BY_USER: '/user',
     FIND_BY_COMPANY: (companyId:number) => `/${companyId}/invoices`,
     BY_ID: (invoiceId:number) => `/${invoiceId}`,
+    DOCUMENTS: (invoiceId:number) => `/${invoiceId}/documents`,
+    ADD_DOCUMENT_TO_INVOICE: (invoiceId:number) => `/upload/document/${invoiceId}`,
   },
   data_transfer: {
     BASE: '/convert',

@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
 import {AxiosService} from "../axios.service";
+import {AddDocumentData} from "../models/add-document-data";
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +43,25 @@ export class InvoiceService {
     return this.axiosService.request(
       'GET', `${this.baseUrl}${ApiPaths.invoice.BY_ID(params.invoiceId)}`, null
     )
+  }
+
+  getInvoiceDocumentsById(params: { invoiceId:number }): Promise<any> {
+    return this.axiosService.request(
+      'GET', `${this.baseUrl}${ApiPaths.invoice.DOCUMENTS(params.invoiceId)}`, null
+    )
+  }
+
+  addDocumentToInvoice(params: { invoiceId: number, file: File, additionalDocumentData: AddDocumentData }): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', params.file);
+
+    const blob = new Blob([JSON.stringify(params.additionalDocumentData)], { type: 'application/json' });
+    formData.append('data', blob);
+
+    return this.axiosService.request(
+      'POST',
+      `${this.baseUrl}${ApiPaths.invoice.ADD_DOCUMENT_TO_INVOICE(params.invoiceId)}`,
+      formData,
+    );
   }
 }
