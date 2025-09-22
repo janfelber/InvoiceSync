@@ -1,8 +1,13 @@
 package com.invoicesync.invoice;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.document.invoice.dto.AddDocumentData;
+import com.invoicesync.document.invoice.dto.InvoiceDocumentsTableResponse;
 import com.invoicesync.invoice.dto.InvoiceResponse;
 import com.invoicesync.invoice.dto.InvoiceResponseTable;
 import com.invoicesync.shared.common.PageResponse;
@@ -18,4 +23,11 @@ public interface InvoiceService {
 
   PageResponse<InvoiceResponseTable> findAllInvoicesByUser(int size, int page,
       Authentication connectedUser);
+
+  void uploadDocument(MultipartFile document, Long invoiceId, Authentication connectedUser,
+      @Nullable AddDocumentData additionalDocumentData
+  );
+
+  List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
+
 }

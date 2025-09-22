@@ -8,4 +8,5 @@ export interface InvoiceDetails {
   dueDate: string;
   status: string;
   invoiceType:string;
+  document: any
 }

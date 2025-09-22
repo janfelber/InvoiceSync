@@ -1,6 +1,7 @@
 package com.invoicesync.invoice;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.document.invoice.dto.AddDocumentData;
+import com.invoicesync.document.invoice.dto.InvoiceDocumentsTableResponse;
 import com.invoicesync.invoice.dto.InvoiceResponse;
 import com.invoicesync.invoice.dto.InvoiceResponseTable;
 import com.invoicesync.shared.common.PageResponse;
@@ -49,6 +53,15 @@ public class InvoiceController {
         invoiceService.findInvoicesByCompanyId(page, size, companyId, connectedUser));
   }
 
+  @GetMapping("/{invoice-id}/documents")
+  public ResponseEntity<List<InvoiceDocumentsTableResponse>> findDocumentsByInvoiceId(
+      @PathVariable("invoice-id") final Long invoiceId,
+      final Authentication connectedUser) {
+    return ResponseEntity.ok(
+        invoiceService.findDocumentsByInvoiceId(invoiceId, connectedUser)
+    );
+  }
+
   @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Long> saveInvoice(
       @RequestParam("file") final MultipartFile pdfFile,
@@ -61,6 +74,17 @@ public class InvoiceController {
   @GetMapping("/{invoice-id}")
   public InvoiceResponse getInvoiceById(@PathVariable("invoice-id") final Long invoiceId) {
     return invoiceService.findById(invoiceId);
+  }
+
+  @PostMapping(value = "/upload/document/{invoice-id}", consumes = "multipart/form-data")
+  public ResponseEntity<?> uploadDocument(
+      @RequestPart("file") final MultipartFile document,
+      @PathVariable("invoice-id") final Long invoiceId,
+      @RequestPart("data") final AddDocumentData addDocumentData,
+      final Authentication connectedUser
+  ) throws IOException {
+    invoiceService.uploadDocument(document, invoiceId, connectedUser, addDocumentData);
+    return ResponseEntity.accepted().build();
   }
 
 }

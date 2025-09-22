@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.document.invoice.InvoiceDocument;
+import com.invoicesync.document.invoice.dto.InvoiceDocumentsTableResponse;
 import com.invoicesync.invoice.dto.InvoiceDetails;
 import com.invoicesync.invoice.dto.InvoiceRequest;
 import com.invoicesync.invoice.dto.InvoiceResponse;
@@ -112,6 +114,16 @@ public class InvoiceMapper {
             .taxId(invoice.getCompany().getTaxId())
             .vatId(invoice.getCompany().getVatId())
             .build())
+        .build();
+  }
+
+  public InvoiceDocumentsTableResponse toInvoiceDocumentsTableResponse(final InvoiceDocument invoiceDocument) {
+    return InvoiceDocumentsTableResponse.builder()
+        .id(invoiceDocument.getId())
+        .documentName(invoiceDocument.getDocumentName())
+        .fileName(invoiceDocument.getFilename())
+        .createdAt(invoiceDocument.getCreatedDate())
+        .note(invoiceDocument.getNote())
         .build();
   }
 

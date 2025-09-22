@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +32,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.company.Company;
 import com.invoicesync.company.CompanyRepository;
+import com.invoicesync.document.invoice.InvoiceDocument;
+import com.invoicesync.document.invoice.InvoiceDocumentRepository;
+import com.invoicesync.document.invoice.dto.AddDocumentData;
+import com.invoicesync.document.invoice.dto.InvoiceDocumentsTableResponse;
+import com.invoicesync.filestorage.FileStorageService;
 import com.invoicesync.invoice.dto.InvoiceRequest;
 import com.invoicesync.invoice.dto.InvoiceResponse;
 import com.invoicesync.invoice.dto.InvoiceResponseTable;
@@ -51,6 +57,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final InvoiceRepository invoiceRepository;
 
+  private final InvoiceDocumentRepository invoiceDocumentRepository;
+
   private final LimitGuardService limitGuardService;
 
   private final CompanyRepository companyRepository;
@@ -65,6 +73,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final ObjectMapper objectMapper;
 
+  private final FileStorageService fileStorageService;
+
   final CompanyRegistry subjectRegistry;
 
   @Value("${openai.api.key}")
@@ -75,14 +85,18 @@ public class InvoiceServiceImpl implements InvoiceService {
   public InvoiceServiceImpl(final InvoiceRepository invoiceRepository, final LimitGuardService limitGuardService,
       final CompanyRepository companyRepository,
       final OCRService ocrService, final InvoiceMapper invoiceMapper,
+      final InvoiceDocumentRepository invoiceDocumentRepository,
+      final FileStorageService fileStorageService,
       @Qualifier("openAiWebClient") final WebClient openAiClient, final ObjectMapper objectMapper,
       final CompanyRegistry subjectRegistry) {
     this.invoiceRepository = invoiceRepository;
     this.limitGuardService = limitGuardService;
     this.companyRepository = companyRepository;
+    this.fileStorageService = fileStorageService;
     this.ocrService = ocrService;
     this.openAiClient = openAiClient;
     this.subjectRegistry = subjectRegistry;
+    this.invoiceDocumentRepository = invoiceDocumentRepository;
     this.encoding = Encodings.newDefaultEncodingRegistry()
         .getEncodingForModel("gpt-4o-mini")
         .orElseThrow(() -> new IllegalArgumentException("Encoding for model not found"));
@@ -105,52 +119,52 @@ public class InvoiceServiceImpl implements InvoiceService {
     log.info("prihlaseny uzivatel {}", connectedUser.getName());
 
     final InvoiceRequest request;
-    final String pdfText = ocrService.extractTextFromPDF(file, connectedUser);
+    // final String pdfText = ocrService.extractTextFromPDF(file, connectedUser);
 
-    final int rawToken = countTokens(pdfText);
-    log.info("Token count: {}", rawToken);
+    // final int rawToken = countTokens(pdfText);
+    // log.info("Token count: {}", rawToken);
 
-    final String cleanedText = removeUnwantedCharacters(pdfText);
-    final int cleanedToken = countTokens(cleanedText);
-    log.info("Token count after cleaning: {}", cleanedToken);
+    // final String cleanedText = removeUnwantedCharacters(pdfText);
+    // final int cleanedToken = countTokens(cleanedText);
+    // log.info("Token count after cleaning: {}", cleanedToken);
+    //
+    // final String openApiResponse = askOpenAi(cleanedText);
+    //
+    // System.out.println("Open API response: " + openApiResponse);
 
-    final String openApiResponse = askOpenAi(cleanedText);
+    final String json = """
+        {
+          "Invoice Number": "10/2023/602",
+          "Date of Issue": "15.2.2023",
+          "Date of Delivery": "15.2.2023",
+          "Date of Due": "1.4.2023",
+          "Variable Symbol": "231000602",
+          "Supplier VAT ID": "SK2024181346",
+          "Supplier TAX ID": "2024181346",
+          "Supplier Registration Number": "47998156",
+          "Supplier Name": "CANIS SAFETY a.s., organizačná zložka Košice",
+          "Invoice Items": [
+            {
+              "description": "Filtr 3M 6059, 1 pár",
+              "quantity": "2",
+              "unit price": "10,102",
+              "total": "20"
+            },
+            {
+              "description": "Štít ŠP 29",
+              "quantity": "10",
+              "unit price": "8,266",
+              "total": "82,66"
+            }
+          ]
+        }
+        """;
 
-    System.out.println("Open API response: " + openApiResponse);
-
-    // final String json = """
-    //     {
-    //       "Invoice Number": "10/2023/602",
-    //       "Date of Issue": "15.2.2023",
-    //       "Date of Delivery": "15.2.2023",
-    //       "Date of Due": "1.4.2023",
-    //       "Variable Symbol": "231000602",
-    //       "Supplier VAT ID": "SK2024181346",
-    //       "Supplier TAX ID": "2024181346",
-    //       "Supplier Registration Number": "47998156",
-    //       "Supplier Name": "CANIS SAFETY a.s., organizačná zložka Košice",
-    //       "Invoice Items": [
-    //         {
-    //           "description": "Filtr 3M 6059, 1 pár",
-    //           "quantity": "2",
-    //           "unit price": "10,102",
-    //           "total": "20"
-    //         },
-    //         {
-    //           "description": "Štít ŠP 29",
-    //           "quantity": "10",
-    //           "unit price": "8,266",
-    //           "total": "82,66"
-    //         }
-    //       ]
-    //     }
-    //     """;
-
-    final int outputTokens = encoding.encode(openApiResponse).size();
+    final int outputTokens = encoding.encode(json).size();
     log.info("Output tokens count: {}", outputTokens);
 
     try {
-      request = objectMapper.readValue(openApiResponse, InvoiceRequest.class);
+      request = objectMapper.readValue(json, InvoiceRequest.class);
     } catch (JsonProcessingException e) {
       log.error("Failed to parse JSON response from OpenAI", e);
       throw new RuntimeException("Invalid JSON from OpenAI", e);
@@ -174,6 +188,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         );
 
     invoiceRepository.save(newInvoice);
+    this.uploadDocument(file, newInvoice.getId(), connectedUser, null);
+
     return newInvoice.getId();
   }
 
@@ -237,12 +253,28 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
+  public List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(final Long invoiceId,
+      final Authentication connectedUser) {
+
+    final Invoice invoice = invoiceRepository.findById(invoiceId)
+        .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
+
+    if (!invoice.getCompany().getCreatedBy().equals(connectedUser.getName())) {
+      throw new AccessDeniedException("You cannot access documents of this invoice");
+    }
+
+    final List<InvoiceDocument> documents = invoiceDocumentRepository.findByInvoiceId(invoiceId);
+
+    return documents.stream()
+        .map(invoiceMapper::toInvoiceDocumentsTableResponse)
+        .toList();
+  }
+
+  @Override
   public PageResponse<InvoiceResponseTable> findAllInvoicesByUser(final int page, final int size,
       final Authentication connectedUser) {
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<Invoice> invoices = invoiceRepository.findAll(withUserId(connectedUser.getName()), pageable);
-
-    System.out.println("Invoices: " + invoices.getContent());
 
     final List<InvoiceResponseTable> invoiceResponse = invoices.stream()
         .map(invoiceMapper::toInvoiceTableResponse)
@@ -257,6 +289,30 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoices.isFirst(),
         invoices.isLast()
     );
+  }
+
+  @Override
+  public void uploadDocument(final MultipartFile document, final Long invoiceId, final Authentication connectedUser,
+      @Nullable final AddDocumentData additionalDocumentData) {
+
+    final Invoice invoice = invoiceRepository.findById(invoiceId)
+        .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
+
+    final var documentToUpload = fileStorageService.saveFile(document, invoice, connectedUser.getName());
+
+    final InvoiceDocument invoiceDocument = new InvoiceDocument();
+    invoiceDocument.setInvoice(invoice);
+    invoiceDocument.setFilename(document.getOriginalFilename());
+    invoiceDocument.setDocument(documentToUpload);
+
+    if (additionalDocumentData != null) {
+      invoiceDocument.setDocumentName(additionalDocumentData.documentName());
+      invoiceDocument.setNote(additionalDocumentData.note());
+    } else {
+      invoiceDocument.setDocumentName(document.getOriginalFilename());
+    }
+
+    invoiceDocumentRepository.save(invoiceDocument);
   }
 
   @NotNull

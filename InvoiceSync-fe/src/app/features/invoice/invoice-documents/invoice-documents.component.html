@@ -5,15 +5,87 @@
         <h2 class="text-lg font-semibold text-gray-700">Dokumenty</h2>
       </div>
       <div class="flex items-center justify-between py-2 px-8">
-        <button class="flex items-center px-3 py-2 text-sm text-gray-900 bg-[#f7f7fc] border border-gray-300 rounded-sm hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 max-w-[522.27px] h-[32px]">
+        <button
+          (click)="openAddDocumentModal()"
+          class="flex items-center px-3 py-2 text-sm text-gray-900 bg-[#f7f7fc] border border-gray-300 rounded-sm hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 max-w-[522.27px] h-[32px]">
           <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
           </svg>
           Pridať dokument
         </button>
-
       </div>
     </div>
+
+
+    <app-modal
+      [show]="addDocumentModalOpen"
+      (closeModal)="closeAddDocumentModal()"
+      title="Pridať dokument"
+    >
+      <form>
+        <div class="grid gap-4 mb-6">
+
+          <div class="w-full">
+            <div class="mb-3">
+              <label for="name" class="block text-sm font-medium text-gray-900">Názov</label>
+              <input
+                id="name"
+                [(ngModel)]="documentName"
+                name="name"
+                required
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-lg px-4 text-sm"
+              />
+            </div>
+
+            <div class="w-full max-w-md mb-4">
+              <label for="importFile" class="block text-sm font-medium text-gray-900 mb-2">
+                Dokument
+              </label>
+              <input
+                id="importFile"
+                (change)="onFileSelected($event)"
+                name="importFile"
+                type="file"
+                class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg px-4
+           file:mr-2 file:py-2.1 file:px-6 file:rounded-lg file:border-0
+            file:bg-gray-100 file:text-gray-700
+           hover:file:bg-gray-200"
+              />
+            </div>
+
+            <div>
+              <label for="companyName" class="block text-sm font-medium text-gray-900">Poznámka</label>
+              <input
+                id="note"
+                [(ngModel)]="note"
+                name="note"
+                required
+                class="mt-1 block w-full h-10 border border-gray-300 rounded-lg px-4 text-sm"
+              />
+            </div>
+          </div>
+        </div>
+        <hr class="h-px my-2 bg-gray-200 border-0">
+        <button
+          (click)="uploadDocument()"
+          [disabled]="isUploading"
+          type="submit"
+          class="relative text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        >
+          <ng-container *ngIf="!isUploading; else loading">
+            Importovať
+          </ng-container>
+          <ng-template #loading>
+            <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+            Nahrávam...
+          </ng-template>
+        </button>
+      </form>
+    </app-modal>
+
 
     <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300">
       <thead class="text-xs text-gray-700 bg-[#f7f7fc] border-b border-gray-100">
@@ -26,16 +98,23 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="bg-white last:border-b-0">
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">Reservation contract</td>
+      <tr class="bg-white even:bg-[#f7f7fc] last:border-b-0" *ngFor="let document of documents">
+        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.documentName }}</td>
         <td class="px-4 py-3 border-r border-gray-300 last:border-r-0 text-blue-600 hover:underline">
-          <a href="#">test.docx</a>
+          <a href="#">{{ document.fileName }}</a>
         </td>
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">2024-06-19</td>
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">2024-06-19</td>
+        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.createdAt | date:'dd.MM.yyyy' }}</td>
+        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.note }}</td>
         <!-- Actions -->
         <td class="w-[60px] border-r border-gray-300 last:border-r-0">
           <div class="flex items-center justify-center h-full">
+            <button
+              class="p-1.5 rounded-md hover:bg-red-100 cursor-pointer transition-colors">
+              <svg class="w-4 h-4 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28"/>
+              </svg>
+            </button>
+
             <button
               class="p-1.5 rounded-md hover:bg-red-100 cursor-pointer transition-colors">
               <svg class="w-4 h-4 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"

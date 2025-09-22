@@ -27,4 +27,6 @@ public class InvoiceDetails {
 
   private String invoiceType;
 
+  private byte[] document;
+
 }
