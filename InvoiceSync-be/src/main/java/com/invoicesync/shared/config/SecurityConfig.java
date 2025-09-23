@@ -34,7 +34,8 @@ public class SecurityConfig {
                             "/stripe/webhook",
                             "/stripe/create-checkout-session",
                             "/email-subscribe/subscribe",
-                            "company/hello"
+                            "company/hello",
+                            "qr-code/**"
                         )
                                 .permitAll()
                                 .anyRequest()

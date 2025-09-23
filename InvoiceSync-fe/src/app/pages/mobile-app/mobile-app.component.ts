@@ -5,12 +5,15 @@ import {EmailSubscribeRequest} from "../../core/models/email-subscribe-request";
 import {EmailSubscribeType} from "../../core/enums/email-subscribe-type";
 import {FormsModule} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
+import {MobileAppService} from "../../core/services/mobile-app.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-mobile-app',
   templateUrl: './mobile-app.component.html',
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   styleUrls: ['./mobile-app.component.css']
 })
@@ -24,17 +27,21 @@ export class MobileAppComponent implements OnInit {
   seconds: string = '00';
 
   email: string = '';
+  qrCodeImage: string = '';
 
   constructor(
     private emailSubscribeService: EmailSubscribeService,
     private toastr: ToastrService,
+    private mobileAppService: MobileAppService,
   ) { }
 
   ngOnInit() {
     this.updateCountdown();
     this.startCountdown();
+    this.generateQrCode()
     initFlowbite();
   }
+
 
   updateCountdown() {
     const now = new Date().getTime();
@@ -55,6 +62,14 @@ export class MobileAppComponent implements OnInit {
     this.hours = String(hours).padStart(2, '0');
     this.minutes = String(minutes).padStart(2, '0');
     this.seconds = String(seconds).padStart(2, '0');
+  }
+
+  generateQrCode() {
+    this.mobileAppService.generateLoginQRCode()
+      .then(response => {
+        this.qrCodeImage = response.data;
+        console.log(response)
+      })
   }
 
   startCountdown() {

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
+import com.invoicesync.company.dto.CompanyResponseDtoMobile;
 
 @Service
 public class CompanyMapper {
@@ -19,6 +20,13 @@ public class CompanyMapper {
         .registrationNumber(request.registrationNumber())
         .taxId(request.taxId())
         .vatId(request.vatId())
+        .build();
+  }
+
+  public CompanyResponseDtoMobile toCompanyMobileResponse(final Company company) {
+    return CompanyResponseDtoMobile.builder()
+        .id(company.getId())
+        .name(company.getName())
         .build();
   }
 

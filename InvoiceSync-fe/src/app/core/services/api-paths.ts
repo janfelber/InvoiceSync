@@ -55,5 +55,9 @@ export const ApiPaths = {
   stats: {
     BASE: '/stats',
     FIND_BASIC_STATS: (companyId:number) => `/basic-stats/${companyId}`,
+  },
+  qr_code: {
+    BASE: '/qr-code',
+    GENERATE_LOGIN_QR_CODE: '/login/generate',
   }
 };

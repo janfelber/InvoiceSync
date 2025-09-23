@@ -1,59 +1,24 @@
-<div class="flex flex-col md:flex-row h-screen w-full bg-white">
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="max-w-md w-full bg-white rounded-xl shadow-md p-6 flex flex-col items-center">
 
-  <!-- LEFT SIDE – INFO -->
-  <div class="md:w-1/2 flex flex-col justify-center items-center px-8 py-12 text-center bg-white">
-    <img src="../../../assets/mobile-app.svg"
-         alt="Mobile App"
-         class="w-64 h-auto mb-8 drop-shadow-md transition-opacity duration-700 ease-in opacity-100" />
+    <!-- App logo / name -->
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">InvoiceSync</h1>
 
-    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight transition-transform duration-500 ease-out">
-      InvoiceSync Go je na ceste
-    </h1>
-    <p class="text-gray-600 text-base md:text-lg max-w-md mb-6 leading-relaxed">
-      Pracujeme na mobilnej aplikácii, ktorá vám umožní spravovať faktúry a bločky kdekoľvek a kedykoľvek.
+    <!-- Instruction -->
+    <p class="text-gray-600 text-center mb-6">
+      Scan this QR code with your InvoiceSync mobile app to login.
     </p>
 
-    <!-- E-mail input + button -->
-    <div class="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md mt-2">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        name="email"
-        placeholder="Zadaj svoj e-mail"
-        required
-        class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-      />
-      <button
-        (click)="onSubscribe()"
-        class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition hover:scale-105">
-        Daj mi vedieť
-      </button>
+    <!-- QR Code container -->
+    <div class="w-64 h-64 flex items-center justify-center bg-gray-100 rounded-lg border-2 border-dashed border-gray-300 mb-6">
+      <img *ngIf="qrCodeImage" [src]="qrCodeImage" alt="QR Code" class="w-56 h-56" />
+      <span *ngIf="!qrCodeImage" class="text-gray-400">QR code loading...</span>
     </div>
-  </div>
 
-  <!-- RIGHT SIDE – COUNTDOWN -->
-  <div class="md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#eff6ff] to-blue-100 px-8 py-12">
-    <h2 class="text-2xl md:text-3xl font-semibold text-blue-900 mb-8 transition-opacity duration-700">
-      Spustenie aplikácie o
-    </h2>
+    <!-- Footer info -->
+    <p class="text-gray-400 text-sm text-center">
+      Make sure your mobile app is connected to the internet.
+    </p>
 
-    <div class="flex gap-6 text-center">
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ days }}</div>
-        <div class="text-sm text-gray-500">dní</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ hours }}</div>
-        <div class="text-sm text-gray-500">hodín</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ minutes }}</div>
-        <div class="text-sm text-gray-500">minút</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ seconds }}</div>
-        <div class="text-sm text-gray-500">sekúnd</div>
-      </div>
-    </div>
   </div>
 </div>

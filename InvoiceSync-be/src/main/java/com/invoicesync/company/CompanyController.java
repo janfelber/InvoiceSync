@@ -1,5 +1,7 @@
 package com.invoicesync.company;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
+import com.invoicesync.company.dto.CompanyResponseDtoMobile;
 import com.invoicesync.shared.common.PageResponse;
 
 import jakarta.validation.Valid;
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/company")
 public class CompanyController {
 
+  public static final int SIZE = 20;
+
   private final CompanyService companyService;
 
   @GetMapping("/user")
@@ -32,6 +37,15 @@ public class CompanyController {
       final Authentication connectedUser
   ) {
     return ResponseEntity.ok(companyService.findAllCompaniesByUser(page, size, connectedUser));
+  }
+
+  @GetMapping("/mobile/user/companies")
+  public ResponseEntity<List<CompanyResponseDtoMobile>> findAllCompaniesByUserApp(
+      final Authentication connectedUser
+  ) {
+    final List<CompanyResponseDtoMobile> companies = companyService.findAllCompaniesByUser(
+        connectedUser); // vracia všetky
+    return ResponseEntity.ok(companies);
   }
 
   @GetMapping("/{company-id}")

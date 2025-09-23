@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
+import com.invoicesync.company.dto.CompanyResponseDtoMobile;
 import com.invoicesync.feature.Feature;
 import com.invoicesync.shared.common.PageResponse;
 
@@ -61,6 +62,17 @@ public class CompanyServiceImpl implements CompanyService {
         companies.isFirst(),
         companies.isLast()
     );
+  }
+
+  @Override
+  public List<CompanyResponseDtoMobile> findAllCompaniesByUser(final Authentication connectedUser) {
+    final List<Company> companies = companyRepository.findAll(
+        withUserId(connectedUser.getName())
+    );
+
+    return companies.stream()
+        .map(companyMapper::toCompanyMobileResponse) // alebo vlastný mapper
+        .toList();
   }
 
   @Override
