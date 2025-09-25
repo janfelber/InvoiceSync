@@ -97,4 +97,12 @@ public class InvoiceController {
     return ResponseEntity.ok(documentId);
   }
 
+  @DeleteMapping("/delete/{invoice-id}")
+  public void deleteInvoice(
+      @PathVariable("invoice-id") final Long invoiceId,
+      final Authentication connectedUser
+  ) {
+    invoiceService.deleteInvoice(invoiceId, connectedUser);
+  }
+
 }

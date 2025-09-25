@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.invoicesync.company.Company;
+import com.invoicesync.document.invoice.InvoiceDocument;
 import com.invoicesync.shared.common.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -39,6 +40,9 @@ public class Invoice extends BaseEntity {
 
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<InvoiceItem> items = new ArrayList<>();
+
+  @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<InvoiceDocument> documents = new ArrayList<>();
 
   @Column(name = "issue_date")
   private String issueDate;

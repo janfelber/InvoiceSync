@@ -30,6 +30,8 @@ public interface InvoiceService {
 
   void deleteDocument(Long documentId, Authentication connectedUser);
 
+  void deleteInvoice(Long invoiceId, Authentication connectedUser);
+
   List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
 
 }
