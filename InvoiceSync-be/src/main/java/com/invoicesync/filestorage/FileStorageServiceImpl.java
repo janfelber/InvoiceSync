@@ -28,7 +28,7 @@ public class FileStorageServiceImpl implements FileStorageService {
   @Override
   public String saveFile(@Nonnull final MultipartFile sourceDocument,
       @Nonnull final Invoice invoice, @Nonnull final String connectedUserId) {
-    final String fileUploadSubPath = "users" + separator + connectedUserId;
+    final String fileUploadSubPath = "users" + separator + connectedUserId + separator + invoice.getId();
     return uploadFile(sourceDocument, fileUploadSubPath);
   }
 

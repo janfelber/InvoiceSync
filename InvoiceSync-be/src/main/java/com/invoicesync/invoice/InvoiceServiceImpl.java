@@ -194,7 +194,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         );
 
     invoiceRepository.save(newInvoice);
-    this.uploadDocument(file, false, newInvoice.getId(), connectedUser, null);
+    uploadDocument(file, false, newInvoice.getId(), connectedUser, null);
 
     return newInvoice.getId();
   }
@@ -345,6 +345,30 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     invoiceDocumentRepository.delete(invoiceDocument);
+  }
+
+  @Override
+  public void deleteInvoice(final Long invoiceId, final Authentication connectedUser) {
+    final Invoice invoice = invoiceRepository.findById(invoiceId)
+        .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
+
+    if (!invoice.getCompany().getCreatedBy().equals(connectedUser.getName())) {
+      throw new AccessDeniedException("You cannot delete this invoice");
+    }
+
+    for (final InvoiceDocument doc : invoice.getDocuments()) {
+      final Path filePath = Paths.get(doc.getDocument());
+      try {
+        Files.deleteIfExists(filePath);
+        log.info("Deleted file from filesystem: {}", filePath.toAbsolutePath());
+      } catch (IOException e) {
+        log.error("Failed to delete file: {}", filePath, e);
+      }
+    }
+
+    // teraz vymaž dokumenty z DB (ak nie je nastavený cascade = REMOVE)
+    invoiceDocumentRepository.deleteAll(invoice.getDocuments());
+    invoiceRepository.delete(invoice);
   }
 
   @NotNull
