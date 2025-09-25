@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,8 +84,17 @@ public class InvoiceController {
       @RequestPart("data") final AddDocumentData addDocumentData,
       final Authentication connectedUser
   ) throws IOException {
-    invoiceService.uploadDocument(document, invoiceId, connectedUser, addDocumentData);
+    invoiceService.uploadDocument(document, true, invoiceId, connectedUser, addDocumentData);
     return ResponseEntity.accepted().build();
+  }
+
+  @DeleteMapping("/delete/document/{document-id}")
+  public ResponseEntity<Long> deleteDocument(
+      @PathVariable("document-id") final Long documentId,
+      final Authentication connectedUser
+  ) {
+    invoiceService.deleteDocument(documentId, connectedUser);
+    return ResponseEntity.ok(documentId);
   }
 
 }

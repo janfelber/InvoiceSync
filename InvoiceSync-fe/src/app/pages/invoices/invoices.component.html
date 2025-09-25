@@ -180,6 +180,7 @@
       <!-- Import invoice button -->
       <button
         type="button"
+        (click)="openUploadModal()"
         class="w-41 h-9.5 text-sm text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
       >
         <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -195,6 +196,82 @@
       </button>
     </div>
   </div>
+
+
+  <app-modal
+    [show]="uploadModalOpen"
+    (closeModal)="closeUploadModal()"
+    title="Import Excelu"
+  >
+    <form #importForm="ngForm">
+      <div class="grid gap-4 mb-6">
+
+        <div class="mb-4">
+          <label for="company" class="block mb-2 text-sm font-medium text-gray-700">
+            Vyberte firmu
+          </label>
+          <select id="company" [(ngModel)]="selectedCompanyId" name="company"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option *ngFor="let company of companyResponse.content" [value]="company.id">
+              {{ company.name }} - {{ company.taxId }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            for="multi-upload"
+            class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg bg-gray-50 hover:bg-gray-100"
+          >
+            <div class="flex flex-col items-center pt-5 pb-6">
+              <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                   height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                      d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
+              <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
+            </div>
+            <input
+              id="multi-upload"
+              type="file"
+              class="hidden"
+              (change)="onInvoiceUpload($event)"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div *ngIf="selectedFile" class="mt-2 text-sm text-blue-800">
+        Vybraný súbor: <strong>{{ selectedFile.name }}</strong>
+      </div>
+
+      <hr class="h-px my-4 bg-gray-200 border-0">
+      <button
+        [disabled]="isUploading"
+        (click)="onUploadFile()"
+        type="submit"
+        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+
+        <ng-container *ngIf="!isUploading; else loading">
+          Importovať
+        </ng-container>
+
+        <ng-template #loading>
+          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+          </svg>
+          Nahrávam...
+        </ng-template>
+      </button>
+    </form>
+  </app-modal>
+
+
 
 
   <!-- Table Container -->

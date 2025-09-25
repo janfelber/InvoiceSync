@@ -22,4 +22,10 @@ public class GlobalExceptionHandler {
   public ResponseEntity<String> handleFeatureMissingException(final FeatureMissingException ex) {
     return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(ex.getMessage());
   }
+
+  @ExceptionHandler(DownloadDocumentException.class)
+  public ResponseEntity<String> handleCannotDeleteDocument(final DownloadDocumentException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+  }
+
 }

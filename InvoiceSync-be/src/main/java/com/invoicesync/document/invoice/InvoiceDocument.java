@@ -40,4 +40,7 @@ public class InvoiceDocument extends BaseEntity {
   @Column(name = "document_name")
   private String documentName;
 
+  @Column(name = "can_delete")
+  private boolean canDelete;
+
 }

@@ -24,9 +24,11 @@ public interface InvoiceService {
   PageResponse<InvoiceResponseTable> findAllInvoicesByUser(int size, int page,
       Authentication connectedUser);
 
-  void uploadDocument(MultipartFile document, Long invoiceId, Authentication connectedUser,
+  void uploadDocument(MultipartFile document, Boolean canDeleteDocument, Long invoiceId, Authentication connectedUser,
       @Nullable AddDocumentData additionalDocumentData
   );
+
+  void deleteDocument(Long documentId, Authentication connectedUser);
 
   List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
 
