@@ -3,6 +3,10 @@ package com.invoicesync.invoice;
 import static com.invoicesync.invoice.InvoiceSpecification.withCompanyId;
 import static com.invoicesync.invoice.InvoiceSpecification.withUserId;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +47,8 @@ import com.invoicesync.invoice.dto.InvoiceResponseTable;
 import com.invoicesync.ocr.OCRService;
 import com.invoicesync.partner.CompanyRegistry;
 import com.invoicesync.shared.common.PageResponse;
+import com.invoicesync.shared.exception.DownloadDocumentException;
+import com.invoicesync.subscription.enums.LimitType;
 import com.invoicesync.subscription.guard.LimitGuardService;
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
@@ -113,58 +119,58 @@ public class InvoiceServiceImpl implements InvoiceService {
       throw new AccessDeniedException("You cannot add invoices to this company");
     }
 
-    // limitGuardService.checkLimit(connectedUser, LimitType.INVOICE_PROCESS);
+    limitGuardService.checkLimit(connectedUser, LimitType.INVOICE_PROCESS);
 
     log.info("kto vytvoril company {}", company.getCreatedBy());
     log.info("prihlaseny uzivatel {}", connectedUser.getName());
 
     final InvoiceRequest request;
-    // final String pdfText = ocrService.extractTextFromPDF(file, connectedUser);
+    final String pdfText = ocrService.extractTextFromPDF(file, connectedUser);
 
-    // final int rawToken = countTokens(pdfText);
-    // log.info("Token count: {}", rawToken);
+    final int rawToken = countTokens(pdfText);
+    log.info("Token count: {}", rawToken);
 
-    // final String cleanedText = removeUnwantedCharacters(pdfText);
-    // final int cleanedToken = countTokens(cleanedText);
-    // log.info("Token count after cleaning: {}", cleanedToken);
-    //
-    // final String openApiResponse = askOpenAi(cleanedText);
-    //
-    // System.out.println("Open API response: " + openApiResponse);
+    final String cleanedText = removeUnwantedCharacters(pdfText);
+    final int cleanedToken = countTokens(cleanedText);
+    log.info("Token count after cleaning: {}", cleanedToken);
 
-    final String json = """
-        {
-          "Invoice Number": "10/2023/602",
-          "Date of Issue": "15.2.2023",
-          "Date of Delivery": "15.2.2023",
-          "Date of Due": "1.4.2023",
-          "Variable Symbol": "231000602",
-          "Supplier VAT ID": "SK2024181346",
-          "Supplier TAX ID": "2024181346",
-          "Supplier Registration Number": "47998156",
-          "Supplier Name": "CANIS SAFETY a.s., organizačná zložka Košice",
-          "Invoice Items": [
-            {
-              "description": "Filtr 3M 6059, 1 pár",
-              "quantity": "2",
-              "unit price": "10,102",
-              "total": "20"
-            },
-            {
-              "description": "Štít ŠP 29",
-              "quantity": "10",
-              "unit price": "8,266",
-              "total": "82,66"
-            }
-          ]
-        }
-        """;
+    final String openApiResponse = askOpenAi(cleanedText);
 
-    final int outputTokens = encoding.encode(json).size();
+    System.out.println("Open API response: " + openApiResponse);
+
+    // final String json = """
+    //     {
+    //       "Invoice Number": "10/2023/602",
+    //       "Date of Issue": "15.2.2023",
+    //       "Date of Delivery": "15.2.2023",
+    //       "Date of Due": "1.4.2023",
+    //       "Variable Symbol": "231000602",
+    //       "Supplier VAT ID": "SK2024181346",
+    //       "Supplier TAX ID": "2024181346",
+    //       "Supplier Registration Number": "47998156",
+    //       "Supplier Name": "CANIS SAFETY a.s., organizačná zložka Košice",
+    //       "Invoice Items": [
+    //         {
+    //           "description": "Filtr 3M 6059, 1 pár",
+    //           "quantity": "2",
+    //           "unit price": "10,102",
+    //           "total": "20"
+    //         },
+    //         {
+    //           "description": "Štít ŠP 29",
+    //           "quantity": "10",
+    //           "unit price": "8,266",
+    //           "total": "82,66"
+    //         }
+    //       ]
+    //     }
+    //     """;
+
+    final int outputTokens = encoding.encode(openApiResponse).size();
     log.info("Output tokens count: {}", outputTokens);
 
     try {
-      request = objectMapper.readValue(json, InvoiceRequest.class);
+      request = objectMapper.readValue(openApiResponse, InvoiceRequest.class);
     } catch (JsonProcessingException e) {
       log.error("Failed to parse JSON response from OpenAI", e);
       throw new RuntimeException("Invalid JSON from OpenAI", e);
@@ -188,7 +194,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         );
 
     invoiceRepository.save(newInvoice);
-    this.uploadDocument(file, newInvoice.getId(), connectedUser, null);
+    this.uploadDocument(file, false, newInvoice.getId(), connectedUser, null);
 
     return newInvoice.getId();
   }
@@ -292,7 +298,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public void uploadDocument(final MultipartFile document, final Long invoiceId, final Authentication connectedUser,
+  public void uploadDocument(final MultipartFile document, final Boolean canDeleteDocument, final Long invoiceId,
+      final Authentication connectedUser,
       @Nullable final AddDocumentData additionalDocumentData) {
 
     final Invoice invoice = invoiceRepository.findById(invoiceId)
@@ -304,6 +311,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     invoiceDocument.setInvoice(invoice);
     invoiceDocument.setFilename(document.getOriginalFilename());
     invoiceDocument.setDocument(documentToUpload);
+    invoiceDocument.setCanDelete(canDeleteDocument);
 
     if (additionalDocumentData != null) {
       invoiceDocument.setDocumentName(additionalDocumentData.documentName());
@@ -313,6 +321,30 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     invoiceDocumentRepository.save(invoiceDocument);
+  }
+
+  @Override
+  public void deleteDocument(final Long documentId, final Authentication connectedUser) {
+    final InvoiceDocument invoiceDocument = invoiceDocumentRepository.findById(documentId)
+        .orElseThrow(() -> new EntityNotFoundException("No document found with the ID: " + documentId));
+
+    if (!invoiceDocument.isCanDelete()) {
+      throw new DownloadDocumentException(
+          "This document cannot be deleted because it is source of data for invoice " + invoiceDocument.getInvoice()
+              .getId()
+      );
+    }
+
+    final Path filePath = Paths.get(invoiceDocument.getDocument());
+
+    try {
+      Files.deleteIfExists(filePath);
+      log.info("Deleted file from filesystem: {}", filePath.toAbsolutePath());
+    } catch (IOException e) {
+      log.error("Failed to delete file: {}", filePath, e);
+    }
+
+    invoiceDocumentRepository.delete(invoiceDocument);
   }
 
   @NotNull
@@ -329,6 +361,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         - Invoice Items (description, quantity, unit price, total)
         
         Return only the raw JSON without any explanation or extra text.
+        The format of date should be YYYY-MM-DD
         
         Invoice text:
         """ + cleanedText;

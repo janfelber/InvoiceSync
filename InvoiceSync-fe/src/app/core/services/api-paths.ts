@@ -39,10 +39,12 @@ export const ApiPaths = {
   invoice: {
     BASE: '/invoice',
     FIND_ALL_BY_USER: '/user',
+    SAVE: '/save',
     FIND_BY_COMPANY: (companyId:number) => `/${companyId}/invoices`,
     BY_ID: (invoiceId:number) => `/${invoiceId}`,
     DOCUMENTS: (invoiceId:number) => `/${invoiceId}/documents`,
     ADD_DOCUMENT_TO_INVOICE: (invoiceId:number) => `/upload/document/${invoiceId}`,
+    DELETE_DOCUMENT_FROM_INVOICE:  (documentId:number) => `/delete/document/${documentId}`,
   },
   data_transfer: {
     BASE: '/convert',

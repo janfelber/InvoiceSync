@@ -11,6 +11,9 @@ import {ToastrService} from "ngx-toastr";
 import {initDropdowns, initFlowbite} from "flowbite";
 import {InvoiceService} from "../../core/services/invoice.service";
 import {PageInvoiceResponse} from "./page-response-receipt-response";
+import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
+import {CompanyService} from "../../core/services/company.service";
+import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 
 @Component({
   selector: 'app-test',
@@ -20,6 +23,7 @@ import {PageInvoiceResponse} from "./page-response-receipt-response";
     FormsModule,
     CommonModule,
     RouterLink,
+    MatDialogWindowComponent,
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
@@ -27,23 +31,30 @@ import {PageInvoiceResponse} from "./page-response-receipt-response";
 export class Invoices implements OnInit, AfterViewInit {
 
   protected isLoading: boolean = true;
+  uploadModalOpen = false;
+  isUploading = false;
+  importFinished = false;
 
   protected selectedCompanyId: any;
-
   protected companies: any[] = [];
-
   selectedCompanyName = 'Vyber spoločnosť';
   filteredInvoiceImports: any[] = [];
 
+  public companyResponse: PageResponseCompanyResponseDto = {
+    content: []
+  };
+
   public page: number = 0;
   public size: number = 20;
+
+  selectedFile: File | null = null;
 
   public invoiceResponse: PageInvoiceResponse = {
     content: []
   };
 
   constructor(
-    private fileService: FileService,
+    private companyService: CompanyService,
     private invoiceService: InvoiceService,
     private axiosService: AxiosService,
     private toastr: ToastrService,
@@ -128,50 +139,49 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   onFetchCompanies() {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/company/user`,
-      null
-    ).then(
-      (companies) => {
-        this.companies = companies.data
-        this.isLoading = false;
-        console.log(companies.data);
-
-        if (this.companies.length === 0) {
-          this.toastr.warning('Nemáte pridané žiadne spoločnosti!', 'Informácia',
-            {
-              timeOut: 3000,
-              progressBar: true,
-              progressAnimation: 'increasing',
-              closeButton: true,
-              positionClass: 'toast-top-right'
-            });
-        }
-      }
-    ).catch(() => {
-      this.isLoading = false;
+    this.companyService.findAllCompaniesByUser().then(response => {
+      this.companyResponse = response.data;
+    }).catch(error => {
+      console.error(error);
     });
   }
 
-  public onUploadFiles(files: File[]): void {
-    const formData = new FormData();
-    for (const file of files) {
-      formData.append('file', file, file.name);
-      formData.append('companyId', this.selectedCompanyId.toString());
+  openUploadModal() {
+    this.uploadModalOpen = true;
+  }
+
+  closeUploadModal() {
+    this.uploadModalOpen = false;
+  }
+
+  onInvoiceUpload(event: any): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
     }
-    this.fileService.uploadPdf(formData).subscribe({
-      next: (event) => {
-        console.log(event);
-        this.onCompanyChange({id: this.selectedCompanyId});
-      },
-      error: (error: HttpErrorResponse) => {
-        console.error(error);
-      },
-      complete: () => {
-        console.log('Upload complete');
+  }
+
+  async onUploadFile(): Promise<void> {
+
+    console.log(this.selectedCompanyId)
+
+    this.isUploading = true;
+    this.importFinished = false;
+    try {
+      if (this.selectedFile) {
+        await this.invoiceService.uploadInvoice({
+          file: this.selectedFile,
+          companyId: this.selectedCompanyId
+        })
       }
-    });
+      this.closeUploadModal();
+      this.onFetchAllInvoices();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.isUploading = false;
+      this.importFinished = true;
+    }
   }
 
   //select company from dropdown

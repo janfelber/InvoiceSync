@@ -3,6 +3,8 @@ import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
 import {AxiosService} from "../axios.service";
 import {AddDocumentData} from "../models/add-document-data";
+import {Observable} from "rxjs";
+import {HttpEvent} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +53,18 @@ export class InvoiceService {
     )
   }
 
+  uploadInvoice(params: { file: File; companyId: number }): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', params.file, params.file.name);
+    formData.append('companyId', params.companyId.toString());
+
+    return this.axiosService.request(
+      'POST',
+      `${this.baseUrl}${ApiPaths.invoice.SAVE}`,
+      formData
+    );
+  }
+
   addDocumentToInvoice(params: { invoiceId: number, file: File, additionalDocumentData: AddDocumentData }): Promise<any> {
     const formData = new FormData();
     formData.append('file', params.file);
@@ -63,5 +77,11 @@ export class InvoiceService {
       `${this.baseUrl}${ApiPaths.invoice.ADD_DOCUMENT_TO_INVOICE(params.invoiceId)}`,
       formData,
     );
+  }
+
+  deleteDocumentFromInvoice(params: {documentId: number}): Promise<any> {
+    return this.axiosService.request(
+      'DELETE', `${this.baseUrl}${ApiPaths.invoice.DELETE_DOCUMENT_FROM_INVOICE(params.documentId)}`, null
+    )
   }
 }

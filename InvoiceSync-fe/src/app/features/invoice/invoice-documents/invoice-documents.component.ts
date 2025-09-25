@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {InvoiceService} from "../../../core/services/invoice.service";
 import {ActivatedRoute} from "@angular/router";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
+import {ToastrService} from "ngx-toastr";
+import {initFlowbite} from "flowbite";
 
 @Component({
   selector: 'invoice-documents',
@@ -23,6 +25,7 @@ export class InvoiceDocumentsComponent implements OnInit {
   constructor(
     private invoiceService: InvoiceService,
     private route: ActivatedRoute,
+    private toastr: ToastrService,
   ) { }
 
   invoiceId: any = null;
@@ -39,7 +42,7 @@ export class InvoiceDocumentsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.invoiceId = params.get('id') || '';
     });
-
+    initFlowbite();
     this.onFetchDocuments();
   }
 
@@ -72,6 +75,43 @@ export class InvoiceDocumentsComponent implements OnInit {
       console.error(e);
     } finally {
       this.isUploading = false;
+    }
+  }
+
+  async deleteDocumentFromInvoice(documentId: number) {
+
+    try {
+      await this.invoiceService.deleteDocumentFromInvoice({
+        documentId: documentId
+      }).then(() => {
+        this.onFetchDocuments(); // refresh až po úspechu
+        this.toastr.success('Dokument bol úspešne odstránený.', '', {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+      });
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        this.toastr.warning('Je nám ľúto, tento dokument nemožno vymazať, pretože je zdrojom údajov pre faktúru.', '', {
+          timeOut: 6000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+      } else {
+        console.error('Chyba pri mazaní:', error);
+        this.toastr.error('Chyba pri mazaní, skúste neskôr alebo kontaktuje podporu', '', {
+          timeOut: 3000,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          closeButton: true,
+          positionClass: 'toast-top-right',
+        });
+      }
     }
   }
 
