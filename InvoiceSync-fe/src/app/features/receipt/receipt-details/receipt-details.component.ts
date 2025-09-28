@@ -95,7 +95,7 @@ export class ReceiptDetailsComponent implements OnInit {
   private initForm(): void {
     this.receiptForm = this.fb.group({
       receiptDetails: this.fb.group({
-        numberRequested: ['neviem ci toto pojde'],
+        numberRequested: [''],
         date: ['', Validators.required],
         paidByCard: [false],
         datePayment: [''],
@@ -143,12 +143,12 @@ export class ReceiptDetailsComponent implements OnInit {
     });
   }
 
-  onFetchAccounts() {
-    this.accountCharts.findAccountsByCompany({
+  async onFetchAccounts() {
+    const response = await this.accountCharts.findAccountsByCompany({
       companyId: this.companyId,
-    }).then(response => {
-      this.groupedAccounts = response.data;
-    })
+    });
+    this.groupedAccounts = response.data;
+    return response.data;
   }
 
   onFetchReceipt() {
@@ -225,7 +225,7 @@ export class ReceiptDetailsComponent implements OnInit {
       const a = document.createElement('a');
       a.href = url;
 
-      a.download = `receipt_${new Date().toISOString()}.xml`;
+      a.download = `receipt_${this.receiptResponse.company?.name}.xml`;
 
       document.body.appendChild(a);
       a.click();
@@ -369,24 +369,22 @@ export class ReceiptDetailsComponent implements OnInit {
   selectedItemForAccount: any = null;
 
   openDrawer(item: any): void {
-    this.onFetchAccounts();
     this.selectedItemForAccount = item.id;
-
     this.selectedItemName = item.name;
-    console.log(item)
+    this.drawerOpen = true;
 
-    if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
-      const matchingAccount = this.groupedAccounts
+    this.onFetchAccounts().then(() => {
+      if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
+        const matchingAccount = this.groupedAccounts
           .flatMap(cls => cls.categories)
           .flatMap(cat => cat.accounts)
           .find(acc => acc.number === item.accountValue);
 
-      if (matchingAccount) {
-        this.selectedAccountsPerItem[item.id] = matchingAccount;
+        if (matchingAccount) {
+          this.selectedAccountsPerItem[item.id] = matchingAccount;
+        }
       }
-    }
-
-    this.drawerOpen = true;
+    });
   }
 
   closeDrawer() {
@@ -440,6 +438,7 @@ export class ReceiptDetailsComponent implements OnInit {
           positionClass: 'toast-top-right',
         }
       );
+      this.onFetchReceipt()
     });
   }
 }

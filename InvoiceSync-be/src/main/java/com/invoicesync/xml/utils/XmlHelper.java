@@ -124,6 +124,8 @@ public class XmlHelper {
     replaceTextContent(doc, ACCOUNT_VALUE, receiptRequestDetailsDTO.getAccountValue(), ReceiptCard.ACCOUNTING);
     replaceTextContent(doc, ACCOUNT_VALUE, receiptRequestDetailsDTO.getClassificationVAT(),
         ReceiptCard.CLASSIFICATION_VAT);
+    replaceTextContent(doc, ACCOUNT_VALUE, receiptRequestDetailsDTO.getClassificationKVVAT(),
+        ReceiptCard.CLASSIFICATION_KV_VAT);
     replaceTextContent(doc, ReceiptCard.TEXT, receiptRequestDetailsDTO.getDescription(), null);
   }
 

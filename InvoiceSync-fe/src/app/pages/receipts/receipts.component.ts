@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {RouterLink} from "@angular/router";
-import {initFlowbite} from 'flowbite'
+import {Router, RouterLink} from "@angular/router";
+import {initDropdowns, initFlowbite} from 'flowbite'
 import {FormsModule} from '@angular/forms';
 import {ReceiptService} from "../../core/services/receipt.service";
 import {PageResponseReceiptResponse} from "./page-response-receipt-response";
@@ -67,14 +67,14 @@ export class ReceiptsComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     private companyService: CompanyService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     this.onFetchAllReceipts();
     this.onFetchCompanies();
-    initFlowbite();
   }
 
   onFetchAllReceipts(): void {
@@ -93,6 +93,7 @@ export class ReceiptsComponent implements OnInit {
               new Date(curr.createdAt) > new Date(latest.createdAt) ? curr : latest
           ).createdAt
           : undefined;
+        setTimeout(() => initFlowbite(), 0);
       })
       .catch(error => {
         console.error("Chyba pri načítaní firiem:", error);
@@ -186,6 +187,10 @@ export class ReceiptsComponent implements OnInit {
     this.importModalOpen = false;
     this.resetAll();
     this.selectedCompanyId = null;
+  }
+
+  editReceipt(id: number) {
+    this.router.navigate(['web/receipts/', id]);
   }
 
   showSuccessToast() {

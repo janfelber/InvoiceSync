@@ -8,32 +8,43 @@
 					<typ:ids>HP</typ:ids>
 				</vch:cashAccount>
 				<vch:number>
-					<typ:numberRequested>22HV00001</typ:numberRequested>
+					<typ:numberRequested>NUMBER_REQUESTED</typ:numberRequested>
 				</vch:number>
-				<vch:date>2025-05-06</vch:date>
-				<vch:datePayment>2025-05-06</vch:datePayment>
-				<vch:dateTax>2025-05-06</vch:dateTax>
+				<vch:date>DATE</vch:date>
+				<vch:datePayment>DATE_TAX</vch:datePayment>
+				<vch:dateTax>DATE_ACCOUNTING</vch:dateTax>
 				<vch:accounting>
-					<typ:ids>4V</typ:ids>
+					<typ:ids>ACCOUNTING</typ:ids>
 				</vch:accounting>
 				<vch:classificationVAT>
-					<typ:ids>PD</typ:ids>
+					<typ:ids>CLASSIFICATION_VAT</typ:ids>
 				</vch:classificationVAT>
 				<vch:classificationKVDPH>
-					<typ:ids>B1</typ:ids>
+					<typ:ids>CLASSIFICATION_KVDPH</typ:ids>
 				</vch:classificationKVDPH>
-				<vch:text>Hotovosù v˝daj</vch:text>
+				<vch:text>INVOICE_ADDITIONAL_TEXT</vch:text>
+				<vch:partnerIdentity>
+					<typ:address>
+						<typ:company>PARTNER_NAME</typ:company>
+						<typ:city>PARTNER_CITY</typ:city>
+						<typ:street>PARTNER_STREET_WITH_NUMBER</typ:street>
+						<typ:zip>PARTNER_ZIP</typ:zip>
+						<typ:ico>PARTNER_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>PARTNER_TAX_ID</typ:dic>
+						<typ:icDph>PARTNER_VAT_ID</typ:icDph>
+					</typ:address>
+				</vch:partnerIdentity>
 				<vch:myIdentity>
 					<typ:address>
-						<typ:company>Firma Test</typ:company>
-						<typ:surname></typ:surname>
-						<typ:city>Test</typ:city>
-						<typ:street>Ulica</typ:street>
-						<typ:number>11</typ:number>
-						<typ:zip>111 11</typ:zip>
-						<typ:ico>11111111</typ:ico>
-						<typ:dic>1111111111</typ:dic>
-						<typ:icDph>SK1111111111</typ:icDph>
+						<typ:company>MY_COMPANY_NAME</typ:company>
+						<typ:surname>MY_COMPANY_SURNAME</typ:surname>
+						<typ:city>MY_COMPANY_CITY</typ:city>
+						<typ:street>MY_COMPANY_STREET</typ:street>
+						<typ:number>MY_COMPANY_STREET_NUMBER</typ:number>
+						<typ:zip>MY_COMPANY_ZIP</typ:zip>
+						<typ:ico>MY_COMPANY_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>MY_COMPANY_TAX_ID</typ:dic>
+						<typ:icDph>MY_COMPANY_VAT_ID</typ:icDph>
 					</typ:address>
 				</vch:myIdentity>
 				<vch:markRecord>true</vch:markRecord>
