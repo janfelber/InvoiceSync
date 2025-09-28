@@ -4,45 +4,45 @@
 		<int:intDoc version="2.0" xmlns:int="http://www.stormware.cz/schema/version_2/intDoc.xsd">
 			<int:intDocHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
 				<int:number>
-					<typ:numberRequested>22DPH00009</typ:numberRequested>
+					<typ:numberRequested>NUMBER_REQUESTED</typ:numberRequested>
 				</int:number>
-				<int:symVar>2122000005</int:symVar>
-				<int:date>2022-01-13</int:date>
-				<int:dateTax>2022-01-13</int:dateTax>
-				<int:dateAccounting>2022-01-13</int:dateAccounting>
-				<int:dateKVDPH>2022-01-13</int:dateKVDPH>
+				<int:symVar>VARIABLE_SYMBOL</int:symVar>
+				<int:date>DATE</int:date>
+				<int:dateTax>DATE_TAX</int:dateTax>
+				<int:dateAccounting>DATE_ACCOUNTING</int:dateAccounting>
+				<int:dateKVDPH>DATE_KVDPH</int:dateKVDPH>
 				<int:accounting>
-					<typ:ids>aInt</typ:ids>
+					<typ:ids>ACCOUNTING</typ:ids>
 				</int:accounting>
 				<int:classificationVAT>
-					<typ:ids>DDsl§69</typ:ids>
+					<typ:ids>CLASSIFICATION_VAT</typ:ids>
 				</int:classificationVAT>
 				<int:classificationKVDPH>
-					<typ:ids>B1</typ:ids>
+					<typ:ids>CLASSIFICATION_KVDPH</typ:ids>
 				</int:classificationKVDPH>
-				<int:text>Priznanie DPH z nadobudnutia služby, FP è.  70220005</int:text>
+				<int:text>INVOICE_ADDITIONAL_TEXT</int:text>
 				<int:partnerIdentity>
 					<typ:address>
-						<typ:company>NOVIKO s.r.o.</typ:company>
-						<typ:city>Brno</typ:city>
-						<typ:street>Palackého tøída 163</typ:street>
-						<typ:zip>612 00</typ:zip>
-						<typ:ico>28433092</typ:ico>
-						<typ:dic>28433092</typ:dic>
-						<typ:icDph>CZ28433092</typ:icDph>
+						<typ:company>PARTNER_NAME</typ:company>
+						<typ:city>PARTNER_CITY</typ:city>
+						<typ:street>PARTNER_STREET_WITH_NUMBER</typ:street>
+						<typ:zip>PARTNER_ZIP</typ:zip>
+						<typ:ico>PARTNER_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>PARTNER_TAX_ID</typ:dic>
+						<typ:icDph>PARTNER_VAT_ID</typ:icDph>
 					</typ:address>
 				</int:partnerIdentity>
 				<int:myIdentity>
 					<typ:address>
-						<typ:company>Firma Test</typ:company>
-						<typ:surname></typ:surname>
-						<typ:city>Test</typ:city>
-						<typ:street>Ulica</typ:street>
-						<typ:number>11</typ:number>
-						<typ:zip>111 11</typ:zip>
-						<typ:ico>11111111</typ:ico>
-						<typ:dic>1111111111</typ:dic>
-						<typ:icDph>SK1111111111</typ:icDph>
+						<typ:company>MY_COMPANY_NAME</typ:company>
+						<typ:surname>MY_COMPANY_SURNAME</typ:surname>
+						<typ:city>MY_COMPANY_CITY</typ:city>
+						<typ:street>MY_COMPANY_STREET</typ:street>
+						<typ:number>MY_COMPANY_STREET_NUMBER</typ:number>
+						<typ:zip>MY_COMPANY_ZIP</typ:zip>
+						<typ:ico>MY_COMPANY_REGISTRATION_NUMBER</typ:ico>
+						<typ:dic>MY_COMPANY_TAX_ID</typ:dic>
+						<typ:icDph>MY_COMPANY_VAT_ID</typ:icDph>
 					</typ:address>
 				</int:myIdentity>
 				<int:liquidation>false</int:liquidation>
@@ -50,27 +50,6 @@
 				<int:markRecord>true</int:markRecord>
 			</int:intDocHeader>
 			<int:intDocDetail xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
-				<int:intDocItem>
-					<int:text>Vymeranie DPH, FP è.  70220005</int:text>
-					<int:quantity>1.0</int:quantity>
-					<int:coefficient>1.0</int:coefficient>
-					<int:payVAT>false</int:payVAT>
-					<int:rateVAT>high</int:rateVAT>
-					<int:discountPercentage>0.0</int:discountPercentage>
-					<int:homeCurrency>
-						<typ:unitPrice>319.43</typ:unitPrice>
-						<typ:price>319.43</typ:price>
-						<typ:priceVAT>63.89</typ:priceVAT>
-						<typ:priceSum>383.32</typ:priceSum>
-					</int:homeCurrency>
-					<int:classificationVAT>
-						<typ:ids>DDsl§69</typ:ids>
-					</int:classificationVAT>
-					<int:classificationKVDPH>
-						<typ:ids>B1</typ:ids>
-					</int:classificationKVDPH>
-					<int:PDP>false</int:PDP>
-				</int:intDocItem>
 			</int:intDocDetail>
 			<int:intDocSummary xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
 				<int:roundingDocument>none</int:roundingDocument>
