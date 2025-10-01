@@ -33,6 +33,8 @@ public class CompanyMapper {
         .registrationNumber(company.getRegistrationNumber())
         .taxId(company.getTaxId())
         .vatId(company.getVatId())
+        .cashReceiptNumber(company.getCashReceiptNumber())
+        .cardReceiptNumber(company.getCardReceiptNumber())
         .build();
   }
 

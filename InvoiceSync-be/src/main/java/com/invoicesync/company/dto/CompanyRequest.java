@@ -30,7 +30,10 @@ public record CompanyRequest(
     String taxId,
     @NotNull(message = "107")
     @NotEmpty(message = "107")
-    String vatId
+    String vatId,
+
+    String cashReceiptNumber,
+    String cardReceiptNumber
 ) {
 
 }

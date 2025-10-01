@@ -4,6 +4,8 @@ import static com.invoicesync.company.dto.specification.CompanySpecification.wit
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import com.invoicesync.feature.Feature;
 import com.invoicesync.shared.common.PageResponse;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -86,14 +89,16 @@ public class CompanyServiceImpl implements CompanyService {
       throw new IllegalArgumentException("Company not found");
     }
 
-    oldCompany.setName(request.name());
-    oldCompany.setCity(request.city());
-    oldCompany.setStreet(request.street());
-    oldCompany.setStreetNumber(request.streetNumber());
-    oldCompany.setZip(request.zip());
-    oldCompany.setTaxId(request.taxId());
-    oldCompany.setVatId(request.vatId());
-    oldCompany.setRegistrationNumber(request.registrationNumber());
+    if (request.name() != null) oldCompany.setName(request.name());
+    if (request.city() != null) oldCompany.setCity(request.city());
+    if (request.street() != null) oldCompany.setStreet(request.street());
+    if (request.streetNumber() != null) oldCompany.setStreetNumber(request.streetNumber());
+    if (request.zip() != null) oldCompany.setZip(request.zip());
+    if (request.taxId() != null) oldCompany.setTaxId(request.taxId());
+    if (request.vatId() != null) oldCompany.setVatId(request.vatId());
+    if (request.registrationNumber() != null) oldCompany.setRegistrationNumber(request.registrationNumber());
+    if (request.cashReceiptNumber() != null) oldCompany.setCashReceiptNumber(request.cashReceiptNumber());
+    if (request.cardReceiptNumber() != null) oldCompany.setCardReceiptNumber(request.cardReceiptNumber());
     return companyRepository.save(oldCompany);
   }
 
@@ -104,6 +109,38 @@ public class CompanyServiceImpl implements CompanyService {
 
     companyRepository.delete(company);
     return company;
+  }
+
+  @Override
+  @Transactional
+  public String getReceiptNumber(final Long companyId, final boolean paidByCard, final Authentication connectedUser) {
+    final Company company = companyRepository.findById(companyId).orElse(null);
+
+    final String current;
+
+    if (paidByCard) {
+      current = company.getCardReceiptNumber();
+      company.setCardReceiptNumber(increment(current));
+    } else {
+      current = company.getCashReceiptNumber();
+      company.setCashReceiptNumber(increment(current));
+    }
+    companyRepository.save(company);
+    return current;
+  }
+
+  private String increment(final String number) {
+    // nájde všetky číslice na konci reťazca
+    final Matcher matcher = Pattern.compile("(\\d+)$").matcher(number);
+    if (matcher.find()) {
+      final String digits = matcher.group(1);
+      final int length = digits.length();
+      final int next = Integer.parseInt(digits) + 1;
+      final String prefix = number.substring(0, matcher.start(1));
+      return prefix + String.format("%0" + length + "d", next);
+    } else {
+      return number + "1";
+    }
   }
 
 }

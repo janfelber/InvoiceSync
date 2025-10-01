@@ -29,4 +29,8 @@ public class CompanyResponseDto {
 
   private String vatId;
 
+  private String cashReceiptNumber;
+
+  private String cardReceiptNumber;
+
 }

@@ -33,6 +33,8 @@ public final class PohodaXmlConstants {
 
     public static final String COMPANY = "typ:company";
 
+    public static final String SURNAME = "typ:surname";
+
     public static final String STREET_NUMBER = "typ:number";
 
     public static final String REGISTRATION_NUMBER = "typ:ico";

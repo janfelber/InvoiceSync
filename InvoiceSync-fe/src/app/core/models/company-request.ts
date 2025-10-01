@@ -12,4 +12,6 @@ export interface CompanyRequest {
   taxId: string;
   vatId: string;
   zip: string;
+  cardReceiptNumber?: string;
+  cashReceiptNumber?: string;
 }

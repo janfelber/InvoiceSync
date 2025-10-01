@@ -24,6 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.invoicesync.company.CompanyService;
 import com.invoicesync.invoice.dto.InvoiceRequestDTO;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptRequestDTO;
@@ -46,6 +47,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
   private final LimitGuardService limitGuardService;
 
   private final UserService userService;
+
+  private final CompanyService companyService;
 
   @Override
   public byte[] generatePohodaInvoiceXml(final InvoiceRequestDTO request) throws Exception {
@@ -88,6 +91,11 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
     final Document doc = dBuilder.parse(xmlFile);
     doc.getDocumentElement().normalize();
+
+    final String numberRequested = companyService.getReceiptNumber(request.myIdentity().getId(), request.isPaidByCard(),
+        connectedUser);
+    request.receiptDetails().setNumberRequested(numberRequested);
+
 
     if (!request.isPaidByCard()) {
       xmlHelper.updateCashReceiptDetails(doc, request.receiptDetails());

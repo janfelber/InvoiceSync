@@ -44,7 +44,7 @@ public class Receipt extends BaseEntity {
    * Static or duplicate numbers are not allowed.
    * Each company can configure how receipt numbering works
    */
-  @Column(name = "receipt_number")
+  @Column(name = "cash_receipt_number")
   private String receiptNumber;
 
   // @ManyToOne

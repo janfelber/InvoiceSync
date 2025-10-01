@@ -75,6 +75,12 @@ public class Company extends BaseEntity {
   @Column(name = "vat_id")
   private String vatId;
 
+  @Column(name = "cash_receipt_number")
+  private String cashReceiptNumber;
+
+  @Column(name = "card_receipt_number")
+  private String cardReceiptNumber;
+
   // @ManyToOne
   // @JoinColumn(name = "\"user_id\"")
   // private UserDemo user;
