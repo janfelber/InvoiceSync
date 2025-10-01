@@ -1,0 +1,46 @@
+<main class="bg-gray-50 min-h-screen flex flex-col items-start justify-start">
+  <div class="bg-white border border-gray-200 rounded-lg w-[600px] shadow-sm">
+
+    <!-- Header sekcie -->
+    <div>
+      <div class="p-4">
+        <h2 class="text-lg font-semibold text-gray-800">Číslovanie bločkov</h2>
+        <p class="text-sm text-gray-500 ">Tu nastavíte číslovanie pre hotovosť a kartu.</p>
+      </div>
+      <div class="border-b border-gray-200"></div>
+    </div>
+
+    <!-- Form fields -->
+    <div class="space-y-4 p-4">
+      <!-- Hotovosť -->
+      <div class="flex items-center">
+        <label for="supplier" class="w-48 text-sm font-medium text-gray-700">Hotovosť</label>
+        <input
+          [(ngModel)]="company.cashReceiptNumber"
+          id="supplier" name="supplier" type="text"
+          placeholder="Zadajte číslovanie pre hotovosť"
+          class="w-80 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <!-- Karta -->
+      <div class="flex items-center">
+        <label for="generalSupplier" class="w-48 text-sm font-medium text-gray-700">Karta</label>
+        <input
+          [(ngModel)]="company.cardReceiptNumber"
+          id="generalSupplier" name="generalSupplier" type="text"
+          placeholder="Zadajte číslovanie pre kartu"
+          class="w-80 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="mt-4">
+    <button type="button"
+            (click)="onSave()"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      Uložiť
+    </button>
+  </div>
+</main>

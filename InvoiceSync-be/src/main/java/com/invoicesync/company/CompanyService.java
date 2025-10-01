@@ -52,4 +52,6 @@ public interface CompanyService {
    */
   Company deleteCompany(Long companyId);
 
+  String getReceiptNumber(Long companyId, boolean paidByCard, Authentication connectedUser);
+
 }

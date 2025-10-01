@@ -131,6 +131,14 @@ public class XmlHelper {
 
   public void updateCashReceiptMyIdentity(final Document doc, final MyIdentity myIdentity) {
     replaceTextContent(doc, COMPANY, myIdentity.getName(), ReceiptCash.MY_IDENTITY);
+
+    if (myIdentity.getSurname() != null) {
+      replaceTextContent(doc, SURNAME, myIdentity.getSurname(), ReceiptCash.MY_IDENTITY);
+    }
+    else {
+      replaceTextContent(doc, SURNAME, "", ReceiptCash.MY_IDENTITY);
+    }
+
     replaceTextContent(doc, CITY, myIdentity.getCity(), ReceiptCash.MY_IDENTITY);
     replaceTextContent(doc, STREET, myIdentity.getStreet(), ReceiptCash.MY_IDENTITY);
     replaceTextContent(doc, STREET_NUMBER, myIdentity.getStreetNumber(), ReceiptCash.MY_IDENTITY);
@@ -143,6 +151,14 @@ public class XmlHelper {
 
   public void updateCardReceiptMyIdentity(final Document doc, final MyIdentity myIdentity) {
     replaceTextContent(doc, COMPANY, myIdentity.getName(), ReceiptCard.MY_IDENTITY);
+
+    if (myIdentity.getSurname() != null) {
+      replaceTextContent(doc, SURNAME, myIdentity.getSurname(), ReceiptCash.MY_IDENTITY);
+    }
+    else {
+      replaceTextContent(doc, SURNAME, "", ReceiptCash.MY_IDENTITY);
+    }
+
     replaceTextContent(doc, CITY, myIdentity.getCity(), ReceiptCard.MY_IDENTITY);
     replaceTextContent(doc, STREET, myIdentity.getStreet(), ReceiptCard.MY_IDENTITY);
     replaceTextContent(doc, STREET_NUMBER, myIdentity.getStreetNumber(), ReceiptCard.MY_IDENTITY);

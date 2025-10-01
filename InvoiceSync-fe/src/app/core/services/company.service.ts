@@ -75,7 +75,7 @@ export class CompanyService {
    * @param params.company - The updated company data.
    * @returns A Promise resolving to the server's response after updating the company.
    */
-  updateCompany(params: { companyId: number, company: CompanyRequest }): Promise<any> {
+  updateCompany(params: { companyId: number, company: any }): Promise<any> {
     return this.axiosService.request(
       'POST', `${this.baseUrl}${ApiPaths.company.UPDATE_BY_ID(params.companyId)}`, params.company
     );
