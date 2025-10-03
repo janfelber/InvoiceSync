@@ -441,4 +441,80 @@ export class ReceiptDetailsComponent implements OnInit {
       this.onFetchReceipt()
     });
   }
+
+  isSplitModalOpen = false;
+  selectedItem: any = { amount: 100 }; // príklad položky
+  splits: { percentage: number; amount: number; account: string }[] = [];
+
+// Otvorenie modalu s prednastavenými hodnotami (napr. 80/20)
+  openSplitModal(item: any) {
+    this.selectedItem = item;
+    this.splits = [
+      { percentage: 80, amount: item.amount * 0.8, account: "518" },
+      { percentage: 20, amount: item.amount * 0.2, account: "501" }
+    ];
+    this.isSplitModalOpen = true;
+  }
+
+  closeSplitModal() {
+    this.isSplitModalOpen = false;
+    this.splits = [];
+  }
+
+  split = {
+    taxableValue: 0,   // peňažná hodnota DPH danová
+    nontaxValue: 0,    // peňažná hodnota DPH nedaňová
+    taxablePercent: 0, // % DPH danová
+    nontaxPercent: 0   // % DPH nedaňová
+  };
+
+  // Zadané percento -> prepočíta suma
+  onTaxablePercentChange() {
+    const price = this.selectedItem.priceWithVAT; // celková cena s DPH
+    const percent = this.split.taxablePercent || 0;
+
+    this.split.taxableValue = +(price * percent / 100).toFixed(2);  // ide do nákladov
+    this.split.nontaxValue = +(price - this.split.taxableValue).toFixed(2); // nedaňová časť
+    this.split.nontaxPercent = +(100 - percent).toFixed(2);
+  }
+
+// Zadaná suma -> prepočíta percento
+  onTaxableChange() {
+    const price = this.selectedItem.priceWithVAT;
+    let value = this.split.taxableValue || 0;
+
+    if (value > price) {
+      this.errorMessage = "Hodnota nesmie presiahnuť cenu s DPH!";
+      value = price; // obmedzenie na max
+    } else {
+      this.errorMessage = null;
+    }
+
+    this.split.taxablePercent = +(value / price * 100).toFixed(2);
+    this.split.nontaxValue = +(price - value).toFixed(2);
+    this.split.nontaxPercent = +(100 - this.split.taxablePercent).toFixed(2);
+  }
+
+
+  errorMessage: string | null = null;
+
+// Zadané percento pre nedaňovú časť
+  onNontaxPercentChange() {
+    const price = this.selectedItem.priceWithVAT;
+    const percent = this.split.nontaxPercent || 0;
+
+    this.split.nontaxValue = +(price * percent / 100).toFixed(2);
+    this.split.taxableValue = +(price - this.split.nontaxValue).toFixed(2);
+    this.split.taxablePercent = +(100 - percent).toFixed(2);
+  }
+
+// Zadaná suma pre nedaňovú časť -> prepočíta percento
+  onNontaxChange() {
+    const price = this.selectedItem.priceWithVAT;
+    const value = this.split.nontaxValue || 0;
+
+    this.split.nontaxPercent = +(value / price * 100).toFixed(2);
+    this.split.taxableValue = +(price - value).toFixed(2);
+    this.split.taxablePercent = +(100 - this.split.nontaxPercent).toFixed(2);
+  }
 }
