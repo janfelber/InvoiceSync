@@ -43,6 +43,10 @@ import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptItemRequest;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
+import com.invoicesync.receipt.receiptItem.ReceiptItem;
+import com.invoicesync.receipt.receiptItem.ReceiptItemRepository;
+import com.invoicesync.receipt.receiptItem.SplitPartDTO;
+import com.invoicesync.receipt.receiptItem.SplitRequest;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.shared.utils.ParseUtils;
 
@@ -62,6 +66,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private ReceiptRepository receiptRepository;
 
+  private final ReceiptItemRepository receiptItemRepository;
+
   // private final CurrentUserService currentUserService;
 
   private final ReceiptMapper receiptMapper;
@@ -71,12 +77,14 @@ public class ReceiptServiceImpl implements ReceiptService {
       @Qualifier("ekasaWebClient") final WebClient ekasaClient,
       final CompanyRepository companyRepository,
       final ReceiptRepository receiptRepository,
-      final ReceiptMapper receiptMapper
+      final ReceiptMapper receiptMapper,
+      final ReceiptItemRepository receiptItemRepository
   ) {
     this.ekasaClient = ekasaClient;
     this.companyRepository = companyRepository;
     this.receiptRepository = receiptRepository;
     this.receiptMapper = receiptMapper;
+    this.receiptItemRepository = receiptItemRepository;
   }
 
   @Override
@@ -191,6 +199,34 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     receiptRepository.save(receipt);
     return receipt;
+  }
+
+  @Override
+  public void splitReceiptItem(final Long itemId, final SplitRequest request, final Authentication connectedUser) {
+    final ReceiptItem originalItem = receiptItemRepository.findById(itemId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt item not found"));
+
+    final SplitPartDTO first = request.getParts().getFirst();
+    originalItem.setName(first.getName() + " (" + first.getSplitPercentage() + "%)");
+    originalItem.setQuantity(first.getQuantity());
+    originalItem.setPriceWithVAT(first.getPriceWithVAT());
+    originalItem.setPriceWithoutVAT(first.getPriceWithoutVAT());
+    originalItem.setVatRate(first.getVatRate());
+    receiptItemRepository.save(originalItem);
+
+    final SplitPartDTO second = request.getParts().getLast();
+    final ReceiptItem newItem = new ReceiptItem();
+    newItem.setReceipt(originalItem.getReceipt());
+    newItem.setName(second.getName() + " (" + second.getSplitPercentage() + "%)" );
+    newItem.setQuantity(second.getQuantity());
+    newItem.setPriceWithVAT(second.getPriceWithVAT());
+    newItem.setPriceWithoutVAT(second.getPriceWithoutVAT());
+    newItem.setVatRate(second.getVatRate());
+    receiptItemRepository.save(newItem);
+  }
+
+  private void handleItemSplit(final ReceiptItem recieptItem, final SplitPartDTO part) {
+    recieptItem.setName(part.getName());
   }
 
   // @Override

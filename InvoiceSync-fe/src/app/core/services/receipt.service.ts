@@ -5,6 +5,7 @@ import {AxiosService} from "../axios.service";
 import {ApiPaths} from "./api-paths";
 import {CompanyRequest} from "../models/company-request";
 import {ReceiptRequest} from "../models/receipt-request";
+import {SplitRequest} from "../models/split-request";
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,13 @@ export class ReceiptService {
     return this.axiosService.request(
         'POST', `${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT}`, params.receipt,
         { responseType: 'blob' }
+    )
+  }
+
+  splitItem(params: { itemId: number, request: SplitRequest }): Promise<any> {
+    return this.axiosService.request(
+      'POST', `${this.baseUrl}${ApiPaths.receipt.SPLIT_ITEM(params.itemId)}`, params.request,
+      { responseType: 'blob' }
     )
   }
 

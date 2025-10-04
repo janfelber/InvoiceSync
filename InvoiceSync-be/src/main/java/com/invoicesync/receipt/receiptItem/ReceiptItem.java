@@ -1,6 +1,8 @@
-package com.invoicesync.receipt;
+package com.invoicesync.receipt.receiptItem;
 
 import java.math.BigDecimal;
+
+import com.invoicesync.receipt.Receipt;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Receipt item entity representing a single product or service on a {@link Receipt}.
+ * Receipt item entity representing a single product or service on a {@link com.invoicesync.receipt.Receipt}.
  */
 @Data
 @Builder

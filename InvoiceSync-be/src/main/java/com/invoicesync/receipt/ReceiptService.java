@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
+import com.invoicesync.receipt.receiptItem.SplitRequest;
 import com.invoicesync.shared.common.PageResponse;
 
 public interface ReceiptService {
@@ -58,6 +59,9 @@ public interface ReceiptService {
     * @return updated Receipt entity
     */
    Receipt updateReceiptById(Long receiptId, ReceiptRequest receipt);
+
+
+   void splitReceiptItem(Long itemId, SplitRequest request, Authentication connectedUser);
 
    //
    // ReceiptDetailsDTO getReceiptById(Long id);

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.invoicesync.company.Company;
 import com.invoicesync.invoice.InvoiceStatus;
+import com.invoicesync.receipt.receiptItem.ReceiptItem;
 import com.invoicesync.shared.common.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -25,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * Receipt entity representing a different type of accounting document.
- * Each receipt belongs to a {@link Company}, contains {@link ReceiptItem}s
+ * Each receipt belongs to a {@link Company}, contains {@link com.invoicesync.receipt.receiptItem.ReceiptItem}s
  */
 @Getter
 @Setter

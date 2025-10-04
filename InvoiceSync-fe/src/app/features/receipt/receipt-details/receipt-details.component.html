@@ -406,11 +406,11 @@
 
         </label>
 
-<!--        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">-->
-<!--          <label class="block text-sm mb-1">Predakontácia</label>-->
-<!--          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"-->
-<!--                 [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>-->
-<!--        </div>-->
+        <!--        <div class="w-full mb-4" *ngIf="receiptResponse.receiptDetails">-->
+        <!--          <label class="block text-sm mb-1">Predakontácia</label>-->
+        <!--          <input class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"-->
+        <!--                 [(ngModel)]="receiptResponse.receiptDetails.accountValue"/>-->
+        <!--        </div>-->
 
         <div class="relative w-full mb-4">
           <label for="accountTypeDropdown" class="block mb-2 text-sm font-medium text-gray-900">
@@ -429,7 +429,9 @@
           <div id="accountTypeDropdown"
                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-full">
             <ul class="py-2 text-sm text-gray-700">
-              <li><button type="button" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Predkontacia 1</button></li>
+              <li>
+                <button type="button" class="block w-full text-left px-4 py-2 hover:bg-gray-100">Predkontacia 1</button>
+              </li>
             </ul>
           </div>
         </div>
@@ -534,25 +536,25 @@
           </form>
         </div>
 
-        <app-modal      [show]="isSplitModalOpen"
-                        (closeModal)="closeSplitModal()"
-                        title="Rozúčtovanie položky"
+        <app-modal [show]="isSplitModalOpen"
+                   (closeModal)="closeSplitModal()"
+                   title="Rozúčtovanie položky"
         >
           <div class="gap-4 space-y-4">
             <div class="flex space-x-4 w-full">
               <div class="flex flex-nowrap items-stretch relative w-1/2">
-  <span
-    class="flex items-center bg-gray-100 border border-gray-200 text-gray-800
-           text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">
-    <span>s DPH</span>
-  </span>
+                <span
+                  class="flex items-center bg-gray-100 border border-gray-200 text-gray-800
+                         text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">
+                  <span>s DPH</span>
+                </span>
                 <input
                   class="w-full p-1 border border-gray-200 text-sm"
                   [value]="selectedItem.priceWithVAT"
-                  readonly />
+                  readonly/>
               </div>
 
-              <!-- Univerzálna chyba pod týmto inputom -->
+
               <div *ngIf="errorMessage" class="text-red-600 text-xs mt-1">
                 {{ errorMessage }}
               </div>
@@ -566,15 +568,15 @@
                 <input
                   class="w-full p-1 border border-gray-200 text-sm"
                   [value]="selectedItem.priceWithoutVAT"
-                  readonly />
+                  readonly/>
               </div>
             </div>
 
             <!-- Highlight suma -->
             <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">DPH hodnota(moze odpisat)</label>
             <div class="flex flex-nowrap items-stretch relative w-full">
-              <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.taxablePercent"
-                     (input)="onTaxablePercentChange()">
+              <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.splitPercentage"
+                     (input)="firstItemChangePercent()">
               <div class="flex">
                   <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800
                   text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">
@@ -590,13 +592,13 @@
             </div>
 
             <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(moze odpisat)</label>
-            <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.taxableValue"
-                   (input)="onTaxableChange()">
+            <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.priceWithVAT"
+                   (input)="firstItemChangePrice()">
 
             <label for="vatRate-item2" class=" text-sm font-medium text-gray-900">DPH hodnota(nemoze odpisat)</label>
             <div class="flex flex-nowrap items-stretch relative w-full">
-              <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.nontaxPercent"
-                     (input)="onNontaxPercentChange()">
+              <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="secondSplit.splitPercentage"
+                     (input)="secondItemChangePercent()">
               <div class="flex">
                   <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800
                   text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">
@@ -611,13 +613,15 @@
               </div>
             </div>
 
-            <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(nemoze odpisat)</label>
-            <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="split.nontaxValue"
-                   (input)="onNontaxChange()">
+            <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(nemoze
+              odpisat)</label>
+            <input class="w-full p-1 border border-gray-200 text-sm" [(ngModel)]="secondSplit.priceWithVAT"
+                   (input)="secondItemChangePrice()">
           </div>
           <hr class="h-px my-4 bg-gray-200 border-0">
           <div class="flex space-x-2">
             <button type="submit"
+                    (click)="onSubmit()"
                     class="inline-flex items-center justify-center bg-blue-400 rounded-md
                  text-white font-medium text-sm leading-4 px-3 py-2 text-center select-none align-middle
                  transition-colors duration-150 ease-in-out  focus:outline-none focus:ring-2 focus:ring-blue-300">
@@ -637,102 +641,102 @@
 
         <!-- Rozúčtovanie modal -->
         <!-- Rozúčtovanie modal -->
-<!--        <div *ngIf="isSplitModalOpen"-->
-<!--             class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">-->
-<!--          <div class="bg-white rounded-xl shadow-xl w-[500px] overflow-hidden">-->
-<!--            &lt;!&ndash; Header &ndash;&gt;-->
-<!--            <div class="flex justify-between items-center p-5 border-b">-->
-<!--              <h2 class="text-lg font-semibold text-gray-800">Rozúčtovanie položky</h2>-->
-<!--              <button (click)="closeSplitModal()"-->
-<!--                      class="text-gray-400 hover:text-gray-600 transition">&times;-->
-<!--              </button>-->
-<!--            </div>-->
+        <!--        <div *ngIf="isSplitModalOpen"-->
+        <!--             class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">-->
+        <!--          <div class="bg-white rounded-xl shadow-xl w-[500px] overflow-hidden">-->
+        <!--            &lt;!&ndash; Header &ndash;&gt;-->
+        <!--            <div class="flex justify-between items-center p-5 border-b">-->
+        <!--              <h2 class="text-lg font-semibold text-gray-800">Rozúčtovanie položky</h2>-->
+        <!--              <button (click)="closeSplitModal()"-->
+        <!--                      class="text-gray-400 hover:text-gray-600 transition">&times;-->
+        <!--              </button>-->
+        <!--            </div>-->
 
 
-<!--            &lt;!&ndash; Body &ndash;&gt;-->
-<!--            <div class="p-5 space-y-4">-->
-<!--              <div class="flex space-x-4 w-full">-->
-<!--                <div class="flex flex-nowrap items-stretch relative w-1/2">-->
-<!--                  <span-->
-<!--                    class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
-<!--                           text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
-<!--                    <span>s DPH</span>-->
-<!--                  </span>-->
-<!--                  <input-->
-<!--                    class="w-full p-1 border border-gray-200 text-sm"-->
-<!--                    [value]="selectedItem.priceWithVAT"-->
-<!--                    readonly />-->
-<!--                </div>-->
+        <!--            &lt;!&ndash; Body &ndash;&gt;-->
+        <!--            <div class="p-5 space-y-4">-->
+        <!--              <div class="flex space-x-4 w-full">-->
+        <!--                <div class="flex flex-nowrap items-stretch relative w-1/2">-->
+        <!--                  <span-->
+        <!--                    class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
+        <!--                           text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
+        <!--                    <span>s DPH</span>-->
+        <!--                  </span>-->
+        <!--                  <input-->
+        <!--                    class="w-full p-1 border border-gray-200 text-sm"-->
+        <!--                    [value]="selectedItem.priceWithVAT"-->
+        <!--                    readonly />-->
+        <!--                </div>-->
 
-<!--                <div class="flex flex-nowrap items-stretch relative w-1/2">-->
-<!--                  <span-->
-<!--                    class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
-<!--                           text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
-<!--                    <span>bez DPH</span>-->
-<!--                  </span>-->
-<!--                  <input-->
-<!--                    class="w-full p-1 border border-gray-200 text-sm"-->
-<!--                    [value]="selectedItem.priceWithoutVAT"-->
-<!--                    readonly />-->
-<!--                </div>-->
-<!--              </div>-->
+        <!--                <div class="flex flex-nowrap items-stretch relative w-1/2">-->
+        <!--                  <span-->
+        <!--                    class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
+        <!--                           text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
+        <!--                    <span>bez DPH</span>-->
+        <!--                  </span>-->
+        <!--                  <input-->
+        <!--                    class="w-full p-1 border border-gray-200 text-sm"-->
+        <!--                    [value]="selectedItem.priceWithoutVAT"-->
+        <!--                    readonly />-->
+        <!--                </div>-->
+        <!--              </div>-->
 
-<!--              &lt;!&ndash; Highlight suma &ndash;&gt;-->
-<!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">DPH hodnota(danova)</label>-->
-<!--              <div class="flex flex-nowrap items-stretch relative w-full">-->
-<!--                <input class="w-full p-1 border border-gray-200">-->
-<!--                <div class="flex">-->
-<!--                  <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
-<!--                  text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
-<!--                      <svg-->
-<!--                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
-<!--                        class="bi bi-percent"-->
-<!--                        viewBox="0 0 16 16">-->
-<!--                      <path-->
-<!--                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>-->
-<!--                    </svg>-->
-<!--                  </span>-->
-<!--                </div>-->
-<!--              </div>-->
+        <!--              &lt;!&ndash; Highlight suma &ndash;&gt;-->
+        <!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">DPH hodnota(danova)</label>-->
+        <!--              <div class="flex flex-nowrap items-stretch relative w-full">-->
+        <!--                <input class="w-full p-1 border border-gray-200">-->
+        <!--                <div class="flex">-->
+        <!--                  <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
+        <!--                  text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
+        <!--                      <svg-->
+        <!--                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
+        <!--                        class="bi bi-percent"-->
+        <!--                        viewBox="0 0 16 16">-->
+        <!--                      <path-->
+        <!--                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>-->
+        <!--                    </svg>-->
+        <!--                  </span>-->
+        <!--                </div>-->
+        <!--              </div>-->
 
-<!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(danova)</label>-->
-<!--              <input class="w-full p-1 border border-gray-200">-->
+        <!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(danova)</label>-->
+        <!--              <input class="w-full p-1 border border-gray-200">-->
 
-<!--              <label for="vatRate-item2" class=" text-sm font-medium text-gray-900">DPH hodnota(nedanova)</label>-->
-<!--              <div class="flex flex-nowrap items-stretch relative w-full">-->
-<!--                <input class="w-full p-1 border border-gray-200">-->
-<!--                <div class="flex">-->
-<!--                  <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
-<!--                  text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
-<!--                      <svg-->
-<!--                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
-<!--                        class="bi bi-percent"-->
-<!--                        viewBox="0 0 16 16">-->
-<!--                      <path-->
-<!--                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>-->
-<!--                    </svg>-->
-<!--                  </span>-->
-<!--                </div>-->
-<!--              </div>-->
+        <!--              <label for="vatRate-item2" class=" text-sm font-medium text-gray-900">DPH hodnota(nedanova)</label>-->
+        <!--              <div class="flex flex-nowrap items-stretch relative w-full">-->
+        <!--                <input class="w-full p-1 border border-gray-200">-->
+        <!--                <div class="flex">-->
+        <!--                  <span class="flex items-center bg-gray-100 border border-gray-200 text-gray-800-->
+        <!--                  text-xs font-normal leading-6 mb-0 px-3 py-1 text-center whitespace-nowrap">-->
+        <!--                      <svg-->
+        <!--                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
+        <!--                        class="bi bi-percent"-->
+        <!--                        viewBox="0 0 16 16">-->
+        <!--                      <path-->
+        <!--                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0M4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5m7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>-->
+        <!--                    </svg>-->
+        <!--                  </span>-->
+        <!--                </div>-->
+        <!--              </div>-->
 
-<!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(ne\danova)</label>-->
-<!--              <input class="w-full p-1 border border-gray-200">-->
-<!--            </div>-->
+        <!--              <label for="vatRate-item1" class=" text-sm font-medium text-gray-900">Penazna hodnota(ne\danova)</label>-->
+        <!--              <input class="w-full p-1 border border-gray-200">-->
+        <!--            </div>-->
 
 
-<!--            &lt;!&ndash; Footer &ndash;&gt;-->
-<!--            <div class="flex justify-end space-x-2 p-4 border-t bg-gray-50">-->
-<!--              <button (click)="closeSplitModal()"-->
-<!--                      class="px-4 py-2 text-sm border rounded-md text-gray-700 hover:bg-gray-100">-->
-<!--                Zrušiť-->
-<!--              </button>-->
-<!--              <button (click)="saveSplits()"-->
-<!--                      class="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 shadow-sm">-->
-<!--                Uložiť-->
-<!--              </button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--            &lt;!&ndash; Footer &ndash;&gt;-->
+        <!--            <div class="flex justify-end space-x-2 p-4 border-t bg-gray-50">-->
+        <!--              <button (click)="closeSplitModal()"-->
+        <!--                      class="px-4 py-2 text-sm border rounded-md text-gray-700 hover:bg-gray-100">-->
+        <!--                Zrušiť-->
+        <!--              </button>-->
+        <!--              <button (click)="saveSplits()"-->
+        <!--                      class="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 shadow-sm">-->
+        <!--                Uložiť-->
+        <!--              </button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
 
 

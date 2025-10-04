@@ -24,6 +24,7 @@ import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptRequest;
 import com.invoicesync.receipt.dto.ReceiptRequestDTO;
 import com.invoicesync.receipt.dto.ReceiptResponseDto;
+import com.invoicesync.receipt.receiptItem.SplitRequest;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.shared.exception.LimitExceededException;
 
@@ -121,5 +122,11 @@ public class ReceiptController {
   public ResponseEntity<Receipt> updateReceipt(@PathVariable final Long receiptId,
       @RequestBody final ReceiptRequest receipt) {
     return ResponseEntity.ok(receiptService.updateReceiptById(receiptId, receipt));
+  }
+
+  @PostMapping("/receipt-items/{id}/split")
+  public void splitReceiptItem(@PathVariable final Long id, @RequestBody final SplitRequest request,
+      final Authentication connectedUser) {
+    receiptService.splitReceiptItem(id, request, connectedUser);
   }
 }
