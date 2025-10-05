@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="Windows-1250"?>
-<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13203.7 (28.11.2022)" application="Transformace" note="Užívateľský export" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13203.7 (28.11.2022)" application="Transformace" note="UĹľĂ­vateÄľskĂ˝ export" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
 	<dat:dataPackItem version="2.0" id="Usr01 (001)">
 		<vch:voucher version="2.0" xmlns:vch="http://www.stormware.cz/schema/version_2/voucher.xsd">
 			<vch:voucherHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
