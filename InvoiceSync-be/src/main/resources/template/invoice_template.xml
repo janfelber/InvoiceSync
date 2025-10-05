@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="Windows-1250"?>
-<dat:dataPack version="2.0" id="Usr01" ico="51728923" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13605.5 (20.2.2024)" application="Transformace" note="Užívateľský export, Dátum = január, X = Označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<dat:dataPack version="2.0" id="Usr01" ico="51728923" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="13605.5 (20.2.2024)" application="Transformace" note="UĹľĂ­vateÄľskĂ˝ export, DĂˇtum = januĂˇr, X = OznaÄŤenĂ©" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
 	<dat:dataPackItem version="2.0" id="Usr01 (001)">
 		<inv:invoice version="2.0" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd">
 			<inv:invoiceHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
@@ -22,7 +22,7 @@
 				<inv:classificationKVDPH>
 					<typ:ids>D2</typ:ids>
 				</inv:classificationKVDPH>
-				<inv:text>Fakturujeme Vám tovar podľa Vašej objednávky:</inv:text>
+				<inv:text>Fakturujeme VĂˇm tovar podÄľa VaĹˇej objednĂˇvky:</inv:text>
 				<inv:partnerIdentity>
 					<typ:address>
 						<typ:name>PARTNER_NAME</typ:name>

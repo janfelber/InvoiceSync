@@ -114,6 +114,7 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     final Transformer transformer = TransformerFactory.newInstance().newTransformer();
     transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
     transformer.transform(new DOMSource(doc), new StreamResult(outputStream));
 
     return outputStream.toByteArray();
@@ -137,7 +138,7 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
       return "src/main/resources/template/receipt_card.xml";
     } else {
       System.out.println("Paid by cash");
-      return "src/main/resources/template/Pokladna.xml";
+      return "src/main/resources/template/receipt_cash.xml";
     }
   }
 

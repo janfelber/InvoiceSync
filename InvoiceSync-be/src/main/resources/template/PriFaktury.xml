@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="Windows-1250"?>
-<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="14002.4 (27.6.2025)" application="Transformace" note="Užívateľský export, X = Moje označené" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<dat:dataPack version="2.0" id="Usr01" ico="11111111" key="97121e11-9ecc-4fe3-9f3c-6f27b2361401" programVersion="14002.4 (27.6.2025)" application="Transformace" note="UĹľĂ­vateÄľskĂ˝ export, X = Moje oznaÄŤenĂ©" xmlns:dat="http://www.stormware.cz/schema/version_2/data.xsd">
 	<dat:dataPackItem version="2.0" id="Usr01 (001)">
 		<inv:invoice version="2.0" xmlns:inv="http://www.stormware.cz/schema/version_2/invoice.xsd">
 			<inv:invoiceHeader xmlns:typ="http://www.stormware.cz/schema/version_2/type.xsd">
@@ -20,13 +20,13 @@
 					<typ:ids>PN</typ:ids>
 					<typ:classificationVATType>nonSubsume</typ:classificationVATType>
 				</inv:classificationVAT>
-				<inv:text>Faktúra dodávateľa</inv:text>
+				<inv:text>FaktĂşra dodĂˇvateÄľa</inv:text>
 				<inv:partnerIdentity>
 					<typ:address linkToAddress="true">
 						<typ:company>HENRY SCHEIN s.r.o.</typ:company>
 						<typ:division></typ:division>
 						<typ:city>Brno</typ:city>
-						<typ:street>Palackého třída 163</typ:street>
+						<typ:street>PalackĂ©ho tĹ™Ă­da 163</typ:street>
 						<typ:zip>612 00</typ:zip>
 						<typ:ico>28433092</typ:ico>
 						<typ:dic>CZ28433092</typ:dic>
@@ -50,7 +50,7 @@
 					</typ:address>
 				</inv:myIdentity>
 				<inv:paymentType>
-					<typ:ids>Príkazom</typ:ids>
+					<typ:ids>PrĂ­kazom</typ:ids>
 					<typ:paymentType>draft</typ:paymentType>
 				</inv:paymentType>
 				<inv:symConst>0308</inv:symConst>
