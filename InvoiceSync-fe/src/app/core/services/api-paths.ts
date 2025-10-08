@@ -15,7 +15,8 @@ export const ApiPaths = {
     FIND_BY_COMPANY: (companyId:number) => `/company/${companyId}`,
     SAVE: '/save',
     UPDATE_BY_ID: (receiptId:number) => `/update/${receiptId}`,
-    POHODA_RECEIPT_EXPORT: '/export/receipt'
+    POHODA_RECEIPT_EXPORT: '/export/receipt',
+    DELETE: (receiptId:number) => `/${receiptId}`,
   },
   xmlFile: {
     BASE: '/xml-file',

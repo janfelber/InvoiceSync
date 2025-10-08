@@ -59,6 +59,15 @@ public interface ReceiptService {
     */
    Receipt updateReceiptById(Long receiptId, ReceiptRequest receipt);
 
+
+   /**
+    * Deletes an existing receipt.
+    *
+    * @param receiptId ID of the receipt to update
+    * @param connectedUser currently authenticated user
+    */
+   void deleteReceiptById(Long receiptId, Authentication connectedUser);
+
    //
    // ReceiptDetailsDTO getReceiptById(Long id);
    //

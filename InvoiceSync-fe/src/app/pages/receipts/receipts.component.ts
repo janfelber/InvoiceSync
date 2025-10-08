@@ -193,6 +193,29 @@ export class ReceiptsComponent implements OnInit {
     this.router.navigate(['web/receipts/', id]);
   }
 
+  deleteReceipt(id: number) {
+    this.receiptService.deleteReceipt(id).then(response => {
+      this.onFetchAllReceipts();
+    }).catch(error => {
+      this.showErrorToast();
+    });
+  }
+
+  showDeleteSuccessToast() {
+    this.toastr.success(
+      'Vymazanie prebehlo úspešne!',
+      '',
+      {
+        timeOut: 3000,
+        progressBar: true,
+        progressAnimation: 'increasing',
+        closeButton: true,
+        positionClass: 'toast-top-right',
+        enableHtml: true,
+      }
+    );
+  }
+
   showSuccessToast() {
     this.toastr.success(
       'Import prebehol úspešne!',
