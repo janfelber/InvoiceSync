@@ -65,6 +65,12 @@ export class CompanyService {
     );
   }
 
+  saveCompanyByRegistrationNumber(registrationNumber: string): Promise<any> {
+    return this.axiosService.request(
+      'POST', `${this.baseUrl}${ApiPaths.company.CREATE_BY_REGISTRATION_NUMBER(registrationNumber)}`, null
+    )
+  }
+
   /**
    * Updates an existing company in the backend.
    *

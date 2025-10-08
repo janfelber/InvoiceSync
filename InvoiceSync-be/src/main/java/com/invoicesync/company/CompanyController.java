@@ -46,6 +46,14 @@ public class CompanyController {
     return ResponseEntity.ok(companyService.saveCompany(request, connectedUser));
   }
 
+  @PostMapping("/save/{registrationNumber}")
+  public ResponseEntity<Long> saveCompanyByRegistrationNumber(
+      @PathVariable final String registrationNumber,
+      final Authentication connectedUser
+  ) {
+    return ResponseEntity.ok(companyService.saveCompanyByRegistrationNumber(registrationNumber, connectedUser));
+  }
+
   @PostMapping("/update/{companyId}")
   public ResponseEntity<Company> editCompany(
       @PathVariable final Long companyId,

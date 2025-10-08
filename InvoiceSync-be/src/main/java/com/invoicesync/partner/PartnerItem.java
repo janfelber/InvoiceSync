@@ -1,5 +1,7 @@
 package com.invoicesync.partner;
 
+import com.invoicesync.shared.utils.VatUtils;
+
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -12,6 +14,8 @@ import lombok.Setter;
 public class PartnerItem {
   @XmlElement(name = "IC_DPH")
   private String vatId;
+
+  private String taxId;
 
   @XmlElement(name = "ICO")
   private String registrationNumber;
@@ -33,4 +37,16 @@ public class PartnerItem {
 
   @XmlElement(name = "STAT")
   private String country;
+
+  public void setVatId(final String vatId) {
+    this.vatId = vatId;
+    this.taxId = VatUtils.convertVatIdToTaxId(vatId);
+  }
+
+  public String getTaxId() {
+    if (taxId == null && vatId != null) {
+      taxId = VatUtils.convertVatIdToTaxId(vatId);
+    }
+    return taxId;
+  }
 }

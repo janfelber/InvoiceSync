@@ -19,11 +19,11 @@ import lombok.Setter;
 @Component
 @Getter
 @Setter
-public class CompanyRegistry {
+public class CompaniesRegistry {
 
   private List<PartnerItem> partners;
 
-  private static final Logger log = LoggerFactory.getLogger(CompanyRegistry.class);
+  private static final Logger log = LoggerFactory.getLogger(CompaniesRegistry.class);
   private final Map<String, PartnerItem> byIco = new HashMap<>();
 
   @PostConstruct

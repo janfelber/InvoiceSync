@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
 import com.invoicesync.feature.Feature;
+import com.invoicesync.partner.CompaniesRegistry;
 import com.invoicesync.shared.common.PageResponse;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +30,8 @@ import lombok.AllArgsConstructor;
 public class CompanyServiceImpl implements CompanyService {
 
   private final CompanyRepository companyRepository;
+
+  private final CompaniesRegistry companiesRegistry;
 
   private final CompanyMapper companyMapper;
 
@@ -127,6 +130,32 @@ public class CompanyServiceImpl implements CompanyService {
     }
     companyRepository.save(company);
     return current;
+  }
+
+  @Override
+  public Long saveCompanyByRegistrationNumber(final String registrationNumber, final Authentication connectedUser) {
+    final Company newCompany = new Company();
+
+    companiesRegistry.findByIco(registrationNumber)
+        .ifPresentOrElse(
+            foundCompany -> {
+              newCompany.setName(foundCompany.getName());
+              newCompany.setCity(foundCompany.getCity());
+              newCompany.setStreet(foundCompany.getStreet());
+              newCompany.setZip(foundCompany.getZip());
+              newCompany.setRegistrationNumber(registrationNumber);
+              newCompany.setTaxId(foundCompany.getTaxId());
+              newCompany.setVatId(foundCompany.getVatId());
+              newCompany.setCardReceiptNumber(null);
+              newCompany.setCashReceiptNumber(null);
+              companyRepository.save(newCompany);
+            },
+            () -> {
+              throw new IllegalArgumentException("Firma s IČO " + registrationNumber + " nebola nájdená v registri.");
+            }
+        );
+
+    return newCompany.getId();
   }
 
   private String increment(final String number) {

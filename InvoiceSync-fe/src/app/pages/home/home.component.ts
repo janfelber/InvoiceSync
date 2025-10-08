@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { NgForOf } from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatDialogWindowComponent } from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
@@ -19,6 +19,8 @@ import {CompanyRequest} from "../../core/models/company-request";
     MatDialogWindowComponent,
     RouterLink,
     ReactiveFormsModule,
+    NgClass,
+    NgIf,
   ]
 })
 export class HomeComponent implements OnInit{
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit{
   @ViewChild('successToast') successToast!: ElementRef;
   companyForm!: FormGroup;
   modalOpen = false;
+  registrationNumber: string = '';
 
   companyResponse: PageResponseCompanyResponseDto = {
     content: []
@@ -43,6 +46,15 @@ export class HomeComponent implements OnInit{
   size: number = 5;
 
   headers = ['Názov spoločnosti', 'Mesto', 'IČO', 'IČ DPH'];
+  activeTabValue: 'by_registration' | 'manual' = 'by_registration';
+
+  set activeTab(tab: 'by_registration' | 'manual') {
+    this.activeTabValue = tab;
+  }
+
+  get activeTab(): 'by_registration' | 'manual' {
+    return this.activeTabValue;
+  }
 
   ngOnInit(): void {
     this.onFetchAllCompanies();
@@ -64,32 +76,54 @@ export class HomeComponent implements OnInit{
   }
 
   saveCompany(): void {
-    if (this.companyForm.valid) {
-      const companyRequest: CompanyRequest = this.companyForm.value;
-      this.companyService.saveCompany(companyRequest)
-        .then(() => {
-          this.toastr.success(
-            'Spoločnosť <b>' + this.companyForm.value.name + '</b> úspešne vytvorená',
-            '',
-            {
-              timeOut: 3000,
-              progressBar: true,
-              progressAnimation: 'increasing',
-              closeButton: true,
-              positionClass: 'toast-top-right',
-              enableHtml: true,
-            }
-          );
-          this.onFetchAllCompanies();
-          this.companyForm.reset();
-          this.modalOpen = false;
-        })
-        .catch((error) => {
-          console.error("Chyba pri ukladaní spoločnosti:", error);
-          this.toastr.error('Nepodarilo sa uložiť spoločnosť.');
-        });
-    } else {
-      this.toastr.warning('Vyplňte prosím všetky povinné polia.');
+    if (this.activeTab === 'by_registration') {
+      this.companyService.saveCompanyByRegistrationNumber(this.registrationNumber
+      ).then(() => {
+        this.toastr.success(
+          'Spoločnosť s IČO: <b>' + this.registrationNumber + '</b> úspešne vytvorená',
+          '',
+          {
+            timeOut: 3000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            closeButton: true,
+            positionClass: 'toast-top-right',
+            enableHtml: true,
+          }
+        );
+        this.onFetchAllCompanies();
+        this.registrationNumber = '';
+        this.modalOpen = false;
+      })
+    }
+    else if (this.activeTab === 'manual') {
+      if (this.companyForm.valid) {
+        const companyRequest: CompanyRequest = this.companyForm.value;
+        this.companyService.saveCompany(companyRequest)
+          .then(() => {
+            this.toastr.success(
+              'Spoločnosť <b>' + this.companyForm.value.name + '</b> úspešne vytvorená',
+              '',
+              {
+                timeOut: 3000,
+                progressBar: true,
+                progressAnimation: 'increasing',
+                closeButton: true,
+                positionClass: 'toast-top-right',
+                enableHtml: true,
+              }
+            );
+            this.onFetchAllCompanies();
+            this.companyForm.reset();
+            this.modalOpen = false;
+          })
+          .catch((error) => {
+            console.error("Chyba pri ukladaní spoločnosti:", error);
+            this.toastr.error('Nepodarilo sa uložiť spoločnosť.');
+          });
+      } else {
+        this.toastr.warning('Vyplňte prosím všetky povinné polia.');
+      }
     }
   }
 

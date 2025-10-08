@@ -36,6 +36,15 @@ public interface CompanyService {
   Long saveCompany(CompanyRequest request, Authentication connectedUser);
 
   /**
+   * Creates a new company for the connected user.
+   *
+   * @param registrationNumber id that holds information about company
+   * @param connectedUser currently authenticated user
+   * @return ID of the newly created company
+   */
+  Long saveCompanyByRegistrationNumber(String registrationNumber, Authentication connectedUser);
+
+  /**
    * Updates an existing company.
    *
    * @param companyId ID of the company to update
