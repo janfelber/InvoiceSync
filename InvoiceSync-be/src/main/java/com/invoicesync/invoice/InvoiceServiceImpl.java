@@ -45,7 +45,7 @@ import com.invoicesync.invoice.dto.InvoiceRequest;
 import com.invoicesync.invoice.dto.InvoiceResponse;
 import com.invoicesync.invoice.dto.InvoiceResponseTable;
 import com.invoicesync.ocr.OCRService;
-import com.invoicesync.partner.CompanyRegistry;
+import com.invoicesync.partner.CompaniesRegistry;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.shared.exception.DownloadDocumentException;
 import com.invoicesync.subscription.enums.LimitType;
@@ -81,7 +81,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final FileStorageService fileStorageService;
 
-  final CompanyRegistry subjectRegistry;
+  final CompaniesRegistry subjectRegistry;
 
   @Value("${openai.api.key}")
   private String openAiApiKey;
@@ -94,7 +94,7 @@ public class InvoiceServiceImpl implements InvoiceService {
       final InvoiceDocumentRepository invoiceDocumentRepository,
       final FileStorageService fileStorageService,
       @Qualifier("openAiWebClient") final WebClient openAiClient, final ObjectMapper objectMapper,
-      final CompanyRegistry subjectRegistry) {
+      final CompaniesRegistry subjectRegistry) {
     this.invoiceRepository = invoiceRepository;
     this.limitGuardService = limitGuardService;
     this.companyRepository = companyRepository;
