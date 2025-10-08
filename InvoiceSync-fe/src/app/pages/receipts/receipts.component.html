@@ -4,7 +4,8 @@
       <nav class="flex mb-4" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li class="inline-flex items-center">
-            <a routerLink="/home" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+            <a routerLink="/home"
+               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
               <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                    viewBox="0 0 20 20">
                 <path
@@ -30,59 +31,59 @@
         <h1 class="text-xl font-semibold text-black">Moje Bločky</h1>
       </div>
 
-      <div class="flex flex-wrap gap-4 mb-4 w-full">
-        <!-- Total Receipts -->
-        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
-          <div class="mb-2">
-            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>
-          </div>
-          <div class="text-2xl font-bold tracking-tight">
-            TBA
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Všetky bločky
-          </p>
-        </div>
+      <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
+      <!--        &lt;!&ndash; Total Receipts &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            Všetky bločky-->
+      <!--          </p>-->
+      <!--        </div>-->
 
-        <!-- This Month -->
-        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
-          <div class="mb-2">
-            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>
-          </div>
-          <div class="text-2xl font-bold tracking-tight">
-            TBA
-          </div>
-          <p class="text-sm text-muted-foreground">
-            TBA
-          </p>
-        </div>
+      <!--        &lt;!&ndash; This Month &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            TBA-->
+      <!--          </p>-->
+      <!--        </div>-->
 
-        <!-- Total Amount -->
-        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
-          <div class="mb-2">
-            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>
-          </div>
-          <div class="text-2xl font-bold tracking-tight">
-            TBA
-          </div>
-          <p class="text-sm text-muted-foreground">
-            Súhrnná hodnota
-          </p>
-        </div>
+      <!--        &lt;!&ndash; Total Amount &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            Súhrnná hodnota-->
+      <!--          </p>-->
+      <!--        </div>-->
 
-        <!-- Last Import -->
-        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">
-          <div class="mb-2">
-            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>
-          </div>
-          <div class="text-2xl font-bold tracking-tight">
-            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}
-          </div>
-          <p class="text-sm text-muted-foreground">
-            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}
-          </p>
-        </div>
-      </div>
+      <!--        &lt;!&ndash; Last Import &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}-->
+      <!--          </p>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
 
     <div class="flex items-center justify-between w-full border-b border-gray-200 pb-5">
@@ -139,8 +140,11 @@
                 data-dropdown-delay="500"
                 type="button"
                 class="group w-38 h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">
-          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M4 4a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2v14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2V5a1 1 0 0 1-1-1Zm5 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1Zm-5 4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1h-1Zm-3 4a2 2 0 0 0-2 2v3h2v-3h2v3h2v-3a2 2 0 0 0-2-2h-2Z" clip-rule="evenodd"/>
+          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors" aria-hidden="true"
+               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd"
+                  d="M4 4a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2v14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2V5a1 1 0 0 1-1-1Zm5 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1Zm-5 4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1h-1Zm-3 4a2 2 0 0 0-2 2v3h2v-3h2v3h2v-3a2 2 0 0 0-2-2h-2Z"
+                  clip-rule="evenodd"/>
           </svg>
           <span>{{ selectedCompanyName }}</span>
           <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
@@ -167,7 +171,6 @@
           </ul>
         </div>
       </div>
-
 
 
       <!-- Import receipt button -->
@@ -244,8 +247,11 @@
                 [class.cursor-not-allowed]="!selectedCompanyId"
               >
                 <div class="flex flex-col items-center pt-5 pb-6">
-                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm.394 9.553a1 1 0 0 0-1.817.062l-2.5 6A1 1 0 0 0 8 19h8a1 1 0 0 0 .894-1.447l-2-4A1 1 0 0 0 13.2 13.4l-.53.706-1.276-2.553ZM13 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" clip-rule="evenodd"/>
+                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                       height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                          d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm.394 9.553a1 1 0 0 0-1.817.062l-2.5 6A1 1 0 0 0 8 19h8a1 1 0 0 0 .894-1.447l-2-4A1 1 0 0 0 13.2 13.4l-.53.706-1.276-2.553ZM13 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"
+                          clip-rule="evenodd"/>
                   </svg>
 
                   <p class="text-sm text-gray-600">
@@ -296,8 +302,11 @@
                 [class.cursor-not-allowed]="!selectedCompanyId"
               >
                 <div class="flex flex-col items-center pt-5 pb-6">
-                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
+                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                       height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                          d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
+                          clip-rule="evenodd"/>
                   </svg>
                   <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
                   <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
@@ -317,10 +326,12 @@
             <!-- upload images -->
             <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
               <div class="grid grid-cols-2 gap-3">
-                <div *ngFor="let file of multipleFiles" class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
-                  <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <div *ngFor="let file of multipleFiles"
+                     class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
+                  <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                       stroke-width="1.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 4v16m-6-8h12" />
+                          d="M12 4v16m-6-8h12"/>
                   </svg>
                   <div class="flex-1 overflow-hidden">
                     <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
@@ -333,10 +344,12 @@
 
           <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
             <div class="grid grid-cols-2 gap-3">
-              <div *ngFor="let file of multipleFiles" class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
-                <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <div *ngFor="let file of multipleFiles"
+                   class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
+                <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
+                     stroke-width="1.5" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 4v16m-6-8h12" />
+                        d="M12 4v16m-6-8h12"/>
                 </svg>
                 <div class="flex-1 overflow-hidden">
                   <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
@@ -360,7 +373,8 @@
           Importovať
         </ng-container>
         <ng-template #loading>
-          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
           </svg>
@@ -399,7 +413,8 @@
         <tbody class="bg-white divide-y divide-gray-200">
         <tr *ngFor="let receipt of receiptResponse.content!">
           <td class="pl-2 pr-1 py-4">
-            <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+            <input type="checkbox"
+                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
           </td>
           <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
             <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">#{{ receipt.id }}</a>
@@ -446,21 +461,21 @@
                   </a>
                 </li>
 
-<!--                <li>-->
-<!--                  <a>-->
-<!--                    <div-->
-<!--                      class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-<!--                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"-->
-<!--                           xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"-->
-<!--                           viewBox="0 0 24 24">-->
-<!--                        <path fill-rule="evenodd"-->
-<!--                              d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"-->
-<!--                              clip-rule="evenodd"/>-->
-<!--                      </svg>-->
-<!--                      <span>Náhľad</span>-->
-<!--                    </div>-->
-<!--                  </a>-->
-<!--                </li>-->
+                <!--                <li>-->
+                <!--                  <a>-->
+                <!--                    <div-->
+                <!--                      class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
+                <!--                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"-->
+                <!--                           xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"-->
+                <!--                           viewBox="0 0 24 24">-->
+                <!--                        <path fill-rule="evenodd"-->
+                <!--                              d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"-->
+                <!--                              clip-rule="evenodd"/>-->
+                <!--                      </svg>-->
+                <!--                      <span>Náhľad</span>-->
+                <!--                    </div>-->
+                <!--                  </a>-->
+                <!--                </li>-->
               </ul>
               <div class=" p-2">
                 <a>
@@ -489,8 +504,10 @@
         <tr>
           <td colspan="9" class="px-4 py-8 text-center text-gray-500 text-sm">
             <div class="flex flex-col items-center justify-center gap-2">
-              <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
+              <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                   height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
               </svg>
               <span>Nenašli sa žiadne bločky pre zadané kritériá.</span>
             </div>
@@ -501,54 +518,64 @@
     </table>
     <div class="border-b border-gray-200 pb-5">
       <div class="mx-4 mt-4 flex items-center justify-between">
-        <!-- TODO implement pagination -->
         <div class="text-sm text-gray-600">
-          <!--          Zobrazuje {{ (currentPage - 1) * itemsPerPage + 1 }} –-->
-          <!--          {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }}-->
-          <!--          z {{ totalItems }} záznamov-->
-          Zobrazuje 1-15 of 1000
+        <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+            Zobrazuje
+            <span class="font-semibold text-gray-900">
+              {{ (page * size) + 1 }}
+            </span>
+            –
+            <span class="font-semibold text-gray-900">
+              {{
+                Math.min((page + 1) * size, receiptResponse?.totalElements)
+              }}
+            </span>
+            z
+            <span class="font-semibold text-gray-900">
+              {{ receiptResponse.totalElements }}
+            </span>
+          </span>
         </div>
 
-        <!-- Pravá strana: Paginácia -->
         <div class="flex items-center gap-4">
           <nav aria-label="navigation">
-<!--            <ul class="flex items-center -space-x-px h-8 text-sm">-->
-<!--              &lt;!&ndash; Predchádzajúce tlačidlo &ndash;&gt;-->
-<!--              <li>-->
-<!--                <a href="#" (click)="changePage(currentPage - 1)"-->
-<!--                   [class.disabled]="currentPage === 1"-->
-<!--                   class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">-->
-<!--                  <span class="sr-only">Previous</span>-->
-<!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
-<!--                       fill="none" viewBox="0 0 6 10">-->
-<!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-<!--                          d="M5 1 1 5l4 4"/>-->
-<!--                  </svg>-->
-<!--                </a>-->
-<!--              </li>-->
+            <ul class="flex items-center -space-x-px h-8 text-sm">
+              <li>
+                <button
+                  (click)="goToPreviousPage()"
+                  [disabled]="page === 0"
+                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+                  <span class="sr-only">Previous</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M5 1 1 5l4 4"/>
+                  </svg>
+                </button>
+              </li>
 
-<!--              &lt;!&ndash; Čísla strán &ndash;&gt;-->
-<!--              <li *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">-->
-<!--                <a href="#" (click)="changePage(page)"-->
-<!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">-->
-<!--                  {{ page }}-->
-<!--                </a>-->
-<!--              </li>-->
+              <li *ngFor="let _ of [].constructor(this.receiptResponse.totalPages); let pageIndex = index">
+                <a
+                  (click)="goToPage(pageIndex)"
+                  [class.active]="page == pageIndex"
+                  aria-current="page"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "> {{ pageIndex + 1 }} </a>
+              </li>
 
-<!--              &lt;!&ndash; Ďalšie tlačidlo &ndash;&gt;-->
-<!--              <li>-->
-<!--                <a href="#" (click)="changePage(currentPage + 1)"-->
-<!--                   [class.disabled]="currentPage === totalPages"-->
-<!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-white dark:border-gray-200 dark:text-gray-400 dark:hover:bg-gray-100 dark:hover:text-black">-->
-<!--                  <span class="sr-only">Next</span>-->
-<!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
-<!--                       fill="none" viewBox="0 0 6 10">-->
-<!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-<!--                          d="m1 9 4-4-4-4"/>-->
-<!--                  </svg>-->
-<!--                </a>-->
-<!--              </li>-->
-<!--            </ul>-->
+              <li>
+                <button
+                  (click)="goToNextPage()"
+                  [disabled]="IsLastPage"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+                  <span class="sr-only">Next</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="m1 9 4-4-4-4"/>
+                  </svg>
+                </button>
+              </li>
+            </ul>
           </nav>
         </div>
       </div>

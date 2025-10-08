@@ -23,3 +23,7 @@
     display: none; /* Chrome, Safari, Edge */
   }
 }
+
+button.active {
+  @apply text-blue-600 bg-blue-50 border-blue-300;
+}
