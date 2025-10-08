@@ -45,7 +45,7 @@ export class Invoices implements OnInit, AfterViewInit {
   };
 
   public page: number = 0;
-  public size: number = 20;
+  public size: number = 10;
 
   selectedFile: File | null = null;
 
@@ -205,4 +205,24 @@ export class Invoices implements OnInit, AfterViewInit {
     });
   }
 
+  goToPreviousPage() {
+    this.page--;
+    this.onFetchAllInvoices();
+  }
+
+  goToPage(page: number) {
+    this.page = page;
+    this.onFetchAllInvoices();
+  }
+
+  goToNextPage() {
+    this.page++;
+    this.onFetchAllInvoices();
+  }
+
+  get IsLastPage(): boolean {
+    return this.page >= ((this.invoiceResponse?.totalPages ?? 1) - 1);
+  }
+
+  protected readonly Math = Math;
 }

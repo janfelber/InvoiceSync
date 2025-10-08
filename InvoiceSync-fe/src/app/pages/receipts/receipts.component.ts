@@ -43,7 +43,7 @@ export class ReceiptsComponent implements OnInit {
   public searchText: string = '';
 
   public page: number = 0;
-  public size: number = 20;
+  public size: number = 10;
 
   activeTabValue: 'single' | 'multiple' = 'single';
   singleFile: File | null = null;
@@ -222,4 +222,25 @@ export class ReceiptsComponent implements OnInit {
       }
     );
   }
+
+  goToPreviousPage() {
+    this.page--;
+    this.onFetchAllReceipts();
+  }
+
+  goToPage(page: number) {
+    this.page = page;
+    this.onFetchAllReceipts();
+  }
+
+  goToNextPage() {
+    this.page++;
+    this.onFetchAllReceipts();
+  }
+
+  get IsLastPage(): boolean {
+    return this.page == this.companyResponse.totalPages as number - 1
+  }
+
+  protected readonly Math = Math;
 }

@@ -41,9 +41,10 @@ export class HomeComponent implements OnInit{
     content: []
   };
 
+  protected readonly Math = Math;
   searchText: string = '';
   page: number = 0;
-  size: number = 5;
+  size: number = 10;
 
   headers = ['Názov spoločnosti', 'Mesto', 'IČO', 'IČ DPH'];
   activeTabValue: 'by_registration' | 'manual' = 'by_registration';
@@ -147,5 +148,24 @@ export class HomeComponent implements OnInit{
 
   closeModal() {
     this.modalOpen = false;
+  }
+
+  goToPreviousPage() {
+    this.page--;
+    this.onFetchAllCompanies();
+  }
+
+  goToPage(page: number) {
+    this.page = page;
+    this.onFetchAllCompanies();
+  }
+
+  goToNextPage() {
+    this.page++;
+    this.onFetchAllCompanies();
+  }
+
+  get IsLastPage(): boolean {
+    return this.page == this.companyResponse.totalPages as number - 1
   }
 }

@@ -460,54 +460,65 @@
     </table>
     <div class="border-b border-gray-200 pb-5">
       <div class="mx-4 mt-4 flex items-center justify-between">
-        <!-- TODO implement pagination -->
         <div class="text-sm text-gray-600">
-          <!--          Zobrazuje {{ (currentPage - 1) * itemsPerPage + 1 }} –-->
-          <!--          {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }}-->
-          <!--          z {{ totalItems }} záznamov-->
-          Zobrazuje 1-15 of 1000
+        <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+            Zobrazuje
+            <span class="font-semibold text-gray-900">
+              {{ (page * size) + 1 }}
+            </span>
+            –
+            <span class="font-semibold text-gray-900">
+              {{
+                Math.min((page + 1) * size, invoiceResponse?.totalElements)
+              }}
+            </span>
+            z
+            <span class="font-semibold text-gray-900">
+              {{ invoiceResponse.totalElements }}
+            </span>
+          </span>
         </div>
 
-        <!-- Pravá strana: Paginácia -->
         <div class="flex items-center gap-4">
           <nav aria-label="navigation">
-            <!--            <ul class="flex items-center -space-x-px h-8 text-sm">-->
-            <!--              &lt;!&ndash; Predchádzajúce tlačidlo &ndash;&gt;-->
-            <!--              <li>-->
-            <!--                <a href="#" (click)="changePage(currentPage - 1)"-->
-            <!--                   [class.disabled]="currentPage === 1"-->
-            <!--                   class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700     ">-->
-            <!--                  <span class="sr-only">Previous</span>-->
-            <!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
-            <!--                       fill="none" viewBox="0 0 6 10">-->
-            <!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-            <!--                          d="M5 1 1 5l4 4"/>-->
-            <!--                  </svg>-->
-            <!--                </a>-->
-            <!--              </li>-->
+            <ul class="flex items-center -space-x-px h-8 text-sm">
+              <li>
+                <button
+                  (click)="goToPreviousPage()"
+                  [disabled]="page === 0"
+                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+                  <span class="sr-only">Previous</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M5 1 1 5l4 4"/>
+                  </svg>
+                </button>
+              </li>
 
-            <!--              &lt;!&ndash; Čísla strán &ndash;&gt;-->
-            <!--              <li *ngFor="let page of pages" [ngClass]="{'active': page === currentPage}">-->
-            <!--                <a href="#" (click)="changePage(page)"-->
-            <!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700     ">-->
-            <!--                  {{ page }}-->
-            <!--                </a>-->
-            <!--              </li>-->
+              <li *ngFor="let _ of [].constructor(this.invoiceResponse.totalPages); let pageIndex = index">
+                <a
+                  (click)="goToPage(pageIndex)"
+                  [class.active]="page == pageIndex"
+                  aria-current="page"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "> {{ pageIndex + 1 }} </a>
+              </li>
 
-            <!--              &lt;!&ndash; Ďalšie tlačidlo &ndash;&gt;-->
-            <!--              <li>-->
-            <!--                <a href="#" (click)="changePage(currentPage + 1)"-->
-            <!--                   [class.disabled]="currentPage === totalPages"-->
-            <!--                   class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700     ">-->
-            <!--                  <span class="sr-only">Next</span>-->
-            <!--                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"-->
-            <!--                       fill="none" viewBox="0 0 6 10">-->
-            <!--                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-            <!--                          d="m1 9 4-4-4-4"/>-->
-            <!--                  </svg>-->
-            <!--                </a>-->
-            <!--              </li>-->
-            <!--            </ul>-->
+              <li>
+                <button
+                  (click)="goToNextPage()"
+                  [disabled]="IsLastPage"
+                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  <span class="sr-only">Next</span>
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
+                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="m1 9 4-4-4-4"/>
+                  </svg>
+                </button>
+              </li>
+            </ul>
           </nav>
         </div>
       </div>
