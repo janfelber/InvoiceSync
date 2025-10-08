@@ -73,5 +73,11 @@ export class ReceiptService {
     )
   }
 
+  deleteReceipt(receiptId: number): Promise<any> {
+    return this.axiosService.request(
+      'DELETE', `${this.baseUrl}${ApiPaths.receipt.DELETE(receiptId)}`, null
+    )
+  }
+
 
 }

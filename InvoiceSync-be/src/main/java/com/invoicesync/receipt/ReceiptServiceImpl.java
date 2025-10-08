@@ -193,6 +193,18 @@ public class ReceiptServiceImpl implements ReceiptService {
     return receipt;
   }
 
+  @Override
+  public void deleteReceiptById(final Long receiptId, final Authentication connectedUser) {
+    final Receipt deleteReceipt = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
+
+    if (deleteReceipt.getCreatedBy() != null && deleteReceipt.getCreatedBy().equals(connectedUser.getName())) {
+      receiptRepository.deleteById(receiptId);
+    } else {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this receipt.");
+    }
+  }
+
   // @Override
   // public ReceiptDetailsDTO findById(final Long receiptId) {
   //   return receiptRepository.findById(receiptId)
