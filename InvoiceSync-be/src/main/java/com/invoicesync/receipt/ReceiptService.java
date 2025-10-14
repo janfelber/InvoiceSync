@@ -29,7 +29,7 @@ public interface ReceiptService {
     * @param connectedUser currently authenticated user
     * @return paginated response of receipts
     */
-   PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int size, int page, Long companyId,
+   PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int page, int size, Long companyId,
        Authentication connectedUser);
 
    /**

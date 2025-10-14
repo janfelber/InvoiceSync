@@ -1,4 +1,4 @@
-interface Account {
+winterface Account {
   accountId: string;
   accountName: string;
   editable: boolean;

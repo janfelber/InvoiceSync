@@ -1,21 +1,23 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CompanyService} from "../../../core/services/company.service";
 import ApexCharts from 'apexcharts';
 import {StatsService} from "../../../core/services/stats.service";
 import {StatsResponse} from "../../../core/models/stats-response";
 import {initFlowbite} from "flowbite";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-company-info',
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgIf
   ],
   templateUrl: './company-info.component.html',
   styleUrl: './company-info.component.css'
 })
-export class CompanyInfoComponent implements OnInit, AfterViewInit {
+export class CompanyInfoComponent implements OnInit {
   @Input() companyId!: any | null;
 
   loadingCompany = false;
@@ -36,7 +38,7 @@ export class CompanyInfoComponent implements OnInit, AfterViewInit {
     this.onFetchCompany();
   }
 
-  ngAfterViewInit(): void {
+  renderChart()  {
     const options = {
       chart: {
         height: 420,
@@ -164,7 +166,7 @@ export class CompanyInfoComponent implements OnInit, AfterViewInit {
           companyId: this.companyId
         }
       ),
-      delay(250)
+      delay(700)
     ])
       .then(([response]) => {
         this.company = response.data;
@@ -172,6 +174,10 @@ export class CompanyInfoComponent implements OnInit, AfterViewInit {
       })
       .finally(() => {
         this.loadingCompany = false;
+
+        setTimeout(() => {
+          this.renderChart();
+        }, 0);
       });
   }
 

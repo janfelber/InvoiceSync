@@ -1,212 +1,263 @@
+<div *ngIf="loadingCompany" class="flex items-start justify-center h-screen">
 
-<div [hidden]="loadingCompany || company?.cardReceiptNumber != null"
-     id="missingCardReceiptNumber"
-     class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50"
-     role="alert">
-  <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-       fill="currentColor" viewBox="0 0 20 20">
-    <path
-      d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-  </svg>
-  <span class="sr-only">Info</span>
-  <div>
-    <span class="font-medium">Chýba nastavené číslovanie pre kartu!</span> Nastav ho v číslovaní bločkov.
-    <span class="text-red-700 font-semibold">Exporty bločkov pre túto firmu nebudú fungovať.</span>
+  <div class="flex items-center space-x-2 text-gray-500">
+    <div role="status">
+      <svg
+        aria-hidden="true"
+        class="w-5 h-5 text-gray-200 animate-spin fill-blue-600"
+        viewBox="0 0 100 101"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M100 50.5908C100 78.2051 77.6142 100.591
+                                          50 100.591C22.3858 100.591 0 78.2051
+                                          0 50.5908C0 22.9766 22.3858 0.59082
+                                          50 0.59082C77.6142 0.59082 100 22.9766
+                                          100 50.5908ZM9.08197 50.5908C9.08197
+                                          73.1865 27.4043 91.5088 50 91.5088C72.5957
+                                          91.5088 90.918 73.1865 90.918 50.5908C90.918
+                                          27.9951 72.5957 9.67285 50 9.67285C27.4043
+                                          9.67285 9.08197 27.9951 9.08197 50.5908Z"
+          fill="currentColor"
+        />
+        <path
+          d="M93.9676 39.0409C96.393 38.4038
+                                          97.8624 35.9116 97.0079 33.5539C95.2932
+                                          28.8227 92.871 24.3692 89.8167
+                                          20.348C85.8452 15.1192 80.8826
+                                          10.7238 75.2124 7.41289C69.5422
+                                          4.10194 63.2754 1.94025 56.7698
+                                          1.05124C51.7666 0.367541 46.6976
+                                          0.446843 41.7345 1.27873C39.2611
+                                          1.69328 37.813 4.19778 38.4501
+                                          6.62326C39.0873 9.04874 41.5694
+                                          10.4717 44.0505 10.1071C47.8511
+                                          9.54855 51.7191 9.52689 55.5402
+                                          10.0491C60.864 10.7766 65.9928
+                                          12.5457 70.6331 15.2552C75.2735
+                                          17.9648 79.3347 21.5619 82.5849
+                                          25.841C84.9175 28.9121 86.7992
+                                          32.2913 88.1811 35.8758C89.083 38.2158
+                                          91.5421 39.6781 93.9676 39.0409Z"
+          fill="currentFill"
+        />
+      </svg>
+    </div>
+    <span>Načítavam údaje o spoločnosti...</span>
   </div>
-  <button type="button"
-          class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
-          data-dismiss-target="#missingCardReceiptNumber" aria-label="Close">
-    <span class="sr-only">Close</span>
-    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-    </svg>
-  </button>
 </div>
 
-<div [hidden]="loadingCompany || company?.cashReceiptNumber != null"
-     id="missingCashReceiptNumber"
-     class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50"
-     role="alert">
-  <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-       fill="currentColor" viewBox="0 0 20 20">
-    <path
-      d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-  </svg>
-  <span class="sr-only">Info</span>
-  <div>
-    <span class="font-medium">Chýba nastavené číslovanie pre platbu hotovsťou!</span> Nastav ho v číslovaní
-    bločkov.
-    <span class="text-red-700 font-semibold">Exporty bločkov pre túto firmu nebudú fungovať.</span>
-  </div>
-  <button type="button"
-          class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
-          data-dismiss-target="#missingCashReceiptNumber" aria-label="Close">
-    <span class="sr-only">Close</span>
-    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+<div *ngIf="!loadingCompany">
+  <div [hidden]=" company?.cardReceiptNumber != null"
+       id="missingCardReceiptNumber"
+       class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50"
+       role="alert">
+    <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+         fill="currentColor" viewBox="0 0 20 20">
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
     </svg>
-  </button>
-</div>
-<div class="flex gap-6 items-start">
-  <aside class="w-72 bg-white rounded-xl border border-gray-200 p-4 flex flex-col justify-between">
-    <!-- Top part: user info -->
+    <span class="sr-only">Info</span>
     <div>
-      <div class="flex items-center gap-3 mb-4">
-        <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-             alt="Avatar" class="w-10 h-10 rounded-full">
-        <div>
-          <p class="font-semibold text-sm">{{ company.name }}</p>
-        </div>
-      </div>
-
-      <!-- Navigation links -->
-      <nav class="space-y-2 text-sm">
-        <p
-          class="text-gray-600 cursor-pointer hover:text-black mb-2">
-          Sídlo: {{ company.street }} {{ company.streetNumber }}
-          , {{ company.zip }} {{ company.city }}</p>
-        <p class="text-gray-600 cursor-pointer hover:text-black mb-2">
-          IČO: {{ company.registrationNumber }}</p>
-        <p class="text-gray-600 cursor-pointer hover:text-black mb-2">DIČ: {{ company.taxId }}</p>
-        <p class="text-gray-600 cursor-pointer hover:text-black mb-2">IČ DPH: {{ company.vatId }}</p>
-
-      </nav>
+      <span class="font-medium">Chýba nastavené číslovanie pre kartu!</span> Nastav ho v číslovaní bločkov.
+      <span class="text-red-700 font-semibold">Exporty bločkov pre túto firmu nebudú fungovať.</span>
     </div>
+    <button type="button"
+            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
+            data-dismiss-target="#missingCardReceiptNumber" aria-label="Close">
+      <span class="sr-only">Close</span>
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+      </svg>
+    </button>
+  </div>
 
-    <!-- Settings + Logout -->
-    <!--              <div class="pt-6 border-t mt-6 text-sm">-->
-    <!--                <p class="text-gray-600 mb-2 cursor-pointer hover:text-black">Settings</p>-->
-    <!--                <button class="text-red-500 font-medium">Log out</button>-->
-    <!--              </div>-->
-  </aside>
-
-  <!--           Main content-->
-  <main class="flex-1">
-    <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
-      <div class="flex justify-between">
-        <div>
-          <h5 class="leading-none text-3xl font-bold text-gray-900 pb-2">$12,423</h5>
-          <p class="text-base font-normal text-gray-500 ">Sales this week</p>
-        </div>
-        <div
-          class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 text-center">
-          23%
-          <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 10 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5 13V1m0 0L1 5m4-4 4 4"/>
-          </svg>
-        </div>
-      </div>
-      <div id="area-chart"></div>
+  <div [hidden]=" company?.cashReceiptNumber != null"
+       id="missingCashReceiptNumber"
+       class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50"
+       role="alert">
+    <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+         fill="currentColor" viewBox="0 0 20 20">
+      <path
+        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+    </svg>
+    <span class="sr-only">Info</span>
+    <div>
+      <span class="font-medium">Chýba nastavené číslovanie pre platbu hotovsťou!</span> Nastav ho v číslovaní
+      bločkov.
+      <span class="text-red-700 font-semibold">Exporty bločkov pre túto firmu nebudú fungovať.</span>
     </div>
-
-    <div class="bg-white rounded-xl p-6 mb-4 flex justify-between w-full border border-gray-200">
-      <!-- Box 1 -->
-      <div class="flex items-center space-x-4">
-        <div class="bg-blue-100 p-2 rounded">
-          <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-               height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
-                  clip-rule="evenodd"/>
-          </svg>
+    <button type="button"
+            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
+            data-dismiss-target="#missingCashReceiptNumber" aria-label="Close">
+      <span class="sr-only">Close</span>
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+      </svg>
+    </button>
+  </div>
+  <div class="flex gap-6 items-start">
+    <aside class="w-72 bg-white rounded-xl border border-gray-200 p-4 flex flex-col justify-between">
+      <!-- Top part: user info -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+               alt="Avatar" class="w-10 h-10 rounded-full">
+          <div>
+            <p class="font-semibold text-sm">{{ company.name }}</p>
+          </div>
         </div>
-        <div>
-          <p class="text-sm text-blue-900">Celkový počet faktúr</p>
-          <p class="text-lg font-semibold text-gray-900">{{ stats?.totalInvoices }}</p>
+
+        <!-- Navigation links -->
+        <nav class="space-y-2 text-sm">
+          <p
+            class="text-gray-600 cursor-pointer hover:text-black mb-2">
+            Sídlo: {{ company.street }} {{ company.streetNumber }}
+            , {{ company.zip }} {{ company.city }}</p>
+          <p class="text-gray-600 cursor-pointer hover:text-black mb-2">
+            IČO: {{ company.registrationNumber }}</p>
+          <p class="text-gray-600 cursor-pointer hover:text-black mb-2">DIČ: {{ company.taxId }}</p>
+          <p class="text-gray-600 cursor-pointer hover:text-black mb-2">IČ DPH: {{ company.vatId }}</p>
+
+        </nav>
+      </div>
+
+      <!-- Settings + Logout -->
+      <!--              <div class="pt-6 border-t mt-6 text-sm">-->
+      <!--                <p class="text-gray-600 mb-2 cursor-pointer hover:text-black">Settings</p>-->
+      <!--                <button class="text-red-500 font-medium">Log out</button>-->
+      <!--              </div>-->
+    </aside>
+
+    <!--           Main content-->
+    <main class="flex-1">
+      <div class="bg-white rounded-xl p-6 mb-4 border border-gray-200">
+        <div class="flex justify-between">
+          <div>
+            <h5 class="leading-none text-3xl font-bold text-gray-900 pb-2">$12,423</h5>
+            <p class="text-base font-normal text-gray-500 ">Sales this week</p>
+          </div>
+          <div
+            class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 text-center">
+            23%
+            <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                 viewBox="0 0 10 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13V1m0 0L1 5m4-4 4 4"/>
+            </svg>
+          </div>
+        </div>
+        <div id="area-chart"></div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 mb-4 flex justify-between w-full border border-gray-200">
+        <!-- Box 1 -->
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-100 p-2 rounded">
+            <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                 height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-blue-900">Celkový počet faktúr</p>
+            <p class="text-lg font-semibold text-gray-900">{{ stats?.totalInvoices }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="bg-red-100 p-2 rounded">
+            <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                 height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+
+          <div>
+            <p class="text-sm text-red-900">Nespracované faktúry</p>
+            <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedInvoices }}</p>
+          </div>
+        </div>
+
+
+        <!-- Box 2 -->
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-100 p-2 rounded">
+            <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                 height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-blue-900">Celkový počet bločkov</p>
+            <p class="text-lg font-semibold text-gray-900">{{ stats?.totalReceipts }}</p>
+          </div>
+        </div>
+
+
+        <!-- Box 3 -->
+
+
+        <!-- Box 4 -->
+        <div class="flex items-center space-x-4">
+          <div class="bg-red-100 p-2 rounded">
+            <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                 height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-red-900">Nespracované bločky</p>
+            <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedReceipts }}</p>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center space-x-4">
-        <div class="bg-red-100 p-2 rounded">
-          <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-               height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                  clip-rule="evenodd"/>
-          </svg>
-        </div>
-
-        <div>
-          <p class="text-sm text-red-900">Nespracované faktúry</p>
-          <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedInvoices }}</p>
-        </div>
-      </div>
-
-
-      <!-- Box 2 -->
-      <div class="flex items-center space-x-4">
-        <div class="bg-blue-100 p-2 rounded">
-          <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-               height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
-                  clip-rule="evenodd"/>
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm text-blue-900">Celkový počet bločkov</p>
-          <p class="text-lg font-semibold text-gray-900">{{ stats?.totalReceipts }}</p>
-        </div>
-      </div>
-
-
-      <!-- Box 3 -->
-
-
-      <!-- Box 4 -->
-      <div class="flex items-center space-x-4">
-        <div class="bg-red-100 p-2 rounded">
-          <svg class="w-6 h-6 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-               height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                  clip-rule="evenodd"/>
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm text-red-900">Nespracované bločky</p>
-          <p class="text-lg font-semibold text-gray-900">{{ stats?.totalUnprocessedReceipts }}</p>
+      <div class="bg-white sm:rounded-lg mb-4 border border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900 px-4 pt-4 pb-2">Posledná aktivita</h2>
+        <div class="relative sm:rounded-lg overflow-hidden border-gray-200">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-3">Dátum a čas</th>
+                <th scope="col" class="px-4 py-3">Typ akcie</th>
+                <th scope="col" class="px-4 py-3">Názov faktúry/dokladu</th>
+                <th scope="col" class="px-4 py-3">Suma</th>
+                <th scope="col" class="px-4 py-3">Účtované ako</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-4 py-3 whitespace-nowrap">2025-06-20 14:32</td>
+                <td class="px-4 py-3 whitespace-nowrap">Zaúčtovanie</td>
+                <td class="px-4 py-3 whitespace-nowrap">Faktúra 2025-0015</td>
+                <td class="px-4 py-3 whitespace-nowrap">1 250,00 €</td>
+                <td class="px-4 py-3 whitespace-nowrap">Dodávateľské služby</td>
+              </tr>
+              <tr class="border-b">
+                <td class="px-4 py-3 whitespace-nowrap">2025-06-20 13:05</td>
+                <td class="px-4 py-3 whitespace-nowrap">Import dokladu</td>
+                <td class="px-4 py-3 whitespace-nowrap">Bloček č. 987654</td>
+                <td class="px-4 py-3 whitespace-nowrap">18,90 €</td>
+                <td class="px-4 py-3 whitespace-nowrap">Kancelárske potreby</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="bg-white sm:rounded-lg mb-4 border border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900 px-4 pt-4 pb-2">Posledná aktivita</h2>
-      <div class="relative sm:rounded-lg overflow-hidden border-gray-200">
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-left text-gray-500">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" class="px-4 py-3">Dátum a čas</th>
-              <th scope="col" class="px-4 py-3">Typ akcie</th>
-              <th scope="col" class="px-4 py-3">Názov faktúry/dokladu</th>
-              <th scope="col" class="px-4 py-3">Suma</th>
-              <th scope="col" class="px-4 py-3">Účtované ako</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="border-b">
-              <td class="px-4 py-3 whitespace-nowrap">2025-06-20 14:32</td>
-              <td class="px-4 py-3 whitespace-nowrap">Zaúčtovanie</td>
-              <td class="px-4 py-3 whitespace-nowrap">Faktúra 2025-0015</td>
-              <td class="px-4 py-3 whitespace-nowrap">1 250,00 €</td>
-              <td class="px-4 py-3 whitespace-nowrap">Dodávateľské služby</td>
-            </tr>
-            <tr class="border-b">
-              <td class="px-4 py-3 whitespace-nowrap">2025-06-20 13:05</td>
-              <td class="px-4 py-3 whitespace-nowrap">Import dokladu</td>
-              <td class="px-4 py-3 whitespace-nowrap">Bloček č. 987654</td>
-              <td class="px-4 py-3 whitespace-nowrap">18,90 €</td>
-              <td class="px-4 py-3 whitespace-nowrap">Kancelárske potreby</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </div>

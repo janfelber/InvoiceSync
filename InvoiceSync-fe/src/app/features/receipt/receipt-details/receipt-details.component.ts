@@ -9,7 +9,8 @@ import {initFlowbite} from 'flowbite'
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ReceiptService} from "../../../core/services/receipt.service";
 import {ReceiptDetailResponse} from "../../../pages/receipts/receipt-detail-response";
-import {AccountChartService} from "../../../core/services/account-chart.service";
+import {PostingAccountService} from "../../../core/services/posting-account.service";
+import {ReceiptType} from "../../../core/enums/receipt-type";
 
 interface Account {
   id:number,
@@ -33,7 +34,7 @@ interface Account {
 export class ReceiptDetailsComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
-    private accountCharts: AccountChartService,
+    private postingAccountService: PostingAccountService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -144,8 +145,12 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   async onFetchAccounts() {
-    const response = await this.accountCharts.findAccountsByCompany({
+    const paidByCard = !!this.receiptResponse.receiptDetails?.paidByCard;
+    const type = paidByCard ? ReceiptType.INTERNAL : ReceiptType.CASH;
+
+    const response = await this.postingAccountService.findAvailableAccounts({
       companyId: this.companyId,
+      type: type,
     });
     this.groupedAccounts = response.data;
     return response.data;
@@ -253,92 +258,6 @@ export class ReceiptDetailsComponent implements OnInit {
         });
       }
     }
-  }
-
-  async exportReceipt() {
-    // await this.myIdentityCompany();
-
-    this.receiptRequest = {
-      datePayment: this.receiptResponse?.receiptDetails?.datePayment,
-      receiptNumber: "testCard",
-      date: this.receiptResponse.receiptDetails?.date,
-      dateTax: this.receiptResponse.receiptDetails?.dateTax,
-      accounting: this.receiptResponse.receiptDetails?.accountValue,
-      isPaidByCard: this.receiptResponse.receiptDetails?.paidByCard,
-      classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
-      classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
-      description: this.receiptResponse.receiptDetails?.description,
-      partnerName: this.receiptResponse.partner?.name,
-      partnerCity: this.receiptResponse.partner?.city,
-      partnerStreet: this.receiptResponse.partner?.street,
-      partnerZip: this.receiptResponse.partner?.zip,
-      partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
-      partnerTaxId: this.receiptResponse.partner?.taxId,
-      partnerVatId: this.receiptResponse.partner?.vatId,
-      totalPrice: this.receiptResponse.receiptDetails?.totalPrice,
-      items: this.items
-    }
-
-    console.log("post", this.receiptRequest)
-
-    this.receiptService.exportReceiptPohoda(
-      {
-        receipt: this.receiptRequest
-      }
-    ).then((response) => {
-      this.modalOpen = false;
-      this.toastr.success(
-        'Blocek out',
-        '',
-        {
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
-
-      const blob = new Blob([response.data], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = this.receiptRequest.receiptNumber + '.xlsx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    })
-      .catch(error => {
-        if (error.response?.status === 429) {
-          const message = 'Mesačný limit pre export bločkov vyčerpaný.';
-          this.toastr.warning(
-            message,
-            '',
-            {
-              timeOut: 5000,
-              progressBar: true,
-              progressAnimation: 'increasing',
-              closeButton: true,
-              positionClass: 'toast-top-right',
-            });
-        } else {
-          console.log(error.response.data)
-          this.toastr.error(
-            'Chyba pri exporte',
-            '',
-            {
-              timeOut: 3000,
-              progressBar: true,
-              progressAnimation: 'increasing',
-              closeButton: true,
-              positionClass: 'toast-top-right',
-            });
-          console.error('Error exporting Excel:', error);
-        }
-      });
   }
 
   selectedAccountsPerItem: { [itemId: number]: Account } = {};
