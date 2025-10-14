@@ -1,30 +1,31 @@
-package com.invoicesync.chartaccount;
+package com.invoicesync.postingaccount;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.invoicesync.company.Company;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-/**
- * Represents a single account from the company's chart of accounts.
- */
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
+@SuperBuilder
 @AllArgsConstructor
-@Entity
-@Table(name = "chart_accounts", schema = "invoice_sync")
-public class ChartAccount {
+@NoArgsConstructor
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public class BaseDocumentAccountEntity {
 
   /**
    * Unique ID of this account.
@@ -33,17 +34,12 @@ public class ChartAccount {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // @ManyToOne
-  // @JoinColumn(name = "\"user_id\"")
-  // private UserDemo user;
-
   /**
    * Company to which the account belongs.
    */
   @ManyToOne
   @JoinColumn(name = "\"company\"")
   private Company company;
-
 
   /**
    * Class ID of the account (e.g., 0–9) according to the accounting chart.

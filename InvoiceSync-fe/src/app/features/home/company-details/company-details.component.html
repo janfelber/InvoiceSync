@@ -46,45 +46,119 @@
 
     <div>
       <div class="mb-4 border-b border-gray-300">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-start" id="default-tab"
-            data-tabs-toggle="#default-tab-content" role="tablist">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+            id="default-tab"
+            data-tabs-toggle="#default-tab-content"
+            role="tablist">
           <li class="me-2 mx-1" role="presentation">
-            <button class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
-                    id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile"
-                    aria-selected="false">Zakladné Informácie
+            <button
+              class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
+              id="profile-tab"
+              data-tabs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false">
+              Základné informácie
             </button>
           </li>
+
           <li class="me-2" role="presentation">
             <button
               class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
-              id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
-              aria-selected="false">Učtovná knižka
+              id="dashboard-tab"
+              data-tabs-target="#dashboard"
+              type="button"
+              role="tab"
+              aria-controls="dashboard"
+              aria-selected="false">
+              Účtová osnova
             </button>
           </li>
+
           <li class="me-2" role="presentation">
             <button
               class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
-              id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
-              aria-selected="false">Nastavenia
+              id="settings-tab"
+              data-tabs-target="#settings"
+              type="button"
+              role="tab"
+              aria-controls="settings"
+              aria-selected="false">
+              Nastavenia
             </button>
           </li>
         </ul>
       </div>
       <!-- tabs content -->
-      <div id="default-tab-content" class="mx-3">
-        <div class="hidden rounded-lg" id="profile" role="tabpanel"
+      <div id="default-tab-content">
+        <div class="hidden rounded-lg mx-3" id="profile" role="tabpanel"
              aria-labelledby="profile-tab">
           <app-company-info [companyId]="companyId"></app-company-info>
         </div>
-        <div
-          id="dashboard" role="tabpanel"
-          aria-labelledby="dashboard-tab"
-          style="background-color: #f3f7f9;">
-          <app-company-account-chart [companyId]="companyId"></app-company-account-chart>
+
+        <div id="dashboard" role="tabpanel"
+             aria-labelledby="dashboard-tab" >
+          <div class="mb-4 border-b border-gray-300">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+                id="accounting-tab"
+                data-tabs-toggle="#accounting-tab-content"
+                role="tablist">
+              <li class="me-2 mx-1" role="presentation">
+                <button
+                  class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
+                  id="accounting-chart-tab"
+                  data-tabs-target="#accounting-chart"
+                  type="button"
+                  role="tab"
+                  aria-controls="accounting-chart"
+                  aria-selected="false">
+                  Interné doklady
+                </button>
+              </li>
+              <li class="me-2 mx-1" role="presentation">
+                <button
+                  class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
+                  id="cash-account-tab"
+                  data-tabs-target="#cash-chart"
+                  type="button"
+                  role="tab"
+                  aria-controls="cash-chart"
+                  aria-selected="false">
+                  Pokladna
+                </button>
+              </li>
+            </ul>
+          </div>
+
+
+          <!-- 🔸 Obsah vnorených tabov -->
+          <div id="nested-tab-content" >
+            <div id="accounting-chart" role="tabpanel" aria-labelledby="accounting-chart-tab">
+              <app-company-internal-documents-accounts [companyId]="companyId"></app-company-internal-documents-accounts>
+            </div>
+          </div>
+
+          <div id="nested-tab-content" >
+            <div id="cash-chart" role="tabpanel" aria-labelledby="cash-account-tab">
+              <app-company-cash-documents-accounts [companyId]="companyId"></app-company-cash-documents-accounts>
+            </div>
+          </div>
+
+
+
+<!--            <div id="journal" class="hidden" role="tabpanel" aria-labelledby="journal-tab">-->
+<!--              <app-company-journal [companyId]="companyId"></app-company-journal>-->
+<!--            </div>-->
+
+<!--            <div id="balance" class="hidden" role="tabpanel" aria-labelledby="balance-tab">-->
+<!--              <app-company-balance [companyId]="companyId"></app-company-balance>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
 
-        <div class="hidden rounded-lg"
-             id="settings" role="tabpanel"
+        <!-- Nastavenia -->
+        <div class="hidden rounded-lg mx-3" id="settings" role="tabpanel"
              aria-labelledby="settings-tab">
           <app-company-settings [companyId]="companyId"></app-company-settings>
         </div>

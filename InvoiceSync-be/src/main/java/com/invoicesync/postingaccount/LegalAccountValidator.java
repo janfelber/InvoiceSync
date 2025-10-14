@@ -1,4 +1,4 @@
-package com.invoicesync.chartaccount;
+package com.invoicesync.postingaccount;
 
 import java.io.InputStream;
 import java.util.List;

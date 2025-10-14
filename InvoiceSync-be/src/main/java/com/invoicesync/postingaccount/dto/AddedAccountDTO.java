@@ -1,4 +1,4 @@
-package com.invoicesync.chartaccount.dto;
+package com.invoicesync.postingaccount.dto;
 
 public record AddedAccountDTO(
     String accountId,

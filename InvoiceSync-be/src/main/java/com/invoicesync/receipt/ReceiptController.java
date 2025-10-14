@@ -63,7 +63,6 @@ public class ReceiptController {
       final Authentication connectedUser) {
     try {
       final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
-      System.out.println(receiptRequestDTO);
 
       final HttpHeaders headers = new HttpHeaders();
       headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
@@ -71,10 +70,8 @@ public class ReceiptController {
 
       return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
     } catch (Exception e) {
-      // Tu daj logovanie podla tvojej logovacej knižnice alebo system.err
       System.err.println("Chyba pri generovani Pohoda XML: " + e.getMessage());
       e.printStackTrace();
-      // Prípadne môžeš vyhodiť runtime exception alebo vrátiť null
       throw new RuntimeException("Nepodarilo sa vygenerovať Pohoda XML", e);
     }
   }

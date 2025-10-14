@@ -1,9 +1,11 @@
-package com.invoicesync.chartaccount.dto;
+package com.invoicesync.postingaccount.dto;
+
+import com.invoicesync.postingaccount.PostingAccountType;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public record ChartAccountRequest(
+public record PostingAccountRequest(
 
     Long companyId,
 
@@ -11,10 +13,13 @@ public record ChartAccountRequest(
     @NotEmpty(message = "101")
     String accountId,
 
-
     @NotNull(message = "102")
     @NotEmpty(message = "102")
-    String accountName
-    ) {
+    String accountName,
+
+    @NotNull(message = "103")
+    PostingAccountType type
+
+) {
 
 }

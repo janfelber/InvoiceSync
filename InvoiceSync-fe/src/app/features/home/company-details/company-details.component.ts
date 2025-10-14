@@ -2,16 +2,19 @@ import {Component, OnInit} from '@angular/core';
 import {initFlowbite} from 'flowbite'
 import {ActivatedRoute} from "@angular/router";
 import {CompanyInfoComponent} from "../company-info/company-info.component";
-import {CompanyAccountChartComponent} from "../account-chart/company-account-chart.component";
+import {CompanyInternalDocumentsAccountsComponent} from "../internal-documents-accounts/company-internal-documents-accounts.component";
 import {CompanySettingsComponent} from "../company-settings/company-settings.component";
+import {CompanyCashDocumentsAccountsComponent} from "../cash-documents-accounts/company-cash-documents-accounts.component";
 
 
 @Component({
   selector: 'app-company-details',
   imports: [
     CompanyInfoComponent,
-    CompanyAccountChartComponent,
-    CompanySettingsComponent
+    CompanyCashDocumentsAccountsComponent,
+    CompanySettingsComponent,
+    CompanyCashDocumentsAccountsComponent,
+    CompanyInternalDocumentsAccountsComponent
   ],
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css'

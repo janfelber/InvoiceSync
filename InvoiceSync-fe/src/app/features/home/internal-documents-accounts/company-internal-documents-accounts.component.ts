@@ -1,30 +1,33 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatDialogTutorialComponent} from "../../../shared/mat-dialog-tutorial/mat-dialog-tutorial.component";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {accountsTutorialsByApp} from "../../../shared/tutorials/ExportAccoutsTutorial";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CompanyService} from "../../../core/services/company.service";
-import {AccountChartService} from "../../../core/services/account-chart.service";
-import {ChartAccountRequest} from "../../../core/models/ChartAccountRequest";
+import {PostingAccountService} from "../../../core/services/posting-account.service";
+import {PostingAccountRequest} from "../../../core/models/PostingAccountRequest";
+import {PageResponsePostingAccount} from "../../../pages/home/page-response-posting-account";
+import { initTooltips } from 'flowbite';
+import {ToastrService} from "ngx-toastr";
 
 @Component({
-  selector: 'app-company-account-chart',
+  selector: 'app-company-internal-documents-accounts',
   imports: [
     FormsModule,
-    MatDialogTutorialComponent,
     MatDialogWindowComponent,
     NgForOf,
     NgIf,
     ReactiveFormsModule,
     NgClass
   ],
-  templateUrl: './company-account-chart.component.html',
-  styleUrl: './company-account-chart.component.css'
+  templateUrl: './company-internal-documents-accounts.component.html',
+  styleUrl: './company-internal-documents-accounts.component.css'
 })
-export class CompanyAccountChartComponent implements OnInit {
+export class CompanyInternalDocumentsAccountsComponent implements OnInit, AfterViewInit{
   @Input() companyId!: any | null;
+
+  ngAfterViewInit(): void {
+    setTimeout(() => initTooltips(), 100);
+  }
 
   isUploading = false;
   importFinished = false;
@@ -32,8 +35,14 @@ export class CompanyAccountChartComponent implements OnInit {
   showDetails = false;
   isTutorialOpen = false;
 
-  selectedAccount: any = null;
   externalFile: File | null = null;
+
+  public accountResponse: PageResponsePostingAccount = {
+    content: [],
+  }
+
+  public page: number = 0;
+  public size: number = 15;
 
   accounts: any = []
   addedAccounts: { accountId: string; accountName: string }[] = [];
@@ -44,17 +53,19 @@ export class CompanyAccountChartComponent implements OnInit {
   autoClassName = '';
   autoCategoryId = '';
   autoCategoryName = '';
-  newAccount: ChartAccountRequest = {
+  newAccount: PostingAccountRequest = {
     companyId: 0,
     accountId: '',
     accountName: '',
+    type: 'INTERNAL',
   }
 
   accountsTutorialsByApp = accountsTutorialsByApp;
   availableApps = Object.keys(this.accountsTutorialsByApp);
 
   constructor(
-    private accountChartsService: AccountChartService
+    private postAccountService: PostingAccountService,
+    private toastr: ToastrService,
   ) {
   }
 
@@ -73,14 +84,18 @@ export class CompanyAccountChartComponent implements OnInit {
 
   ngOnInit(): void {
         this.onFetchAccounts()
+    initTooltips();
     }
 
   onFetchAccounts() {
-    this.accountChartsService.findAccountsByCompany({
+    this.postAccountService.findAccountsByCompany({
+      page: this.page,
+      size: this.size,
+      type: 'INTERNAL',
       companyId: this.companyId,
     }).then(response => {
-      this.accounts = response.data;
-      console.log(this.accounts)
+      this.accountResponse = response.data;
+      console.log(this.accountResponse)
     })
   }
 
@@ -125,29 +140,6 @@ export class CompanyAccountChartComponent implements OnInit {
     return map[categoryId] || '';
   }
 
-  openClasses: { [classNumber: number]: boolean } = {};
-  openCategories: { [categoryId: string]: boolean } = {};
-
-  toggleClass(classNumber: number): void {
-    this.openClasses[classNumber] = !this.openClasses[classNumber];
-  }
-
-  isClassOpen(classNumber: number): boolean {
-    return !!this.openClasses[classNumber];
-  }
-
-  toggleCategory(categoryId: string): void {
-    this.openCategories[categoryId] = !this.openCategories[categoryId];
-  }
-
-  isCategoryOpen(categoryId: string): boolean {
-    return !!this.openCategories[categoryId];
-  }
-
-  selectAccount(account: any): void {
-    this.selectedAccount = {...account};
-  }
-
   openAccountsImportModal() {
     this.accountsImportModalOpen = true;
   }
@@ -172,7 +164,7 @@ export class CompanyAccountChartComponent implements OnInit {
       console.log('Active Tab:', this.activeTab);
       if (this.activeTab === 'importExternal') {
         if (this.externalFile) {
-          const imported = await this.accountChartsService.importChartOfAccounts({
+          const imported = await this.postAccountService.importChartOfAccounts({
             files: [this.externalFile],
             companyId: this.companyId
           });
@@ -183,7 +175,7 @@ export class CompanyAccountChartComponent implements OnInit {
       }
       if (this.activeTab === 'create') {
         this.newAccount.companyId = this.companyId;
-        await this.accountChartsService.saveChartAccount(this.newAccount)
+        await this.postAccountService.savePostingAccount(this.newAccount)
 
       }
     } catch (err) {
@@ -201,4 +193,43 @@ export class CompanyAccountChartComponent implements OnInit {
     }
   }
 
+  //TODO refactor delete
+  async onDeleteAccount(id: number, editable: boolean) {
+
+    if (!editable) {
+      this.toastr.error('Pre správne fungovanie systému nie je možné vymazať základný účtovný účet.', '', {
+        timeOut: 5000,
+        progressBar: true,
+        progressAnimation: 'increasing',
+        closeButton: true,
+        positionClass: 'toast-top-right',
+      });
+      return;
+    }
+
+    this.postAccountService.deleteAccount({
+      accountId: id
+    })
+  }
+
+  goToPreviousPage() {
+    this.page--;
+    this.onFetchAccounts();
+  }
+
+  goToPage(page: number) {
+    this.page = page;
+    this.onFetchAccounts();
+  }
+
+  goToNextPage() {
+    this.page++;
+    this.onFetchAccounts();
+  }
+
+  get IsLastPage(): boolean {
+    return this.page == this.accountResponse.totalPages as number - 1
+  }
+
+  protected readonly Math = Math;
 }

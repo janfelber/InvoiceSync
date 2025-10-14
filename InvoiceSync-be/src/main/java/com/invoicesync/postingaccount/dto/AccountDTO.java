@@ -1,4 +1,4 @@
-package com.invoicesync.chartaccount.dto;
+package com.invoicesync.postingaccount.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

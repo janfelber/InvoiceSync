@@ -23,10 +23,12 @@ export const ApiPaths = {
     FIND_ALL_BY_USER: '/user',
     SAVE: '/save'
   },
-  chartOfAccounts: {
-    BASE: '/chart-account',
-    FIND_BY_COMPANY: (companyId:number) => `/${companyId}/accounts `,
+  postingAccounts: {
+    BASE: '/post-account',
+    FIND_BY_COMPANY: (companyId:number) => `/${companyId}/accounts`,
+    AVAILABLE_ACCOUNTS: (companyId:number) => `/${companyId}/classes`,
     SAVE: '/save',
+    DELETE: (accountId:number) => `/${accountId}`,
     IMPORT_ACCOUNTS: '/import',
   },
   subscription: {

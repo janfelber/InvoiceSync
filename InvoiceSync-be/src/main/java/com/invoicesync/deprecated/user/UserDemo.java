@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.invoicesync.chartaccount.ChartAccount;
 import com.invoicesync.company.Company;
+import com.invoicesync.postingaccount.documents.internal.InternalDocumentAccount;
 import com.invoicesync.shared.token.Token;
 import com.invoicesync.xmlFile.XmlFile;
 
@@ -62,7 +62,7 @@ public class UserDemo implements UserDetails, Principal {
     private List<Company> companies;
 
     @OneToMany(mappedBy = "user")
-    private List<ChartAccount> chartAccounts;
+    private List<InternalDocumentAccount> internalDocumentAccounts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,4 +1,4 @@
-package com.invoicesync.chartaccount;
+package com.invoicesync.postingaccount;
 
 public class AccountUtils {
   public static String getCategoryIdFromAccount(final String accountId) {
