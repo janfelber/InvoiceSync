@@ -4,8 +4,9 @@ import {NgComponentOutlet, NgForOf, NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {MENU_ITEMS, navbarDataRedesign} from "./nav-data-redesign";
 import {MenuItem} from "./MenuItem";
-import {KeycloakService} from "../core/keycloak/keycloak.service";
 import {IconService} from "./icons/icon.service";
+import {AuthService} from "../core/auth/auth.service";
+import {initFlowbite} from "flowbite";
 
 @Component({
     selector: 'app-side-nav',
@@ -18,25 +19,19 @@ import {IconService} from "./icons/icon.service";
     templateUrl: './side-nav.component.html',
     styleUrl: './side-nav.component.css'
 })
-export class SideNavComponent implements OnInit {
+export class SideNavComponent implements OnInit{
   menu: MenuItem[] = [];
   dropdownStates: { [key: string]: boolean } = {};
 
-  constructor(private keycloakService: KeycloakService, protected iconService: IconService) {}
+  constructor( protected iconService: IconService, public authService: AuthService) {}
 
   ngOnInit(): void {
-    const userRoles = this.keycloakService.getUserRoles();
-    this.menu = this.filterMenu(MENU_ITEMS, userRoles);
+    initFlowbite()
+    this.getMenu();
   }
 
-  private filterMenu(items: MenuItem[], roles: string[]): MenuItem[] {
-    return items
-      .filter(item => item.roles.some(role => roles.includes(role)))
-      .map(item => ({
-        ...item,
-        children: item.children ? this.filterMenu(item.children, roles) : undefined
-      }))
-      .filter(item => item.children === undefined || item.children.length > 0); // odstráni prázdne dropdowny
+  getMenu() {
+    return this.authService.currentUser?.sidenav || [];
   }
 
   toggleDropdown(label: string) {
@@ -44,6 +39,6 @@ export class SideNavComponent implements OnInit {
   }
 
   logout() {
-    this.keycloakService.logout();
+    this.authService.logout();
   }
 }

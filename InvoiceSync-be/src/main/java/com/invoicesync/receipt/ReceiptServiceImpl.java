@@ -35,10 +35,7 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
-import com.invoicesync.company.Company;
 import com.invoicesync.company.CompanyRepository;
-import com.invoicesync.deprecated.user.UserDemo;
-import com.invoicesync.receipt.dto.ReceiptDTO;
 import com.invoicesync.receipt.dto.ReceiptDetailDto;
 import com.invoicesync.receipt.dto.ReceiptItemRequest;
 import com.invoicesync.receipt.dto.ReceiptRequest;
@@ -276,42 +273,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     } catch (NotFoundException e) {
       return "QR kód nebol nájdený.";
     }
-  }
-
-  private Receipt mapToReceipt(ReceiptDTO receiptDto, UserDemo user, Company company) {
-    // final Receipt receipt = Receipt.builder()
-    //     .user(user)
-    //     .company(company)
-    //     .partnerName(receiptDto.getPartnerName())
-    //     .partnerCity(receiptDto.getPartnerCity())
-    //     .partnerStreet(receiptDto.getPartnerStreet())
-    //     .partnerZip(receiptDto.getPartnerZip())
-    //     .date(receiptDto.getDate())
-    //     .datePayment(receiptDto.getDatePayment())
-    //     .dateTax(receiptDto.getDateTax())
-    //     .partnerRegistrationNumber(receiptDto.getPartnerRegistrationNumber())
-    //     .partnerTaxId(receiptDto.getPartnerTaxId())
-    //     .partnerVatId(receiptDto.getPartnerVatId())
-    //     .totalPrice(receiptDto.getTotalPrice())
-    //     .build();
-    //
-    // final List<ReceiptItem> items = new ArrayList<>();
-    // receiptDto.getItems().forEach(item -> {
-    //   items.add(ReceiptItem.builder()
-    //       .receipt(receipt)
-    //       .name(item.getName())
-    //       .priceWithoutVAT(item.getPriceWithoutVAT())
-    //       .quantity(item.getQuantity())
-    //       .vatRate(item.getVatRate())
-    //       .priceWithVAT(item.getPriceWithVAT())
-    //       .build());
-    // });
-    //
-    // receipt.setItems(items);
-    //
-    // return receipt;
-
-    return null;
   }
 
 }

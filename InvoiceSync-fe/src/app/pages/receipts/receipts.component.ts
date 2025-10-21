@@ -97,7 +97,6 @@ export class ReceiptsComponent implements OnInit {
       })
       .catch(error => {
         console.error("Chyba pri načítaní firiem:", error);
-        alert("Nepodarilo sa načítať firmy.");
       });
   }
 

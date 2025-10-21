@@ -1,117 +1,54 @@
 import { Routes } from '@angular/router';
-import { Invoices } from './pages/invoices/invoices.component';
-import { authGuard } from './core/services/auth/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
-import {HomeComponent} from "./pages/home/home.component";
-import {XmlConvertorComponent} from "./pages/xml-page/xml-convertor.component";
-import {ReceiptsComponent} from "./pages/receipts/receipts.component";
-import {ReceiptDetailsComponent} from "./features/receipt/receipt-details/receipt-details.component";
-import {CompanyDetailsComponent} from "./features/home/company-details/company-details.component";
-import {InvoiceLimiterComponent} from "./pages/invoice-limiter/invoice-limiter.component";
-import {CreateNewInvoice} from "./features/invoice/create-new-invoice/create-new-invoice.component";
-import {PricingComponent} from "./pages/pricing/pricing.component";
-import {MobileAppComponent} from "./pages/mobile-app/mobile-app.component";
-import {DataTransferMappingComponent} from "./pages/data-transfer-mapping/data-transfer-mapping.component";
-import {ErrorComponent} from "./shared/error/error.component";
-import {PrivacyPolicyComponent} from "./pages/privacy-policy/privacy-policy.component";
-import {DataTransferTableComponent} from "./pages/data-transfer-table/data-transfer-table.component";
-import {ContactFormComponent} from "./contact-form/contact-form.component";
-import {DataTransferDetailComponent} from "./pages/data-trasnfer-detail/data-transfer-detail.component";
-import {InvoiceDisplay} from "./features/invoice/invoice-inspect/invoice-inspect.component";
+import { HomeComponent } from './pages/home/home.component';
+import { Invoices } from './pages/invoices/invoices.component';
+import { XmlConvertorComponent } from './pages/xml-page/xml-convertor.component';
+import { ReceiptsComponent } from './pages/receipts/receipts.component';
+import { ReceiptDetailsComponent } from './features/receipt/receipt-details/receipt-details.component';
+import { CompanyDetailsComponent } from './features/home/company-details/company-details.component';
+import { InvoiceLimiterComponent } from './pages/invoice-limiter/invoice-limiter.component';
+import { CreateNewInvoice } from './features/invoice/create-new-invoice/create-new-invoice.component';
+import { PricingComponent } from './pages/pricing/pricing.component';
+import { MobileAppComponent } from './pages/mobile-app/mobile-app.component';
+import { DataTransferTableComponent } from './pages/data-transfer-table/data-transfer-table.component';
+import { DataTransferDetailComponent } from './pages/data-trasnfer-detail/data-transfer-detail.component';
+import { InvoiceDisplay } from './features/invoice/invoice-inspect/invoice-inspect.component';
+import { ErrorComponent } from './shared/error/error.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { ContactFormComponent } from './contact-form/contact-form.component';
+import { AuthGuard } from './core/services/auth/auth.guard';
+import { LoginComponent } from './core/auth/login/login.component';
+import { RegisterComponent } from './core/auth/register/register.component';
 
 export const routes: Routes = [
+  // ✅ Public routes – mimo layoutu
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'pricing', component: PricingComponent },
+  { path: 'contact', component: ContactFormComponent },
+  { path: 'web/privacy', component: PrivacyPolicyComponent },
+  { path: 'error', component: ErrorComponent },
+  
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard],
     children: [
-      {
-        path: 'home',
-        component: HomeComponent,
-        canActivate: [authGuard],
-        data: { roles: ['BASIC_USER'] },
-        pathMatch: "full"
-      },
-      {
-        path: 'forbidden',
-        component: ErrorComponent
-      },
-      {
-        path: 'web/receipts',
-        component: ReceiptsComponent
-      },
-      {
-        path: 'web/receipts/:id',
-        component: ReceiptDetailsComponent
-      },
-      {
-        path: 'web/company/:id',
-        component: CompanyDetailsComponent
-      },
-      {
-        path: 'invoices',
-        component: Invoices,
-        canActivate: [authGuard],
-        data: { roles: ['BASIC_USER'] }
-      },
-      {
-        path: 'web/invoices/:id',
-        component: InvoiceDisplay
-      },
-      {
-        path: 'invoice/new',
-        component: CreateNewInvoice
-      },
-      {
-        path: 'xml-convertor',
-        canActivate: [authGuard],
-        component: XmlConvertorComponent,
-        data: { roles: ['EKON_FEATURE'] }
-      },
-      {
-        path: 'web/limiter',
-        component: InvoiceLimiterComponent
-      },
-      {
-        path: 'web/mobile-app',
-        component: MobileAppComponent
-      },
-      {
-        path: 'web/data-transfer',
-        component: DataTransferTableComponent
-      },
-      {
-        path: 'web/data-transfer/:id',
-        component: DataTransferDetailComponent
-      },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'invoices', component: Invoices },
+      { path: 'invoice/new', component: CreateNewInvoice },
+      { path: 'xml-convertor', component: XmlConvertorComponent },
+      { path: 'web/receipts', component: ReceiptsComponent },
+      { path: 'web/receipts/:id', component: ReceiptDetailsComponent },
+      { path: 'web/company/:id', component: CompanyDetailsComponent },
+      { path: 'web/invoices/:id', component: InvoiceDisplay },
+      { path: 'web/limiter', component: InvoiceLimiterComponent },
+      { path: 'web/mobile-app', component: MobileAppComponent },
+      { path: 'web/data-transfer', component: DataTransferTableComponent },
+      { path: 'web/data-transfer/:id', component: DataTransferDetailComponent },
     ]
   },
-  {
-    path: 'pricing',
-    component: PricingComponent
-  },
-  {
-    path: 'contact',
-    component: ContactFormComponent
-  },
-  {
-    path: 'web/privacy',
-    component: PrivacyPolicyComponent
-  },
-  { path: 'error', component: ErrorComponent },
-  //admin layout
-  // {
-  //
-  //   path: 'admin',
-  //   component: AdminLayoutComponent,
-  //   children: [
-  //     {
-  //       path: 'users',
-  //       component: AdminComponent
-  //     }
-  //   ]
-  // },
-  {
-    path: '**',
-    redirectTo: 'home'
-  }
+
+  { path: '**', component: ErrorComponent }
 ];

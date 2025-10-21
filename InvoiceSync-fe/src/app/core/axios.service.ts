@@ -2,20 +2,21 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { environment } from '../../environments/environment';
 import {jwtDecode} from 'jwt-decode';
-import {KeycloakService} from "./keycloak/keycloak.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AxiosService {
 
-  constructor(private keycloakService: KeycloakService) {
+  private accessToken: string | null = null;
+
+  constructor() {
     axios.defaults.baseURL = environment.apiUrl;
+
   }
 
-  getAuthToken(): string | null {
-    const token = this.keycloakService.keycloak.token;
-    return token && token.trim() !== '' ? token : null;
+  getAccessToken(): string | null {
+    return this.accessToken;
   }
 
   setAuthToken(token: string | null ): void {
@@ -30,9 +31,6 @@ export class AxiosService {
   request(method: string, url: string, data: any, config: any = {}): Promise<any> {
     let headers = {};
 
-    if (this.getAuthToken() != null) {
-      headers = {"Authorization": "Bearer " + this.getAuthToken()}
-    }
 
     return axios({
       method: method,

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
-import {KeycloakService} from "./core/keycloak/keycloak.service";
+import {AuthService} from "./core/auth/auth.service";
 
 interface SideNavToggle {
   screenWidth: number;
@@ -22,6 +22,10 @@ interface SideNavToggle {
 export class AppComponent  {
 
   isRexDisabled: boolean = true;
+
+  constructor(private authService: AuthService) {
+    this.authService.init().subscribe();
+  }
 
   isSideNavCollapsed = false;
   screenWidth = 0;

@@ -5,6 +5,7 @@ import {AxiosService} from "../axios.service";
 import {ApiPaths} from "./api-paths";
 import {CompanyRequest} from "../models/company-request";
 import {ReceiptRequest} from "../models/receipt-request";
+import {ApiService} from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ReceiptService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.receipt.BASE;
 
   constructor(
-    private axiosService: AxiosService
+    private apiService: ApiService
   ) { }
 
 
@@ -31,20 +32,17 @@ export class ReceiptService {
    * @returns A Promise resolving to the server's response containing the list of companies.
    */
   findAllReceiptsByUser(params: { page: number; size: number }): Promise<any> {
-    return this.axiosService.request(
-      'GET', `${this.baseUrl}${ApiPaths.receipt.FIND_ALL_BY_USER}?page=${params.page}&size=${params.size}`, null
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.receipt.FIND_ALL_BY_USER}?page=${params.page}&size=${params.size}`,
     );
   }
 
   getReceiptById(params: {receiptId: number}): Promise<any> {
-    return this.axiosService.request(
-      'GET', `${this.baseUrl}${ApiPaths.receipt.BY_ID(params.receiptId)}`, null
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.receipt.BY_ID(params.receiptId)}`
     )
   }
 
   findAllReceiptsByCompany(params: {page: number; size: number; companyId: number}): Promise<any> {
-    return this.axiosService.request(
-      'GET', `${this.baseUrl}${ApiPaths.receipt.FIND_BY_COMPANY(params.companyId)}?page=${params.page}&size=${params.size}`, null
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.receipt.FIND_BY_COMPANY(params.companyId)}?page=${params.page}&size=${params.size}`
     );
   }
 
@@ -55,27 +53,23 @@ export class ReceiptService {
     }
     formData.append('companyId', params.companyId.toString());
 
-    return this.axiosService.request(
-      'POST', `${this.baseUrl}${ApiPaths.receipt.SAVE}`, formData
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.receipt.SAVE}`, formData
     );
   }
 
   updateReceipt(params: { receiptId: number, receipt: ReceiptRequest }): Promise<any> {
-    return this.axiosService.request(
-      'PATCH', `${this.baseUrl}${ApiPaths.receipt.UPDATE_BY_ID(params.receiptId)}`, params.receipt
+    return this.apiService.instance.patch(
+      `${this.baseUrl}${ApiPaths.receipt.UPDATE_BY_ID(params.receiptId)}`, params.receipt
     );
   }
 
   exportReceiptPohoda(params: {receipt: ReceiptRequest}): Promise<any> {
-    return this.axiosService.request(
-        'POST', `${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT}`, params.receipt,
-        { responseType: 'blob' }
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT}`, params.receipt,
     )
   }
 
   deleteReceipt(receiptId: number): Promise<any> {
-    return this.axiosService.request(
-      'DELETE', `${this.baseUrl}${ApiPaths.receipt.DELETE(receiptId)}`, null
+    return this.apiService.instance.delete(`${this.baseUrl}${ApiPaths.receipt.DELETE(receiptId)}`
     )
   }
 

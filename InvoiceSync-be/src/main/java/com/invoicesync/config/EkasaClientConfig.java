@@ -1,4 +1,4 @@
-package com.invoicesync.shared.config;
+package com.invoicesync.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

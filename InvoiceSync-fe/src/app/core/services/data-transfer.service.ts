@@ -3,6 +3,7 @@ import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
 import {AxiosService} from "../axios.service";
 import {HttpHeaders} from "@angular/common/http";
+import { ApiService } from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DataTransferService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.data_transfer.BASE;
 
   constructor(
-    private axiosService: AxiosService
+    private apiService: ApiService
   ) { }
 
   findAllConvertsByUser(params?: { page?: number; size?: number }): Promise<any> {
@@ -22,16 +23,14 @@ export class DataTransferService {
     if (params?.size !== undefined) queryParams.push(`size=${params.size}`);
     const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-    return this.axiosService.request(
-      'GET',
+    return this.apiService.instance.get(
       `${this.baseUrl}${ApiPaths.data_transfer.FIND_ALL_BY_USER}${queryString}`,
-      null
     )
   }
 
   getConvertById(params: {convertId: number}): Promise<any> {
-    return this.axiosService.request(
-      'GET', `${this.baseUrl}${ApiPaths.data_transfer.BY_ID(params.convertId)}`, null
+    return this.apiService.instance.get(
+`${this.baseUrl}${ApiPaths.data_transfer.BY_ID(params.convertId)}`
     )
   }
 
@@ -42,29 +41,22 @@ export class DataTransferService {
       formData.append('file', file, file.name);
     }
 
-    return this.axiosService.request(
-      'POST',
+    return this.apiService.instance.post(
       `${this.baseUrl}${ApiPaths.data_transfer.UPLOAD}`,
       formData
     );
   }
 
   saveMapping(convertId: number, mappings: any[]): Promise<any> {
-    return this.axiosService.request(
-      'POST',
+    return this.apiService.instance.post(
       `${this.baseUrl}${ApiPaths.data_transfer.UPDATE_MAPPING(convertId)}`,
       mappings
     )
   }
 
   downloadConvert(convertId:number): Promise<any> {
-    return this.axiosService.request(
-      'GET',
-      `${this.baseUrl}${ApiPaths.data_transfer.DOWNLOAD(convertId)}`,
-      null,
-      {
-        responseType: 'blob'
-      }
+    return this.apiService.instance.get(
+      `${this.baseUrl}${ApiPaths.data_transfer.DOWNLOAD(convertId)}`
     )
   }
 

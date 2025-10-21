@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {FileService} from "../../file.service";
 import {AxiosService} from "../../core/axios.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {DatePipe} from "@angular/common";
