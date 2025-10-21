@@ -1,21 +1,20 @@
 package com.invoicesync.auth;
 
-import com.invoicesync.deprecated.user.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class RegisterRequest {
+  private String fullName;
 
-    private String username;
-    private String password;
-    private Role role;
-    private String login;
-    private boolean mfaEnabled;
+  private String username;
+
+  private String password;
 }

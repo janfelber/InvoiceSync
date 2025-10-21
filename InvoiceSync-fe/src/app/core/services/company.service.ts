@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {AxiosService} from "../axios.service";
 import {ApiPaths} from "./api-paths";
 import {CompanyRequest} from "../models/company-request";
+import {ApiService} from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CompanyService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.company.BASE;
 
   constructor(
-    private axiosService: AxiosService
+    private apiService: ApiService
   ) { }
 
   /**
@@ -34,10 +35,8 @@ export class CompanyService {
     if (params?.size !== undefined) queryParams.push(`size=${params.size}`);
     const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-    return this.axiosService.request(
-      'GET',
+    return this.apiService.instance.get(
       `${this.baseUrl}${ApiPaths.company.FIND_ALL_BY_USER}${queryString}`,
-      null
     );
   }
 
@@ -48,7 +47,7 @@ export class CompanyService {
    */
   getCompanyById(params: { companyId: number }): Promise<any> {
     const url = `${this.baseUrl}${ApiPaths.company.BY_ID(params.companyId)}`;
-    return this.axiosService.request('GET', url, null);
+    return this.apiService.instance.get( url);
   }
 
   /**
@@ -60,14 +59,12 @@ export class CompanyService {
    * @returns A Promise resolving to the server's response after creating the company.
    */
   saveCompany(company: CompanyRequest): Promise<any> {
-    return this.axiosService.request(
-      'POST', `${this.baseUrl}${ApiPaths.company.SAVE}`, company
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.company.SAVE}`, company
     );
   }
 
   saveCompanyByRegistrationNumber(registrationNumber: string): Promise<any> {
-    return this.axiosService.request(
-      'POST', `${this.baseUrl}${ApiPaths.company.CREATE_BY_REGISTRATION_NUMBER(registrationNumber)}`, null
+    return this.apiService.instance.post( `${this.baseUrl}${ApiPaths.company.CREATE_BY_REGISTRATION_NUMBER(registrationNumber)}`
     )
   }
 
@@ -82,8 +79,7 @@ export class CompanyService {
    * @returns A Promise resolving to the server's response after updating the company.
    */
   updateCompany(params: { companyId: number, company: any }): Promise<any> {
-    return this.axiosService.request(
-      'POST', `${this.baseUrl}${ApiPaths.company.UPDATE_BY_ID(params.companyId)}`, params.company
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.company.UPDATE_BY_ID(params.companyId)}`, params.company
     );
   }
 
@@ -97,8 +93,7 @@ export class CompanyService {
    * @returns A Promise resolving to the server's response confirming deletion.
    */
   deleteCompany(params: { companyId: number }): Promise<any> {
-    return this.axiosService.request(
-      'DELETE', `${this.baseUrl}${ApiPaths.company.DELETE_BY_ID(params.companyId)}`, null
+    return this.apiService.instance.delete(`${this.baseUrl}${ApiPaths.company.DELETE_BY_ID(params.companyId)}`
     );
   }
 }

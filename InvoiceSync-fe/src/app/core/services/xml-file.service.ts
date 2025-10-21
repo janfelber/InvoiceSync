@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
 import {AxiosService} from "../axios.service";
+import {ApiService} from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,9 @@ export class XmlFileService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.xmlFile.BASE;
 
   constructor(
-    private axiosService: AxiosService
-  ) { }
+    private apiService: ApiService
+  ) {
+  }
 
   /**
    * Retrieves all xml-file associated with the currently logged-in user.
@@ -32,10 +34,8 @@ export class XmlFileService {
     if (params?.size !== undefined) queryParams.push(`size=${params.size}`);
     const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-    return this.axiosService.request(
-      'GET',
-      `${this.baseUrl}${ApiPaths.xmlFile.FIND_ALL_BY_USER}${queryString}`,
-      null
+    return this.apiService.instance.get(
+      `${this.baseUrl}${ApiPaths.xmlFile.FIND_ALL_BY_USER}${queryString}`
     );
   }
 
@@ -45,8 +45,7 @@ export class XmlFileService {
       formData.append('file', file, file.name);
     }
 
-    return this.axiosService.request(
-      'POST',
+    return this.apiService.instance.post(
       `${this.baseUrl}${ApiPaths.xmlFile.SAVE}`,
       formData
     )

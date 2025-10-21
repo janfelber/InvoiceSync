@@ -108,6 +108,7 @@ public class ReceiptController {
       @RequestParam("companyId") final Long companyId,
       final Authentication connectedUser
   ) {
+    System.out.println(connectedUser.getName());
     final List<Long> savedIds = Arrays.stream(files)
         .map(file -> receiptService.saveReceipt(file, companyId, connectedUser))
         .toList();

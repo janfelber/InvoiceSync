@@ -1,15 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {FileService} from "../../file.service";
-import {InvoiceService} from "../invoices/invoice.service";
 import {AxiosService} from "../../core/axios.service";
 import {MatTableModule} from '@angular/material/table';
-import {MatIcon} from "@angular/material/icon";
-import {MatButtonModule, MatIconButton} from '@angular/material/button';
-import {HttpErrorResponse} from "@angular/common/http";
+import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from "@angular/forms";
 import {FormsModule} from '@angular/forms';
-import {MatCheckbox} from "@angular/material/checkbox";
 import {XmlFileService} from "../../core/services/xml-file.service";
 import {PageResponseXmlFileResponse} from "../receipts/page-response-xml-file-response";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";

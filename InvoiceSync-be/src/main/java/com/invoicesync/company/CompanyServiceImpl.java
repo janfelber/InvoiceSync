@@ -44,20 +44,20 @@ public class CompanyServiceImpl implements CompanyService {
   @Override
   public PageResponse<CompanyResponseDto> findAllCompaniesByUser(final int page, int size,
       final Authentication connectedUser) {
-    // final UserDemo user = ((UserDemo) connectedUser.getPrincipal());
-    final Jwt jwt = (Jwt) connectedUser.getPrincipal();
-    final List<String> roles = (List<String>) ((Map<String, Object>) jwt.getClaim("realm_access")).get("roles");
-    System.out.println("Roles: " + roles);
+    // final List<String> roles = (List<String>) ((Map<String, Object>) jwt.getClaim("realm_access")).get("roles");
+    // System.out.println("Roles: " + roles);
 
     if (size < 1) {
       size = 1;
     }
+
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<Company> companies = companyRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
     final List<CompanyResponseDto> companyResponse = companies.stream()
         .map(companyMapper::toCompanyResponse)
         .toList();
+
     return new PageResponse<>(
         companyResponse,
         companies.getNumber(),

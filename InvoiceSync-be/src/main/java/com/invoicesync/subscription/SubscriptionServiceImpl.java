@@ -30,7 +30,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         .findOne(withUserId(userId))
         .orElseGet(() -> {
           final Subscription empty = new Subscription();
-          empty.setCreatedBy(userId);
+          // empty.setCreatedBy(userId);
           empty.setSubscriptionPlan(NONE);
           empty.setSubscriptionActive(false);
           empty.setStartDate(null);
@@ -49,16 +49,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         ? subscription.getSubscriptionPlan()
         : NONE;
 
-    return new SubscriptionResponseDTO(
-        subscription.getCreatedBy(),
-        subscription.getSubscriptionPlan() != null ? subscription.getSubscriptionPlan().name() : null,
-        Boolean.TRUE.equals(subscription.getSubscriptionActive()),
-        subscription.getStartDate(),
-        subscription.getEndDate(),
-        subscription.getMonthlyUsedReceiptExportLimit(),
-        subscription.getSubscriptionPrice(),
-        plan.getFeatures()
-    );
+    return null;
+
+    // return new SubscriptionResponseDTO(
+    //     subscription.getCreatedBy(),
+    //     subscription.getSubscriptionPlan() != null ? subscription.getSubscriptionPlan().name() : null,
+    //     Boolean.TRUE.equals(subscription.getSubscriptionActive()),
+    //     subscription.getStartDate(),
+    //     subscription.getEndDate(),
+    //     subscription.getMonthlyUsedReceiptExportLimit(),
+    //     subscription.getSubscriptionPrice(),
+    //     plan.getFeatures()
+    // );
   }
 
   @Override

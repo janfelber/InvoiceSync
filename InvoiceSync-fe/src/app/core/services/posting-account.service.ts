@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
-import {AxiosService} from "../axios.service";
 import {PostingAccountRequest} from "../models/PostingAccountRequest";
+import {ApiService} from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,9 @@ export class PostingAccountService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.postingAccounts.BASE;
 
   constructor(
-    private axiosService: AxiosService
-  ) { }
+    private apiService: ApiService
+  ) {
+  }
 
 
   /**
@@ -23,29 +24,24 @@ export class PostingAccountService {
    * @returns Promise resolving to a list of accounts
    */
   findAccountsByCompany(params: { page: number; size: number; type: string; companyId: number }) {
-    return this.axiosService.request(
-      'GET',
+    return this.apiService.instance.get(
       `${this.baseUrl}${ApiPaths.postingAccounts.FIND_BY_COMPANY(params.companyId)}?page=${params.page}&size=${params.size}&type=${params.type}`,
-      null
     );
   }
 
   findAvailableAccounts(params: { companyId: number, type: string }) {
     const url = `${this.baseUrl}${ApiPaths.postingAccounts.AVAILABLE_ACCOUNTS(params.companyId)}?type=${params.type}`;
-    return this.axiosService.request('GET', url, null);
+    return this.apiService.instance.get(url);
   }
 
   deleteAccount(params: { accountId: number }) {
-    return this.axiosService.request(
-      'DELETE',
+    return this.apiService.instance.delete(
       `${this.baseUrl}${ApiPaths.postingAccounts.DELETE(params.accountId)}`,
-      null
     )
   }
 
   savePostingAccount(postingAccount: PostingAccountRequest): Promise<any> {
-    return this.axiosService.request(
-      'POST',
+    return this.apiService.instance.post(
       `${this.baseUrl}${ApiPaths.postingAccounts.SAVE}`,
       postingAccount
     );
@@ -59,6 +55,6 @@ export class PostingAccountService {
       formData.append('companyId', params.companyId.toString());
     }
 
-    return this.axiosService.request('POST', url, formData);
+    return this.apiService.instance.post(url, formData);
   }
 }

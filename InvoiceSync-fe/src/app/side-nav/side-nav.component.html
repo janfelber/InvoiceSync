@@ -28,66 +28,82 @@
             </button>
           </div>
           <!--TODO implement user dropdown menu-->
-                    <div class="absolute right-0 hidden z-10 w-60 bg-white rounded divide-y divide-gray-100 shadow" id="dropdown-user">
-                      <ul class="py-2 px-2 text-sm text-gray-500" role="none">
-<!--                        <li>-->
-<!--                          <a>-->
-<!--                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-<!--                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-<!--                                <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>-->
-<!--                              </svg>-->
-<!--                              <span>Účet</span>-->
-<!--                            </div>-->
-<!--                          </a>-->
-<!--                        </li>-->
-                        <li>
-                          <a routerLink="/web/privacy">
-                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-                              </svg>
-                              <span>Ochrana súkromia</span>
-                            </div>
-                          </a>
-                        </li>
-                        <li>
-                          <a routerLink="/web/limiter">
-                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z" clip-rule="evenodd"/>
-                                <path fill-rule="evenodd" d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
-                              </svg>
-                              <span>Predplatné</span>
-                            </div>
-                          </a>
-                        </li>
-                      </ul>
-<!--                       <div class="py-2 px-2" role="none" >-->
-<!--                        <a >-->
-<!--                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-<!--                            <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-<!--                              <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>-->
-<!--                            </svg>-->
-<!--                            <span>Help Guide</span>-->
-<!--                          </div>-->
+          <div class="absolute right-0 hidden z-10 w-60 bg-white rounded divide-y divide-gray-100 shadow"
+               id="dropdown-user">
+            <ul class="py-2 px-2 text-sm text-gray-500" role="none">
+              <!--                        <li>-->
+              <!--                          <a>-->
+              <!--                            <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
+              <!--                              <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
+              <!--                                <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd"/>-->
+              <!--                              </svg>-->
+              <!--                              <span>Účet</span>-->
+              <!--                            </div>-->
+              <!--                          </a>-->
+              <!--                        </li>-->
+              <li>
+                <a routerLink="/web/privacy">
+                  <div
+                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                         viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    <span>Ochrana súkromia</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/web/limiter">
+                  <div
+                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                         viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                            d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
+                            clip-rule="evenodd"/>
+                      <path fill-rule="evenodd"
+                            d="M5 14a1 1 0 0 1 1-1h2a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1Zm5 0a1 1 0 0 1 1-1h5a1 1 0 1 1 0 2h-5a1 1 0 0 1-1-1Z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                    <span>Predplatné</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+            <!--                       <div class="py-2 px-2" role="none" >-->
+            <!--                        <a >-->
+            <!--                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
+            <!--                            <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
+            <!--                              <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>-->
+            <!--                            </svg>-->
+            <!--                            <span>Help Guide</span>-->
+            <!--                          </div>-->
 
-<!--                        </a>-->
-<!--                        <p class="text-sm font-medium text-gray-900 truncate" role="none">-->
-<!--                        </p>-->
-<!--                      </div>-->
-                      <div class="py-2 px-2" role="none">
-                        <a (click)="logout()">
-                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 hover:text-black text-sm">
-                            <svg class="w-4 h-4 mr-1.5 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
-                            </svg>
-                            <span class="text-red-500">Odhlasiť sa</span>
-                          </div>
-                        </a>
-                        <p class="text-sm font-medium text-gray-900 truncate" role="none">
-                        </p>
-                      </div>
-                    </div>
+            <!--                        </a>-->
+            <!--                        <p class="text-sm font-medium text-gray-900 truncate" role="none">-->
+            <!--                        </p>-->
+            <!--                      </div>-->
+            <div class="py-2 px-2" role="none">
+              <a (click)="logout()">
+                <div
+                  class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 hover:text-black text-sm">
+                  <svg class="w-4 h-4 mr-1.5 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                       width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
+                  </svg>
+                  <span class="text-red-500">Odhlasiť sa</span>
+                </div>
+              </a>
+              <p class="text-sm font-medium text-gray-900 truncate" role="none">
+              </p>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -100,37 +116,45 @@
        aria-label="Sidebar">
   <div class="h-full px-3 py-4 overflow-y-auto bg-white">
     <ul class="space-y-2">
-<!--      <li>-->
-<!--        <a routerLink="/home" routerLinkActive="bg-gray-100"-->
-<!--           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group ">-->
-<!--          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" fill="currentColor"-->
-<!--               viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">-->
-<!--            <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>-->
-<!--            <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>-->
-<!--          </svg>-->
-<!--          <span class="ml-3">Domov</span>-->
-<!--        </a>-->
-<!--      </li>-->
-      <li *ngFor="let item of menu">
-        <ng-container *ngIf="item.children; else singleLink">
-          <button type="button"
-                  class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
-                  (click)="toggleDropdown(item.label)">
-            <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"
-                 [innerHTML]="iconService.getSvg(item.icon || '')">
-            </svg>
-            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ item.label }}</span>
-            <svg class="w-6 h-6">
-              <path fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"></path>
+      <li *ngFor="let item of authService.currentUser?.sidenav">
+        <ng-container *ngIf="item.children?.length; else singleLink">
+          <button
+            type="button"
+            (click)="toggleDropdown(item.label)"
+            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+          >
+            <svg
+              class="w-6 h-6 text-gray-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              [innerHTML]="iconService.getSvg(item.icon || '')"
+            ></svg>
+            <span class="flex-1 ml-3 text-left whitespace-nowrap">
+        {{ item.label }}
+      </span>
+
+            <svg
+              class="w-6 h-6 transition-transform duration-200"
+              [ngClass]="{ 'rotate-180': dropdownStates[item.label] }"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              ></path>
             </svg>
           </button>
 
-          <ul *ngIf="dropdownStates[item.label]" class="py-2 space-y-2">
+          <ul
+            *ngIf="dropdownStates[item.label]"
+            class="py-2 space-y-2 transition-all duration-300 ease-in-out overflow-hidden"
+          >
             <li *ngFor="let child of item.children">
-              <a [routerLink]="child.route" routerLinkActive="bg-gray-100"
-                 class="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">
+              <a
+                [routerLink]="child.route"
+                routerLinkActive="bg-gray-100"
+                class="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+              >
                 <span>{{ child.label }}</span>
               </a>
             </li>
@@ -138,55 +162,21 @@
         </ng-container>
 
         <ng-template #singleLink>
-          <a [routerLink]="item.route" routerLinkActive="bg-gray-100"
-             class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
-            <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"
-                 [innerHTML]="iconService.getSvg(item.icon || '')"></svg>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="bg-gray-100"
+            class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group"
+          >
+            <svg
+              class="w-6 h-6 text-gray-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              [innerHTML]="iconService.getSvg(item.icon || '')"
+            ></svg>
             <span class="ml-3">{{ item.label }}</span>
           </a>
         </ng-template>
       </li>
-      <!--      <li>-->
-      <!--&lt;!&ndash;        <button type="button"&ndash;&gt;-->
-      <!--&lt;!&ndash;                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100  "&ndash;&gt;-->
-      <!--&lt;!&ndash;                aria-controls="helpers-dropdown" data-collapse-toggle="helpers-dropdown">&ndash;&gt;-->
-      <!--&lt;!&ndash;          <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"&ndash;&gt;-->
-      <!--&lt;!&ndash;               aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"&ndash;&gt;-->
-      <!--&lt;!&ndash;               viewBox="0 0 24 24">&ndash;&gt;-->
-      <!--&lt;!&ndash;            <path&ndash;&gt;-->
-      <!--&lt;!&ndash;              d="M8.4 6.763c-.251.1-.383.196-.422.235L6.564 5.584l2.737-2.737c1.113-1.113 3.053-1.097 4.337.187l1.159 1.159a1 1 0 0 1 1.39.022l4.105 4.105a1 1 0 0 1 .023 1.39l1.345 1.346a1 1 0 0 1 0 1.415l-2.052 2.052a1 1 0 0 1-1.414 0l-1.346-1.346a1 1 0 0 1-1.323.039L11.29 8.983a1 1 0 0 1 .04-1.324l-.849-.848c-.18-.18-.606-.322-1.258-.25a3.271 3.271 0 0 0-.824.202Zm1.519 3.675L3.828 16.53a1 1 0 0 0 0 1.414l2.736 2.737a1 1 0 0 0 1.414 0l6.091-6.091-4.15-4.15Z"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;          </svg>&ndash;&gt;-->
-      <!--&lt;!&ndash;          <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Služby a nástroje</span>&ndash;&gt;-->
-      <!--&lt;!&ndash;          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">&ndash;&gt;-->
-      <!--&lt;!&ndash;            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"&ndash;&gt;-->
-      <!--&lt;!&ndash;                  d="m1 1 4 4 4-4"/>&ndash;&gt;-->
-      <!--&lt;!&ndash;          </svg>&ndash;&gt;-->
-      <!--&lt;!&ndash;        </button>&ndash;&gt;-->
-      <!--&lt;!&ndash;        <ul id="helpers-dropdown" class="hidden py-2 space-y-2">&ndash;&gt;-->
-      <!--&lt;!&ndash;        </ul>&ndash;&gt;-->
-      <!--      </li>-->
-<!--      <li>-->
-<!--        <a routerLink="/xml-convertor" routerLinkActive="bg-gray-100"-->
-<!--           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">-->
-<!--          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " fill="currentColor"-->
-<!--               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">-->
-<!--            <path-->
-<!--              d="M8.4 6.763c-.251.1-.383.196-.422.235L6.564 5.584l2.737-2.737c1.113-1.113 3.053-1.097 4.337.187l1.159 1.159a1 1 0 0 1 1.39.022l4.105 4.105a1 1 0 0 1 .023 1.39l1.345 1.346a1 1 0 0 1 0 1.415l-2.052 2.052a1 1 0 0 1-1.414 0l-1.346-1.346a1 1 0 0 1-1.323.039L11.29 8.983a1 1 0 0 1 .04-1.324l-.849-.848c-.18-.18-.606-.322-1.258-.25a3.271 3.271 0 0 0-.824.202Zm1.519 3.675L3.828 16.53a1 1 0 0 0 0 1.414l2.736 2.737a1 1 0 0 0 1.414 0l6.091-6.091-4.15-4.15Z"/>-->
-<!--          </svg>-->
-<!--          <span class="ml-3">Xml Importy</span>-->
-<!--        </a>-->
-<!--      </li>-->
-<!--      <li>-->
-<!--        <a routerLink="web/data-transfer" routerLinkActive="bg-gray-100"-->
-<!--           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">-->
-<!--          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 "  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-<!--            <path fill-rule="evenodd" d="M6 5a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L15.249 6H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2v-5a3 3 0 0 0-3-3h-3.22l-1.14-1.682A3 3 0 0 0 9.157 6H6V5Z" clip-rule="evenodd"/>-->
-<!--            <path fill-rule="evenodd" d="M3 9a2 2 0 0 1 2-2h4.157a2 2 0 0 1 1.656.879L12.249 10H3V9Zm0 3v7a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-7H3Z" clip-rule="evenodd"/>-->
-<!--          </svg>-->
-
-<!--          <span class="ml-3">Prevod údajov</span>-->
-<!--        </a>-->
-<!--      </li>-->
       <li data-tooltip-target="coming-soon-settings">
         <a routerLink=""
            class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 rounded-lg group"
@@ -199,18 +189,6 @@
           <span class="ml-3">Nastavenia</span>
         </a>
       </li>
-<!--      <li>-->
-<!--        <a routerLink="/web/limiter" routerLinkActive="bg-gray-100"-->
-<!--           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">-->
-<!--          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " fill="currentColor"-->
-<!--               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">-->
-<!--            <path fill-rule="evenodd"-->
-<!--                  d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"-->
-<!--                  clip-rule="evenodd"/>-->
-<!--          </svg>-->
-<!--          <span class="ml-3">Predplatné</span>-->
-<!--        </a>-->
-<!--      </li>-->
     </ul>
     <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
       <li>
@@ -255,7 +233,8 @@
         <span class="bg-purple-100 text-purple-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded-sm">Beta</span>
       </div>
       <p class="mb-3 text-sm text-blue-800">
-        Aplikácia <strong>InvoiceSync</strong> je momentálne vo fáze <strong>Beta verzie</strong>. Niektoré funkcie sa môžu ešte meniť alebo vylepšovať. Vaša spätná väzba nám pomôže službu vyladiť.
+        Aplikácia <strong>InvoiceSync</strong> je momentálne vo fáze <strong>Beta verzie</strong>. Niektoré funkcie sa
+        môžu ešte meniť alebo vylepšovať. Vaša spätná väzba nám pomôže službu vyladiť.
       </p>
       <a class="text-sm text-blue-800 underline font-medium hover:text-blue-900" href="#">
         Pošli spätnú väzbu

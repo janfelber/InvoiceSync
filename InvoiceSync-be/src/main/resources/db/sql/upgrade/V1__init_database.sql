@@ -1,5 +1,36 @@
 CREATE SCHEMA IF NOT EXISTS invoice_sync;
 
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+CREATE TABLE invoice_sync.app_user
+(
+  id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  full_name VARCHAR(255),
+  username  VARCHAR(255) NOT NULL UNIQUE,
+  password  VARCHAR(255) NOT NULL,
+  role      VARCHAR(50)  NOT NULL
+);
+
+CREATE TABLE invoice_sync.side_nav
+(
+    id BIGSERIAL PRIMARY KEY,
+    label VARCHAR(100) NOT NULL,
+    icon VARCHAR(100),
+    route VARCHAR(200),
+    parent_id BIGINT REFERENCES invoice_sync.side_nav(id)
+);
+
+CREATE TABLE invoice_sync.user_sidenav
+(
+  user_id    UUID   NOT NULL
+    REFERENCES invoice_sync.app_user (id),
+
+  sidenav_id BIGINT NOT NULL
+    REFERENCES invoice_sync.side_nav (id),
+
+  PRIMARY KEY (user_id, sidenav_id)
+);
+
 CREATE TABLE IF NOT EXISTS invoice_sync.company
 (
   id                  BIGSERIAL PRIMARY KEY,
@@ -22,7 +53,7 @@ CREATE TABLE IF NOT EXISTS invoice_sync.company
 CREATE TABLE IF NOT EXISTS invoice_sync.data_transfer
 (
   id                 BIGSERIAL PRIMARY KEY,
-  created_by         VARCHAR(255) NOT NULL,
+  created_by         varchar(255) NOT NULL,
   file_name          VARCHAR(255),
   data_json          TEXT,
   status             VARCHAR(50),
@@ -166,7 +197,7 @@ CREATE TABLE invoice_sync.data_transfer_header
 (
   id                 BIGSERIAL PRIMARY KEY,
   convert_import_id  BIGINT       NOT NULL,
-  created_by         VARCHAR(255) NOT NULL,
+  created_by         varchar(255) NOT NULL,
   original_header    VARCHAR(255),
   mapped_header      VARCHAR(255),
   enabled_flag       BOOLEAN      NOT NULL DEFAULT FALSE,

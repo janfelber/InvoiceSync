@@ -1,38 +1,28 @@
-import { CanActivateFn, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { inject } from '@angular/core';
-import { KeycloakService } from '../../keycloak/keycloak.service';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from '../../auth/auth.service';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
-  const keycloakService = inject(KeycloakService);
-  const router = inject(Router);
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
-  if (!keycloakService.keycloak?.authenticated) {
-    keycloakService.login();
-    return false;
-  }
-
-  if (keycloakService.keycloak?.isTokenExpired()) {
-    keycloakService.keycloak.updateToken(30).catch(() => {
-      keycloakService.login();
-    });
-    return false;
-  }
-
-  // Kontrola rolí definovaných v route
-  const allowedRoles = route.data['roles'] as string[] | undefined;
-  if (allowedRoles && allowedRoles.length > 0) {
-    const userRoles = keycloakService.getUserRoles();
-    const hasRole = allowedRoles.some(role => userRoles.includes(role));
-
-    console.log("user role", userRoles);
-    console.log("allowed roles", allowedRoles);
-    console.log("does user have role?", hasRole);
-
-    if (!hasRole) {
-      router.navigate(['/forbidden']);
-      return false;
+  canActivate(): Observable<boolean> {
+    if (this.authService.getToken()) {
+      return of(true);
     }
-  }
 
-  return true;
-};
+    // skúsi obnoviť access token cez refresh token
+    return this.authService.init().pipe(
+      map(loggedIn => {
+        if (!loggedIn) this.router.navigate(['/login']);
+        return loggedIn;
+      }),
+      catchError(() => {
+        this.router.navigate(['/login']);
+        return of(false);
+      })
+    );
+  }
+}

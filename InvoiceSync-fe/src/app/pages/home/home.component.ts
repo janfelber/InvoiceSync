@@ -8,6 +8,7 @@ import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {initFlowbite} from 'flowbite'
 import {CompanyRequest} from "../../core/models/company-request";
+import {ApiService} from "../../core/auth/api";
 
 @Component({
     selector: 'app-home',
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit{
     private fb: FormBuilder,
     private router: Router,
     private companyService: CompanyService,
+    private apiService: ApiService,
     private toastr: ToastrService) {
   }
 

@@ -7,7 +7,7 @@ import { FormsModule } from "@angular/forms";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Router} from "@angular/router";
 import { RouterModule } from '@angular/router';
-import {KeycloakService} from "../../keycloak/keycloak.service";
+import {AuthService} from "../auth.service";
 
 @Component({
     selector: 'app-login',
@@ -16,52 +16,24 @@ import {KeycloakService} from "../../keycloak/keycloak.service";
     FormsModule,
     CommonModule,
     RouterModule,
+    NgOptimizedImage,
   ],
     templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+    styleUrl: './login.component.css',
+  standalone: true,
 })
-export class LoginComponent implements OnInit{
-  // authRequest: AuthenticationRequest = {};
-  // otpCode: any;
-  // authResponse: AuthenticationReponse = {};
+export class LoginComponent {
+  username = '';
+  password = '';
 
-  constructor(
-    private keycloakService: KeycloakService
-  ) {
+  constructor(private auth: AuthService, private router: Router) {}
+
+  login() {
+    this.auth.login({
+      username: this.username,
+      password: this.password}).subscribe({
+      next: () => this.router.navigate(['/home']),
+      error: err => console.error(err)
+    });
   }
-
-  async ngOnInit(): Promise<void> {
-    await this.keycloakService.init()
-    await this.keycloakService.login();
-  }
-
-  // authenticate() {
-  //   this.authService.login(this.authRequest)
-  //     .subscribe(
-  //       {
-  //         next: (response) => {
-  //           this.authResponse = response;
-  //           if (!this.authResponse.mfaEnabled) {
-  //             localStorage.setItem('token', this.authResponse.access_token as string);
-  //             this.router.navigate(['xml-import']);
-  //           }
-  //         }
-  //       }
-  //     );
-  // }
-
-  // verifyCode() {
-  //   const verifyRequest: VerificationRequest = {
-  //     login: this.authRequest.login,
-  //     code: this.otpCode
-  //   };
-  //   this.authService.verifyCode(verifyRequest)
-  //     .subscribe({
-  //       next: (response) => {
-  //           localStorage.setItem('token', response.access_token as string);
-  //           console.log(response.access_token)
-  //           this.router.navigate(['welcome']);
-  //       }
-  //     })
-  // }
 }

@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
-import {AxiosService} from "../axios.service";
 import {ApiPaths} from "./api-paths";
 import {SubscriptionRequest} from "../models/subscription-request";
+import {ApiService} from "../auth/api";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,9 @@ export class SubscriptionService {
   private baseUrl: string = environment.apiUrl.replace(/\/$/, '') + ApiPaths.subscription.BASE;
 
   constructor(
-    private axiosService: AxiosService
-  ) { }
+    private apiService: ApiService
+  ) {
+  }
 
   /**
    * Get user subscription details by ID
@@ -22,7 +23,7 @@ export class SubscriptionService {
    */
   getUserSubscriptionDetail(): Promise<any> {
     const url = `${this.baseUrl}${ApiPaths.subscription.USER_PLAN}`;
-    return this.axiosService.request('GET', url, null);
+    return this.apiService.instance.get(url);
   }
 
   /**
@@ -30,6 +31,6 @@ export class SubscriptionService {
    */
   subscribe(request: SubscriptionRequest): Promise<any> {
     const url = `${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`;
-    return this.axiosService.request('POST', url, request);
+    return this.apiService.instance.post(url, request);
   }
 }
