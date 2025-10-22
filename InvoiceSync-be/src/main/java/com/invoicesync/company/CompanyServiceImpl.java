@@ -4,8 +4,6 @@ import static com.invoicesync.company.dto.specification.CompanySpecification.wit
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.accountingdocument.AccountDocumentNumberService;
 import com.invoicesync.company.dto.CompanyRequest;
 import com.invoicesync.company.dto.CompanyResponseDto;
 import com.invoicesync.feature.Feature;
@@ -28,6 +27,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
+
+  private final AccountDocumentNumberService accountDocumentNumberService;
 
   private final CompanyRepository companyRepository;
 
@@ -119,17 +120,26 @@ public class CompanyServiceImpl implements CompanyService {
   public String getReceiptNumber(final Long companyId, final boolean paidByCard, final Authentication connectedUser) {
     final Company company = companyRepository.findById(companyId).orElse(null);
 
-    final String current;
+    final NumberConfigType configType = paidByCard
+        ? NumberConfigType.RECEIPT_CARD
+        : NumberConfigType.RECEIPT_CASH;
+
+    final String currentDocumentNumber = paidByCard
+        ? company.getCardReceiptNumber()
+        : company.getCashReceiptNumber();
+
+    accountDocumentNumberService.checkNumberConfiguration(company, configType);
+
+    final String next = accountDocumentNumberService.incrementDocumentNumber(currentDocumentNumber);
 
     if (paidByCard) {
-      current = company.getCardReceiptNumber();
-      company.setCardReceiptNumber(increment(current));
+      company.setCardReceiptNumber(next);
     } else {
-      current = company.getCashReceiptNumber();
-      company.setCashReceiptNumber(increment(current));
+      company.setCashReceiptNumber(next);
     }
+
     companyRepository.save(company);
-    return current;
+    return currentDocumentNumber;
   }
 
   @Override
@@ -156,20 +166,6 @@ public class CompanyServiceImpl implements CompanyService {
         );
 
     return newCompany.getId();
-  }
-
-  private String increment(final String number) {
-    // nájde všetky číslice na konci reťazca
-    final Matcher matcher = Pattern.compile("(\\d+)$").matcher(number);
-    if (matcher.find()) {
-      final String digits = matcher.group(1);
-      final int length = digits.length();
-      final int next = Integer.parseInt(digits) + 1;
-      final String prefix = number.substring(0, matcher.start(1));
-      return prefix + String.format("%0" + length + "d", next);
-    } else {
-      return number + "1";
-    }
   }
 
 }

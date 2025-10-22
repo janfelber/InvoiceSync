@@ -10,7 +10,7 @@ public interface PohodaXmlService {
 
   byte[] generatePohodaInvoiceXml (InvoiceRequestDTO invoiceRequestDTO) throws Exception;
 
-  byte[] generateReceiptXml(ReceiptRequestDTO request, Authentication connectedUser) throws Exception;
+  byte[] generateReceiptXml(ReceiptRequestDTO request, Authentication connectedUser) throws RuntimeException;
 
   byte[] generatePohodaReceiptExcel(ReceiptRequest request, Authentication connectedUser) throws Exception;
 }

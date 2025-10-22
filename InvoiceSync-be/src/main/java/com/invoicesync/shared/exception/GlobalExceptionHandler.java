@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
   }
 
+  @ExceptionHandler(NumberConfigMissingException.class)
+  public ResponseEntity<String> handleNumberConfigMissingException(final NumberConfigMissingException ex) {
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
 }

@@ -13,9 +13,9 @@ import {PostingAccountService} from "../../../core/services/posting-account.serv
 import {ReceiptType} from "../../../core/enums/receipt-type";
 
 interface Account {
-  id:number,
-  number:string,
-  name:string
+  id: number,
+  number: string,
+  name: string
 }
 
 @Component({
@@ -92,7 +92,6 @@ export class ReceiptDetailsComponent implements OnInit {
   };
 
 
-
   private initForm(): void {
     this.receiptForm = this.fb.group({
       receiptDetails: this.fb.group({
@@ -157,7 +156,7 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   onFetchReceipt() {
-    this.receiptService.getReceiptById({ receiptId: this.receiptId })
+    this.receiptService.getReceiptById({receiptId: this.receiptId})
       .then(response => {
         this.receiptResponse = response.data;
 
@@ -213,7 +212,7 @@ export class ReceiptDetailsComponent implements OnInit {
     console.log("Posielam na export:", receiptRequest);
 
     try {
-      const response = await this.receiptService.exportReceiptPohoda({ receipt: receiptRequest });
+      const response = await this.receiptService.exportReceiptPohoda({receipt: receiptRequest});
 
       this.modalOpen = false;
       this.toastr.success('Bloček exportovaný úspešne', '', {
@@ -224,7 +223,7 @@ export class ReceiptDetailsComponent implements OnInit {
         positionClass: 'toast-top-right',
       });
 
-      const blob = new Blob([response.data], { type: 'application/xml' });
+      const blob = new Blob([response.data], {type: 'application/xml'});
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -247,6 +246,18 @@ export class ReceiptDetailsComponent implements OnInit {
           closeButton: true,
           positionClass: 'toast-top-right',
         });
+      } else if (error.response?.status === 422) {
+        this.toastr.warning(
+          'Číslovanie dokladov nie je nastavené. Nastavte ho v Nastaveniach firmy.',
+          '',
+          {
+            timeOut: 5000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            closeButton: true,
+            positionClass: 'toast-top-right',
+          }
+        );
       } else {
         console.error('Chyba pri exporte:', error);
         this.toastr.error('Chyba pri exporte', '', {

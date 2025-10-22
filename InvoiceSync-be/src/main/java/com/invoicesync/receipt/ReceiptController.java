@@ -61,7 +61,6 @@ public class ReceiptController {
   @PostMapping("/export/receipt")
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
       final Authentication connectedUser) {
-    try {
       final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
 
       final HttpHeaders headers = new HttpHeaders();
@@ -69,11 +68,6 @@ public class ReceiptController {
       headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
 
       return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
-    } catch (Exception e) {
-      System.err.println("Chyba pri generovani Pohoda XML: " + e.getMessage());
-      e.printStackTrace();
-      throw new RuntimeException("Nepodarilo sa vygenerovať Pohoda XML", e);
-    }
   }
 
   //get receipts for current user

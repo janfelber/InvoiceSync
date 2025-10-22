@@ -35,6 +35,7 @@ import com.invoicesync.subscription.guard.LimitGuardService;
 import com.invoicesync.xml.utils.XmlHelper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
 @RequiredArgsConstructor
@@ -77,10 +78,10 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     return outputStream.toByteArray();
   }
 
+  @SneakyThrows
   @Override
   public byte[] generateReceiptXml(final ReceiptRequestDTO request, final Authentication connectedUser)
-      throws Exception {
-
+      throws RuntimeException {
     limitGuardService.checkLimit(connectedUser, LimitType.RECEIPT_EXPORT);
 
     final String templatePath = resolveTemplatePath(request);
@@ -117,6 +118,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
     transformer.transform(new DOMSource(doc), new StreamResult(outputStream));
 
+    userService.incrementUsed(connectedUser, LimitType.RECEIPT_EXPORT);
+
     return outputStream.toByteArray();
   }
 
@@ -134,10 +137,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
 
   private String resolveTemplatePath(final ReceiptRequestDTO receipt) {
     if (receipt.isPaidByCard()) {
-      System.out.println("Paid by card");
       return "src/main/resources/template/receipt_card.xml";
     } else {
-      System.out.println("Paid by cash");
       return "src/main/resources/template/receipt_cash.xml";
     }
   }
