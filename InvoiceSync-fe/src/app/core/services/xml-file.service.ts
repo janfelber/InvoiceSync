@@ -51,5 +51,13 @@ export class XmlFileService {
     )
   }
 
+  exportXmlZip(importId: number, fileName: string): Promise<any> {
+    return this.apiService.instance.post(
+      `${this.baseUrl}${ApiPaths.xmlFile.EXPORT_BY_ID(importId)}`,
+      {},
+      {responseType: 'blob'}
+    )
+  }
+
   // TODO implement export XML content
 }

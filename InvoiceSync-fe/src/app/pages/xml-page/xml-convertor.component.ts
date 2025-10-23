@@ -80,7 +80,7 @@ export class XmlConvertorComponent implements OnInit {
   }
 
   downloadFile(importId: number, fileName: string) {
-    this.axiosService.request('POST', `/xml-file/generate-zip/${importId}`, null, {responseType: 'blob'})
+    this.xmlFileService.exportXmlZip(importId, fileName)
       .then((response) => {
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
