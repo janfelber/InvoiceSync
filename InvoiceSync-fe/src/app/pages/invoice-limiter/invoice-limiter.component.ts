@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {loadStripe} from '@stripe/stripe-js';
 import {AxiosService} from "../../core/axios.service";
-import { CommonModule } from "@angular/common";
+import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {SubscriptionModalComponent} from "../../shared/subscription-modal/subscription-modal.component";
@@ -13,16 +13,18 @@ import {initFlowbite} from "flowbite";
 @Component({
   selector: 'app-invoice-limiter',
   templateUrl: './invoice-limiter.component.html',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        SubscriptionModalComponent,
-        RouterLink
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SubscriptionModalComponent,
+    RouterLink
+  ],
   styleUrls: ['./invoice-limiter.component.css']
 })
-export class InvoiceLimiterComponent implements OnInit{
+export class InvoiceLimiterComponent implements OnInit {
+
+  loadingSubscriptionInfo = false;
 
   private stripe: any;
   subscriptionUpgradeEssentialsOpen = false
@@ -34,31 +36,10 @@ export class InvoiceLimiterComponent implements OnInit{
     private router: Router,
     private axiosService: AxiosService
   ) {
-    loadStripe('pk_test_51RLMmHLJ07OMo5e7sbeecGQ7cQqTM4Tgg48aI6rP31iTRQXUbH1aVvLRwygvObxwIEjzqiALOR75ojqAm12C9YYk00tjs1CTkq').then(stripe => {
+    loadStripe('pk_test_51RLMmHLJ07OMo5e7EGMfE7pFwZxxbvpqLnnJOIMqcyenWj8RdMKXpR3yvOyF6hDT5kcrLQNuu0NzTEfK7Ve82hpe00CnLSNGIN').then(stripe => {
       this.stripe = stripe;
     });
   }
-
-  limits = [
-    {
-      label: 'Spracovania',
-      used: 20,
-      total: 50,
-      color: 'blue'
-    },
-    {
-      label: 'Vytvorené faktúry',
-      used: 20,
-      total: 50,
-      color: 'amber'
-    },
-    {
-      label: 'Blokované faktúry',
-      used: 20,
-      total: 50,
-      color: 'red'
-    }
-  ];
 
   ngOnInit() {
     this.getSubscriptionPlan()
@@ -102,26 +83,32 @@ export class InvoiceLimiterComponent implements OnInit{
 
 
   getSubscriptionPlan() {
-    this.subscriptionService.getUserSubscriptionDetail()
-    .then(response => {
-      const data = response.data;
-      this.subscriptionPlan.subscription = data.subscriptionPlan
-      this.subscriptionPlan.endDate = data.endDate
-      this.subscriptionPlan.price = data.subscriptionPrice
-      this.subscriptionPlan.features = data.features
-      console.log("subscription", data);
-    });
+    this.loadingSubscriptionInfo = true;
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+
+    Promise.all([
+      this.subscriptionService.getUserSubscription(),
+      delay(700)
+    ])
+      .then(([response]) => {
+        const data = response.data;
+        this.subscriptionPlan.subscription = data.subscriptionPlan
+        this.subscriptionPlan.endDate = data.endDate
+        this.subscriptionPlan.price = data.subscriptionPrice
+        this.subscriptionPlan.features = data.features
+      })
+      .finally(() => {
+        this.loadingSubscriptionInfo = false;
+      })
   }
 
   getUserLimits() {
-    this.axiosService.request(
-      'GET',
-      `/subscription/user/limit`,
-      null,
-    ).then(response => {
-      this.userLimit = response.data;
-      console.log("user limit", response.data);
-    });
+    this.subscriptionService.getUserLimits()
+      .then(response => {
+        this.userLimit = response.data;
+        console.log("user limit", response.data);
+      });
   }
 
   get usedPercentage(): number {
@@ -149,14 +136,14 @@ export class InvoiceLimiterComponent implements OnInit{
       const response = await this.axiosService.request(
         'POST',
         'http://localhost:8080/subscription/subscribe',
-        { plan },
+        {plan},
         {
           'Content-Type': 'application/json'
         }
       );
 
       if (this.stripe) {
-        await this.stripe.redirectToCheckout({ sessionId: response.data.id });
+        await this.stripe.redirectToCheckout({sessionId: response.data.id});
       }
     } catch (error) {
       console.error('Chyba pri Stripe subscribe:', error);
