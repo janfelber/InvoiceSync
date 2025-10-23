@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {ApiPaths} from "./api-paths";
-import {SubscriptionRequest} from "../models/subscription-request";
 import {ApiService} from "../auth/api";
+import {SubscriptionRequest} from "../models/subscription-request";
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +14,19 @@ export class SubscriptionService {
 
   constructor(
     private apiService: ApiService
-  ) {
+  ) { }
+
+
+  getUserSubscription(): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.subscription.USER_PLAN}`);
   }
 
-  /**
-   * Get user subscription details by ID
-   * @returns Promise resolving to user subscription details
-   */
-  getUserSubscriptionDetail(): Promise<any> {
-    const url = `${this.baseUrl}${ApiPaths.subscription.USER_PLAN}`;
-    return this.apiService.instance.get(url);
+  getUserLimits(): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.subscription.USER_LIMITS}`);
   }
 
-  /**
-   * Create a subscription session
-   */
-  subscribe(request: SubscriptionRequest): Promise<any> {
-    const url = `${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`;
-    return this.apiService.instance.post(url, request);
+  subscribe(plan: "FREE" | "ESSENTIALS" | "PRO" | "ENTERPRISE") {
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`, {plan});
   }
+
 }

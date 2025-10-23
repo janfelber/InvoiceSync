@@ -4,11 +4,13 @@ import {initFlowbite} from "flowbite";
 import {Router} from "@angular/router";
 import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {environment} from "../../../environments/environment";
-import {SubscriptionRequest} from "../../core/models/subscription-request";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-pricing',
-  imports: [],
+  imports: [
+    NgClass
+  ],
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.css'
 })
@@ -20,13 +22,11 @@ export class PricingComponent implements OnInit{
     private subscriptionService: SubscriptionService,
     private router: Router
   ) {
-    loadStripe('pk_test_51RLMmHLJ07OMo5e7sbeecGQ7cQqTM4Tgg48aI6rP31iTRQXUbH1aVvLRwygvObxwIEjzqiALOR75ojqAm12C9YYk00tjs1CTkq').then(stripe => {
-      this.stripe = stripe;
-    });
   }
 
   async ngOnInit() {
     initFlowbite();
+    this.getSubscriptionPlan()
     const stripeKey = environment.stripePublicKey;
     if (!stripeKey) {
       console.error('Stripe public key nie je definovaný v environment.ts');
@@ -39,20 +39,33 @@ export class PricingComponent implements OnInit{
     }
   }
 
-  async subscribe(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE'): Promise<void> {
+  protected currentSubscriptionPlan = ''
+
+  getSubscriptionPlan() {
+      this.subscriptionService.getUserSubscription().then(response => {
+        this.currentSubscriptionPlan = response.data.subscriptionPlan;
+        console.log("user subscription", this.currentSubscriptionPlan);
+      })
+  }
+
+  async subscribeToPlan(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE') {
+    if (plan === this.currentSubscriptionPlan) {
+      console.warn('Tento plán už máš aktívny.');
+      return;
+    }
+
     try {
-      const request: SubscriptionRequest = { plan };
-      const response = await this.subscriptionService.subscribe(request);
+      const response = await this.subscriptionService.subscribe(plan);
 
       if (plan === 'FREE') {
         this.router.navigate(['/web/limiter']);
         return;
       }
 
-      if (this.stripe) {
+      if (this.stripe && response.data?.id) {
         await this.stripe.redirectToCheckout({ sessionId: response.data.id });
       } else {
-        console.error('Stripe is not loaded.');
+        console.error('Stripe not loaded or sessionId missing', response);
       }
     } catch (error) {
       console.error('Chyba pri Stripe subscribe:', error);

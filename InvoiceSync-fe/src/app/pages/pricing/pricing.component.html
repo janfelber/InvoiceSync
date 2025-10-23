@@ -60,9 +60,10 @@
             </ul>
           </div>
           <button
-            (click)="subscribe('FREE')"
+            (click)="subscribeToPlan('FREE')"
+            [disabled]="currentSubscriptionPlan === 'FREE'"
             class="mt-8 w-full text-white bg-gray-700 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Vyskúšať zdarma
+            {{ currentSubscriptionPlan === 'FREE' ? 'Aktívny plán' : 'Vyskúšať zdarma' }}
           </button>
         </div>
 
@@ -81,9 +82,14 @@
             </ul>
           </div>
           <button
-            (click)="subscribe('ESSENTIALS')"
+            (click)="subscribeToPlan('ESSENTIALS')"
+            [disabled]="currentSubscriptionPlan === 'ESSENTIALS'"
+            [ngClass]="{
+    'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'ESSENTIALS',
+    'bg-gray-400 text-gray-200 cursor-not-allowed': currentSubscriptionPlan === 'ESSENTIALS'
+  }"
             class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Vybrať plán
+            {{ currentSubscriptionPlan === 'ESSENTIALS' ? 'Aktívny plán' : 'Vybrať plán' }}
           </button>
         </div>
 
@@ -101,9 +107,14 @@
             </ul>
           </div>
           <button
-            (click)="subscribe('PRO')"
+            (click)="subscribeToPlan('PRO')"
+            [disabled]="currentSubscriptionPlan === 'PRO'"
+            [ngClass]="{
+    'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'PRO',
+    'bg-gray-400 text-gray-200 cursor-not-allowed': currentSubscriptionPlan === 'PRO'
+  }"
             class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Vybrať plán
+            {{ currentSubscriptionPlan === 'PRO' ? 'Aktívny plán' : 'Vybrať plán' }}
           </button>
         </div>
 
@@ -121,9 +132,13 @@
             </ul>
           </div>
           <button
-            (click)="subscribe('ENTERPRISE')"
+            (click)="subscribeToPlan('ENTERPRISE')"
+            [ngClass]="{
+    'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'ENTERPRISE',
+    'bg-gray-400 text-gray-200 cursor-not-allowed': currentSubscriptionPlan === 'ENTERPRISE'
+  }"
             class="mt-8 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Vybrať plán
+            {{ currentSubscriptionPlan === 'ENTERPRISE' ? 'Aktívny plán' : 'Vybrať plán' }}
           </button>
         </div>
       </div>

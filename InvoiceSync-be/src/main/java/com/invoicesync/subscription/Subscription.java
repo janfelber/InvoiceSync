@@ -78,7 +78,7 @@ public class Subscription extends BaseEntity {
    * Number of invoices exported this month.
    */
   @Column(name = "monthly_used_invoice_export")
-  private Integer monthlyUsedInvoiceExportLimit;
+  private Integer monthlyUsedInvoiceExport;
 
 
   /**
@@ -91,7 +91,7 @@ public class Subscription extends BaseEntity {
    * Number of receipts exported this month.
    */
   @Column(name = "monthly_used_receipt_export_limit")
-  private Integer monthlyUsedReceiptExportLimit;
+  private Integer monthlyUsedReceiptExport;
 
   /**
    * Monthly limit for creating invoices.
@@ -103,7 +103,7 @@ public class Subscription extends BaseEntity {
    * Number of invoices created this month.
    */
   @Column(name = "monthly_used_invoice_create_limit")
-  private Integer monthlyUsedInvoiceCreateLimit;
+  private Integer monthlyUsedInvoiceCreate;
 
   /**
    * Price of the subscription plan.

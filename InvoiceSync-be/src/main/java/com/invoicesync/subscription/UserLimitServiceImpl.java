@@ -19,9 +19,9 @@ public class UserLimitServiceImpl implements UserService{
   public int getUsed(final Authentication connectedUser, final LimitType type) {
     final Subscription subscription = getSubscription(connectedUser);
     return switch (type) {
-      case INVOICE_PROCESS -> subscription.getMonthlyUsedInvoiceExportLimit();
-      case RECEIPT_EXPORT -> subscription.getMonthlyUsedReceiptExportLimit();
-      case INVOICE_CREATE -> subscription.getMonthlyUsedInvoiceCreateLimit();
+      case INVOICE_PROCESS -> subscription.getMonthlyUsedInvoiceExport();
+      case RECEIPT_EXPORT -> subscription.getMonthlyUsedReceiptExport();
+      case INVOICE_CREATE -> subscription.getMonthlyUsedInvoiceCreate();
     };
   }
 
@@ -30,9 +30,9 @@ public class UserLimitServiceImpl implements UserService{
     final Subscription subscription = getSubscription(connectedUser);
     switch (limitType) {
       case INVOICE_PROCESS ->
-          subscription.setMonthlyUsedInvoiceExportLimit(subscription.getMonthlyUsedInvoiceExportLimit() + 1);
-      case RECEIPT_EXPORT -> subscription.setMonthlyUsedReceiptExportLimit(subscription.getMonthlyUsedReceiptExportLimit() + 1);
-      case INVOICE_CREATE -> subscription.setMonthlyUsedInvoiceCreateLimit(subscription.getMonthlyUsedInvoiceCreateLimit() + 1);
+          subscription.setMonthlyUsedInvoiceExport(subscription.getMonthlyUsedInvoiceExport() + 1);
+      case RECEIPT_EXPORT -> subscription.setMonthlyUsedReceiptExport(subscription.getMonthlyUsedReceiptExport() + 1);
+      case INVOICE_CREATE -> subscription.setMonthlyUsedInvoiceCreate(subscription.getMonthlyUsedInvoiceCreate() + 1);
     };
     subscriptionRepository.save(subscription);
   }

@@ -53,7 +53,7 @@ public class SecurityConfig {
         .csrf(csrf ->csrf.disable())
         .authorizeHttpRequests(
             req -> req
-                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/auth/**", "/stripe/webhook").permitAll()
                 .anyRequest().authenticated()
         )
         .sessionManagement(session -> session
