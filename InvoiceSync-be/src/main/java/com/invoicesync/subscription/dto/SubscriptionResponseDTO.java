@@ -25,7 +25,7 @@ public class SubscriptionResponseDTO {
 
   private LocalDateTime endDate;
 
-  private int monthlyUsageLimit;
+  private int monthlyUsedReceiptExportLimit;
 
   private BigDecimal subscriptionPrice;
 

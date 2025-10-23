@@ -35,6 +35,7 @@ export const ApiPaths = {
     BASE: '/subscription',
     USER_PLAN: '/user/plan',
     SUBSCRIBE: '/subscribe',
+    USER_LIMITS: '/user/limit',
   },
   emailSubscribe: {
     BASE: '/email-subscribe',

@@ -1,21 +1,40 @@
 package com.invoicesync.stripe;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.subscription.Subscription;
+import com.invoicesync.subscription.SubscriptionMapper;
+import com.invoicesync.subscription.SubscriptionRepository;
 import com.invoicesync.subscription.enums.SubscriptionPlan;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Event;
+import com.stripe.model.Invoice;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class StripeServiceImpl implements StripeService{
+public class StripeServiceImpl implements StripeService {
+
+  @Value("${app.frontend.url}")
+  private String frontendUrl;
+
+  private final SubscriptionRepository subscriptionRepository;
+
+  private final SubscriptionMapper subscriptionMapper;
 
   @Override
   public Map<String, Object> createCheckoutSession(final String planName, final Authentication connectedUser)
@@ -30,27 +49,74 @@ public class StripeServiceImpl implements StripeService{
     final String priceId = subscriptionPlan.getPriceId();
 
     final List<SessionCreateParams.LineItem> lineItems = List.of(
-        SessionCreateParams.LineItem.builder()
-            .setPrice(priceId)
-            .setQuantity(1L)
-            .build()
-    );
+        SessionCreateParams.LineItem.builder().setPrice(priceId).setQuantity(1L).build());
 
-    SessionCreateParams params = SessionCreateParams.builder()
+    final SessionCreateParams params = SessionCreateParams.builder()
         .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-        .setSuccessUrl("http://localhost:4200/web/limiter")
-        .setCancelUrl("http://localhost:4200/home")
+        .setSuccessUrl(frontendUrl + "/web/limiter")
+        .setCancelUrl(frontendUrl + "/home")
         .addAllLineItem(lineItems)
         .setSubscriptionData(
-            SessionCreateParams.SubscriptionData.builder()
-                .putMetadata("userId", connectedUser.getName())
-                .build()
-        )
+            SessionCreateParams.SubscriptionData.builder().putMetadata("userId", connectedUser.getName()).build())
         .build();
 
-    Session session = Session.create(params);
-
+    final Session session = Session.create(params);
     return Map.of("id", session.getId());
+  }
+
+  @Transactional
+  public void handleSubscriptionPayment(final Event event) {
+    final Invoice invoice = (Invoice) event.getDataObjectDeserializer().getObject().orElseThrow();
+    final var line = invoice.getLines().getData().getFirst();
+    final String userIdStr = line.getMetadata().get("userId");
+    final String priceId = line.getPricing().getPriceDetails().getPrice();
+    final SubscriptionPlan plan = SubscriptionPlan.fromStripePriceId(priceId);
+
+    final LocalDateTime startDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()),
+        ZoneId.systemDefault());
+    final LocalDateTime endDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()),
+        ZoneId.systemDefault());
+
+    final String stripeSubscriptionId = invoice.getParent().getSubscriptionDetails().getSubscription();
+
+    final Optional<Subscription> existingSubscription = subscriptionRepository.findByCreatedByAndSubscriptionActive(
+        userIdStr, true);
+
+    if (existingSubscription.isPresent()) {
+      updateExistingSubscription(existingSubscription.get(), plan, startDate, endDate,
+          BigDecimal.valueOf(plan.getMonthlyPrice()),stripeSubscriptionId);
+    } else {
+      createNewSubscription(invoice, userIdStr);
+    }
+  }
+
+  private void updateExistingSubscription(final Subscription existing, final SubscriptionPlan newPlan,
+      final LocalDateTime startDate, final LocalDateTime endDate, final BigDecimal subscriptionPrice, final String stripeSubscriptionId) {
+
+    final Integer usedInvoices = existing.getMonthlyUsedInvoiceCreate();
+    final Integer usedReceipts = existing.getMonthlyUsedReceiptExport();
+    final Integer usedExports = existing.getMonthlyUsedInvoiceExport();
+
+    existing.setSubscriptionPlan(newPlan);
+    existing.setStartDate(startDate);
+    existing.setEndDate(endDate);
+    existing.setStripeSubscriptionId(stripeSubscriptionId);
+    existing.setSubscriptionPrice(subscriptionPrice);
+
+    existing.setMonthlyInvoiceCreateLimit(newPlan.getMonthlyInvoiceCreateLimit());
+    existing.setMonthlyInvoiceExportLimit(newPlan.getMonthlyInvoiceExportLimit());
+    existing.setMonthlyReceiptExportLimit(newPlan.getMonthlyReceiptExportLimit());
+
+    existing.setMonthlyUsedInvoiceCreate(usedInvoices);
+    existing.setMonthlyUsedInvoiceExport(usedExports);
+    existing.setMonthlyUsedReceiptExport(usedReceipts);
+
+    subscriptionRepository.save(existing);
+  }
+
+  private void createNewSubscription(final Invoice invoice, final String userIdStr) {
+    final Subscription subscription = subscriptionMapper.fromStripeInvoice(invoice, userIdStr);
+    subscriptionRepository.save(subscription);
   }
 
 }

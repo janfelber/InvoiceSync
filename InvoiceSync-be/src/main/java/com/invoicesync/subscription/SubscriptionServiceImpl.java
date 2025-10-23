@@ -30,7 +30,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         .findOne(withUserId(userId))
         .orElseGet(() -> {
           final Subscription empty = new Subscription();
-          // empty.setCreatedBy(userId);
           empty.setSubscriptionPlan(NONE);
           empty.setSubscriptionActive(false);
           empty.setStartDate(null);
@@ -39,9 +38,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
           empty.setMonthlyInvoiceExportLimit(NONE.getMonthlyInvoiceExportLimit());
           empty.setMonthlyInvoiceCreateLimit(NONE.getMonthlyInvoiceCreateLimit());
           empty.setMonthlyReceiptExportLimit(NONE.getMonthlyReceiptExportLimit());
-          empty.setMonthlyUsedInvoiceExportLimit(0);
-          empty.setMonthlyUsedInvoiceCreateLimit(0);
-          empty.setMonthlyUsedReceiptExportLimit(0);
+          empty.setMonthlyUsedInvoiceExport(0);
+          empty.setMonthlyUsedInvoiceCreate(0);
+          empty.setMonthlyUsedReceiptExport(0);
           return empty;
         });
 
@@ -49,18 +48,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         ? subscription.getSubscriptionPlan()
         : NONE;
 
-    return null;
-
-    // return new SubscriptionResponseDTO(
-    //     subscription.getCreatedBy(),
-    //     subscription.getSubscriptionPlan() != null ? subscription.getSubscriptionPlan().name() : null,
-    //     Boolean.TRUE.equals(subscription.getSubscriptionActive()),
-    //     subscription.getStartDate(),
-    //     subscription.getEndDate(),
-    //     subscription.getMonthlyUsedReceiptExportLimit(),
-    //     subscription.getSubscriptionPrice(),
-    //     plan.getFeatures()
-    // );
+    return new SubscriptionResponseDTO(
+        subscription.getCreatedBy(),
+        subscription.getSubscriptionPlan() != null ? subscription.getSubscriptionPlan().name() : null,
+        Boolean.TRUE.equals(subscription.getSubscriptionActive()),
+        subscription.getStartDate(),
+        subscription.getEndDate(),
+        subscription.getMonthlyUsedReceiptExport(),
+        subscription.getSubscriptionPrice(),
+        plan.getFeatures()
+    );
   }
 
   @Override
@@ -78,16 +75,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     final int totalLimit = subscription.getMonthlyInvoiceExportLimit() + subscription.getMonthlyInvoiceCreateLimit()
         + subscription.getMonthlyReceiptExportLimit();
     final int usedLimit =
-        subscription.getMonthlyUsedInvoiceExportLimit() + subscription.getMonthlyUsedInvoiceCreateLimit()
-            + subscription.getMonthlyUsedReceiptExportLimit();
+        subscription.getMonthlyUsedInvoiceExport() + subscription.getMonthlyUsedInvoiceCreate()
+            + subscription.getMonthlyUsedReceiptExport();
 
     final int invoiceExportLimit = subscription.getMonthlyInvoiceExportLimit();
     final int invoiceCreateLimit = subscription.getMonthlyInvoiceCreateLimit();
     final int receiptExportLimit = subscription.getMonthlyReceiptExportLimit();
 
-    final int invoiceExportUsedLimit = subscription.getMonthlyUsedInvoiceExportLimit();
-    final int invoiceCreateUsedLimit = subscription.getMonthlyUsedInvoiceCreateLimit();
-    final int receiptExportUsedLimit = subscription.getMonthlyUsedReceiptExportLimit();
+    final int invoiceExportUsedLimit = subscription.getMonthlyUsedInvoiceExport();
+    final int invoiceCreateUsedLimit = subscription.getMonthlyUsedInvoiceCreate();
+    final int receiptExportUsedLimit = subscription.getMonthlyUsedReceiptExport();
 
     return new LimitResponseDTO(
         usedLimit,

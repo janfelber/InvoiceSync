@@ -24,11 +24,11 @@ export const routes: Routes = [
   // ✅ Public routes – mimo layoutu
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'pricing', component: PricingComponent },
+  { path: 'pricing', component: PricingComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactFormComponent },
   { path: 'web/privacy', component: PrivacyPolicyComponent },
   { path: 'error', component: ErrorComponent },
-  
+
   {
     path: '',
     component: LayoutComponent,

@@ -3,9 +3,14 @@ package com.invoicesync.subscription;
 import static com.invoicesync.subscription.enums.SubscriptionPlan.FREE;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import org.springframework.stereotype.Service;
+
+import com.invoicesync.subscription.enums.SubscriptionPlan;
+import com.stripe.model.Invoice;
 
 @Service
 public class SubscriptionMapper {
@@ -21,15 +26,45 @@ public class SubscriptionMapper {
         .startDate(start)
         .endDate(start.plusDays(DAYS))
         .monthlyInvoiceExportLimit(FREE.getMonthlyInvoiceExportLimit())
-        .monthlyUsedInvoiceExportLimit(0)
+        .monthlyUsedInvoiceExport(0)
         .monthlyReceiptExportLimit(FREE.getMonthlyReceiptExportLimit())
-        .monthlyUsedReceiptExportLimit(0)
+        .monthlyUsedReceiptExport(0)
         .monthlyInvoiceCreateLimit(FREE.getMonthlyInvoiceCreateLimit())
-        .monthlyUsedInvoiceCreateLimit(0)
+        .monthlyUsedInvoiceCreate(0)
         .totalLimit(FREE.getMonthlyInvoiceExportLimit() + FREE.getMonthlyInvoiceCreateLimit()
             + FREE.getMonthlyReceiptExportLimit())
         .subscriptionPrice(BigDecimal.valueOf(FREE.getMonthlyPrice()))
         .build();
+  }
+
+  public Subscription fromStripeInvoice(final Invoice invoice, final String userIdStr) {
+    final var line = invoice.getLines().getData().getFirst();
+
+    final Instant start = Instant.ofEpochSecond(line.getPeriod().getStart());
+    final Instant end = Instant.ofEpochSecond(line.getPeriod().getEnd());
+
+    final LocalDateTime startDate = LocalDateTime.ofInstant(start, ZoneId.systemDefault());
+    final LocalDateTime endDate = LocalDateTime.ofInstant(end, ZoneId.systemDefault());
+
+    final String priceId = line.getPricing().getPriceDetails().getPrice();
+    final SubscriptionPlan plan = SubscriptionPlan.fromStripePriceId(priceId);
+
+    final Subscription subscription = new Subscription();
+    subscription.setSubscriptionPlan(plan);
+    subscription.setStartDate(startDate);
+    subscription.setEndDate(endDate);
+    subscription.setSubscriptionActive(true);
+    subscription.setStripeSubscriptionId(invoice.getParent().getSubscriptionDetails().getSubscription());
+    subscription.setCreatedBy(userIdStr);
+
+    subscription.setMonthlyInvoiceExportLimit(plan.getMonthlyInvoiceExportLimit());
+    subscription.setMonthlyInvoiceCreateLimit(plan.getMonthlyInvoiceCreateLimit());
+    subscription.setMonthlyReceiptExportLimit(plan.getMonthlyReceiptExportLimit());
+    subscription.setMonthlyUsedInvoiceCreate(0);
+    subscription.setMonthlyUsedInvoiceExport(0);
+    subscription.setMonthlyUsedReceiptExport(0);
+
+    return subscription;
   }
 
 }
