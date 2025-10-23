@@ -21,7 +21,8 @@ export const ApiPaths = {
   xmlFile: {
     BASE: '/xml-file',
     FIND_ALL_BY_USER: '/user',
-    SAVE: '/save'
+    SAVE: '/save',
+    EXPORT_BY_ID: (xmlFileId:number) => `/generate-zip/${xmlFileId}`,
   },
   postingAccounts: {
     BASE: '/post-account',
