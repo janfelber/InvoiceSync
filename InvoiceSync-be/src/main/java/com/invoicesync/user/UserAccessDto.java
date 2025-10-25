@@ -10,5 +10,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserAccessDto {
+  private String role;
   private List<SidenavItemDto> sidenav;
 }

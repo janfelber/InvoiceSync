@@ -1,5 +1,7 @@
 package com.invoicesync.auth;
 
+import java.time.Duration;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -30,16 +32,23 @@ public class AuthController {
   public ResponseEntity<?> login(@Valid @RequestBody final LoginRequest request, final HttpServletResponse response) {
     final LoginResponse loginResponse = authService.login(request);
 
+    // 🔒 refreshToken ide iba do HttpOnly cookie
     ResponseCookie cookie = ResponseCookie.from("refreshToken", loginResponse.getRefreshToken())
-        .httpOnly(true)      // aby JS nemohol čítať token
-        .secure(false)        // HTTPS required
-        .path("/")           // dostupné pre celý frontend a API
-        .maxAge(7 * 24 * 60 * 60)
-        .sameSite("Lax")     // alebo "Strict" podľa potreby
+        .httpOnly(true)
+        .secure(true) // nastav na false ak nemáš HTTPS počas vývoja
+        .path("/auth/refresh-token")
+        .maxAge(Duration.ofDays(7))
+        .sameSite("Strict")
         .build();
+
     response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-    return ResponseEntity.ok(loginResponse);
+    // 🔐 klient dostane len accessToken + user info
+    return ResponseEntity.ok(new LoginResponse(
+        loginResponse.getAccessToken(),
+        null, // refresh token odstránime z JSON
+        loginResponse.getUser()
+    ));
   }
 
   @PostMapping("/refresh-token")
@@ -52,8 +61,8 @@ public class AuthController {
   public ResponseEntity<?> logout(final HttpServletResponse response) {
     final ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
         .httpOnly(true)
-        .secure(false)
-        .path("/")
+        .secure(true)
+        .path("/auth/refresh-token")
         .maxAge(0)
         .sameSite("None")
         .build();
