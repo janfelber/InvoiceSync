@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
       throw new RuntimeException("Username already exists: " + registerRequest.getUsername());
     }
 
-    final List<SideNav> defaultSidenav = sideNavRepository.findAllById(List.of(1L, 2L, 3L, 4L, 5L));
+    final List<SideNav> defaultSidenav = sideNavRepository.findAllById(List.of(1L, 2L, 3L, 4L, 5L, 7L, 8L));
 
     final User user = User.builder()
         .fullName(registerRequest.getFullName())
@@ -83,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
 
     final List<SidenavItemDto> sidenavItems = buildMenuHierarchy(user.getSidenav());
 
-    final UserAccessDto userAccessDto = new UserAccessDto(sidenavItems);
+    final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), sidenavItems);
 
     return new LoginResponse(
         tokenPair.getAccessToken(),
@@ -124,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
 
     final String accessToken = jwtService.generateToken(authentication);
     final List<SidenavItemDto> sidenavItems = buildMenuHierarchy(user.getSidenav());
-    final UserAccessDto userAccess = new UserAccessDto(sidenavItems);
+    final UserAccessDto userAccess = new UserAccessDto(user.getRole().name(), sidenavItems);
 
     return new LoginResponse(accessToken, refreshToken, userAccess);
   }
