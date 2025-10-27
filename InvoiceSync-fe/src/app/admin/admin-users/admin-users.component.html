@@ -1,0 +1,37 @@
+
+<main>
+  <div class="pt-13 mx-4 mt-6">
+    <div class="bg-[#f7f7fc] rounded-lg overflow-hidden border border-gray-300">
+      <div class="flex flex-col space-y-0">
+        <div class="flex items-center justify-between py-2.5 px-8">
+          <h2 class="text-lg font-semibold text-gray-700">Users</h2>
+        </div>
+      </div>
+
+      <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300">
+        <thead class="text-xs text-gray-700 bg-[#f7f7fc] border-b border-gray-100">
+        <tr>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Login</th>
+          <th scope="col" class="px-4 py-3 border-r  border-gray-300 last:border-r-0">Meno</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">E-mail</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Dátum vytvorenia</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Posledné prihlásenie</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Posledná aktivita</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="bg-white even:bg-[#f7f7fc] last:border-b-0" *ngFor="let user of usersResponse.content">
+          <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ user.username }}</td>
+          <td class="px-4 py-3 border-r border-gray-300 last:border-r-0 text-blue-600 hover:underline">
+            <a >{{ user.fullName }}</a>
+          </td>
+          <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ user.email }}</td>
+          <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ user.createdOn | date:'d.MM.yyyy' }}</td>
+          <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0"></td>
+          <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

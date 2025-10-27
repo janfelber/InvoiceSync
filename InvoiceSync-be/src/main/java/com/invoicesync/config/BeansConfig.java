@@ -22,7 +22,7 @@ public class BeansConfig {
     final CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(true);
     config.setAllowedOrigins(List.of(
-        "https://localhost:4200",
+        "http://localhost:4200",
         "https://dex.uctovnictvonitra.sk"
     ));
     config.setAllowedHeaders(Arrays.asList(

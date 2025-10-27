@@ -19,16 +19,27 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 import { AuthGuard } from './core/services/auth/auth.guard';
 import { LoginComponent } from './core/auth/login/login.component';
 import { RegisterComponent } from './core/auth/register/register.component';
+import {RoleGuard} from "./core/services/auth/role.guard";
+import {AdminUsersComponent} from "./admin/admin-users/admin-users.component";
+import {AdminLayoutComponent} from "./admin/admin-layout/admin-layout.component";
 
 export const routes: Routes = [
-  // ✅ Public routes – mimo layoutu
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'pricing', component: PricingComponent, canActivate:[AuthGuard] },
   { path: 'contact', component: ContactFormComponent },
   { path: 'web/privacy', component: PrivacyPolicyComponent },
   { path: 'error', component: ErrorComponent },
-
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ROLE_ADMIN'] },
+    children: [
+      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: 'users', component: AdminUsersComponent },
+    ]
+  },
   {
     path: '',
     component: LayoutComponent,

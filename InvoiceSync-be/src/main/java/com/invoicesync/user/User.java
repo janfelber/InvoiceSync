@@ -1,8 +1,11 @@
 package com.invoicesync.user;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.invoicesync.user.sidenav.SideNav;
 
@@ -41,6 +44,12 @@ public class User {
   private String username;
 
   private String password;
+
+  private String email;
+
+  @CreationTimestamp
+  @Column(name = "created_on", updatable = false)
+  private Date createdOn;
 
   @Enumerated(EnumType.STRING)
   private Role role;
