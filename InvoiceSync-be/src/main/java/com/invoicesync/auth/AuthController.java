@@ -35,7 +35,7 @@ public class AuthController {
     // 🔒 refreshToken ide iba do HttpOnly cookie
     ResponseCookie cookie = ResponseCookie.from("refreshToken", loginResponse.getRefreshToken())
         .httpOnly(true)
-        .secure(true) // nastav na false ak nemáš HTTPS počas vývoja
+        .secure(false) // nastav na false ak nemáš HTTPS počas vývoja
         .path("/auth/refresh-token")
         .maxAge(Duration.ofDays(7))
         .sameSite("Strict")
@@ -61,7 +61,7 @@ public class AuthController {
   public ResponseEntity<?> logout(final HttpServletResponse response) {
     final ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
         .httpOnly(true)
-        .secure(true)
+        .secure(false)
         .path("/auth/refresh-token")
         .maxAge(0)
         .sameSite("None")

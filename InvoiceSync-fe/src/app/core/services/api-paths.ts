@@ -63,5 +63,9 @@ export const ApiPaths = {
   stats: {
     BASE: '/stats',
     FIND_BASIC_STATS: (companyId:number) => `/basic-stats/${companyId}`,
+  },
+  admin: {
+    BASE: '/admin',
+    USERS: '/users',
   }
 };

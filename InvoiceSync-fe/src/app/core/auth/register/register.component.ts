@@ -31,7 +31,10 @@ export class RegisterComponent {
     this.auth.register({
       fullName: this.fullName,
       username: this.username,
-      password: this.password}).subscribe({
+      password: this.password,
+      email: this.email
+
+    }).subscribe({
       next: () => console.log('User registered successfully'),
       error: err => console.error('Registration failed', err)
     });

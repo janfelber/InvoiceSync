@@ -54,6 +54,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             req -> req
                 .requestMatchers("/auth/**", "/stripe/webhook").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         )
         .sessionManagement(session -> session

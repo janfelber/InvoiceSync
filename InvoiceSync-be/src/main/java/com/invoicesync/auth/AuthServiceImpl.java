@@ -55,8 +55,9 @@ public class AuthServiceImpl implements AuthService {
     final List<SideNav> defaultSidenav = sideNavRepository.findAllById(List.of(1L, 2L, 3L, 4L, 5L, 7L, 8L));
 
     final User user = User.builder()
-        .fullName(registerRequest.getFullName())
+        .email(registerRequest.getEmail())
         .username(registerRequest.getUsername())
+        .fullName(registerRequest.getFullName())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
         .role(Role.ROLE_USER)
         .sidenav(new HashSet<>(defaultSidenav))

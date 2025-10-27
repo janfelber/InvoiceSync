@@ -31,8 +31,17 @@ export class LoginComponent {
   login() {
     this.auth.login({
       username: this.username,
-      password: this.password}).subscribe({
-      next: () => this.router.navigate(['/home']),
+      password: this.password
+    }).subscribe({
+      next: res => {
+        const role = this.auth.getUserRole() ?? 'ROLE_USER';
+
+        if (role === 'ROLE_ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['error']);
+        }
+      },
       error: err => console.error(err)
     });
   }

@@ -14,6 +14,7 @@ interface SidenavItem {
 
 interface User {
   sidenav: SidenavItem[];
+  role: string;
 }
 
 interface LoginResponse {
@@ -26,6 +27,7 @@ interface LoginResponse {
 export class AuthService {
   private accessToken: string | null = null;
   currentUser: User | null = null;
+  userRole: string | null = null;
   private baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -39,11 +41,13 @@ export class AuthService {
       tap(res => {
         this.accessToken = res.accessToken;
         this.currentUser = res.user;
+        this.userRole = res.user.role;
+        console.log(this.userRole);
       })
     );
   }
 
-  register(data: { fullName: string; username: string; password: string }): Observable<void> {
+  register(data: { fullName: string; username: string; password: string; email: string }): Observable<void> {
     return this.http.post<void>(
       `${this.baseUrl}/auth/register`,
       data
@@ -63,6 +67,7 @@ export class AuthService {
       tap(res => {
         this.accessToken = res.accessToken;
         this.currentUser = res.user;
+        this.userRole = res.user.role
       })
     );
   }
@@ -81,6 +86,13 @@ export class AuthService {
 
   setToken(token: string) {
     this.accessToken = token;
+  }
+
+  getUserRole(): string | null {
+    if (!this.userRole && this.currentUser) {
+      this.userRole = this.currentUser.role;
+    }
+    return this.userRole || null;
   }
 
   logout() {
