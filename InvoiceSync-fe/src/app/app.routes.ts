@@ -22,6 +22,7 @@ import { RegisterComponent } from './core/auth/register/register.component';
 import {RoleGuard} from "./core/services/auth/role.guard";
 import {AdminUsersComponent} from "./admin/admin-users/admin-users.component";
 import {AdminLayoutComponent} from "./admin/admin-layout/admin-layout.component";
+import {AdminUserInfoComponent} from "./admin/admin-user-info/admin-user-info.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +39,7 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'users', pathMatch: 'full' },
       { path: 'users', component: AdminUsersComponent },
+      { path: 'user/:id', component: AdminUserInfoComponent },
     ]
   },
   {
@@ -45,8 +47,8 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'home', component: HomeComponent, pathMatch:'full' },
       { path: 'invoices', component: Invoices },
       { path: 'invoice/new', component: CreateNewInvoice },
       { path: 'xml-convertor', component: XmlConvertorComponent },

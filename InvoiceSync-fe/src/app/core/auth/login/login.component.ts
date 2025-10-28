@@ -39,7 +39,7 @@ export class LoginComponent {
         if (role === 'ROLE_ADMIN') {
           this.router.navigate(['/admin']);
         } else {
-          this.router.navigate(['error']);
+          this.router.navigate(['/home']);
         }
       },
       error: err => console.error(err)
