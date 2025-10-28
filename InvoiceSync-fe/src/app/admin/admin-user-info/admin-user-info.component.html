@@ -1,0 +1,50 @@
+<main class="bg-gray-50">
+  <div class="pt-13 mx-4 mt-6">
+    <div>
+      <div class="mb-4 border-b border-gray-300">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
+            id="user-detail-tab"
+            data-tabs-toggle="#user-detail-content"
+            role="tablist">
+          <li class="me-2 mx-1" role="presentation">
+            <button
+              class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
+              id="user-info-tab"
+              data-tabs-target="#info"
+              type="button"
+              role="tab"
+              aria-controls="info"
+              aria-selected="false">
+              Basic Info
+            </button>
+          </li>
+          <li class="me-2 mx-1" role="presentation">
+            <button
+              class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
+              id="access-tab"
+              data-tabs-target="#access"
+              type="button"
+              role="tab"
+              aria-controls="access"
+              aria-selected="false">
+              Permissions
+            </button>
+          </li>
+        </ul>
+      </div>
+      <!-- tabs content -->
+      <div id="user-detail-tab">
+        <div class="hidden rounded-lg mx-3" id="info" role="tabpanel"
+             aria-labelledby="user-info-tab">
+          <app-user-basic-info [userId]="userId"></app-user-basic-info>
+        </div>
+      </div>
+      <div id="user-detail-tab">
+        <div class="hidden rounded-lg mx-3" id="access" role="tabpanel"
+             aria-labelledby="access-tab">
+          <app-user-basic-info></app-user-basic-info>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

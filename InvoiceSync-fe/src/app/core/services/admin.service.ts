@@ -19,4 +19,8 @@ export class AdminService {
     return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.admin.USERS}?page=${params.page}&size=${params.size}`,
     );
   }
+
+  getUserInfo( userId: string ): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.admin.USER_BY_ID(userId)}`)
+  }
 }

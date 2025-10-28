@@ -1,8 +1,11 @@
 package com.invoicesync.subscription;
 
+import java.util.UUID;
+
 import org.springframework.security.core.Authentication;
 
 import com.invoicesync.subscription.enums.LimitType;
+import com.invoicesync.user.UserDto;
 
 public interface UserService {
 
@@ -31,5 +34,7 @@ public interface UserService {
    * @param limitType type of limit to increment
    */
   void incrementUsed(Authentication connectedUser, LimitType limitType);
+
+  UserDto getUserInfo(UUID userId);
 
 }

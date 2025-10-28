@@ -1,7 +1,10 @@
 package com.invoicesync.admin;
 
+import java.util.UUID;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +28,14 @@ public class AdminController {
       final Authentication connectedUser
   ) {
     return adminService.getUsers(page, size, connectedUser);
+
+
+  }
+
+  @GetMapping("/user/{userId}")
+  public UserDto getUserInfo(@PathVariable final UUID userId) {
+    return adminService.getUserInfo(userId);
+
   }
 
 }
