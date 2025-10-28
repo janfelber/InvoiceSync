@@ -11,7 +11,8 @@ import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialo
   imports: [
     NgForOf,
     FormsModule,
-    DatePipe
+    DatePipe,
+    RouterLink
   ],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css'

@@ -14,11 +14,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -38,5 +36,53 @@ public class SideNav {
   private String label;
   private String icon;
   private String route;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(final Long id) {
+    this.id = id;
+  }
+
+  public SideNav getParent() {
+    return parent;
+  }
+
+  public void setParent(final SideNav parent) {
+    this.parent = parent;
+  }
+
+  public Set<SideNav> getChildren() {
+    return children;
+  }
+
+  public void setChildren(final Set<SideNav> children) {
+    this.children = children;
+  }
+
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(final String label) {
+    this.label = label;
+  }
+
+  public String getIcon() {
+    return icon;
+  }
+
+  public void setIcon(final String icon) {
+    this.icon = icon;
+  }
+
+  public String getRoute() {
+    return route;
+  }
+
+  public void setRoute(final String route) {
+    this.route = route;
+  }
 
 }

@@ -1,6 +1,7 @@
 package com.invoicesync.admin;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.shared.common.PageResponse;
+import com.invoicesync.subscription.UserServiceImpl;
 import com.invoicesync.user.User;
 import com.invoicesync.user.UserDto;
 import com.invoicesync.user.UserMapper;
@@ -19,6 +21,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
+
+  private final UserServiceImpl userService;
 
   private final UserRepository userRepository;
 
@@ -42,6 +46,11 @@ public class AdminServiceImpl implements AdminService {
         users.isFirst(),
         users.isLast()
     );
+  }
+
+  @Override
+  public UserDto getUserInfo(final UUID userId) {
+    return userService.getUserInfo(userId);
   }
 
 }

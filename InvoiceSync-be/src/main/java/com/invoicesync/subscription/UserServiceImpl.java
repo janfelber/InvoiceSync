@@ -2,18 +2,28 @@ package com.invoicesync.subscription;
 
 import static com.invoicesync.subscription.specification.SubscriptionSpecification.withUserId;
 
+import java.util.UUID;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.subscription.enums.LimitType;
+import com.invoicesync.user.User;
+import com.invoicesync.user.UserDto;
+import com.invoicesync.user.UserMapper;
+import com.invoicesync.user.UserRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserLimitServiceImpl implements UserService{
+public class UserServiceImpl implements UserService{
 
   private final SubscriptionRepository subscriptionRepository;
+
+  private final UserRepository userRepository;
+
+  private final UserMapper userMapper;
 
   @Override
   public int getUsed(final Authentication connectedUser, final LimitType type) {
@@ -35,6 +45,12 @@ public class UserLimitServiceImpl implements UserService{
       case INVOICE_CREATE -> subscription.setMonthlyUsedInvoiceCreate(subscription.getMonthlyUsedInvoiceCreate() + 1);
     };
     subscriptionRepository.save(subscription);
+  }
+
+  @Override
+  public UserDto getUserInfo(final UUID userId) {
+    final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
+    return userMapper.toUserInfo(user);
   }
 
   @Override
