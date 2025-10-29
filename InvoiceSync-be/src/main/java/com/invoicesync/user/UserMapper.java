@@ -2,10 +2,21 @@ package com.invoicesync.user;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.subscription.SubscriptionRepository;
+import com.invoicesync.subscription.dto.SubscriptionShort;
+
 @Service
 public class UserMapper {
 
+  private final SubscriptionRepository subscriptionRepository;
+
+  public UserMapper(final SubscriptionRepository subscriptionRepository) {
+    this.subscriptionRepository = subscriptionRepository;
+  }
+
   public UserDto toUserInfo(final User user) {
+    final var subscription = subscriptionRepository.findByCreatedBy(user.getId().toString()).orElse(null);
+
     return UserDto.builder()
         .id(user.getId())
         .username(user.getUsername())
@@ -13,6 +24,12 @@ public class UserMapper {
         .fullName(user.getFullName())
         .role(user.getRole().name())
         .createdOn(user.getCreatedOn())
+        .phoneNumber(user.getPhoneNumber())
+        .subscriptionPlan(SubscriptionShort.builder()
+            .name(subscription.getSubscriptionPlan().name())
+            .price(subscription.getSubscriptionPrice())
+            .features(subscription.getSubscriptionPlan().getFeatures())
+            .build())
         .build();
   }
 

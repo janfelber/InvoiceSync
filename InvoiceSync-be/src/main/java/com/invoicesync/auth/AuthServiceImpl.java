@@ -59,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
         .username(registerRequest.getUsername())
         .fullName(registerRequest.getFullName())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
+        .phoneNumber(registerRequest.getPhoneNumber())
         .role(Role.ROLE_USER)
         .sidenav(new HashSet<>(defaultSidenav))
         .build();
