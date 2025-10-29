@@ -24,6 +24,7 @@ export class RegisterComponent {
   email = '';
   username = '';
   password = '';
+  phoneNumber = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -32,7 +33,8 @@ export class RegisterComponent {
       fullName: this.fullName,
       username: this.username,
       password: this.password,
-      email: this.email
+      email: this.email,
+      phoneNumber: this.phoneNumber
 
     }).subscribe({
       next: () => console.log('User registered successfully'),

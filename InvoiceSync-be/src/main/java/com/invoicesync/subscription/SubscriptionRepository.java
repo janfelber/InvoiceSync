@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long>,
                                                 JpaSpecificationExecutor<Subscription> {
   Optional<Subscription> findByCreatedByAndSubscriptionActive(String createdBy, boolean active);
+
+  Optional<Subscription> findByCreatedBy(String createdBy);
 }

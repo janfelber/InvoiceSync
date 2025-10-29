@@ -23,6 +23,7 @@ import {RoleGuard} from "./core/services/auth/role.guard";
 import {AdminUsersComponent} from "./admin/admin-users/admin-users.component";
 import {AdminLayoutComponent} from "./admin/admin-layout/admin-layout.component";
 import {AdminUserInfoComponent} from "./admin/admin-user-info/admin-user-info.component";
+import {UserSettingsComponent} from "./user-settings/user-settings.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -60,6 +61,7 @@ export const routes: Routes = [
       { path: 'web/mobile-app', component: MobileAppComponent },
       { path: 'web/data-transfer', component: DataTransferTableComponent },
       { path: 'web/data-transfer/:id', component: DataTransferDetailComponent },
+      { path: 'web/settings', component:UserSettingsComponent }
     ]
   },
 

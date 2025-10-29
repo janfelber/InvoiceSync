@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
   private final SubscriptionRepository subscriptionRepository;
 
@@ -50,6 +50,13 @@ public class UserServiceImpl implements UserService{
   @Override
   public UserDto getUserInfo(final UUID userId) {
     final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
+    return userMapper.toUserInfo(user);
+  }
+
+  @Override
+  public UserDto getCurrentUserInfo(final Authentication connectedUser) {
+    final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
+        .orElseThrow(() -> new IllegalStateException("User not found."));
     return userMapper.toUserInfo(user);
   }
 

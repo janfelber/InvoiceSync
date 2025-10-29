@@ -37,4 +37,6 @@ public interface UserService {
 
   UserDto getUserInfo(UUID userId);
 
+  UserDto getCurrentUserInfo(Authentication connectedUser);
+
 }

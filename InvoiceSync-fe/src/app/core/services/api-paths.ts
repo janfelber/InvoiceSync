@@ -68,5 +68,9 @@ export const ApiPaths = {
     BASE: '/admin',
     USERS: '/users',
     USER_BY_ID: (userId:string) => `/user/${userId}`,
+  },
+  user: {
+    BASE: '/user',
+    ME: '/me'
   }
 };

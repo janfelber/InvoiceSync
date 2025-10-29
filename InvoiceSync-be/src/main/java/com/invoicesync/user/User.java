@@ -47,6 +47,9 @@ public class User {
 
   private String email;
 
+  @Column(name = "phone")
+  private String phoneNumber;
+
   @CreationTimestamp
   @Column(name = "created_on", updatable = false)
   private Date createdOn;

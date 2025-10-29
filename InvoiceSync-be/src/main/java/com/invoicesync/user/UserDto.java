@@ -3,6 +3,8 @@ package com.invoicesync.user;
 import java.util.Date;
 import java.util.UUID;
 
+import com.invoicesync.subscription.dto.SubscriptionShort;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,4 +21,6 @@ public class UserDto {
   private String fullName;
   private String role;
   private Date createdOn;
+  private String phoneNumber;
+  private SubscriptionShort subscriptionPlan;
 }
