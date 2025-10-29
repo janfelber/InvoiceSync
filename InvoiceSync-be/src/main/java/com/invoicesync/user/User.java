@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,7 @@ public class User {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "sidenav_id")
   )
+  @OrderBy("id ASC")
   private Set<SideNav> sidenav = new HashSet<>();
 
   public User(final String fullName, final String username, final String password, final Role role, final Set<SideNav> sidenav) {
