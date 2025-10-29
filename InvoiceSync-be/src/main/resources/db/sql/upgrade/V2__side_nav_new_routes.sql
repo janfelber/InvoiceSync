@@ -7,6 +7,6 @@ VALUES
   (4, 'Vystaviť faktúru', NULL, '/invoice/new', 2),
   (5, 'Bločky', NULL, '/web/receipts', 2),
   (6,'XML Convertor','covertrus','/xml-convertor', NULL),
-  (7,'Data Transfer','data_trasnfers','/web/data-transfer', NULL),
-  (8,'Subscription','subscribtion','/web/limiter', NULL)
+  (7,'Data Transfer','data_trasnfer','/web/data-transfer', NULL),
+  (8,'Subscription','subscription','/web/limiter', NULL)
 
