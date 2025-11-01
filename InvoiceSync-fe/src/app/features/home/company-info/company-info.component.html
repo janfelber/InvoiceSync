@@ -104,8 +104,10 @@
       <!-- Top part: user info -->
       <div>
         <div class="flex items-center gap-3 mb-4">
-          <img src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-               alt="Avatar" class="w-10 h-10 rounded-full">
+          <div
+            class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-500 text-white font-semibold text-sm uppercase">
+            {{ getInitials(company.name) }}
+          </div>
           <div>
             <p class="font-semibold text-sm">{{ company.name }}</p>
           </div>

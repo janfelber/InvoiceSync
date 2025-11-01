@@ -7,6 +7,8 @@ import {MenuItem} from "./MenuItem";
 import {IconService} from "./icons/icon.service";
 import {AuthService} from "../core/auth/auth.service";
 import {initFlowbite} from "flowbite";
+import {UserService} from "../core/services/user.service";
+import {UserInfoResponse} from "../pages/settings/user-info.response";
 
 @Component({
     selector: 'app-side-nav',
@@ -22,12 +24,20 @@ import {initFlowbite} from "flowbite";
 export class SideNavComponent implements OnInit{
   menu: MenuItem[] = [];
   dropdownStates: { [key: string]: boolean } = {};
+  public userInfo: UserInfoResponse | null = null;
 
-  constructor( protected iconService: IconService, public authService: AuthService) {}
+  constructor( protected iconService: IconService, public authService: AuthService, public userService: UserService) {}
 
   ngOnInit(): void {
     initFlowbite()
     this.getMenu();
+    this.getUserName();
+  }
+
+  getUserName(): void {
+    this.userService.getCurrentUserInfo().then(response => {
+        this.userInfo = response.data;
+    })
   }
 
   getMenu() {
@@ -40,5 +50,14 @@ export class SideNavComponent implements OnInit{
 
   logout() {
     this.authService.logout();
+  }
+
+  getInitials(name: string): string {
+    if (!name) return '';
+    const words = name.trim().split(' ');
+    if (words.length === 1) {
+      return words[0].substring(0, 2).toUpperCase();
+    }
+    return (words[0][0] + words[1][0]).toUpperCase();
   }
 }

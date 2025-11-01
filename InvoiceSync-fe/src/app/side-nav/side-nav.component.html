@@ -23,8 +23,10 @@
             <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                     aria-expanded="false" data-dropdown-toggle="dropdown-user">
               <span class="sr-only">Open user menu</span>
-              <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                   alt="user photo">
+              <div
+                class="h-8 w-8 rounded-md flex items-center justify-center bg-orange-500 text-white font-semibold text-sm uppercase">
+                {{ getInitials(userInfo!.fullName) }}
+              </div>
             </button>
           </div>
           <div class="absolute right-0 hidden z-10 w-60 bg-white rounded divide-y divide-gray-100 shadow"
