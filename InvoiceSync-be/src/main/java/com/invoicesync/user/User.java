@@ -9,7 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.invoicesync.user.sidenav.SideNav;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -67,6 +69,15 @@ public class User {
   )
   @OrderBy("id ASC")
   private Set<SideNav> sidenav = new HashSet<>();
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(
+      name = "user_features",
+      schema = "invoice_sync",
+      joinColumns = @JoinColumn(name = "user_id")
+  )
+  @Column(name = "code")
+  private Set<Long> featureIds = new HashSet<>();
 
   public User(final String fullName, final String username, final String password, final Role role, final Set<SideNav> sidenav) {
     this.fullName = fullName;

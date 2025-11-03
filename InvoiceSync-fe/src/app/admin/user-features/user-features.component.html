@@ -1,0 +1,36 @@
+<main class="bg-gray-50 min-h-screen flex flex-col items-start justify-start">
+  <div class="bg-white border border-gray-200 rounded-lg w-[400px]">
+    <div>
+      <div class="p-3">
+        <p class="text-sm font-medium text-gray-800">Basic info</p>
+      </div>
+      <div class="border-b border-gray-200"></div>
+    </div>
+    <div class="p-4">
+
+      <div class="flex flex-col " *ngFor="let feature of features">
+
+        <dl class="">
+          <dt class="font-semibold text-gray-900 "><label class="inline-flex items-center cursor-pointer">
+            <label class="inline-flex items-center cursor-pointer">
+              <input type="checkbox" [checked]="feature.enabled" class="sr-only peer">
+              <div
+                class="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-900"> {{ feature.name }}</span>
+            </label>
+
+          </label></dt>
+          <dd class="text-gray-500"> {{ feature.description }}</dd>
+        </dl>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-4">
+    <button type="button"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      Save
+    </button>
+  </div>
+</main>
