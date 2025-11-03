@@ -28,14 +28,11 @@ public class AdminController {
       final Authentication connectedUser
   ) {
     return adminService.getUsers(page, size, connectedUser);
-
-
   }
 
   @GetMapping("/user/{userId}")
   public UserDto getUserInfo(@PathVariable final UUID userId) {
     return adminService.getUserInfo(userId);
-
   }
 
 }

@@ -1,19 +1,26 @@
 package com.invoicesync.feature;
 
-import lombok.Getter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-public enum Feature {
-  EKON_SPECIALTY("ekon_specialty"),
-  OTHER_USER_ROLE("OTHER_USER_ROLE");
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "features", schema = "invoice_sync")
+public class Feature {
 
-  private final String roleName;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long code;
 
-  Feature(String roleName) {
-    this.roleName = roleName;
-  }
-
-  public String getRoleName() {
-    return roleName;
-  }
+  private String text;
 }

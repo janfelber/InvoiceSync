@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.feature.FeatureService;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.subscription.UserServiceImpl;
 import com.invoicesync.user.User;
@@ -23,6 +24,8 @@ import lombok.AllArgsConstructor;
 public class AdminServiceImpl implements AdminService {
 
   private final UserServiceImpl userService;
+
+  private final FeatureService featureService;
 
   private final UserRepository userRepository;
 
