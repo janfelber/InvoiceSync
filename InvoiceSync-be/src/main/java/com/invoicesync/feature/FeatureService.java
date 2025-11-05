@@ -6,4 +6,6 @@ import java.util.UUID;
 public interface FeatureService {
 
   List<FeatureDto> getAllFeatures(UUID userId);
+
+  List<FeatureDto> updateUserFeatures(UUID userId, UpdateUserFeatureRequest request);
 }

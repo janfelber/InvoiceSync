@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { CommonModule } from "@angular/common";
-import {NgComponentOutlet, NgForOf, NgOptimizedImage} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {NgOptimizedImage} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
-import {MENU_ITEMS, navbarDataRedesign} from "./nav-data-redesign";
+import {MENU_ITEMS} from "./nav-data";
 import {MenuItem} from "./MenuItem";
 import {IconService} from "./icons/icon.service";
 import {AuthService} from "../core/auth/auth.service";
@@ -11,37 +11,46 @@ import {UserService} from "../core/services/user.service";
 import {UserInfoResponse} from "../pages/settings/user-info.response";
 
 @Component({
-    selector: 'app-side-nav',
+  selector: 'app-side-nav',
   imports: [
     RouterLink,
     NgOptimizedImage,
     CommonModule,
     RouterLinkActive
   ],
-    templateUrl: './side-nav.component.html',
-    styleUrl: './side-nav.component.css'
+  templateUrl: './side-nav.component.html',
+  styleUrl: './side-nav.component.css'
 })
-export class SideNavComponent implements OnInit{
+export class SideNavComponent implements OnInit {
   menu: MenuItem[] = [];
   dropdownStates: { [key: string]: boolean } = {};
   public userInfo: UserInfoResponse | null = null;
 
-  constructor( protected iconService: IconService, public authService: AuthService, public userService: UserService) {}
+  constructor(protected iconService: IconService, public authService: AuthService, public userService: UserService) {
+  }
 
   ngOnInit(): void {
     initFlowbite()
-    this.getMenu();
     this.getUserName();
+    this.menu = this.filterMenu(MENU_ITEMS, this.authService.userFeatures);
   }
 
   getUserName(): void {
     this.userService.getCurrentUserInfo().then(response => {
-        this.userInfo = response.data;
+      this.userInfo = response.data;
     })
   }
 
-  getMenu() {
-    return this.authService.currentUser?.sidenav || [];
+  private filterMenu(items: MenuItem[], userFeatures: string[]): MenuItem[] {
+    return items
+      .filter(item =>
+        !item.features || item.features.some(f => userFeatures.includes(f))
+      )
+      .map(item => ({
+        ...item,
+        children: item.children ? this.filterMenu(item.children, userFeatures) : undefined
+      }))
+      .filter(item => !item.children || item.children.length > 0);
   }
 
   toggleDropdown(label: string) {

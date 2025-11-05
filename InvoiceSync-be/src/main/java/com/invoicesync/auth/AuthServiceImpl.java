@@ -1,11 +1,9 @@
 package com.invoicesync.auth;
 
-import static com.invoicesync.user.sidenav.SideNavUtils.buildMenuHierarchy;
-
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,13 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.feature.FeatureEnum;
 import com.invoicesync.user.Role;
 import com.invoicesync.user.User;
 import com.invoicesync.user.UserAccessDto;
 import com.invoicesync.user.UserRepository;
-import com.invoicesync.user.sidenav.SideNav;
-import com.invoicesync.user.sidenav.SideNavRepository;
-import com.invoicesync.user.sidenav.SidenavItemDto;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,8 +35,6 @@ public class AuthServiceImpl implements AuthService {
 
   private final UserRepository userRepository;
 
-  private final SideNavRepository sideNavRepository;
-
   private final PasswordEncoder passwordEncoder;
 
   private final AuthenticationManager authenticationManager;
@@ -52,8 +46,6 @@ public class AuthServiceImpl implements AuthService {
       throw new RuntimeException("Username already exists: " + registerRequest.getUsername());
     }
 
-    final List<SideNav> defaultSidenav = sideNavRepository.findAllById(List.of(1L, 2L, 3L, 4L, 5L, 7L, 8L));
-
     final User user = User.builder()
         .email(registerRequest.getEmail())
         .username(registerRequest.getUsername())
@@ -61,7 +53,6 @@ public class AuthServiceImpl implements AuthService {
         .password(passwordEncoder.encode(registerRequest.getPassword()))
         .phoneNumber(registerRequest.getPhoneNumber())
         .role(Role.ROLE_USER)
-        .sidenav(new HashSet<>(defaultSidenav))
         .build();
 
     userRepository.save(user);
@@ -83,9 +74,13 @@ public class AuthServiceImpl implements AuthService {
     final User user = userRepository.findByUsername(loginRequest.getUsername())
         .orElseThrow(() -> new RuntimeException("User not found"));
 
-    final List<SidenavItemDto> sidenavItems = buildMenuHierarchy(user.getSidenav());
+    final Set<String> featureNames = user.getFeatureIds().stream()
+        .map(FeatureEnum::fromId)
+        .map(Enum::name)
+        .collect(Collectors.toSet());
 
-    final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), sidenavItems);
+
+    final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), featureNames);
 
     return new LoginResponse(
         tokenPair.getAccessToken(),
@@ -125,8 +120,13 @@ public class AuthServiceImpl implements AuthService {
     );
 
     final String accessToken = jwtService.generateToken(authentication);
-    final List<SidenavItemDto> sidenavItems = buildMenuHierarchy(user.getSidenav());
-    final UserAccessDto userAccess = new UserAccessDto(user.getRole().name(), sidenavItems);
+
+    final Set<String> featureNames = user.getFeatureIds().stream()
+        .map(FeatureEnum::fromId)
+        .map(Enum::name)
+        .collect(Collectors.toSet());
+
+    final UserAccessDto userAccess = new UserAccessDto(user.getRole().name(), featureNames);
 
     return new LoginResponse(accessToken, refreshToken, userAccess);
   }

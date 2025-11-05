@@ -35,5 +35,13 @@ public class FeatureServiceImpl implements FeatureService {
         .collect(Collectors.toList());
   }
 
+  @Override
+  public List<FeatureDto> updateUserFeatures(final UUID userId, final UpdateUserFeatureRequest request) {
+    final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
+    user.setFeatureIds(request.getFeatureIds());
+    userRepository.save(user);
+    return getAllFeatures(userId);
+  }
+
 }
 

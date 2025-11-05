@@ -30,10 +30,10 @@ export class AdminService {
     return this.apiService.instance.get(`${this.featureUrl}${ApiPaths.feature.USER_BY_ID(userId)}`)
   }
 
-  updateUserFeatures(userId: string, request: { add: unknown[]; remove: unknown[] }): Promise<any> {
-    return this.apiService.instance.post(
-      `${this.baseUrl}${ApiPaths.admin.REMOVE_FEATURE(userId)}`,
-       request
+  updateUserFeatures(userId: string, featureIds: any ): Promise<any> {
+    return this.apiService.instance.put(
+      `${this.baseUrl}${ApiPaths.admin.UPDATE_FEATURES(userId)}`,
+      { featureIds }
     );
   }
 

@@ -1,8 +1,6 @@
 package com.invoicesync.user;
 
-import java.util.List;
-
-import com.invoicesync.user.sidenav.SidenavItemDto;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserAccessDto {
   private String role;
-  private List<SidenavItemDto> sidenav;
+  private Set<String> features;
 }

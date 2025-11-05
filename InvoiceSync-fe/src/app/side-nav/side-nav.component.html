@@ -121,7 +121,7 @@
        aria-label="Sidebar">
   <div class="h-full px-3 py-4 overflow-y-auto bg-white">
     <ul class="space-y-2">
-      <li *ngFor="let item of authService.currentUser?.sidenav">
+      <li *ngFor="let item of menu">
         <ng-container *ngIf="item.children?.length; else singleLink">
           <button
             type="button"

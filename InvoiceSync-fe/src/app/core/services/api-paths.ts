@@ -68,7 +68,7 @@ export const ApiPaths = {
     BASE: '/admin',
     USERS: '/users',
     USER_BY_ID: (userId: string) => `/user/${userId}`,
-    REMOVE_FEATURE: (userId: string) => `/user/${userId}/feature`,
+    UPDATE_FEATURES: (userId: string) => `/user/${userId}/features`,
   },
   feature: {
     BASE: '/feature',

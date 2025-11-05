@@ -7,8 +7,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.invoicesync.user.sidenav.SideNav;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -19,9 +17,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,16 +55,6 @@ public class User {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(
-      name = "user_sidenav",
-      schema = "invoice_sync",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "sidenav_id")
-  )
-  @OrderBy("id ASC")
-  private Set<SideNav> sidenav = new HashSet<>();
-
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(
       name = "user_features",
@@ -79,12 +64,11 @@ public class User {
   @Column(name = "code")
   private Set<Long> featureIds = new HashSet<>();
 
-  public User(final String fullName, final String username, final String password, final Role role, final Set<SideNav> sidenav) {
+  public User(final String fullName, final String username, final String password, final Role role) {
     this.fullName = fullName;
     this.username = username;
     this.password = password;
     this.role = role;
-    this.sidenav = sidenav;
   }
 
 }
