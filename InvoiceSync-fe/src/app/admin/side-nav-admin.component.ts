@@ -25,10 +25,6 @@ export class SideNavAdminComponent implements OnInit{
     initFlowbite()
   }
 
-  getMenu() {
-    return this.authService.currentUser?.sidenav || [];
-  }
-
   toggleDropdown(label: string) {
     this.dropdownStates[label] = !this.dropdownStates[label];
   }

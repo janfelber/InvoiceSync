@@ -5,16 +5,9 @@ import {catchError, map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
 
-interface SidenavItem {
-  label: string;
-  icon: string;
-  route: string;
-  children?: SidenavItem[];
-}
-
 interface User {
-  sidenav: SidenavItem[];
   role: string;
+  features: string[];
 }
 
 interface LoginResponse {
@@ -28,6 +21,7 @@ export class AuthService {
   private accessToken: string | null = null;
   currentUser: User | null = null;
   userRole: string | null = null;
+  userFeatures: string[] = [];
   private baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -42,7 +36,7 @@ export class AuthService {
         this.accessToken = res.accessToken;
         this.currentUser = res.user;
         this.userRole = res.user.role;
-        console.log(this.userRole);
+        this.userFeatures = res.user.features
       })
     );
   }
@@ -67,7 +61,8 @@ export class AuthService {
       tap(res => {
         this.accessToken = res.accessToken;
         this.currentUser = res.user;
-        this.userRole = res.user.role
+        this.userRole = res.user.role;
+        this.userFeatures = res.user.features;
       })
     );
   }
@@ -93,6 +88,10 @@ export class AuthService {
       this.userRole = this.currentUser.role;
     }
     return this.userRole || null;
+  }
+
+  getUserFeatures(): string[] {
+    return this.userFeatures;
   }
 
   logout() {

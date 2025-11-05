@@ -1,7 +1,7 @@
 export interface MenuItem {
   label: string;
   route?: string;
-  roles: string[];
+  features?: string[];
   icon?: string;
   children?: MenuItem[];
 }

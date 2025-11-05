@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.feature.FeatureDto;
 import com.invoicesync.feature.FeatureService;
+import com.invoicesync.feature.UpdateUserFeatureRequest;
 import com.invoicesync.shared.common.PageResponse;
 import com.invoicesync.subscription.UserServiceImpl;
 import com.invoicesync.user.User;
@@ -54,6 +56,11 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public UserDto getUserInfo(final UUID userId) {
     return userService.getUserInfo(userId);
+  }
+
+  @Override
+  public List<FeatureDto> updateUserFeatures(final UUID userId, final UpdateUserFeatureRequest request) {
+    return featureService.updateUserFeatures(userId, request);
   }
 
 }
