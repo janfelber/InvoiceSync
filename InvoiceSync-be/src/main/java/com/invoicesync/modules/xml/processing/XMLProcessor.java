@@ -24,324 +24,262 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class XMLProcessor {
-    public static void processFile(String xmlContent, File fileTemplate, OutputStream outputStream) throws Exception {
-        try {
-            // Path to the XML file
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            dbFactory.setNamespaceAware(true);
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-            InputStream xmlInputStream = new ByteArrayInputStream(xmlContent.getBytes());
-            Document doc = dBuilder.parse(xmlInputStream);
-            doc.getDocumentElement().normalize();
+  public static void processFile(final String xmlContent, final File fileTemplate, final OutputStream outputStream) throws Exception {
+    try {
+      // Path to the XML file
+      final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      dbFactory.setNamespaceAware(true);
+      final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-            String uhrada_eng;
+      final InputStream xmlInputStream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+      final Document doc = dBuilder.parse(xmlInputStream);
+      doc.getDocumentElement().normalize();
 
-            try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
-                NodeList nList = doc.getElementsByTagName("doklad");
+      String uhrada_eng;
 
-                for (int temp = 0; temp < nList.getLength(); temp++) {
-                    Node nNode = nList.item(temp);
+      try (ZipOutputStream zos = new ZipOutputStream(outputStream)) {
+        final NodeList nList = doc.getElementsByTagName("doklad");
 
-                    Document templateDoc = dBuilder.parse(fileTemplate);
-                    templateDoc.getDocumentElement().normalize();
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+          final Node nNode = nList.item(temp);
 
-                    NodeList paymentTypeList = templateDoc.getElementsByTagName("inv:paymentType");
+          final Document templateDoc = dBuilder.parse(fileTemplate);
+          templateDoc.getDocumentElement().normalize();
 
-                    Element element = (Element) nNode;
+          final NodeList paymentTypeList = templateDoc.getElementsByTagName("inv:paymentType");
 
+          final Element element = (Element) nNode;
 
-                    NodeList polozky = element.getElementsByTagName("polozka");
-                    String invNamespace = "http://www.stormware.cz/schema/version_2/invoice.xsd"; // Correct namespace for invoice-related elements
-                    NodeList invoiceItems = templateDoc.getElementsByTagNameNS(invNamespace, "invoiceItem");
+          final NodeList polozky = element.getElementsByTagName("polozka");
+          final String invNamespace = "http://www.stormware.cz/schema/version_2/invoice.xsd"; // Correct namespace for invoice-related elements
+          final NodeList invoiceItems = templateDoc.getElementsByTagNameNS(invNamespace, "invoiceItem");
 
-                    if (polozky.getLength() == 1) {
-                        System.out.println(polozky.getLength());
-                        // If there is only one "polozka", remove the second and third invoiceItems from the template virtually not modify the template
-                        //remove redundant invoiceItems and save the xml file
-                        Element invoiceItem2 = (Element) invoiceItems.item(1);
-                        invoiceItem2.getParentNode().removeChild(invoiceItem2);// Remove the second invoiceItem
+          if (polozky.getLength() == 1) {
+            System.out.println(polozky.getLength());
+            // If there is only one "polozka", remove the second and third invoiceItems from the template virtually not modify the template
+            //remove redundant invoiceItems and save the xml file
+            final Element invoiceItem2 = (Element) invoiceItems.item(1);
+            invoiceItem2.getParentNode().removeChild(invoiceItem2);// Remove the second invoiceItem
 
-                        //remove the third invoiceItem
-                        Element invoiceItem3 = (Element) invoiceItems.item(1);
-                        invoiceItem3.getParentNode().removeChild(invoiceItem3);
+            //remove the third invoiceItem
+            final Element invoiceItem3 = (Element) invoiceItems.item(1);
+            invoiceItem3.getParentNode().removeChild(invoiceItem3);
 
-                        NodeList nodeList = templateDoc.getElementsByTagNameNS("http://www.stormware.cz/schema/version_2/invoice.xsd", "invoiceSummary");
-                        Node invoiceSummaryNode = nodeList.item(0);
-                        invoiceSummaryNode.getParentNode().removeChild(invoiceSummaryNode);
+            final NodeList nodeList = templateDoc.getElementsByTagNameNS(
+                "http://www.stormware.cz/schema/version_2/invoice.xsd", "invoiceSummary");
+            final Node invoiceSummaryNode = nodeList.item(0);
+            invoiceSummaryNode.getParentNode().removeChild(invoiceSummaryNode);
 
-                        NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
-                        NodeList price = templateDoc.getElementsByTagName("typ:price");
-                        NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
-                        NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
+            final NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
+            final NodeList price = templateDoc.getElementsByTagName("typ:price");
+            final NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
+            final NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
 
-                        processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 0);
-                    }
+            processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 0);
+          }
 
+          if (polozky.getLength() == 2) {
+            final Element invoiceItem3 = (Element) invoiceItems.item(2);
+            invoiceItem3.getParentNode().removeChild(invoiceItem3);
 
-                    if (polozky.getLength() == 2) {
-                        Element invoiceItem3 = (Element) invoiceItems.item(2);
-                        invoiceItem3.getParentNode().removeChild(invoiceItem3);
+            final Element firstPolozka = (Element) polozky.item(0);
+            final Element secondPolozka = (Element) polozky.item(1);
 
-                        Element firstPolozka = (Element) polozky.item(0);
-                        Element secondPolozka = (Element) polozky.item(1);
+            final NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
+            final NodeList price = templateDoc.getElementsByTagName("typ:price");
+            final NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
+            final NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
 
-                        NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
-                        NodeList price = templateDoc.getElementsByTagName("typ:price");
-                        NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
-                        NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
+            final String cena_cenik = getElementText(element, "cena_cenik");
+            final String casta_dph = getElementText(element, "castka_dph");
+            final String cena_celkem = getElementText(element, "cena_celkem");
 
-                        String cena_cenik = getElementText(element, "cena_cenik");
-                        String casta_dph = getElementText(element, "castka_dph");
-                        String cena_celkem = getElementText(element, "cena_celkem");
+            final BigDecimal cenaCelkem = new BigDecimal(cena_celkem);
+            final BigDecimal castkaDph = new BigDecimal(casta_dph);
+            final BigDecimal sum = cenaCelkem.add(castkaDph);
 
-                        BigDecimal cenaCelkem = new BigDecimal(cena_celkem);
-                        BigDecimal castkaDph = new BigDecimal(casta_dph);
-                        BigDecimal sum = cenaCelkem.add(castkaDph);
+            final Element unitPirceElement = (Element) unitPirce.item(0);
+            final Element priceElement = (Element) price.item(0);
+            final Element priceVatElement = (Element) priceVat.item(0);
+            final Element priceSumElement = (Element) priceSum.item(0);
 
-                        Element unitPirceElement = (Element) unitPirce.item(0);
-                        Element priceElement = (Element) price.item(0);
-                        Element priceVatElement = (Element) priceVat.item(0);
-                        Element priceSumElement = (Element) priceSum.item(0);
+            unitPirceElement.setTextContent(cena_cenik);
+            priceElement.setTextContent(cena_cenik);
+            priceVatElement.setTextContent(casta_dph);
+            priceSumElement.setTextContent(sum.toString());
 
-                        unitPirceElement.setTextContent(cena_cenik);
-                        priceElement.setTextContent(cena_cenik);
-                        priceVatElement.setTextContent(casta_dph);
-                        priceSumElement.setTextContent(sum.toString());
+            final String cena_cenik2 = getElementText(secondPolozka, "cena_cenik");
+            final String casta_dph2 = getElementText(secondPolozka, "castka_dph");
+            final String cena_celkem2 = getElementText(secondPolozka, "cena_celkem");
 
-                        String cena_cenik2 = getElementText(secondPolozka, "cena_cenik");
-                        String casta_dph2 = getElementText(secondPolozka, "castka_dph");
-                        String cena_celkem2 = getElementText(secondPolozka, "cena_celkem");
+            final Element unitPirceElement2 = (Element) unitPirce.item(1);
+            final Element priceElement2 = (Element) price.item(1);
+            final Element priceVatElement2 = (Element) priceVat.item(1);
+            final Element priceSumElement2 = (Element) priceSum.item(1);
 
-                        Element unitPirceElement2 = (Element) unitPirce.item(1);
-                        Element priceElement2 = (Element) price.item(1);
-                        Element priceVatElement2 = (Element) priceVat.item(1);
-                        Element priceSumElement2 = (Element) priceSum.item(1);
+            final BigDecimal cenaCelkem2 = new BigDecimal(cena_celkem2);
+            final BigDecimal castkaDph2 = new BigDecimal(casta_dph2);
+            final BigDecimal sum2 = cenaCelkem2.add(castkaDph2);
 
-                        BigDecimal cenaCelkem2 = new BigDecimal(cena_celkem2);
-                        BigDecimal castkaDph2 = new BigDecimal(casta_dph2);
-                        BigDecimal sum2 = cenaCelkem2.add(castkaDph2);
+            unitPirceElement2.setTextContent(cena_cenik2);
+            priceElement2.setTextContent(cena_cenik2);
+            priceVatElement2.setTextContent(casta_dph2);
+            priceSumElement2.setTextContent(sum2.toString());
 
-                        unitPirceElement2.setTextContent(cena_cenik2);
-                        priceElement2.setTextContent(cena_cenik2);
-                        priceVatElement2.setTextContent(casta_dph2);
-                        priceSumElement2.setTextContent(sum2.toString());
+            processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 0);
+            processInvoiceItem((Element) polozky.item(1), unitPirce, price, priceVat, priceSum, 1);
+          }
 
-                        processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 0);
-                        processInvoiceItem((Element) polozky.item(1), unitPirce, price, priceVat, priceSum, 1);
-                    }
+          if (polozky.getLength() == 3) {
 
-                    if (polozky.getLength() == 3) {
+            final NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
+            final NodeList price = templateDoc.getElementsByTagName("typ:price");
+            final NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
+            final NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
 
-                        NodeList unitPirce = templateDoc.getElementsByTagName("typ:unitPrice");
-                        NodeList price = templateDoc.getElementsByTagName("typ:price");
-                        NodeList priceVat = templateDoc.getElementsByTagName("typ:priceVAT");
-                        NodeList priceSum = templateDoc.getElementsByTagName("typ:priceSum");
+            processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 2);
+            processInvoiceItem((Element) polozky.item(1), unitPirce, price, priceVat, priceSum, 0);
+            processInvoiceItem((Element) polozky.item(2), unitPirce, price, priceVat, priceSum, 1);
+          }
 
-//                        Element firstPolozka = (Element) polozky.item(0);
-//                        Element secondPolozka = (Element) polozky.item(1);
-//                        Element thirdPolozka = (Element) polozky.item(2);
-//
-//                        String cena_cenik = getElementText(firstPolozka, "cena_cenik");
-//                        String casta_dph = getElementText(firstPolozka, "castka_dph");
-//                        String cena_celkem = getElementText(firstPolozka, "cena_celkem");
-//
-//                        BigDecimal cenaCelkem = new BigDecimal(cena_celkem);
-//                        BigDecimal castkaDph = new BigDecimal(casta_dph);
-//                        BigDecimal sum = cenaCelkem.add(castkaDph);
-//
-//                        // zaokruhlenie
-//                        Element unitPirceElement = (Element) unitPirce.item(2);
-//                        Element priceElement = (Element) price.item(2);
-//                        Element priceVatElement = (Element) priceVat.item(2);
-//                        Element priceSumElement = (Element) priceSum.item(2);
-//
-//                        unitPirceElement.setTextContent(cena_cenik);
-//                        priceElement.setTextContent(cena_cenik);
-//                        priceVatElement.setTextContent(casta_dph);
-//                        priceSumElement.setTextContent(sum.toString());
-//
-//                        String cena_cenik2 = getElementText(secondPolozka, "cena_cenik");
-//                        String casta_dph2 = getElementText(secondPolozka, "castka_dph");
-//                        String cena_celkem2 = getElementText(secondPolozka, "cena_celkem");
-//
-//                        System.out.println("cena_cenik2: " + cena_cenik2);
-//                        System.out.println("casta_dph2: " + casta_dph2);
-//                        System.out.println("cena_celkem2: " + cena_celkem2);
-//
-//                        // tovar price
-//                        Element unitPirceElement2 = (Element) unitPirce.item(0);
-//                        Element priceElement2 = (Element) price.item(0);
-//                        Element priceVatElement2 = (Element) priceVat.item(0);
-//                        Element priceSumElement2= (Element) priceSum.item(0);
-//
-//                        BigDecimal cenaCelkem2 = new BigDecimal(cena_celkem2);
-//                        BigDecimal castkaDph2 = new BigDecimal(casta_dph2);
-//                        BigDecimal sum2 = cenaCelkem2.add(castkaDph2);
-//
-//                        unitPirceElement2.setTextContent(cena_cenik2);
-//                        priceElement2.setTextContent(cena_cenik2);
-//                        priceVatElement2.setTextContent(casta_dph2);
-//                        priceSumElement2.setTextContent(sum2.toString());
-//
-//                        String cena_cenik3 = getElementText(thirdPolozka, "cena_cenik");
-//                        String casta_dph3 = getElementText(thirdPolozka, "castka_dph");
-//                        String cena_celkem3 = getElementText(thirdPolozka, "cena_celkem");
-//
-//                        // doprava
-//                        Element unitPirceElement3 = (Element) unitPirce.item(1);
-//                        Element priceElement3 = (Element) price.item(1);
-//                        Element priceVatElement3 = (Element) priceVat.item(1);
-//                        Element priceSumElement3 = (Element) priceSum.item(1);
-//
-//                        BigDecimal cenaCelkem3 = new BigDecimal(cena_celkem3);
-//                        BigDecimal castkaDph3 = new BigDecimal(casta_dph3);
-//                        BigDecimal sum3 = cenaCelkem3.add(castkaDph3);
-//
-//                        unitPirceElement3.setTextContent(cena_cenik3);
-//                        priceElement3.setTextContent(cena_cenik3);
-//                        priceVatElement3.setTextContent(casta_dph3);
-//                        priceSumElement3.setTextContent(sum3.toString());
+          if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+            // Extract doklad information
+            final String varSymbol = getElementText(element, "var_symbol");
+            final String extCislo = getElementText(element, "ext_cislo");
+            final String datVyst = getElementText(element, "dat_vyst");
+            final String datZdPln = getElementText(element, "dat_zd_pln");
+            final String datSpl = getElementText(element, "dat_spl");
+            String forma_uhrady = getElementText(element, "forma_uhrady");
+            final String nazev = getElementText(element, "nazev");
+            final String ulica = getElementText(element, "ulice");
+            final String psc = getElementText(element, "psc");
+            final String obec = getElementText(element, "obec");
 
-                        processInvoiceItem((Element) polozky.item(0), unitPirce, price, priceVat, priceSum, 2);
-                        processInvoiceItem((Element) polozky.item(1), unitPirce, price, priceVat, priceSum, 0);
-                        processInvoiceItem((Element) polozky.item(2), unitPirce, price, priceVat, priceSum, 1);
-                    }
+            // Format the date
+            final String formattedDatVyst = formatDate(datVyst, "dd.MM.yyyy", "yyyy-MM-dd");
+            final String formattedDatZdPln = formatDate(datZdPln, "dd.MM.yyyy", "yyyy-MM-dd");
+            final String formattedDatSpl = formatDate(datSpl, "dd.MM.yyyy", "yyyy-MM-dd");
 
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                        // Extract doklad information
-                        String varSymbol = getElementText(element, "var_symbol");
-                        String extCislo = getElementText(element, "ext_cislo");
-                        String datVyst = getElementText(element, "dat_vyst");
-                        String datZdPln = getElementText(element, "dat_zd_pln");
-                        String datSpl = getElementText(element, "dat_spl");
-                        String forma_uhrady = getElementText(element, "forma_uhrady");
-                        String nazev = getElementText(element, "nazev");
-                        String ulica = getElementText(element, "ulice");
-                        String psc = getElementText(element, "psc");
-                        String obec = getElementText(element, "obec");
-
-                        // Format the date
-                        String formattedDatVyst = formatDate(datVyst, "dd.MM.yyyy", "yyyy-MM-dd");
-                        String formattedDatZdPln = formatDate(datZdPln, "dd.MM.yyyy", "yyyy-MM-dd");
-                        String formattedDatSpl = formatDate(datSpl, "dd.MM.yyyy", "yyyy-MM-dd");
-
-                        if (forma_uhrady.equals("PKO")) {
-                            forma_uhrady = "Plat.kartou";
-                            uhrada_eng = "creditcard";
-                        } else {
-                            forma_uhrady = "Dobierkou";
-                            uhrada_eng = "delivery";
-                        }
-
-                        Element paymentTypeElement = (Element) paymentTypeList.item(0);
-
-                        NodeList idsList = paymentTypeElement.getElementsByTagName("typ:ids");
-                        NodeList numberRequested = templateDoc.getElementsByTagName("typ:numberRequested");
-                        NodeList symVarList = templateDoc.getElementsByTagName("inv:symVar");
-                        NodeList symParList = templateDoc.getElementsByTagName("inv:symPar");
-                        NodeList date = templateDoc.getElementsByTagName("inv:date");
-                        NodeList dateTax = templateDoc.getElementsByTagName("inv:dateTax");
-                        NodeList dateDue = templateDoc.getElementsByTagName("inv:dateDue");
-                        NodeList dateAccounting = templateDoc.getElementsByTagName("inv:dateAccounting");
-                        NodeList name = templateDoc.getElementsByTagName("typ:name");
-                        NodeList city = templateDoc.getElementsByTagName("typ:city");
-                        NodeList street = templateDoc.getElementsByTagName("typ:street");
-                        NodeList zip = templateDoc.getElementsByTagName("typ:zip");
-                        NodeList numberOrder = templateDoc.getElementsByTagName("inv:numberOrder");
-                        NodeList paymentMethod = templateDoc.getElementsByTagName("typ:paymentType");
-
-                        Element numberRequestedElement = (Element) numberRequested.item(0);
-                        Element idsListElement = (Element) idsList.item(0);
-                        Element symVarElement = (Element) symVarList.item(0);
-                        Element symParElement = (Element) symParList.item(0);
-                        Element dateElement = (Element) date.item(0);
-                        Element dateTaxElement = (Element) dateTax.item(0);
-                        Element dateDueElement = (Element) dateDue.item(0);
-                        Element dateAccountingElement = (Element) dateAccounting.item(0);
-                        Element nameElement = (Element) name.item(0);
-                        Element cityElement = (Element) city.item(0);
-                        Element streetElement = (Element) street.item(0);
-                        Element zipElement = (Element) zip.item(0);
-                        Element numberOrderElement = (Element) numberOrder.item(0);
-                        Element paymentMethodElement = (Element) paymentMethod.item(0);
-
-                        numberRequestedElement.setTextContent(extCislo);
-                        numberOrderElement.setTextContent(varSymbol);
-                        symVarElement.setTextContent(varSymbol);
-                        symParElement.setTextContent(varSymbol);
-                        dateElement.setTextContent(formattedDatVyst);
-                        dateTaxElement.setTextContent(formattedDatZdPln);
-                        dateDueElement.setTextContent(formattedDatSpl);
-                        dateAccountingElement.setTextContent(formattedDatZdPln);
-                        nameElement.setTextContent(nazev);
-                        cityElement.setTextContent(obec);
-                        streetElement.setTextContent(ulica);
-                        zipElement.setTextContent(psc);
-                        paymentMethodElement.setTextContent(uhrada_eng);
-                        idsListElement.setTextContent(forma_uhrady);
-
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8))) {
-                            saveXML(templateDoc, writer);
-                        }
-
-                        String uniqueFilename = "generated_file_" + extCislo + ".xml";
-                        ZipEntry zipEntry = new ZipEntry(uniqueFilename);
-                        zos.putNextEntry(zipEntry);
-                        zos.write(byteArrayOutputStream.toByteArray());
-                        zos.closeEntry();
-                    }
-
-                }
+            if ("PKO".equals(forma_uhrady)) {
+              forma_uhrady = "Plat.kartou";
+              uhrada_eng = "creditcard";
+            } else {
+              forma_uhrady = "Dobierkou";
+              uhrada_eng = "delivery";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            final Element paymentTypeElement = (Element) paymentTypeList.item(0);
+
+            final NodeList idsList = paymentTypeElement.getElementsByTagName("typ:ids");
+            final NodeList numberRequested = templateDoc.getElementsByTagName("typ:numberRequested");
+            final NodeList symVarList = templateDoc.getElementsByTagName("inv:symVar");
+            final NodeList symParList = templateDoc.getElementsByTagName("inv:symPar");
+            final NodeList date = templateDoc.getElementsByTagName("inv:date");
+            final NodeList dateTax = templateDoc.getElementsByTagName("inv:dateTax");
+            final NodeList dateDue = templateDoc.getElementsByTagName("inv:dateDue");
+            final NodeList dateAccounting = templateDoc.getElementsByTagName("inv:dateAccounting");
+            final NodeList name = templateDoc.getElementsByTagName("typ:name");
+            final NodeList city = templateDoc.getElementsByTagName("typ:city");
+            final NodeList street = templateDoc.getElementsByTagName("typ:street");
+            final NodeList zip = templateDoc.getElementsByTagName("typ:zip");
+            final NodeList numberOrder = templateDoc.getElementsByTagName("inv:numberOrder");
+            final NodeList paymentMethod = templateDoc.getElementsByTagName("typ:paymentType");
+
+            final Element numberRequestedElement = (Element) numberRequested.item(0);
+            final Element idsListElement = (Element) idsList.item(0);
+            final Element symVarElement = (Element) symVarList.item(0);
+            final Element symParElement = (Element) symParList.item(0);
+            final Element dateElement = (Element) date.item(0);
+            final Element dateTaxElement = (Element) dateTax.item(0);
+            final Element dateDueElement = (Element) dateDue.item(0);
+            final Element dateAccountingElement = (Element) dateAccounting.item(0);
+            final Element nameElement = (Element) name.item(0);
+            final Element cityElement = (Element) city.item(0);
+            final Element streetElement = (Element) street.item(0);
+            final Element zipElement = (Element) zip.item(0);
+            final Element numberOrderElement = (Element) numberOrder.item(0);
+            final Element paymentMethodElement = (Element) paymentMethod.item(0);
+
+            numberRequestedElement.setTextContent(extCislo);
+            numberOrderElement.setTextContent(varSymbol);
+            symVarElement.setTextContent(varSymbol);
+            symParElement.setTextContent(varSymbol);
+            dateElement.setTextContent(formattedDatVyst);
+            dateTaxElement.setTextContent(formattedDatZdPln);
+            dateDueElement.setTextContent(formattedDatSpl);
+            dateAccountingElement.setTextContent(formattedDatZdPln);
+            nameElement.setTextContent(nazev);
+            cityElement.setTextContent(obec);
+            streetElement.setTextContent(ulica);
+            zipElement.setTextContent(psc);
+            paymentMethodElement.setTextContent(uhrada_eng);
+            idsListElement.setTextContent(forma_uhrady);
+
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try (BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(byteArrayOutputStream, StandardCharsets.UTF_8))) {
+              saveXML(templateDoc, writer);
+            }
+
+            final String uniqueFilename = "generated_file_" + extCislo + ".xml";
+            final ZipEntry zipEntry = new ZipEntry(uniqueFilename);
+            zos.putNextEntry(zipEntry);
+            zos.write(byteArrayOutputStream.toByteArray());
+            zos.closeEntry();
+          }
+
         }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    private static void processInvoiceItem(Element polozka, NodeList unitPriceList, NodeList priceList, NodeList priceVatList, NodeList priceSumList, int invoiceItemIndex) {
-        String cenaCenik = getElementText(polozka, "cena_cenik");
-        String castkaDph = getElementText(polozka, "castka_dph");
-        String cenaCelkem = getElementText(polozka, "cena_celkem");
+  private static void processInvoiceItem(final Element polozka, final NodeList unitPriceList, final NodeList priceList,
+      final NodeList priceVatList, final NodeList priceSumList, final int invoiceItemIndex) {
+    final String cenaCenik = getElementText(polozka, "cena_cenik");
+    final String castkaDph = getElementText(polozka, "castka_dph");
+    final String cenaCelkem = getElementText(polozka, "cena_celkem");
 
-        BigDecimal cenaCelkemDecimal = new BigDecimal(cenaCelkem);
-        BigDecimal castkaDphDecimal = new BigDecimal(castkaDph);
-        BigDecimal sum = cenaCelkemDecimal.add(castkaDphDecimal);
+    final BigDecimal cenaCelkemDecimal = new BigDecimal(cenaCelkem);
+    final BigDecimal castkaDphDecimal = new BigDecimal(castkaDph);
+    final BigDecimal sum = cenaCelkemDecimal.add(castkaDphDecimal);
 
-        Element unitPriceElement = (Element) unitPriceList.item(invoiceItemIndex);
-        Element priceElement = (Element) priceList.item(invoiceItemIndex);
-        Element priceVatElement = (Element) priceVatList.item(invoiceItemIndex);
-        Element priceSumElement = (Element) priceSumList.item(invoiceItemIndex);
+    final Element unitPriceElement = (Element) unitPriceList.item(invoiceItemIndex);
+    final Element priceElement = (Element) priceList.item(invoiceItemIndex);
+    final Element priceVatElement = (Element) priceVatList.item(invoiceItemIndex);
+    final Element priceSumElement = (Element) priceSumList.item(invoiceItemIndex);
 
-        unitPriceElement.setTextContent(cenaCenik);
-        priceElement.setTextContent(cenaCenik);
-        priceVatElement.setTextContent(castkaDph);
-        priceSumElement.setTextContent(sum.toString());
+    unitPriceElement.setTextContent(cenaCenik);
+    priceElement.setTextContent(cenaCenik);
+    priceVatElement.setTextContent(castkaDph);
+    priceSumElement.setTextContent(sum.toString());
+  }
+
+  private static void saveXML(final Document doc, final Writer writer) throws Exception {
+    final javax.xml.transform.TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+    final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+    final javax.xml.transform.dom.DOMSource source = new javax.xml.transform.dom.DOMSource(doc);
+    final javax.xml.transform.stream.StreamResult result = new javax.xml.transform.stream.StreamResult(writer);
+    transformer.transform(source, result);
+  }
+
+  private static String getElementText(final Element element, final String tagName) {
+    final NodeList list = element.getElementsByTagName(tagName);
+    return list.getLength() > 0 ? list.item(0).getTextContent() : null;
+  }
+
+  private static String formatDate(final String dateStr, final String originalFormat, final String targetFormat) {
+    try {
+      final SimpleDateFormat sdf = new SimpleDateFormat(originalFormat);
+      final Date date = sdf.parse(dateStr);
+      sdf.applyPattern(targetFormat);
+      return sdf.format(date);
+    } catch (Exception e) {
+      System.out.println("Chyba pri formátovaní dátumu: " + e.getMessage());
+      return null;
     }
+  }
 
-    private static void saveXML(Document doc, Writer writer) throws Exception {
-        javax.xml.transform.TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        javax.xml.transform.dom.DOMSource source = new javax.xml.transform.dom.DOMSource(doc);
-        javax.xml.transform.stream.StreamResult result = new javax.xml.transform.stream.StreamResult(writer);
-        transformer.transform(source, result);
-    }
-
-    private static String getElementText(Element element, String tagName) {
-        NodeList list = element.getElementsByTagName(tagName);
-        return list.getLength() > 0 ? list.item(0).getTextContent() : null;
-    }
-
-    private static String formatDate(String dateStr, String originalFormat, String targetFormat) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(originalFormat);
-            Date date = sdf.parse(dateStr);
-            sdf.applyPattern(targetFormat);
-            return sdf.format(date);
-        } catch (Exception e) {
-            System.out.println("Chyba pri formátovaní dátumu: " + e.getMessage());
-            return null;
-        }
-    }
 }

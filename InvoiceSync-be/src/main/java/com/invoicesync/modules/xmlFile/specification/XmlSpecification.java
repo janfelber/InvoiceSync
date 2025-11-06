@@ -2,7 +2,7 @@ package com.invoicesync.modules.xmlFile.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.invoicesync.modules.xmlFile.XmlFile;
+import com.invoicesync.modules.xmlFile.model.XmlFile;
 
 public class XmlSpecification {
 
