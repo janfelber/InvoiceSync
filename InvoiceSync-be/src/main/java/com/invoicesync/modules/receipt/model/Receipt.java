@@ -1,0 +1,174 @@
+package com.invoicesync.modules.receipt.model;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.invoicesync.core.common.BaseEntity;
+import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.core.enums.InvoiceStatus;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
+/**
+ * Receipt entity representing a different type of accounting document.
+ * Each receipt belongs to a {@link Company}, contains {@link ReceiptItem}s
+ */
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "receipt", schema = "invoice_sync")
+public class Receipt extends BaseEntity {
+
+  /**
+   * TODO implement this
+   * Unique, incrementing number of the receipt within the company.
+   * This number must change for every export of new receipt to ensure it can be imported
+   * into external accounting software (e.g., Pohoda) without conflicts.
+   * Static or duplicate numbers are not allowed.
+   * Each company can configure how receipt numbering works
+   */
+  @Column(name = "cash_receipt_number")
+  private String receiptNumber;
+
+  // @ManyToOne
+  // @JoinColumn(name = "\"user_id\"")
+  // private UserDemo user;
+
+  /**
+   * Company to which the receipt belongs.
+   */
+  @ManyToOne
+  @JoinColumn(name = "\"company\"")
+  private Company company;
+
+  /**
+   * Line items (products or services) of the receipt.
+   */
+  @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ReceiptItem> items = new ArrayList<>();
+
+  /**
+   * Date when receipt was created.
+   */
+  private String date;
+
+  /**
+   * Date of payment.
+   */
+  @Column(name = "date_payment")
+  private String datePayment;
+
+  /**
+   * Date relevant for tax purposes.
+   */
+  @Column(name = "date_tax")
+  private String dateTax;
+
+  /**
+   * Business partner's name.
+   */
+  @Column(name = "partner_name")
+  private String partnerName;
+
+  /**
+   * Business partner's city.
+   */
+  @Column(name = "partner_city")
+  private String partnerCity;
+
+  /**
+   * Business partner's street.
+   */
+  @Column(name = "partner_street")
+  private String partnerStreet;
+
+  /**
+   * Business partner's postal code.
+   */
+  @Column(name = "partner_zip")
+  private String partnerZip;
+
+  /**
+   * Business partner's registration number (IČO).
+   */
+  @Column(name = "partner_registration_number")
+  private String partnerRegistrationNumber;
+
+  /**
+   * Business partner's tax identification number (DIČ).
+   */
+  @Column(name = "partner_tax_id")
+  private String partnerTaxId;
+
+  /**
+   * Business partner's VAT identification number (IČ DPH).
+   */
+  @Column(name = "partner_vat_id")
+  private String partnerVatId;
+
+  /**
+   * Date of import.
+   */
+  @Column(name = "import_date")
+  private Date importDate;
+
+  /**
+   * Total price of the receipt (including VAT if applicable).
+   */
+  @Column(name = "total_price")
+  private String totalPrice;
+
+  /**
+   *
+   */
+  @Column(name = "accounting")
+  private String accounting;
+
+  /**
+   *
+   */
+  @Column(name = "classification_vat")
+  private String classificationVAT;
+
+  /**
+   *
+   */
+  @Column(name = "classification_kv_vat")
+  private String classificationKVVAT;
+
+  /**
+   * Description or note about the receipt.
+   */
+  @Column(name = "description")
+  private String description;
+
+  /**
+   * Indicates if the receipt was paid by credit card.
+   */
+  @Column(name = "is_paid_by_card")
+  private boolean isPaidByCard;
+
+  /**
+   * Processing status of the invoice within the accounting workflow.
+   */
+  @Enumerated(EnumType.STRING)
+  @Column(name = "receipt_status")
+  private InvoiceStatus status;
+}

@@ -1,6 +1,6 @@
 package com.invoicesync.partner;
 
-import com.invoicesync.shared.utils.VatUtils;
+import com.invoicesync.core.utils.VatUtils;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
