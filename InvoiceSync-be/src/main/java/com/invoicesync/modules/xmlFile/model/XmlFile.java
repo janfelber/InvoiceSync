@@ -1,4 +1,4 @@
-package com.invoicesync.modules.xmlFile;
+package com.invoicesync.modules.xmlFile.model;
 
 import com.invoicesync.core.common.BaseEntity;
 
@@ -27,12 +27,9 @@ public class XmlFile extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String file_name;
+    @Column(name = "file_name")
+    private String fileName;
 
-    @Column(columnDefinition = "XML")
-    private String xml_content;
-
-    // @ManyToOne
-    // @JoinColumn(name = "\"user_id\"")
-    // private UserDemo user;
+    @Column(columnDefinition = "XML", name = "xml_content")
+    private String xmlContent;
 }

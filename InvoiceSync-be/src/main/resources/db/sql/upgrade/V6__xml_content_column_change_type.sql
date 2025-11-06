@@ -1,0 +1,1 @@
+ALTER TABLE invoice_sync.xml_file ALTER COLUMN xml_content TYPE text;
