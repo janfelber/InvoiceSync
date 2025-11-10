@@ -82,6 +82,7 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
   @Override
   public byte[] generateReceiptXml(final ReceiptRequestDTO request, final Authentication connectedUser)
       throws RuntimeException {
+
     limitGuardService.checkLimit(connectedUser, LimitType.RECEIPT_EXPORT);
 
     final String templatePath = resolveTemplatePath(request);
