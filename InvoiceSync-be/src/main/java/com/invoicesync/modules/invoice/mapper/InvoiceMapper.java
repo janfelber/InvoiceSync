@@ -5,17 +5,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.core.enums.InvoiceStatus;
 import com.invoicesync.core.identity.MyIdentity;
 import com.invoicesync.core.identity.PartnerDto;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.InvoiceDocument;
-import com.invoicesync.modules.document.model.InvoiceDocumentsTableResponse;
-import com.invoicesync.core.enums.InvoiceStatus;
+import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.model.InvoiceDetails;
+import com.invoicesync.modules.invoice.model.InvoiceItem;
 import com.invoicesync.modules.invoice.model.InvoiceRequest;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
-import com.invoicesync.modules.invoice.model.Invoice;
-import com.invoicesync.modules.invoice.model.InvoiceItem;
 import com.invoicesync.modules.receipt.model.ReceiptItemDto;
 
 @Service
@@ -120,8 +120,8 @@ public class InvoiceMapper {
         .build();
   }
 
-  public InvoiceDocumentsTableResponse toInvoiceDocumentsTableResponse(final InvoiceDocument invoiceDocument) {
-    return InvoiceDocumentsTableResponse.builder()
+  public DocumentTableResponse toInvoiceDocumentsTableResponse(final InvoiceDocument invoiceDocument) {
+    return DocumentTableResponse.builder()
         .id(invoiceDocument.getId())
         .documentName(invoiceDocument.getDocumentName())
         .fileName(invoiceDocument.getFilename())

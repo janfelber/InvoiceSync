@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.core.identity.MyIdentity;
 import com.invoicesync.core.identity.PartnerDto;
 import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.document.model.ReceiptDocument;
 import com.invoicesync.modules.receipt.model.DetailDto;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
@@ -131,6 +133,16 @@ public class ReceiptMapper {
             .taxId(receipt.getPartnerTaxId())
             .vatId(receipt.getPartnerVatId())
             .build())
+        .build();
+  }
+
+  public DocumentTableResponse receiptDocumentTableResponse(final ReceiptDocument document) {
+    return DocumentTableResponse.builder()
+        .id(document.getId())
+        .documentName(document.getDocumentName())
+        .fileName(document.getFilename())
+        .createdAt(document.getCreatedDate())
+        .note(document.getNote())
         .build();
   }
 }

@@ -3,6 +3,7 @@ package com.invoicesync.core.filestorage.service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.modules.invoice.model.Invoice;
+import com.invoicesync.modules.receipt.model.Receipt;
 
 public interface FileStorageService {
 
@@ -16,4 +17,5 @@ public interface FileStorageService {
    */
   String saveFile(MultipartFile document, Invoice invoice, String connectedUserId);
 
+  String saveReceiptFile(MultipartFile document, Receipt receiptId, String connectedUserId);
 }

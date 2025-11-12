@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.document.model.AddDocumentData;
-import com.invoicesync.modules.document.model.InvoiceDocumentsTableResponse;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
 
@@ -64,6 +64,7 @@ public interface InvoiceService {
    * @param connectedUser currently authenticated user
    * @param additionalDocumentData optional additional metadata for the document
    */
+  // TODO make this that this method can be used for receipts as well
   void uploadDocument(MultipartFile document, Boolean canDeleteDocument, Long invoiceId, Authentication connectedUser,
       @Nullable AddDocumentData additionalDocumentData
   );
@@ -91,6 +92,6 @@ public interface InvoiceService {
    * @param connectedUser currently authenticated user
    * @return list response of invoice documents
    */
-  List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
+  List<DocumentTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
 
 }

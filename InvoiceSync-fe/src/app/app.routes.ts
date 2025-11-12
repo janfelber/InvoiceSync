@@ -25,6 +25,7 @@ import {AdminLayoutComponent} from "./admin/admin-layout/admin-layout.component"
 import {AdminUserInfoComponent} from "./admin/admin-user-info/admin-user-info.component";
 import {UserSettingsComponent} from "./user-settings/user-settings.component";
 import {FeatureGuard} from "./core/services/feature.guard";
+import {ReceiptInspectComponent} from "./features/receipt/receipt-inspect/receipt-inspect.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -60,7 +61,7 @@ export const routes: Routes = [
         data: {feature: 'EKON_SPECIALTY'}
       },
       {path: 'web/receipts', component: ReceiptsComponent},
-      {path: 'web/receipts/:id', component: ReceiptDetailsComponent},
+      {path: 'web/receipts/:id', component: ReceiptInspectComponent},
       {path: 'web/company/:id', component: CompanyDetailsComponent},
       {path: 'web/invoices/:id', component: InvoiceDisplay},
       {path: 'web/limiter', component: InvoiceLimiterComponent},

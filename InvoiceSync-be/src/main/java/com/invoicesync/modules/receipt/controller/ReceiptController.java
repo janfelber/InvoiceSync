@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.exception.LimitExceededException;
+import com.invoicesync.modules.document.model.AddDocumentData;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.service.PohodaXmlService;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
@@ -98,6 +101,15 @@ public class ReceiptController {
     return ResponseEntity.ok(receiptService.findById(receiptId));
   }
 
+  @GetMapping("/{receipt-id}/documents")
+  public ResponseEntity<List<DocumentTableResponse>> findDocumentsByReceiptId(
+      @PathVariable("receipt-id") final Long receiptId,
+      final Authentication connectedUser) {
+    return ResponseEntity.ok(
+        receiptService.findDocumentsByReceipt(receiptId, connectedUser)
+    );
+  }
+
   @PostMapping("/save")
   public ResponseEntity<List<Long>> saveReceipts(
       @RequestParam("file") final MultipartFile[] files,
@@ -112,6 +124,17 @@ public class ReceiptController {
     return ResponseEntity.ok(savedIds);
   }
 
+  @PostMapping(value = "/upload/document/{receipt-id}", consumes = "multipart/form-data")
+  public ResponseEntity<?> uploadDocument(
+      @RequestPart("file") final MultipartFile document,
+      @PathVariable("receipt-id") final Long receiptId,
+      @RequestPart("data") final AddDocumentData addDocumentData,
+      final Authentication connectedUser
+  ) {
+    receiptService.uploadReceiptDocument(document, true, receiptId, connectedUser, addDocumentData);
+    return ResponseEntity.ok().build();
+  }
+
   @PatchMapping("/update/{receiptId}")
   public ResponseEntity<Receipt> updateReceipt(@PathVariable final Long receiptId,
       @RequestBody final ReceiptRequest receipt) {
@@ -121,5 +144,14 @@ public class ReceiptController {
   @DeleteMapping("/{receiptId}")
   public void deleteReceipt(@PathVariable final Long receiptId, final Authentication connectedUser) {
     receiptService.deleteReceiptById(receiptId, connectedUser);
+  }
+
+  @DeleteMapping("/delete/document/{document-id}")
+  public ResponseEntity<Long> deleteDocument(
+      @PathVariable("document-id") final Long documentId,
+      final Authentication connectedUser
+  ) {
+    receiptService.deleteReceiptDocument(documentId, connectedUser);
+    return ResponseEntity.ok(documentId);
   }
 }
