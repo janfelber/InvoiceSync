@@ -6,6 +6,7 @@ import {ApiPaths} from "./api-paths";
 import {CompanyRequest} from "../models/company-request";
 import {ReceiptRequest} from "../models/receipt-request";
 import {ApiService} from "../auth/api";
+import {AddDocumentData} from "../models/add-document-data";
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,35 @@ export class ReceiptService {
 
     return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.receipt.SAVE}`, formData
     );
+  }
+
+  getReceiptDocumentsById(params: { receiptId: number }): Promise<any> {
+    return this.apiService.instance.get(
+      `${this.baseUrl}${ApiPaths.receipt.DOCUMENTS(params.receiptId)}`
+    )
+  }
+
+  addDocumentToReceipt(params: {
+    receiptId: number,
+    file: File,
+    additionalDocumentData: AddDocumentData
+  }): Promise<any> {
+    const formData = new FormData();
+    formData.append('file', params.file);
+
+    const blob = new Blob([JSON.stringify(params.additionalDocumentData)], {type: 'application/json'});
+    formData.append('data', blob);
+
+    return this.apiService.instance.post(
+      `${this.baseUrl}${ApiPaths.receipt.ADD_DOCUMENT_TO_RECEIPT(params.receiptId)}`,
+      formData,
+    )
+  }
+
+  deleteDocumentFromReceipt(params: { documentId: number }): Promise<any> {
+    return this.apiService.instance.delete(
+      `${this.baseUrl}${ApiPaths.receipt.DELETE_DOCUMENT_FROM_RECEIPT(params.documentId)}`
+    )
   }
 
   updateReceipt(params: { receiptId: number, receipt: ReceiptRequest }): Promise<any> {

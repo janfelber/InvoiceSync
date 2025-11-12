@@ -19,10 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.document.model.AddDocumentData;
-import com.invoicesync.modules.document.model.InvoiceDocumentsTableResponse;
-import com.invoicesync.modules.invoice.service.InvoiceService;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
+import com.invoicesync.modules.invoice.service.InvoiceService;
 
 @RestController
 @RequestMapping("/invoice")
@@ -56,7 +56,7 @@ public class InvoiceController {
   }
 
   @GetMapping("/{invoice-id}/documents")
-  public ResponseEntity<List<InvoiceDocumentsTableResponse>> findDocumentsByInvoiceId(
+  public ResponseEntity<List<DocumentTableResponse>> findDocumentsByInvoiceId(
       @PathVariable("invoice-id") final Long invoiceId,
       final Authentication connectedUser) {
     return ResponseEntity.ok(

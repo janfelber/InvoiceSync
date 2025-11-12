@@ -1,9 +1,14 @@
 package com.invoicesync.modules.receipt.service;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.modules.document.model.AddDocumentData;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
@@ -60,6 +65,12 @@ public interface ReceiptService {
     */
    Receipt updateReceiptById(Long receiptId, ReceiptRequest receipt);
 
+   void uploadReceiptDocument(MultipartFile document, Boolean canDeleteDocument, Long receiptId,
+       Authentication connectedUser, @Nullable AddDocumentData additionalDocumentData);
+
+   void deleteReceiptDocument(Long documentId, Authentication connectedUser);
+
+   List<DocumentTableResponse> findDocumentsByReceipt(Long receiptId, Authentication connectedUser);
 
    /**
     * Deletes an existing receipt.

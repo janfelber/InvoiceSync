@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InvoiceDocumentsTableResponse {
+public class DocumentTableResponse {
 
   private Long id;
 

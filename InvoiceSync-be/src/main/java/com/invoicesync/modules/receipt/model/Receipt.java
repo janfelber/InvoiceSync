@@ -5,8 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.invoicesync.core.common.BaseEntity;
-import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.core.enums.InvoiceStatus;
+import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.document.model.ReceiptDocument;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -63,6 +64,12 @@ public class Receipt extends BaseEntity {
    */
   @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ReceiptItem> items = new ArrayList<>();
+
+  /**
+   * Attached documents related to the receipt (e.g., scans, PDFs).
+   */
+  @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ReceiptDocument> documents = new ArrayList<>();
 
   /**
    * Date when receipt was created.

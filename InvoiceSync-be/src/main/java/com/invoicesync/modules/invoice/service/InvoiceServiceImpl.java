@@ -35,24 +35,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.core.exception.DownloadDocumentException;
-import com.invoicesync.modules.document.model.InvoiceDocument;
-import com.invoicesync.modules.document.repository.InvoiceDocumentRepository;
-import com.invoicesync.modules.document.model.AddDocumentData;
-import com.invoicesync.modules.document.model.InvoiceDocumentsTableResponse;
 import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.repository.CompanyRepository;
-import com.invoicesync.modules.invoice.repository.InvoiceRepository;
+import com.invoicesync.modules.document.model.AddDocumentData;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.document.model.InvoiceDocument;
+import com.invoicesync.modules.document.repository.InvoiceDocumentRepository;
+import com.invoicesync.modules.invoice.mapper.InvoiceMapper;
+import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.model.InvoiceRequest;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
-import com.invoicesync.modules.invoice.mapper.InvoiceMapper;
-import com.invoicesync.modules.invoice.model.Invoice;
+import com.invoicesync.modules.invoice.repository.InvoiceRepository;
 import com.invoicesync.modules.ocr.OCRService;
-import com.invoicesync.partner.CompaniesRegistry;
-import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.modules.subscription.guard.service.LimitGuardService;
+import com.invoicesync.partner.CompaniesRegistry;
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
 
@@ -262,7 +262,7 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public List<InvoiceDocumentsTableResponse> findDocumentsByInvoiceId(final Long invoiceId,
+  public List<DocumentTableResponse> findDocumentsByInvoiceId(final Long invoiceId,
       final Authentication connectedUser) {
 
     final Invoice invoice = invoiceRepository.findById(invoiceId)

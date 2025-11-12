@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +38,13 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.exception.DownloadDocumentException;
+import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.core.utils.ParseUtils;
-import com.invoicesync.modules.company.repository.CompanyRepository;
+import com.invoicesync.modules.document.model.AddDocumentData;
+import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.document.model.ReceiptDocument;
+import com.invoicesync.modules.document.repository.ReceiptDocumentRepository;
 import com.invoicesync.modules.receipt.mapper.ReceiptMapper;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
@@ -50,34 +57,38 @@ import com.invoicesync.modules.receipt.repository.ReceiptRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
-
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
 
   @Qualifier("ekasaWebClient")
   private final WebClient ekasaClient;
 
-  private final CompanyRepository companyRepository;
-  //
-  // private CompanyRepository companyRepository;
+  private final ReceiptMapper receiptMapper;
 
-  private ReceiptRepository receiptRepository;
+  private final FileStorageService fileStorageService;
+
+  private final ReceiptRepository receiptRepository;
+
+  private final ReceiptDocumentRepository documentRepository;
+
+  private final ReceiptDocumentRepository receiptDocumentRepository;
 
   // private final CurrentUserService currentUserService;
-
-  private final ReceiptMapper receiptMapper;
 
   @Autowired
   public ReceiptServiceImpl(
       @Qualifier("ekasaWebClient") final WebClient ekasaClient,
-      final CompanyRepository companyRepository,
+      final ReceiptMapper receiptMapper,
+      final FileStorageService fileStorageService,
       final ReceiptRepository receiptRepository,
-      final ReceiptMapper receiptMapper
-  ) {
+      final ReceiptDocumentRepository documentRepository,
+      final ReceiptDocumentRepository receiptDocumentRepository) {
     this.ekasaClient = ekasaClient;
-    this.companyRepository = companyRepository;
-    this.receiptRepository = receiptRepository;
     this.receiptMapper = receiptMapper;
+    this.fileStorageService = fileStorageService;
+    this.receiptRepository = receiptRepository;
+    this.documentRepository = documentRepository;
+    this.receiptDocumentRepository = receiptDocumentRepository;
   }
 
   @Override
@@ -145,8 +156,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 
       final Receipt receipt = receiptMapper.toReceipt(request);
 
-      return receiptRepository.save(receipt).getId();
-
+      receiptRepository.save(receipt);
+      uploadReceiptDocument(qrCodeImage, false, receipt.getId(), connectedUser, null);
+      return receipt.getId();
     } catch (Exception e) {
       throw new RuntimeException("Chyba pri parsovaní JSON odpovede", e);
     }
@@ -192,6 +204,68 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     receiptRepository.save(receipt);
     return receipt;
+  }
+
+  @Override
+  public void uploadReceiptDocument(final MultipartFile document, final Boolean canDeleteDocument,
+      final Long receiptId,
+      final Authentication connectedUser, @Nullable final AddDocumentData additionalDocumentData) {
+
+    final Receipt receipt = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("No receipt found with id: " + receiptId));
+
+    final var documentToUpload = fileStorageService.saveReceiptFile(document, receipt, connectedUser.getName());
+
+    final ReceiptDocument receiptDocument = new ReceiptDocument();
+    receiptDocument.setReceipt(receipt);
+    receiptDocument.setFilename(document.getOriginalFilename());
+    receiptDocument.setDocument(documentToUpload);
+    receiptDocument.setCanDelete(canDeleteDocument);
+
+    if (additionalDocumentData != null) {
+      receiptDocument.setDocumentName(additionalDocumentData.documentName());
+      receiptDocument.setNote(additionalDocumentData.note());
+    } else {
+      receiptDocument.setDocumentName(document.getOriginalFilename());
+    }
+
+    documentRepository.save(receiptDocument);
+  }
+
+  @Override
+  public void deleteReceiptDocument(final Long documentId, final Authentication connectedUser) {
+    final ReceiptDocument receiptDocument = receiptDocumentRepository.findById(documentId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt document not found"));
+
+    if (!receiptDocument.isCanDelete()) {
+      throw new DownloadDocumentException(
+          "This document cannot be deleted because it is source of data for invoice " + receiptDocument.getReceipt()
+              .getId()
+      );
+    }
+
+    if (receiptDocument.getReceipt().getCreatedBy() != null && receiptDocument.getReceipt().getCreatedBy()
+        .equals(connectedUser.getName())) {
+      receiptDocumentRepository.deleteById(documentId);
+    } else {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this document.");
+    }
+  }
+
+  @Override
+  public List<DocumentTableResponse> findDocumentsByReceipt(final Long receiptId, final Authentication connectedUser) {
+    final Receipt receipt = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("No receipt found with id: " + receiptId));
+
+    if (!receipt.getCreatedBy().equals(connectedUser.getName())) {
+      throw new AccessDeniedException("You cannot access documents of this receipt.");
+    }
+
+    final List<ReceiptDocument> documents = documentRepository.findByReceiptId(receiptId);
+
+    return documents.stream()
+        .map(receiptMapper::receiptDocumentTableResponse)
+        .toList();
   }
 
   @Override
