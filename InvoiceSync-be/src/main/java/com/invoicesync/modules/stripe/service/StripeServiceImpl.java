@@ -8,21 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.modules.subscription.model.Subscription;
-import com.invoicesync.modules.subscription.mapper.SubscriptionMapper;
-import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
+import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
+import com.invoicesync.core.utils.SubscriptionUtil;
+import com.invoicesync.modules.subscription.mapper.SubscriptionMapper;
+import com.invoicesync.modules.subscription.model.Subscription;
+import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.Invoice;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,6 +39,8 @@ public class StripeServiceImpl implements StripeService {
 
   private final SubscriptionMapper subscriptionMapper;
 
+  private final StripeConfig stripePriceConfig;
+
   @Override
   public Map<String, Object> createCheckoutSession(final String planName, final Authentication connectedUser)
       throws StripeException {
@@ -46,7 +51,7 @@ public class StripeServiceImpl implements StripeService {
       throw new IllegalArgumentException("Invalid subscription plan: " + planName);
     }
 
-    final String priceId = subscriptionPlan.getPriceId();
+    final String priceId = stripePriceConfig.getPriceIdForPlan(subscriptionPlan);
 
     final List<SessionCreateParams.LineItem> lineItems = List.of(
         SessionCreateParams.LineItem.builder().setPrice(priceId).setQuantity(1L).build());
@@ -70,7 +75,7 @@ public class StripeServiceImpl implements StripeService {
     final var line = invoice.getLines().getData().getFirst();
     final String userIdStr = line.getMetadata().get("userId");
     final String priceId = line.getPricing().getPriceDetails().getPrice();
-    final SubscriptionPlan plan = SubscriptionPlan.fromStripePriceId(priceId);
+    final SubscriptionPlan plan = SubscriptionUtil.fromStripePriceId(priceId);
 
     final LocalDateTime startDate = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()),
         ZoneId.systemDefault());

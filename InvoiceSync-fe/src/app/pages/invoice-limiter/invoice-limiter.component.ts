@@ -1,11 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {loadStripe} from '@stripe/stripe-js';
-import {AxiosService} from "../../core/axios.service";
 import {CommonModule} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
-import {SubscriptionModalComponent} from "../../shared/subscription-modal/subscription-modal.component";
 import {Router, RouterLink} from "@angular/router";
 import {SubscriptionService} from "../../core/services/subscription.service";
 import {initFlowbite} from "flowbite";
@@ -17,7 +12,6 @@ import {initFlowbite} from "flowbite";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    SubscriptionModalComponent,
     RouterLink
   ],
   styleUrls: ['./invoice-limiter.component.css']
@@ -25,20 +19,13 @@ import {initFlowbite} from "flowbite";
 export class InvoiceLimiterComponent implements OnInit {
 
   loadingSubscriptionInfo = false;
-
-  private stripe: any;
   subscriptionUpgradeEssentialsOpen = false
 
 
   constructor(
-    private http: HttpClient,
     private subscriptionService: SubscriptionService,
     private router: Router,
-    private axiosService: AxiosService
   ) {
-    loadStripe('pk_test_51RLMmHLJ07OMo5e7EGMfE7pFwZxxbvpqLnnJOIMqcyenWj8RdMKXpR3yvOyF6hDT5kcrLQNuu0NzTEfK7Ve82hpe00CnLSNGIN').then(stripe => {
-      this.stripe = stripe;
-    });
   }
 
   ngOnInit() {
@@ -107,47 +94,7 @@ export class InvoiceLimiterComponent implements OnInit {
     this.subscriptionService.getUserLimits()
       .then(response => {
         this.userLimit = response.data;
-        console.log("user limit", response.data);
       });
-  }
-
-  get usedPercentage(): number {
-    if (this.userLimit.totalLimit === 0) return 0;
-    return Math.round((this.userLimit.usedLimit / this.userLimit.totalLimit) * 100);
-  }
-
-
-  proceedToEssentials() {
-
-    this.http.post<{ id: string }>(
-      'http://localhost:8080/stripe/create-checkout-session',
-      {},
-    ).subscribe(async (res) => {
-      if (this.stripe) {
-        await this.stripe.redirectToCheckout({sessionId: res.id});
-      }
-    });
-  }
-
-
-  async subscribe(plan: 'FREE' | 'ESSENTIALS' | 'PRO' | 'ENTERPRISE'): Promise<void> {
-
-    try {
-      const response = await this.axiosService.request(
-        'POST',
-        'http://localhost:8080/subscription/subscribe',
-        {plan},
-        {
-          'Content-Type': 'application/json'
-        }
-      );
-
-      if (this.stripe) {
-        await this.stripe.redirectToCheckout({sessionId: response.data.id});
-      }
-    } catch (error) {
-      console.error('Chyba pri Stripe subscribe:', error);
-    }
   }
 
   protected readonly RouterLink = RouterLink;

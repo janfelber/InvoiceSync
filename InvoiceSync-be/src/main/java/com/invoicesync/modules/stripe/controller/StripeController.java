@@ -1,5 +1,6 @@
 package com.invoicesync.modules.stripe.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,22 +11,24 @@ import com.invoicesync.modules.stripe.service.StripeService;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
 
-import lombok.AllArgsConstructor;
-
 @RestController
-@AllArgsConstructor
 public class StripeController {
 
-  private StripeService stripeService;
-  private static final String STRIPE_WEBHOOK_SECRET = "whsec_P8k8tcVJUsoepfujhP4nVloiuBnX4hVr";
+  private final StripeService stripeService;
+
+  @Value("${stripe.webhook.secret}")
+  private String stripeWebhookSecret;
+
+  public StripeController(final StripeService stripeService) {
+    this.stripeService = stripeService;
+  }
 
   @PostMapping("/stripe/webhook")
   public ResponseEntity<String> handleStripeWebhook(@RequestBody final String payload,
       @RequestHeader("Stripe-Signature") final String sigHeader) {
     final Event event;
-
     try {
-      event = Webhook.constructEvent(payload, sigHeader, STRIPE_WEBHOOK_SECRET);
+      event = Webhook.constructEvent(payload, sigHeader, stripeWebhookSecret);
     } catch (Exception e) {
       return ResponseEntity.badRequest().body("Invalid signature");
     }

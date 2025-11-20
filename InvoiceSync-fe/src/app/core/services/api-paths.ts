@@ -79,6 +79,7 @@ export const ApiPaths = {
   },
   user: {
     BASE: '/user',
-    ME: '/me'
+    ME: '/me',
+    FULL_NAME: '/me/name',
   }
 };

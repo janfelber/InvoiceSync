@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 
-import com.invoicesync.modules.user.model.UserDto;
 import com.invoicesync.core.enums.LimitType;
+import com.invoicesync.modules.user.model.UserDto;
 
 public interface UserService {
 
@@ -36,6 +36,8 @@ public interface UserService {
   void incrementUsed(Authentication connectedUser, LimitType limitType);
 
   UserDto getUserInfo(UUID userId);
+
+  String getUserName(Authentication connectedUser);
 
   UserDto getCurrentUserInfo(Authentication connectedUser);
 

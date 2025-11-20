@@ -1,16 +1,15 @@
 package com.invoicesync.modules.subscription.service;
 
-import static com.invoicesync.core.enums.SubscriptionPlan.ENTERPRISE;
 import static com.invoicesync.core.enums.SubscriptionPlan.NONE;
 import static com.invoicesync.modules.subscription.specification.SubscriptionSpecification.withUserId;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.core.enums.FeatureEnum;
 import com.invoicesync.core.enums.SubscriptionPlan;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
 import com.invoicesync.modules.subscription.mapper.SubscriptionMapper;
@@ -60,15 +59,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         ? subscription.getSubscriptionPlan()
         : NONE;
 
-    if (user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
-      subscription.setSubscriptionPlan(ENTERPRISE);
-      subscription.setSubscriptionPrice(BigDecimal.ZERO);
-      subscription.setEndDate(null);
-      subscription.setMonthlyInvoiceExportLimit(ENTERPRISE.getMonthlyInvoiceExportLimit());
-      subscription.setMonthlyInvoiceCreateLimit(ENTERPRISE.getMonthlyInvoiceCreateLimit());
-      subscription.setMonthlyReceiptExportLimit(ENTERPRISE.getMonthlyReceiptExportLimit());
-    }
-
     return new SubscriptionResponseDTO(
         subscription.getCreatedBy(),
         subscription.getSubscriptionPlan() != null ? subscription.getSubscriptionPlan().name() : null,
@@ -110,19 +100,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     final int invoiceCreateUsedLimit = subscription.getMonthlyUsedInvoiceCreate();
     final int receiptExportUsedLimit = subscription.getMonthlyUsedReceiptExport();
 
-    if (user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
-      return new LimitResponseDTO(
-          usedLimit,
-          Integer.MAX_VALUE,
-          Integer.MAX_VALUE,
-          invoiceExportUsedLimit,
-          Integer.MAX_VALUE,
-          receiptExportUsedLimit,
-          Integer.MAX_VALUE,
-          invoiceCreateUsedLimit
-      );
-    }
-
     return new LimitResponseDTO(
         usedLimit,
         totalLimit,
@@ -135,4 +112,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     );
   }
 
+  @Override
+  public void setEnterpriseSubscriptionForUser(final User user) {
+    final Subscription subscription = subscriptionRepository.findByCreatedBy(String.valueOf(user.getId()))
+        .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + user.getId()));
+
+    subscription.setSubscriptionPlan(SubscriptionPlan.ENTERPRISE);
+    subscription.setSubscriptionActive(true);
+    subscription.setStartDate(LocalDateTime.now());
+    subscription.setEndDate(LocalDateTime.now().plusMonths(1));
+    subscription.setSubscriptionPrice(BigDecimal.valueOf(SubscriptionPlan.ENTERPRISE.getMonthlyPrice()));
+    subscription.setMonthlyInvoiceExportLimit(SubscriptionPlan.ENTERPRISE.getMonthlyInvoiceExportLimit());
+    subscription.setMonthlyInvoiceCreateLimit(SubscriptionPlan.ENTERPRISE.getMonthlyInvoiceCreateLimit());
+    subscription.setMonthlyReceiptExportLimit(SubscriptionPlan.ENTERPRISE.getMonthlyReceiptExportLimit());
+    subscriptionRepository.save(subscription);
+  }
 }

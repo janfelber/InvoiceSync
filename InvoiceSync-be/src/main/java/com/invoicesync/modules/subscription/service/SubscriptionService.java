@@ -2,8 +2,9 @@ package com.invoicesync.modules.subscription.service;
 
 import org.springframework.security.core.Authentication;
 
-import com.invoicesync.modules.subscription.model.SubscriptionResponseDTO;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
+import com.invoicesync.modules.subscription.model.SubscriptionResponseDTO;
+import com.invoicesync.modules.user.model.User;
 
 public interface SubscriptionService {
 
@@ -29,5 +30,7 @@ public interface SubscriptionService {
    * @return user's limits as a DTO
    */
   LimitResponseDTO getUserLimits(Authentication connectedUser);
+
+  void setEnterpriseSubscriptionForUser(User user);
 
 }

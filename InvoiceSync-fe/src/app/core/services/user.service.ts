@@ -19,4 +19,8 @@ export class UserService {
     return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.user.ME}`)
 
   }
+
+  getCurrentUserFullName(): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.user.FULL_NAME}`)
+  }
 }
