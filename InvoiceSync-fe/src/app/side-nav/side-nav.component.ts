@@ -24,7 +24,7 @@ import {UserInfoResponse} from "../pages/settings/user-info.response";
 export class SideNavComponent implements OnInit {
   menu: MenuItem[] = [];
   dropdownStates: { [key: string]: boolean } = {};
-  public userInfo: UserInfoResponse | null = null;
+  public userInfo: any = null;
 
   constructor(protected iconService: IconService, public authService: AuthService, public userService: UserService) {
   }
@@ -36,7 +36,7 @@ export class SideNavComponent implements OnInit {
   }
 
   getUserName(): void {
-    this.userService.getCurrentUserInfo().then(response => {
+    this.userService.getCurrentUserFullName().then(response => {
       this.userInfo = response.data;
     })
   }

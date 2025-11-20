@@ -23,5 +23,9 @@ public class UserController {
     return userService.getCurrentUserInfo(connectedUser);
   }
 
+  @GetMapping("/me/name")
+  public String getUserName(final Authentication connectedUser) {
+    return userService.getUserName(connectedUser);
+  }
 
 }

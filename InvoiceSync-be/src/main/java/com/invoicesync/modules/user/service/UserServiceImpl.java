@@ -7,13 +7,13 @@ import java.util.UUID;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.core.enums.LimitType;
+import com.invoicesync.modules.subscription.model.Subscription;
+import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
 import com.invoicesync.modules.user.mapper.UserMapper;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.model.UserDto;
 import com.invoicesync.modules.user.repository.UserRepository;
-import com.invoicesync.modules.subscription.model.Subscription;
-import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
-import com.invoicesync.core.enums.LimitType;
 
 import lombok.AllArgsConstructor;
 
@@ -53,6 +53,13 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserInfo(final UUID userId) {
     final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
     return userMapper.toUserInfo(user);
+  }
+
+  @Override
+  public String getUserName(final Authentication connectedUser) {
+    final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
+        .orElseThrow(() -> new IllegalStateException("User not found."));
+    return user.getFullName();
   }
 
   @Override

@@ -55,7 +55,8 @@
                 <div class="h-32 bg-gray-200 rounded dark:bg-gray-700"></div>
               </div>
 
-              <div class="flex-1 border border-gray-200 rounded-lg p-4 bg-[#f9fafb] min-h-[360px] max-w-[399px] flex items-center justify-center">
+              <div
+                class="flex-1 border border-gray-200 rounded-lg p-4 bg-[#f9fafb] min-h-[360px] max-w-[399px] flex items-center justify-center">
                 <div class="flex flex-col items-center justify-center text-gray-400">
                   <svg
                     aria-hidden="true"
@@ -85,129 +86,136 @@
 
 
     <ng-template #loadedContent>
-    <section class="bg-white mx-3 w-[896px]">
-      <div class="max-w-screen-lg px-4 2xl:px-0 border border-gray-200 rounded-lg">
-        <div class="py-4 md:py-8">
+      <section class="bg-white mx-3 w-[896px]">
+        <div class="max-w-screen-lg px-4 2xl:px-0 border border-gray-200 rounded-lg">
+          <div class="py-4 md:py-8">
 
-          <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
+            <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
 
-            <div class="space-y-4">
-              <div class="flex space-x-4">
-                <div
-                  class="h-16 w-16 rounded-lg flex items-center justify-center bg-orange-500 text-white font-semibold text-xl uppercase">
-                  {{ getInitials(userInfo!.fullName) }}
-                </div>
-                <div>
+              <div class="space-y-4">
+                <div class="flex space-x-4">
+                  <div
+                    class="h-16 w-16 rounded-lg flex items-center justify-center bg-orange-500 text-white font-semibold text-xl uppercase">
+                    {{ getInitials(userInfo!.fullName) }}
+                  </div>
+                  <div>
                   <span
-                    class="mb-2 inline-block rounded bg-blue-100 text-blue-800 px-2.5 py-0.5 text-xs font-medium text-primary-800"> {{ userInfo!.subscriptionPlan.name }} Účet</span>
-                  <h2
-                    class="flex items-center text-xl font-bold leading-none text-gray-900 sm:text-2xl">
-                    {{ userInfo!.fullName }}</h2>
+                    class="mb-2 inline-block rounded bg-blue-100 text-blue-800 px-2.5 py-0.5 text-xs font-medium text-primary-800">
+                    {{
+                      userInfo!.subscriptionPlan.name !== 'NONE' ? (userInfo!.subscriptionPlan.name + ' Účet')
+                        : 'Žiadny aktívny plán'
+                    }}
+                  </span>
+                    <h2
+                      class="flex items-center text-xl font-bold leading-none text-gray-900 sm:text-2xl">
+                      {{ userInfo!.fullName }}</h2>
+                  </div>
                 </div>
+                <dl class="">
+                  <dt class="font-semibold text-gray-900 ">Telefonné číslo</dt>
+                  <dd class="text-gray-500">{{ userInfo!.phoneNumber }}</dd>
+                </dl>
+                <dl class="">
+                  <dt class="font-semibold text-gray-900 ">E-mailová adresa</dt>
+                  <dd class="text-gray-500">{{ userInfo!.email }}</dd>
+                </dl>
+                <dl class="">
+                  <dt class="font-semibold text-gray-900 ">Prihlasovacie meno</dt>
+                  <dd class="text-gray-500">{{ userInfo!.username }}</dd>
+                </dl>
               </div>
-              <dl class="">
-                <dt class="font-semibold text-gray-900 ">Telefonné číslo</dt>
-                <dd class="text-gray-500">{{ userInfo!.phoneNumber }}</dd>
-              </dl>
-              <dl class="">
-                <dt class="font-semibold text-gray-900 ">E-mailová adresa</dt>
-                <dd class="text-gray-500">{{ userInfo!.email }}</dd>
-              </dl>
-              <dl class="">
-                <dt class="font-semibold text-gray-900 ">Prihlasovacie meno</dt>
-                <dd class="text-gray-500">{{ userInfo!.username }}</dd>
-              </dl>
-            </div>
 
-            <div class="space-y-4">
-              <div
-                class="border border-gray-200 rounded-lg p-4 bg-[#f9fafb] min-h-[200px] flex items-center justify-center">
+              <div class="space-y-4">
+                <div
+                  class="border border-gray-200 rounded-lg p-4 bg-[#f9fafb] min-h-[200px] flex items-center justify-center">
 
-                <!-- ✅ LOADING stav -->
-                <div *ngIf="loadingUserInfo" class="flex flex-col items-center justify-center text-gray-400">
-                  <svg
-                    aria-hidden="true"
-                    class="w-8 h-8 text-gray-300 animate-spin fill-blue-600 mb-2"
-                    viewBox="0 0 100 101"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08197 50.5908C9.08197 73.1895 27.4013 91.5089 50 91.5089C72.5987 91.5089 90.918 73.1895 90.918 50.5908C90.918 27.9921 72.5987 9.67276 50 9.67276C27.4013 9.67276 9.08197 27.9921 9.08197 50.5908Z"
-                      fill="currentColor"
-                    />
-                    <path
-                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8643 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                      fill="currentFill"
-                    />
-                  </svg>
-                  <span class="text-sm">Načítavam údaje...</span>
-                </div>
-
-                <!-- ✅ OBSAH keď nie je loading -->
-                <div *ngIf="!loadingUserInfo" class="subscription-info w-full">
-                  <div class="flex items-center md:me-24 mb-4">
-                    <img src="../../../assets/SmallLogo.svg" class="h-8 me-3" alt="FlowBite Logo" height="24"
-                         width="24"/>
-                    <span class="self-center sm:text-xl whitespace-nowrap SideMenuHeader-name">InvoiceSync</span>
-                    <span class="bg-blue-100 text-blue-800 text-sm font-medium ms-3 px-2.5 py-0.5 rounded-sm">
+                  <!-- ✅ LOADING stav -->
+                  <div *ngIf="loadingUserInfo" class="flex flex-col items-center justify-center text-gray-400">
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8 text-gray-300 animate-spin fill-blue-600 mb-2"
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08197 50.5908C9.08197 73.1895 27.4013 91.5089 50 91.5089C72.5987 91.5089 90.918 73.1895 90.918 50.5908C90.918 27.9921 72.5987 9.67276 50 9.67276C27.4013 9.67276 9.08197 27.9921 9.08197 50.5908Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8643 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentFill"
+                      />
+                    </svg>
+                    <span class="text-sm">Načítavam údaje...</span>
+                  </div>
+                  <div *ngIf="!loadingUserInfo" class="subscription-info w-full">
+                    <div class="flex items-center md:me-24 mb-4">
+                      <img src="../../../assets/SmallLogo.svg" class="h-8 me-3" alt="FlowBite Logo" height="24"
+                           width="24"/>
+                      <span class="self-center sm:text-xl whitespace-nowrap SideMenuHeader-name">InvoiceSync</span>
+                      <span [hidden]="userInfo!.subscriptionPlan.name == 'NONE'"
+                            class="bg-blue-100 text-blue-800 text-sm font-medium ms-3 px-2.5 py-0.5 rounded-sm">
                 {{ userInfo!.subscriptionPlan.name }}
               </span>
-                  </div>
+                    </div>
 
-                  <div class="py-4 border-t border-b border-gray-200 flex justify-between items-center mb-6">
-                    <div class="font-semibold text-xl">€{{ userInfo!.subscriptionPlan.price }}/mesiac</div>
-                  </div>
+                    <div class="py-4 border-t border-b border-gray-200 flex justify-between items-center mb-6">
+                      <div class="font-semibold text-xl">€{{ userInfo!.subscriptionPlan.price }}/mesiac</div>
+                    </div>
 
-                  <p class="font-semibold text-sm mb-4">{{ userInfo!.subscriptionPlan.name }} plán benefity</p>
-                  <ul class="text-gray-400 font-light mb-4 space-y-2">
-                    <li *ngFor="let feature of userInfo!.subscriptionPlan.features"
-                        class="flex items-center text-sm gap-2">
-                      <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                      </svg>
-                      {{ feature }}
-                    </li>
-                  </ul>
+                    <p class="font-semibold text-sm mb-4">{{
+                        userInfo!.subscriptionPlan.name !== 'NONE'
+                          ? (userInfo!.subscriptionPlan.name + ' plán benefity') : 'Žiadny aktívny plán'
+                      }}</p>
+                    <ul class="text-gray-400 font-light mb-4 space-y-2">
+                      <li *ngFor="let feature of userInfo!.subscriptionPlan.features"
+                          class="flex items-center text-sm gap-2">
+                        <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        {{ feature }}
+                      </li>
+                    </ul>
 
-                  <div>
-                    <button
-                      class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg">
-                      <svg
-                        class="w-4 h-4 text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M20.337 3.664c.213.212.354.486.404.782.294 1.711.657 5.195-.906 6.76-1.77 1.768-8.485 5.517-10.611 6.683a.987.987 0 0 1-1.176-.173l-.882-.88-.877-.884a.988.988 0 0 1-.173-1.177c1.165-2.126 4.913-8.841 6.682-10.611 1.562-1.563 5.046-1.198 6.757-.904.296.05.57.191.782.404ZM5.407 7.576l4-.341-2.69 4.48-2.857-.334a.996.996 0 0 1-.565-1.694l2.112-2.111Zm11.357 7.02-.34 4-2.111 2.113a.996.996 0 0 1-1.69-.565l-.422-2.807 4.563-2.74Zm.84-6.21a1.99 1.99 0 1 1-3.98 0 1.99 1.99 0 0 1 3.98 0Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      <span class="text-white">Upgrade verzie</span>
-                    </button>
+                    <div>
+                      <button
+                        class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg">
+                        <svg
+                          class="w-4 h-4 text-white"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M20.337 3.664c.213.212.354.486.404.782.294 1.711.657 5.195-.906 6.76-1.77 1.768-8.485 5.517-10.611 6.683a.987.987 0 0 1-1.176-.173l-.882-.88-.877-.884a.988.988 0 0 1-.173-1.177c1.165-2.126 4.913-8.841 6.682-10.611 1.562-1.563 5.046-1.198 6.757-.904.296.05.57.191.782.404ZM5.407 7.576l4-.341-2.69 4.48-2.857-.334a.996.996 0 0 1-.565-1.694l2.112-2.111Zm11.357 7.02-.34 4-2.111 2.113a.996.996 0 0 1-1.69-.565l-.422-2.807 4.563-2.74Zm.84-6.21a1.99 1.99 0 1 1-3.98 0 1.99 1.99 0 0 1 3.98 0Z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                        <span class="text-white">Upgrade verzie</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <!--          <button type="button" data-modal-target="accountInformationModal2"-->
+            <!--                  data-modal-toggle="accountInformationModal2"-->
+            <!--                  class="inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-primary-300 sm:w-auto">-->
+            <!--            <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"-->
+            <!--                 height="24" fill="none" viewBox="0 0 24 24">-->
+            <!--              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+            <!--                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>-->
+            <!--            </svg>-->
+            <!--            Upraviť účet-->
+            <!--          </button>-->
           </div>
-<!--          <button type="button" data-modal-target="accountInformationModal2"-->
-<!--                  data-modal-toggle="accountInformationModal2"-->
-<!--                  class="inline-flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-primary-300 sm:w-auto">-->
-<!--            <svg class="-ms-0.5 me-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"-->
-<!--                 height="24" fill="none" viewBox="0 0 24 24">-->
-<!--              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
-<!--                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"></path>-->
-<!--            </svg>-->
-<!--            Upraviť účet-->
-<!--          </button>-->
         </div>
-      </div>
-    </section>
+      </section>
     </ng-template>
   </div>
 </main>

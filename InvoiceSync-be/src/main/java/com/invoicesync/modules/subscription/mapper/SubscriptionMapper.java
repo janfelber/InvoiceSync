@@ -9,6 +9,7 @@ import java.time.ZoneId;
 
 import org.springframework.stereotype.Service;
 
+import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
 import com.invoicesync.modules.subscription.model.Subscription;
 import com.stripe.model.Invoice;
@@ -17,6 +18,12 @@ import com.stripe.model.Invoice;
 public class SubscriptionMapper {
 
   public static final int DAYS = 30;
+
+  private final StripeConfig stripeConfig;
+
+  public SubscriptionMapper(final StripeConfig stripeConfig) {
+    this.stripeConfig = stripeConfig;
+  }
 
   public Subscription toFreeSubscription() {
     final LocalDateTime start = LocalDateTime.now();
@@ -48,7 +55,18 @@ public class SubscriptionMapper {
     final LocalDateTime endDate = LocalDateTime.ofInstant(end, ZoneId.systemDefault());
 
     final String priceId = line.getPricing().getPriceDetails().getPrice();
-    final SubscriptionPlan plan = SubscriptionPlan.fromStripePriceId(priceId);
+    final SubscriptionPlan plan;
+    if (priceId.equals(stripeConfig.getFree())) {
+      plan = FREE;
+    } else if (priceId.equals(stripeConfig.getEssentials())) {
+      plan = SubscriptionPlan.ESSENTIALS;
+    } else if (priceId.equals(stripeConfig.getPro())) {
+      plan = SubscriptionPlan.PRO;
+    } else if (priceId.equals(stripeConfig.getEnterprise())) {
+      plan = SubscriptionPlan.ENTERPRISE;
+    } else {
+      plan = SubscriptionPlan.NONE;
+    }
 
     final Subscription subscription = new Subscription();
     subscription.setSubscriptionPlan(plan);
@@ -57,6 +75,7 @@ public class SubscriptionMapper {
     subscription.setSubscriptionActive(true);
     subscription.setStripeSubscriptionId(invoice.getParent().getSubscriptionDetails().getSubscription());
     subscription.setCreatedBy(userIdStr);
+    subscription.setSubscriptionPrice(BigDecimal.valueOf(plan.getMonthlyPrice()));
 
     subscription.setMonthlyInvoiceExportLimit(plan.getMonthlyInvoiceExportLimit());
     subscription.setMonthlyInvoiceCreateLimit(plan.getMonthlyInvoiceCreateLimit());

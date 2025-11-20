@@ -8,9 +8,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.modules.feature.model.FeatureDto;
 import com.invoicesync.core.enums.FeatureEnum;
+import com.invoicesync.modules.feature.model.FeatureDto;
 import com.invoicesync.modules.feature.model.UpdateUserFeatureRequest;
+import com.invoicesync.modules.subscription.service.SubscriptionService;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.repository.UserRepository;
 
@@ -19,8 +20,11 @@ public class FeatureServiceImpl implements FeatureService {
 
   private final UserRepository userRepository;
 
-  public FeatureServiceImpl(final UserRepository userRepository) {
+  private final SubscriptionService subscriptionService;
+
+  public FeatureServiceImpl(final UserRepository userRepository, final SubscriptionService subscriptionService) {
     this.userRepository = userRepository;
+    this.subscriptionService = subscriptionService;
   }
 
   @Override
@@ -41,6 +45,12 @@ public class FeatureServiceImpl implements FeatureService {
   @Override
   public List<FeatureDto> updateUserFeatures(final UUID userId, final UpdateUserFeatureRequest request) {
     final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
+
+
+    if (request.getFeatureIds().contains(FeatureEnum.EKON_SPECIALTY.getId())) {
+        subscriptionService.setEnterpriseSubscriptionForUser(user);
+    }
+
     user.setFeatureIds(request.getFeatureIds());
     userRepository.save(user);
     return getAllFeatures(userId);
