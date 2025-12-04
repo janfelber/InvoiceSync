@@ -226,14 +226,15 @@
 
           <div class="flex items-center gap-4">
             <button
+              (click)="openConfirmModal()"
               class="flex items-center space-x-2 px-3 py-2 text-sm rounded-lg border border-gray-300">
 
               <span class="text-black">Zrušiť predplatné</span>
             </button>
 
             <button
-                    class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg "
-                    (click)="goToPricing()">
+              class="flex items-center space-x-2 px-2.5 py-2 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg "
+              (click)="goToPricing()">
               <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                    height="24"
                    fill="currentColor" viewBox="0 0 24 24">
@@ -436,3 +437,45 @@
     </div>
   </div>
 </main>
+
+<app-modal
+  [show]="showConfirmModal"
+  (closeModal)="closeConfirmModal()"
+  title="Zrušenie predplatného"
+>
+  <div class="flex items-start gap-3">
+    <div>
+      <svg class="w-6 h-6 text-red-600 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+           width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+      </svg>
+    </div>
+
+    <div class="flex flex-col">
+      <p class="text-gray-700 font-medium">Rušenie predplatného</p>
+
+      <p class="mt-2 text-sm text-gray-500 leading-relaxed">
+        Tvoje predplatné bude zrušené na konci aktuálneho fakturačného obdobia.
+        Po zrušení stratíš prístup k prémiovým funkciám, ale všetky dáta ti zostanú
+        bezpečne uložené.
+      </p>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3 mt-6">
+    <button
+      (click)="closeConfirmModal()"
+      class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+    >
+      Zrušiť
+    </button>
+
+    <button
+      (click)="confirmCancelSubscription()"
+      class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm"
+    >
+      Potvrdiť zmenu
+    </button>
+  </div>
+</app-modal>

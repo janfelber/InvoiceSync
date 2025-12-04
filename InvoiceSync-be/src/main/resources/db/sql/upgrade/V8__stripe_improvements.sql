@@ -1,0 +1,1 @@
+ALTER TABLE invoice_sync.subscriptions ADD COLUMN stripe_subscription_item_id VARCHAR(255);

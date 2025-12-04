@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service;
 
 import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
-import com.invoicesync.modules.subscription.model.Subscription;
+import com.invoicesync.modules.subscription.model.UserSubscription;
 import com.stripe.model.Invoice;
 
 @Service
-public class SubscriptionMapper {
+public class UserSubscriptionMapper {
 
   public static final int DAYS = 30;
 
   private final StripeConfig stripeConfig;
 
-  public SubscriptionMapper(final StripeConfig stripeConfig) {
+  public UserSubscriptionMapper(final StripeConfig stripeConfig) {
     this.stripeConfig = stripeConfig;
   }
 
-  public Subscription toFreeSubscription() {
+  public UserSubscription toFreeSubscription() {
     final LocalDateTime start = LocalDateTime.now();
 
-    return Subscription.builder()
+    return UserSubscription.builder()
         .subscriptionPlan(FREE)
         .subscriptionActive(true)
         .startDate(start)
@@ -45,8 +45,10 @@ public class SubscriptionMapper {
         .build();
   }
 
-  public Subscription fromStripeInvoice(final Invoice invoice, final String userIdStr) {
+  public UserSubscription fromStripeInvoice(final Invoice invoice, final String userIdStr) {
     final var line = invoice.getLines().getData().getFirst();
+    final String subscriptionItemId = line.getParent().getSubscriptionItemDetails().getSubscriptionItem();
+    final String customerId = invoice.getCustomer();
 
     final Instant start = Instant.ofEpochSecond(line.getPeriod().getStart());
     final Instant end = Instant.ofEpochSecond(line.getPeriod().getEnd());
@@ -68,10 +70,12 @@ public class SubscriptionMapper {
       plan = SubscriptionPlan.NONE;
     }
 
-    final Subscription subscription = new Subscription();
+    final UserSubscription subscription = new UserSubscription();
     subscription.setSubscriptionPlan(plan);
     subscription.setStartDate(startDate);
+    subscription.setStripeSubscriptionItemId(subscriptionItemId);
     subscription.setEndDate(endDate);
+    subscription.setStripeCustomerId(customerId);
     subscription.setSubscriptionActive(true);
     subscription.setStripeSubscriptionId(invoice.getParent().getSubscriptionDetails().getSubscription());
     subscription.setCreatedBy(userIdStr);

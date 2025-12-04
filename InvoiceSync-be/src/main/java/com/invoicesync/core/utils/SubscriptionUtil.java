@@ -1,16 +1,23 @@
 package com.invoicesync.core.utils;
 
+import org.springframework.stereotype.Component;
+
 import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
 
-public final class SubscriptionUtil {
+@Component
+public class SubscriptionUtil {
 
-  private static final StripeConfig stripePriceConfig = new StripeConfig();
+  private final StripeConfig stripeConfig;
 
-  public static SubscriptionPlan fromStripePriceId(final String priceId) {
+  public SubscriptionUtil(final StripeConfig stripeConfig) {
+    this.stripeConfig = stripeConfig;
+  }
+
+  public SubscriptionPlan fromStripePriceId(final String priceId) {
 
     for (final SubscriptionPlan plan : SubscriptionPlan.values()) {
-      final String configuredPriceId = stripePriceConfig.getPriceIdForPlan(plan);
+      final String configuredPriceId = stripeConfig.getPriceIdForPlan(plan);
 
       if (configuredPriceId != null && configuredPriceId.equals(priceId)) {
         return plan;

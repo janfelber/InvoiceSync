@@ -1,6 +1,6 @@
 package com.invoicesync.modules.subscription.model;
 
-public record SubscriptionRequest(
+public record UserSubscriptionRequest(
 
     String plan
 ) {

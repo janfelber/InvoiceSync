@@ -29,4 +29,8 @@ export class SubscriptionService {
     return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.subscription.SUBSCRIBE}`, {plan});
   }
 
+  cancelSubscription(): Promise<any> {
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.subscription.CANCEL}`);
+  }
+
 }

@@ -1,16 +1,18 @@
 package com.invoicesync.modules.stripe.service;
 
-import java.util.Map;
-
-import org.springframework.security.core.Authentication;
-
+import com.invoicesync.modules.subscription.model.UserSubscription;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
+import com.stripe.model.checkout.Session;
 
 public interface StripeService {
 
-  Map<String, Object> createCheckoutSession(String plan, Authentication connectedUser)
-      throws StripeException;
+  void handleSubscriptionPayment(Event event) throws StripeException;
 
-  void handleSubscriptionPayment(Event event);
+  void handleSubscriptionCanceled(Event event) throws StripeException;
+
+  Session createCheckoutSession(String userId, String newPlanPriceId);
+
+  void upgradeSubscription(UserSubscription subscriptionId, String newPlanPriceId);
+
 }

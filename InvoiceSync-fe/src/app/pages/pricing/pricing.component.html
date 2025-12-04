@@ -4,7 +4,7 @@
   <header>
     <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
       <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-        <a href="https://flowbite.com" class="flex items-center">
+        <a [routerLink]="'/home'" class="flex items-center">
           <img src="../../../assets/SmallLogo.svg" class="mr-3 h-6 sm:h-9" alt="InvoiceSync Logo" />
           <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">InvoiceSync</span>
         </a>
@@ -17,25 +17,51 @@
             <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
           </button>
         </div>
-<!--        <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">-->
-<!--          <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">-->
-<!--            <li>-->
-<!--              <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Features</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Team</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--              <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>-->
-<!--            </li>-->
-<!--          </ul>-->
-<!--        </div>-->
       </div>
     </nav>
   </header>
+
+  <app-modal
+    [show]="showConfirmModal"
+    (closeModal)="closeModal()"
+    title="Zmena predplatného"
+  >
+    <div class="flex items-start gap-3">
+      <div>
+        <svg class="w-6 h-6 text-blue-600 mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+        </svg>
+
+      </div>
+
+      <div class="flex flex-col">
+        <p class="text-gray-700" [innerHTML]="confirmationMessage"></p>
+
+        <p class="mt-2 text-sm text-gray-500 leading-relaxed">
+          Zmena sa aktivuje okamžite. Poplatok sa prepočíta automaticky
+          podľa nového plánu.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6">
+      <button
+        (click)="closeModal()"
+        class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+      >
+        Zrušiť
+      </button>
+
+      <button
+        (click)="confirmChange()"
+        class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-sm"
+      >
+        Potvrdiť zmenu
+      </button>
+    </div>
+  </app-modal>
+
+
 
   <!-- Pricing content -->
   <div class="py-12 px-4 sm:px-6 lg:px-8">
@@ -60,7 +86,7 @@
             </ul>
           </div>
           <button
-            (click)="subscribeToPlan('FREE')"
+            (click)="openConfirmModal('FREE')"
             [disabled]="currentSubscriptionPlan === 'FREE'"
             class="mt-8 w-full text-white bg-gray-700 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             {{ currentSubscriptionPlan === 'FREE' ? 'Aktívny plán' : 'Vyskúšať zdarma' }}
@@ -82,7 +108,7 @@
             </ul>
           </div>
           <button
-            (click)="subscribeToPlan('ESSENTIALS')"
+            (click)="openConfirmModal('ESSENTIALS')"
             [disabled]="currentSubscriptionPlan === 'ESSENTIALS'"
             [ngClass]="{
     'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'ESSENTIALS',
@@ -107,7 +133,7 @@
             </ul>
           </div>
           <button
-            (click)="subscribeToPlan('PRO')"
+            (click)="openConfirmModal('PRO')"
             [disabled]="currentSubscriptionPlan === 'PRO'"
             [ngClass]="{
     'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'PRO',
@@ -132,7 +158,7 @@
             </ul>
           </div>
           <button
-            (click)="subscribeToPlan('ENTERPRISE')"
+            (click)="openConfirmModal('ENTERPRISE')"
             [ngClass]="{
     'bg-blue-600 hover:bg-blue-700 text-white': currentSubscriptionPlan !== 'ENTERPRISE',
     'bg-gray-400 text-gray-200 cursor-not-allowed': currentSubscriptionPlan === 'ENTERPRISE'

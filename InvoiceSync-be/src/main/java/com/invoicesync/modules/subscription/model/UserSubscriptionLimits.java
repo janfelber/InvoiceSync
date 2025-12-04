@@ -1,6 +1,6 @@
 package com.invoicesync.modules.subscription.model;
 
-public final class SubscriptionLimits {
+public final class UserSubscriptionLimits {
 
   public static final int NONE_INVOICE_EXPORT_LIMIT = 0;
   public static final int NONE_RECEIPT_EXPORT_LIMIT = 0;
@@ -22,6 +22,6 @@ public final class SubscriptionLimits {
   public static final int ENTERPRISE_RECEIPT_EXPORT_LIMIT = 1000;
   public static final int ENTERPRISE_INVOICE_CREATE_LIMIT = Integer.MAX_VALUE;
 
-  private SubscriptionLimits() {}
+  private UserSubscriptionLimits() {}
 
 }
