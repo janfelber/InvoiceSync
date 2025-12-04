@@ -3,7 +3,7 @@ package com.invoicesync.modules.user.model;
 import java.util.Date;
 import java.util.UUID;
 
-import com.invoicesync.modules.subscription.model.SubscriptionShort;
+import com.invoicesync.modules.subscription.model.UserSubscriptionShort;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +22,5 @@ public class UserDto {
   private String role;
   private Date createdOn;
   private String phoneNumber;
-  private SubscriptionShort subscriptionPlan;
+  private UserSubscriptionShort subscriptionPlan;
 }

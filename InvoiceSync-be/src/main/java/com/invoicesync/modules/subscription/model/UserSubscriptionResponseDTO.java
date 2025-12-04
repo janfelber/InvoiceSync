@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubscriptionResponseDTO {
+public class UserSubscriptionResponseDTO {
 
   private String userId;
 

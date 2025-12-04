@@ -30,7 +30,7 @@ import com.invoicesync.modules.invoice.model.InvoiceRequestDTO;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
 import com.invoicesync.modules.receipt.model.ReceiptRequestDTO;
 import com.invoicesync.modules.subscription.guard.service.LimitGuardService;
-import com.invoicesync.modules.subscription.service.SubscriptionService;
+import com.invoicesync.modules.subscription.service.UserSubscriptionService;
 import com.invoicesync.modules.user.service.UserService;
 import com.invoicesync.modules.xml.utils.XmlHelper;
 
@@ -43,7 +43,7 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
 
   private final XmlHelper xmlHelper;
 
-  private final SubscriptionService subscriptionService;
+  private final UserSubscriptionService userSubscriptionService;
 
   private final LimitGuardService limitGuardService;
 

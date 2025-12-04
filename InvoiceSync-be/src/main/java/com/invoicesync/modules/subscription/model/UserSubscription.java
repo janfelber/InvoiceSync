@@ -30,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Entity
 @Table(name = "subscriptions", schema = "invoice_sync")
-public class Subscription extends BaseEntity {
+public class UserSubscription extends BaseEntity {
 
   /**
    * Type of plan (e.g., Free, Pro, Enterprise)
@@ -50,6 +50,9 @@ public class Subscription extends BaseEntity {
    */
   @Column(name = "stripe_subscription_id")
   private String stripeSubscriptionId;
+
+  @Column(name = "stripe_subscription_item_id")
+  private String stripeSubscriptionItemId;
 
   /**
    * Stripe customer identifier linked to this subscription.

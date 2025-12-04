@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {SubscriptionService} from "../../core/services/subscription.service";
 import {initFlowbite} from "flowbite";
+import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 
 @Component({
   selector: 'app-invoice-limiter',
@@ -12,7 +13,8 @@ import {initFlowbite} from "flowbite";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    MatDialogWindowComponent
   ],
   styleUrls: ['./invoice-limiter.component.css']
 })
@@ -20,6 +22,7 @@ export class InvoiceLimiterComponent implements OnInit {
 
   loadingSubscriptionInfo = false;
   subscriptionUpgradeEssentialsOpen = false
+  showConfirmModal = false;
 
 
   constructor(
@@ -95,6 +98,22 @@ export class InvoiceLimiterComponent implements OnInit {
       .then(response => {
         this.userLimit = response.data;
       });
+  }
+
+  confirmCancelSubscription() {
+    this.subscriptionService.cancelSubscription()
+      .then(() => {
+        this.getSubscriptionPlan();
+        this.getUserLimits();
+      });
+  }
+
+  openConfirmModal() {
+    this.showConfirmModal = true;
+  }
+
+  closeConfirmModal() {
+    this.showConfirmModal = false;
   }
 
   protected readonly RouterLink = RouterLink;

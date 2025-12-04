@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.core.enums.FeatureEnum;
 import com.invoicesync.modules.feature.model.FeatureDto;
 import com.invoicesync.modules.feature.model.UpdateUserFeatureRequest;
-import com.invoicesync.modules.subscription.service.SubscriptionService;
+import com.invoicesync.modules.subscription.service.UserSubscriptionService;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.repository.UserRepository;
 
@@ -20,11 +20,11 @@ public class FeatureServiceImpl implements FeatureService {
 
   private final UserRepository userRepository;
 
-  private final SubscriptionService subscriptionService;
+  private final UserSubscriptionService userSubscriptionService;
 
-  public FeatureServiceImpl(final UserRepository userRepository, final SubscriptionService subscriptionService) {
+  public FeatureServiceImpl(final UserRepository userRepository, final UserSubscriptionService userSubscriptionService) {
     this.userRepository = userRepository;
-    this.subscriptionService = subscriptionService;
+    this.userSubscriptionService = userSubscriptionService;
   }
 
   @Override
@@ -48,7 +48,7 @@ public class FeatureServiceImpl implements FeatureService {
 
 
     if (request.getFeatureIds().contains(FeatureEnum.EKON_SPECIALTY.getId())) {
-        subscriptionService.setEnterpriseSubscriptionForUser(user);
+        userSubscriptionService.setEnterpriseSubscriptionForUser(user);
     }
 
     user.setFeatureIds(request.getFeatureIds());

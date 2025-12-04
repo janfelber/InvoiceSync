@@ -5,23 +5,23 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.core.enums.SubscriptionPlan;
-import com.invoicesync.modules.subscription.model.SubscriptionShort;
-import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
+import com.invoicesync.modules.subscription.model.UserSubscriptionShort;
+import com.invoicesync.modules.subscription.repository.UserSubscriptionRepository;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.model.UserDto;
 
 @Service
 public class UserMapper {
 
-  private final SubscriptionRepository subscriptionRepository;
+  private final UserSubscriptionRepository userSubscriptionRepository;
 
-  public UserMapper(final SubscriptionRepository subscriptionRepository) {
-    this.subscriptionRepository = subscriptionRepository;
+  public UserMapper(final UserSubscriptionRepository userSubscriptionRepository) {
+    this.userSubscriptionRepository = userSubscriptionRepository;
   }
 
   public UserDto toUserInfo(final User user) {
-    final var subscription = subscriptionRepository
-        .findByCreatedBy(user.getId().toString())
+    final var subscription = userSubscriptionRepository
+        .findByCreatedByAndSubscriptionActive(user.getId().toString(), true)
         .orElse(null);
 
     final var plan =
@@ -43,7 +43,7 @@ public class UserMapper {
         .createdOn(user.getCreatedOn())
         .phoneNumber(user.getPhoneNumber())
         .subscriptionPlan(
-            SubscriptionShort.builder()
+            UserSubscriptionShort.builder()
                 .name(plan.name())
                 .price(price)
                 .features(plan.getFeatures())

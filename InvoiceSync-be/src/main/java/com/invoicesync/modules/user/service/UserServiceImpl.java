@@ -1,6 +1,6 @@
 package com.invoicesync.modules.user.service;
 
-import static com.invoicesync.modules.subscription.specification.SubscriptionSpecification.withUserId;
+import static com.invoicesync.modules.subscription.specification.UserSubscriptionSpecification.withUserId;
 
 import java.util.UUID;
 
@@ -8,8 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.core.enums.LimitType;
-import com.invoicesync.modules.subscription.model.Subscription;
-import com.invoicesync.modules.subscription.repository.SubscriptionRepository;
+import com.invoicesync.modules.subscription.model.UserSubscription;
+import com.invoicesync.modules.subscription.repository.UserSubscriptionRepository;
 import com.invoicesync.modules.user.mapper.UserMapper;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.model.UserDto;
@@ -21,7 +21,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  private final SubscriptionRepository subscriptionRepository;
+  private final UserSubscriptionRepository userSubscriptionRepository;
 
   private final UserRepository userRepository;
 
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public int getUsed(final Authentication connectedUser, final LimitType type) {
-    final Subscription subscription = getSubscription(connectedUser);
+    final UserSubscription subscription = getSubscription(connectedUser);
     return switch (type) {
       case INVOICE_PROCESS -> subscription.getMonthlyUsedInvoiceExport();
       case RECEIPT_EXPORT -> subscription.getMonthlyUsedReceiptExport();
@@ -39,14 +39,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void incrementUsed(final Authentication connectedUser, final LimitType limitType) {
-    final Subscription subscription = getSubscription(connectedUser);
+    final UserSubscription subscription = getSubscription(connectedUser);
     switch (limitType) {
       case INVOICE_PROCESS ->
           subscription.setMonthlyUsedInvoiceExport(subscription.getMonthlyUsedInvoiceExport() + 1);
       case RECEIPT_EXPORT -> subscription.setMonthlyUsedReceiptExport(subscription.getMonthlyUsedReceiptExport() + 1);
       case INVOICE_CREATE -> subscription.setMonthlyUsedInvoiceCreate(subscription.getMonthlyUsedInvoiceCreate() + 1);
     };
-    subscriptionRepository.save(subscription);
+    userSubscriptionRepository.save(subscription);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public int getLimit(final Authentication connectedUser, final LimitType limitType) {
-    final Subscription subscription = getSubscription(connectedUser);
+    final UserSubscription subscription = getSubscription(connectedUser);
     return switch (limitType) {
       case INVOICE_PROCESS -> subscription.getMonthlyInvoiceExportLimit();
       case RECEIPT_EXPORT -> subscription.getMonthlyReceiptExportLimit();
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
     };
   }
 
-  private Subscription getSubscription(final Authentication connectedUser) {
-    return subscriptionRepository
+  private UserSubscription getSubscription(final Authentication connectedUser) {
+    return userSubscriptionRepository
         .findOne(withUserId(connectedUser.getName()))
         .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + connectedUser.getName()));
   }

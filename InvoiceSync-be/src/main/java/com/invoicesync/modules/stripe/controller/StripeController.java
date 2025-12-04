@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.modules.stripe.service.StripeService;
+import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
 
@@ -24,8 +25,11 @@ public class StripeController {
   }
 
   @PostMapping("/stripe/webhook")
-  public ResponseEntity<String> handleStripeWebhook(@RequestBody final String payload,
-      @RequestHeader("Stripe-Signature") final String sigHeader) {
+  public ResponseEntity<String> handleStripeWebhook(
+      @RequestBody final String payload,
+      @RequestHeader("Stripe-Signature") final String sigHeader
+  ) throws StripeException {
+
     final Event event;
     try {
       event = Webhook.constructEvent(payload, sigHeader, stripeWebhookSecret);
@@ -33,8 +37,15 @@ public class StripeController {
       return ResponseEntity.badRequest().body("Invalid signature");
     }
 
-    if ("invoice.payment_succeeded".equals(event.getType())) {
-      stripeService.handleSubscriptionPayment(event);
+    switch (event.getType()) {
+      case "invoice.payment_succeeded":
+        stripeService.handleSubscriptionPayment(event);
+        break;
+      case "customer.subscription.deleted":
+        stripeService.handleSubscriptionCanceled(event);
+        break;
+      default:
+        break;
     }
 
     return ResponseEntity.ok("Webhook processed");

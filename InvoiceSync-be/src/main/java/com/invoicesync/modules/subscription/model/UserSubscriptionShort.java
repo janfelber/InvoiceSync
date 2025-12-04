@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubscriptionShort {
+public class UserSubscriptionShort {
   private String name;
   private BigDecimal price;
   private List<String> features;

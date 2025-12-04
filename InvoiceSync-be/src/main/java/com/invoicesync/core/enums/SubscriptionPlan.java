@@ -1,6 +1,6 @@
 package com.invoicesync.core.enums;
 
-import static com.invoicesync.modules.subscription.model.SubscriptionLimits.*;
+import static com.invoicesync.modules.subscription.model.UserSubscriptionLimits.*;
 
 import java.util.List;
 
