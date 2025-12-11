@@ -3,32 +3,32 @@ import {MenuItem} from "./MenuItem";
 
 export const MENU_ITEMS: MenuItem[] = [
   {
-    label: 'Domov',
+    label: 'menu_home',
     route: '/home',
     icon: 'home'
   },
   {
-    label: 'Dokumenty',
+    label: 'menu_documents',
     icon: 'document',
     children: [
-      { label: 'Faktúry', route: '/invoices' },
-      { label: 'Vystaviť faktúru', route: '/invoice/new' },
-      { label: 'Bločky', route: '/web/receipts' }
+      { label: 'menu_invoices', route: '/invoices' },
+      { label: 'menu_create_invoice', route: '/invoice/new' },
+      { label: 'menu_receipts', route: '/web/receipts' }
     ]
   },
   {
-    label: 'Xml Importy',
+    label: 'menu_xml_convertor',
     route: '/xml-convertor',
     icon: 'covertrus',
     features: ['EKON_SPECIALTY']
   },
   {
-    label: 'Prevod údajov',
+    label: 'menu_data_transfer',
     route: 'web/data-transfer',
     icon: 'data_transfer'
   },
   {
-    label: 'Predplatné',
+    label: 'menu_subscription',
     route: '/web/limiter',
     icon: 'subscription'
   },

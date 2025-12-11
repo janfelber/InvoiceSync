@@ -11,7 +11,7 @@
                 <path
                   d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
               </svg>
-              Domov
+              {{ 'breadcrumb_home' | translate }}
             </a>
           </li>
           <li aria-current="page">
@@ -21,7 +21,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Dokumenty</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">{{ 'breadcrumb_documents' | translate }}</span>
             </div>
           </li>
           <li aria-current="page">
@@ -31,7 +31,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Faktúry</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">{{ 'breadcrumb_invoices' | translate }}</span>
             </div>
           </li>
         </ol>
@@ -192,7 +192,7 @@
                 d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
                 clip-rule="evenodd"/>
         </svg>
-        Importovať faktúru
+        {{ 'invoices_import_invoice' | translate }}
       </button>
     </div>
   </div>

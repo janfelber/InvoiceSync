@@ -9,6 +9,7 @@ import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-receipts',
@@ -20,7 +21,8 @@ import {ToastrService} from "ngx-toastr";
     FormsModule,
     CurrencyPipe,
     MatDialogWindowComponent,
-    NgClass
+    NgClass,
+    TranslatePipe
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'

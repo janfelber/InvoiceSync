@@ -11,7 +11,7 @@
                 <path
                   d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
               </svg>
-              Domov
+              {{ 'breadcrumb_home' | translate }}
             </a>
           </li>
           <li aria-current="page">
@@ -21,14 +21,15 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Bločky</span>
+              <span
+                class="ms-1 text-sm font-medium text-gray-500 md:ms-2">{{ 'breadcrumb_receipts' | translate }}</span>
             </div>
           </li>
         </ol>
       </nav>
 
       <div class="flex items-center justify-between mb-4">
-        <h1 class="text-xl font-semibold text-black">Moje Bločky</h1>
+        <h1 class="text-xl font-semibold text-black">{{ 'receipts' | translate }}</h1>
       </div>
 
       <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
@@ -111,23 +112,23 @@
           </div>
         </form>
 
-        <button id="dropdownFilterButton"
-                data-dropdown-toggle="filterDropdown"
-                data-dropdown-delay="500"
-                type="button"
-                class="group w-[100px] h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">
-          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors"
-               xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z"/>
-          </svg>
-          Filter
-          <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
-               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="m1 1 4 4 4-4"/>
-          </svg>
-        </button>
+        <!--        <button id="dropdownFilterButton"-->
+        <!--                data-dropdown-toggle="filterDropdown"-->
+        <!--                data-dropdown-delay="500"-->
+        <!--                type="button"-->
+        <!--                class="group w-[100px] h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">-->
+        <!--          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors"-->
+        <!--               xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">-->
+        <!--            <path-->
+        <!--              d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z"/>-->
+        <!--          </svg>-->
+        <!--          Filter-->
+        <!--          <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"-->
+        <!--               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">-->
+        <!--            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"-->
+        <!--                  d="m1 1 4 4 4-4"/>-->
+        <!--          </svg>-->
+        <!--        </button>-->
 
         <!-- Dropdown menu -->
         <div id="filterDropdown"
@@ -166,7 +167,7 @@
               </a>
             </li>
             <li *ngIf="companyResponse.content.length === 0" class="block px-4 py-2 text-gray-500 italic">
-              Žiadne firmy nie sú k dispozícii
+              {{ 'no_companies' | translate }}
             </li>
           </ul>
         </div>
@@ -188,7 +189,7 @@
                 d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
                 clip-rule="evenodd"/>
         </svg>
-        Importovať bloček
+        {{ 'receipts_import_receipt' | translate }}
       </button>
     </div>
   </div>
@@ -196,7 +197,7 @@
   <app-modal
     [show]="importModalOpen"
     (closeModal)="closeImportModal()"
-    title="Import bločkov"
+    [title]="'receipts_import_receipt' | translate "
   >
     <form #importForm="ngForm">
       <div class="grid gap-4 mb-6">
@@ -209,14 +210,14 @@
               [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'single', 'text-gray-600': activeTab !== 'single' }"
               (click)="activeTab = 'single'"
             >
-              Jeden obrázok
+              {{ 'single_image_import' | translate }}
             </button>
             <button
               class="w-1/2 py-2 text-center font-semibold"
               [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'multiple', 'text-gray-600': activeTab !== 'multiple' }"
               (click)="activeTab = 'multiple'"
             >
-              Viac obrázkov
+              {{ 'multiple_images_import' | translate }}
             </button>
           </div>
 
@@ -224,7 +225,8 @@
           <div *ngIf="activeTab === 'single'" class="space-y-4">
             <!-- choose company -->
             <div>
-              <label for="companySelect" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
+              <label for="companySelect"
+                     class="block mb-2 text-sm font-medium text-gray-700">{{ 'company' | translate }}</label>
               <select
                 id="companySelect"
                 [(ngModel)]="selectedCompanyId"
@@ -255,7 +257,7 @@
                   </svg>
 
                   <p class="text-sm text-gray-600">
-                    <strong>Vyberte jeden obrázok</strong> (napr. QR kód)
+                    <strong>{{ 'choose_single_image' | translate }}</strong> ({{ 'qr_code' | translate }})
                   </p>
                 </div>
                 <input
@@ -279,7 +281,8 @@
           <div *ngIf="activeTab === 'multiple'" class="space-y-4">
             <!-- Výber firmy -->
             <div>
-              <label for="companySelectMulti" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
+              <label for="companySelectMulti"
+                     class="block mb-2 text-sm font-medium text-gray-700">{{ 'company' | translate }}</label>
               <select
                 id="companySelectMulti"
                 [(ngModel)]="selectedCompanyId"
@@ -308,8 +311,8 @@
                           d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
                           clip-rule="evenodd"/>
                   </svg>
-                  <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
-                  <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
+                  <p class="text-sm text-gray-600"><strong>{{ 'choose_or_drag_drop' | translate }}</strong></p>
+                  <p class="text-xs text-gray-500">{{ 'supported_file_types' | translate }}</p>
                 </div>
                 <input
                   id="multi-upload"
@@ -370,7 +373,7 @@
         (click)="onSubmit()"
       >
         <ng-container *ngIf="!isUploading; else loading">
-          Importovať
+          {{ 'import' | translate }}
         </ng-container>
         <ng-template #loading>
           <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -509,7 +512,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
               </svg>
-              <span>Nenašli sa žiadne bločky pre zadané kritériá.</span>
+              <span>{{ 'no_records_for_filter' | translate }}</span>
             </div>
           </td>
         </tr>
@@ -520,7 +523,7 @@
       <div class="mx-4 mt-4 flex items-center justify-between">
         <div class="text-sm text-gray-600">
           <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-            Zobrazuje
+            {{ 'shows' | translate }}
             <span class="font-semibold text-gray-900">
               {{ (page * size) + 1 }}
             </span>
@@ -530,7 +533,7 @@
                 Math.min((page + 1) * size, receiptResponse?.totalElements)
               }}
             </span>
-            z
+            {{ 'from' | translate }}
             <span class="font-semibold text-gray-900">
               {{ receiptResponse.totalElements }}
             </span>

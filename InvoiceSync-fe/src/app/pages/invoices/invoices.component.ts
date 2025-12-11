@@ -13,6 +13,7 @@ import {PageInvoiceResponse} from "./page-response-receipt-response";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-test',
@@ -23,6 +24,7 @@ import {PageResponseCompanyResponseDto} from "../../core/models/page-response-co
     CommonModule,
     RouterLink,
     MatDialogWindowComponent,
+    TranslatePipe,
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'

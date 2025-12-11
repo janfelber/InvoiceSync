@@ -11,7 +11,7 @@
                 <path
                   d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
               </svg>
-              Domov
+              {{ 'breadcrumb_home' | translate }}
             </a>
           </li>
           <li>
@@ -22,7 +22,7 @@
                       d="m1 9 4-4-4-4"/>
               </svg>
               <a routerLink="/web/receipts"
-                 class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">Bločky</a>
+                 class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">{{ 'menu_receipts' | translate }}</a>
             </div>
           </li>
           <li aria-current="page">
@@ -32,7 +32,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Bloček</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">{{ 'receipt' | translate }}</span>
             </div>
           </li>
         </ol>
@@ -51,7 +51,7 @@
         <div class="flex space-x-2">
           <button id="dropdownDownloadButton" data-dropdown-toggle="downloadDropdown"
                   class="hover:bg-gray-100 hover:text-blue-600 rounded-lg text-sm px-4 py-2 text-center inline-flex items-center border border-gray-300"
-                  type="button">Stiahnuť
+                  type="button">{{ 'download' | translate }}
             <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                  viewBox="0 0 10 6">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,7 +88,7 @@
               <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
             </svg>
             <span
-              class="text-white">Uložiť</span>
+              class="text-white">{{ 'save' | translate }}</span>
           </button>
         </div>
       </div>
@@ -100,14 +100,14 @@
         <li class="me-2 mx-1" role="presentation">
           <button class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
                   id="invoice-tab" data-tabs-target="#invoice" type="button" role="tab" aria-controls="profile"
-                  aria-selected="false">Bloček
+                  aria-selected="false">{{ 'receipt' | translate }}
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button
             class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500"
             id="documents-tab" data-tabs-target="#documents" type="button" role="tab" aria-controls="dashboard"
-            aria-selected="false">Dokumenty
+            aria-selected="false">{{ 'documents' | translate }}
           </button>
         </li>
       </ul>

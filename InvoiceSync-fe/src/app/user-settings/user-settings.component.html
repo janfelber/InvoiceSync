@@ -123,6 +123,26 @@
                   <dt class="font-semibold text-gray-900 ">Prihlasovacie meno</dt>
                   <dd class="text-gray-500">{{ userInfo!.username }}</dd>
                 </dl>
+                <div class="relative inline-block w-40">
+                  <select
+                    [value]="currentLang"
+                    (change)="changeLang($event.target.value)"
+                    class="block w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="cs">Česky</option>
+                    <option value="sk">Slovenčina</option>
+                    <option value="en">English</option>
+                  </select>
+                  <svg
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
               </div>
 
               <div class="space-y-4">

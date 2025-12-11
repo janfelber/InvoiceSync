@@ -9,6 +9,7 @@ import {PageResponseCompanyResponseDto} from "../../core/models/page-response-co
 import {initFlowbite} from 'flowbite'
 import {CompanyRequest} from "../../core/models/company-request";
 import {ApiService} from "../../core/auth/api";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-home',
@@ -22,6 +23,7 @@ import {ApiService} from "../../core/auth/api";
     ReactiveFormsModule,
     NgClass,
     NgIf,
+    TranslatePipe,
   ]
 })
 export class HomeComponent implements OnInit{

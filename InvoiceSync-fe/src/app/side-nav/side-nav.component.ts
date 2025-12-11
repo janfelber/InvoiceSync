@@ -9,6 +9,7 @@ import {AuthService} from "../core/auth/auth.service";
 import {initFlowbite} from "flowbite";
 import {UserService} from "../core/services/user.service";
 import {UserInfoResponse} from "../pages/settings/user-info.response";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-side-nav',
@@ -16,7 +17,8 @@ import {UserInfoResponse} from "../pages/settings/user-info.response";
     RouterLink,
     NgOptimizedImage,
     CommonModule,
-    RouterLinkActive
+    RouterLinkActive,
+    TranslatePipe
   ],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.css'

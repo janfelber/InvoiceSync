@@ -8,13 +8,15 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../core/services/user.service";
 import {UserInfoResponse} from "../pages/settings/user-info.response";
 import {initFlowbite} from "flowbite";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-user-settings',
   imports: [
     RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    TranslatePipe
   ],
   templateUrl: './user-settings.component.html',
   styleUrl: './user-settings.component.css'
@@ -24,13 +26,18 @@ export class UserSettingsComponent implements OnInit {
   public userInfo: UserInfoResponse | null = null;
   public loadingUserInfo = false
 
+  public currentLang: string = 'sk';
+
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private translate: TranslateService
   ) {
   }
 
   ngOnInit(): void {
     this.getCurrentUserInfo()
+    this.currentLang = localStorage.getItem('lang') || 'sk';
+    this.translate.use(this.currentLang);
   }
 
   getCurrentUserInfo() {
@@ -54,6 +61,12 @@ export class UserSettingsComponent implements OnInit {
       return words[0].substring(0, 2).toUpperCase();
     }
     return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  changeLang(lang: string) {
+    this.currentLang = lang;       // aktualizuje dropdown
+    this.translate.use(lang);      // prepne jazyk
+    localStorage.setItem('lang', lang);
   }
 
 

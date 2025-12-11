@@ -5,6 +5,7 @@ import {CompanyInfoComponent} from "../company-info/company-info.component";
 import {CompanyInternalDocumentsAccountsComponent} from "../internal-documents-accounts/company-internal-documents-accounts.component";
 import {CompanySettingsComponent} from "../company-settings/company-settings.component";
 import {CompanyCashDocumentsAccountsComponent} from "../cash-documents-accounts/company-cash-documents-accounts.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 
 @Component({
@@ -14,7 +15,8 @@ import {CompanyCashDocumentsAccountsComponent} from "../cash-documents-accounts/
     CompanyCashDocumentsAccountsComponent,
     CompanySettingsComponent,
     CompanyCashDocumentsAccountsComponent,
-    CompanyInternalDocumentsAccountsComponent
+    CompanyInternalDocumentsAccountsComponent,
+    TranslatePipe
   ],
   templateUrl: './company-details.component.html',
   styleUrl: './company-details.component.css'

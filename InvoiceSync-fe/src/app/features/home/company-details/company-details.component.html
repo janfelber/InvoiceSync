@@ -11,7 +11,7 @@
                 <path
                   d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
               </svg>
-              Domov
+              {{ 'breadcrumb_home' | translate }}
             </a>
           </li>
           <li>
@@ -22,7 +22,7 @@
                       d="m1 9 4-4-4-4"/>
               </svg>
               <a routerLink="/home"
-                 class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">Spoločnosti</a>
+                 class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">{{ 'breadcrumb_company_list' | translate }}</a>
             </div>
           </li>
           <li aria-current="page">
@@ -32,14 +32,14 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Firma #{{ companyName }}</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">{{ 'breadcrumb_company_detail' | translate:{ name: companyName } }}</span>
             </div>
           </li>
         </ol>
       </nav>
 
       <div class="flex items-center justify-between mb-4 mx-4">
-        <h1 class="text-xl font-semibold text-black">Prehľad firmy</h1>
+        <h1 class="text-xl font-semibold text-black">{{ 'company_overview' | translate }}</h1>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
               role="tab"
               aria-controls="profile"
               aria-selected="false">
-              Základné informácie
+              {{ 'tab_basic_info' | translate }}
             </button>
           </li>
 
@@ -72,7 +72,7 @@
               role="tab"
               aria-controls="dashboard"
               aria-selected="false">
-              Účtová osnova
+              {{ 'tab_chart_of_accounts' | translate }}
             </button>
           </li>
 
@@ -85,7 +85,7 @@
               role="tab"
               aria-controls="settings"
               aria-selected="false">
-              Nastavenia
+              {{ 'tab_settings' | translate }}
             </button>
           </li>
         </ul>
@@ -113,7 +113,7 @@
                   role="tab"
                   aria-controls="accounting-chart"
                   aria-selected="false">
-                  Interné doklady
+                  {{ 'tab_internal_documents' | translate }}
                 </button>
               </li>
               <li class="me-2 mx-1" role="presentation">
@@ -125,7 +125,7 @@
                   role="tab"
                   aria-controls="cash-chart"
                   aria-selected="false">
-                  Pokladna
+                  {{ 'tab_cash_register' | translate }}
                 </button>
               </li>
             </ul>

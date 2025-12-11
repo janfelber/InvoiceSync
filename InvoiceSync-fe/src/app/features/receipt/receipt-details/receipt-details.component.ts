@@ -11,6 +11,7 @@ import {ReceiptService} from "../../../core/services/receipt.service";
 import {ReceiptDetailResponse} from "../../../pages/receipts/receipt-detail-response";
 import {PostingAccountService} from "../../../core/services/posting-account.service";
 import {ReceiptType} from "../../../core/enums/receipt-type";
+import {TranslatePipe} from "@ngx-translate/core";
 
 interface Account {
   id: number,
@@ -26,7 +27,8 @@ interface Account {
     FormsModule,
     CommonModule,
     MatDialogWindowComponent,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
