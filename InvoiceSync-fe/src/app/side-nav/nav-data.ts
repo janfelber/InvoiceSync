@@ -17,6 +17,11 @@ export const MENU_ITEMS: MenuItem[] = [
     ]
   },
   {
+    label: 'Synxie',
+    route: '/web/ai-chat',
+    icon: 'chat',
+  },
+  {
     label: 'Xml Importy',
     route: '/xml-convertor',
     icon: 'covertrus',

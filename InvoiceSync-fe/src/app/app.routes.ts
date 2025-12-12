@@ -26,6 +26,7 @@ import {AdminUserInfoComponent} from "./admin/admin-user-info/admin-user-info.co
 import {UserSettingsComponent} from "./user-settings/user-settings.component";
 import {FeatureGuard} from "./core/services/feature.guard";
 import {ReceiptInspectComponent} from "./features/receipt/receipt-inspect/receipt-inspect.component";
+import {AiChatComponent} from "./pages/ai-chat/ai-chat.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -68,7 +69,8 @@ export const routes: Routes = [
       {path: 'web/mobile-app', component: MobileAppComponent},
       {path: 'web/data-transfer', component: DataTransferTableComponent},
       {path: 'web/data-transfer/:id', component: DataTransferDetailComponent},
-      {path: 'web/settings', component: UserSettingsComponent}
+      {path: 'web/settings', component: UserSettingsComponent},
+      {path: 'web/ai-chat', component: AiChatComponent}
     ]
   },
 
