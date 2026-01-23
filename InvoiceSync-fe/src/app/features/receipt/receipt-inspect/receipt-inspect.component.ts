@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {InvoiceDocumentsComponent} from "../../invoice/invoice-documents/invoice-documents.component";
 import {InvoiceInspect} from "../../invoice/invoice-info/invoice-info.component";

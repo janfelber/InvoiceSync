@@ -47,50 +47,6 @@
           </svg>
           <h1 class="text-lg font-semibold">Späť na bločky</h1>
         </a>
-
-        <div class="flex space-x-2">
-          <button id="dropdownDownloadButton" data-dropdown-toggle="downloadDropdown"
-                  class="hover:bg-gray-100 hover:text-blue-600 rounded-lg text-sm px-4 py-2 text-center inline-flex items-center border border-gray-300"
-                  type="button">Stiahnuť
-            <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                 viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m1 1 4 4 4-4"/>
-            </svg>
-          </button>
-
-          <div id="downloadDropdown"
-               class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44">
-            <ul class="py-2 px-2 text-sm text-gray-500" aria-labelledby="dropdownDownloadButton">
-              <li>
-                <a>
-                  <div
-                    class="group px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1 text-gray-500 group-hover:text-black" xmlns="http://www.w3.org/2000/svg"
-                         fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd"
-                            d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm2-2a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm0 3a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Zm-6 4a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-6Zm8 1v1h-2v-1h2Zm0 3h-2v1h2v-1Zm-4-3v1H9v-1h2Zm0 3H9v1h2v-1Z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    <span>Pre Pohodu</span>
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <button
-            class="flex items-center space-x-2 px-3 py-1.5 text-sm bg-blue-700 hover:bg-blue-800 rounded-lg">
-            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                 fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd"
-                    d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
-                    clip-rule="evenodd"/>
-              <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd"/>
-            </svg>
-            <span
-              class="text-white">Uložiť</span>
-          </button>
-        </div>
       </div>
     </div>
 
@@ -112,7 +68,8 @@
         </li>
       </ul>
     </div>
-    <div id="invoice-content" class="bg-gray-50">
+
+    <div id="invoice-content" class="min-h-screen bg-slate-50">
       <div class="hidden rounded-lg" id="invoice" role="tabpanel"
            aria-labelledby="invoice-tab">
         <app-receipt-details></app-receipt-details>

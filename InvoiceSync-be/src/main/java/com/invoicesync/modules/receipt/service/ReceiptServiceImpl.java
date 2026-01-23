@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,9 +56,6 @@ import com.invoicesync.modules.receipt.model.ReceiptItemRequest;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
 import com.invoicesync.modules.receipt.model.ReceiptResponseDto;
 import com.invoicesync.modules.receipt.repository.ReceiptRepository;
-
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {

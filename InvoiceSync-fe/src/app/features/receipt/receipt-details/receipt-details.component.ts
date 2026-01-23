@@ -3,7 +3,6 @@ import {NgForOf} from "@angular/common";
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReceiptRequest} from "../../../core/models/receipt-request";
-import {ToastrService} from "ngx-toastr";
 import {CommonModule} from '@angular/common';
 import {initFlowbite} from 'flowbite'
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
@@ -11,6 +10,7 @@ import {ReceiptService} from "../../../core/services/receipt.service";
 import {ReceiptDetailResponse} from "../../../pages/receipts/receipt-detail-response";
 import {PostingAccountService} from "../../../core/services/posting-account.service";
 import {ReceiptType} from "../../../core/enums/receipt-type";
+import {toast} from "ngx-sonner";
 
 interface Account {
   id: number,
@@ -26,7 +26,6 @@ interface Account {
     FormsModule,
     CommonModule,
     MatDialogWindowComponent,
-    RouterLink
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
@@ -36,8 +35,7 @@ export class ReceiptDetailsComponent implements OnInit {
     private receiptService: ReceiptService,
     private postingAccountService: PostingAccountService,
     private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private toastr: ToastrService,
+    private fb: FormBuilder
   ) {
   }
 
@@ -196,7 +194,7 @@ export class ReceiptDetailsComponent implements OnInit {
 
   async exportReceiptXml() {
     if (this.receiptForm.invalid) {
-      this.toastr.error('Formulár obsahuje chyby, oprav ich prosím.');
+      toast.error('Formulár obsahuje chyby, oprav ich prosím.');
       return;
     }
 
@@ -209,19 +207,11 @@ export class ReceiptDetailsComponent implements OnInit {
       items: formValue.items,
     };
 
-    console.log("Posielam na export:", receiptRequest);
-
     try {
       const response = await this.receiptService.exportReceiptPohoda({receipt: receiptRequest});
 
       this.modalOpen = false;
-      this.toastr.success('Bloček exportovaný úspešne', '', {
-        timeOut: 3000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-        closeButton: true,
-        positionClass: 'toast-top-right',
-      });
+      toast.success("Bloček exportovaný úspešne");
 
       const blob = new Blob([response.data], {type: 'application/xml'});
 
@@ -239,34 +229,11 @@ export class ReceiptDetailsComponent implements OnInit {
 
     } catch (error: any) {
       if (error.response?.status === 429) {
-        this.toastr.warning('Mesačný limit pre export bločkov vyčerpaný.', '', {
-          timeOut: 5000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
+        toast.warning('Mesačný limit pre export bločkov vyčerpaný.');
       } else if (error.response?.status === 422) {
-        this.toastr.warning(
-          'Číslovanie dokladov nie je nastavené. Nastavte ho v Nastaveniach firmy.',
-          '',
-          {
-            timeOut: 5000,
-            progressBar: true,
-            progressAnimation: 'increasing',
-            closeButton: true,
-            positionClass: 'toast-top-right',
-          }
-        );
+        toast.warning('Číslovanie dokladov nie je nastavené. Nastavte ho v Nastaveniach firmy.');
       } else {
-        console.error('Chyba pri exporte:', error);
-        this.toastr.error('Chyba pri exporte', '', {
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
+        toast.error('Chyba pri exporte');
       }
     }
   }
@@ -357,17 +324,7 @@ export class ReceiptDetailsComponent implements OnInit {
       receipt: this.receiptRequest
     }).then(() => {
       this.modalOpen = false;
-      this.toastr.success(
-        'Zmeny bločka uložené',
-        '',
-        {
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        }
-      );
+      toast.success('Zmeny bločka uložené');
       this.onFetchReceipt()
     });
   }
