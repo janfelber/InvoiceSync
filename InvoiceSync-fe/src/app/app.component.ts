@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {AuthService} from "./core/auth/auth.service";
+import { toast, NgxSonnerToaster } from 'ngx-sonner';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -16,12 +17,15 @@ interface SideNavToggle {
   imports: [
     CommonModule,
     RouterOutlet,
+    NgxSonnerToaster,
   ]
 })
 
 export class AppComponent  {
 
   isRexDisabled: boolean = true;
+
+  protected readonly toast = toast;
 
   constructor(private authService: AuthService) {
     this.authService.init().subscribe();
