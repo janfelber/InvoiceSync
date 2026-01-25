@@ -9,5 +9,6 @@ export interface Details {
   datePayment?: string;
   dateTax?: string
   description?: string;
-  totalPrice?: string;
+  totalPriceWithVat?: string;
+  totalPriceWithoutVat?: string;
 }

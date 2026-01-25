@@ -98,7 +98,6 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
         connectedUser);
     request.receiptDetails().setNumberRequested(numberRequested);
 
-
     if (!request.isPaidByCard()) {
       xmlHelper.updateCashReceiptDetails(doc, request.receiptDetails());
       xmlHelper.updateCashReceiptMyIdentity(doc, request.myIdentity());
@@ -160,8 +159,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     }
 
     try (InputStream fis = getClass().getClassLoader().getResourceAsStream("template/receipt-expense-template.xlsx");
-         Workbook workbook = new XSSFWorkbook(fis);
-         ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        Workbook workbook = new XSSFWorkbook(fis);
+        ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
       // // Filtrovanie a printovanie kladných položiek
       // final List<ReceiptItemRequest> positiveItems = request.items().stream()
@@ -185,8 +184,7 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
       // row.createCell(8).setCellValue(positivePrices);
       row.createCell(9).setCellValue(request.partnerName());
 
-      row.createCell(11).setCellValue("$" + request.totalPrice());
-      System.out.println(request.totalPrice());
+      row.createCell(11).setCellValue("$" + request.totalPriceWithVat());
       row.createCell(13).setCellValue("Výdaj");
       row.createCell(15).setCellValue("HP");
 

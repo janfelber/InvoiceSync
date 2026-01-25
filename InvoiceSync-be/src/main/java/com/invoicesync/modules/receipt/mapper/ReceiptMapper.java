@@ -40,7 +40,8 @@ public class ReceiptMapper {
         .partnerRegistrationNumber(request.partnerRegistrationNumber())
         .partnerTaxId(request.partnerTaxId())
         .partnerVatId(request.partnerVatId())
-        .totalPrice(request.totalPrice())
+        .totalPriceWithVat(request.totalPriceWithVat())
+        .totalPriceWithoutVat(request.totalPriceWithoutVat())
         .accounting(request.accounting())
         .build();
 
@@ -49,10 +50,12 @@ public class ReceiptMapper {
           ReceiptItem item = new ReceiptItem();
           item.setName(itemRequest.name());
           item.setQuantity(itemRequest.quantity());
-          item.setPriceWithoutVAT(itemRequest.priceWithoutVat());
           item.setVatRate(itemRequest.vatRate());
+          item.setUnitPriceWithoutVat(itemRequest.unitPriceWithoutVat());
+          item.setUnitPriceWithVat(itemRequest.unitPriceWithVat());
+          item.setTotalItemPriceWithoutVat(itemRequest.totalItemPriceWithoutVat());
+          item.setTotalItemPriceWithVat(itemRequest.totalItemPriceWithVat());
           item.setAccountValue(itemRequest.accountValue());
-          item.setPriceWithVAT(itemRequest.priceWithVat());
           item.setAccountText(itemRequest.accountText());
           item.setReceipt(receipt);
           return item;
@@ -68,13 +71,14 @@ public class ReceiptMapper {
     final List<ReceiptItemDto> itemDtos = receipt.getItems().stream()
         .map(item -> ReceiptItemDto.builder()
             .id(item.getId())
-            .accountText(item.getAccountText())
             .name(item.getName())
             .quantity(item.getQuantity())
-            .priceWithoutVAT(item.getPriceWithoutVAT())
             .vatRate(item.getVatRate())
-            .priceWithVAT(item.getPriceWithVAT())
+            .unitPriceWithoutVat(item.getUnitPriceWithoutVat())
+            .unitPriceWithVat(item.getUnitPriceWithVat())
+            .totalItemPriceWithVat(item.getTotalItemPriceWithVat())
             .accountValue(item.getAccountValue())
+            .accountText(item.getAccountText())
             .build())
         .collect(Collectors.toList());
 
@@ -85,7 +89,8 @@ public class ReceiptMapper {
             .date(receipt.getDate())
             .datePayment(receipt.getDatePayment())
             .dateTax(receipt.getDateTax())
-            .totalPrice(receipt.getTotalPrice())
+            .totalPriceWithVat(String.valueOf(receipt.getTotalPriceWithVat()))
+            .totalPriceWithoutVat(String.valueOf(receipt.getTotalPriceWithoutVat()))
             .accountValue(receipt.getAccounting())
             .isPaidByCard(receipt.isPaidByCard())
             .classificationVAT(receipt.getClassificationVAT())
@@ -122,7 +127,7 @@ public class ReceiptMapper {
         .createdAt(receipt.getCreatedDate())
         .companyName(receipt.getCompany().getName())
         .receiptDetails(DetailDto.builder()
-            .totalPrice(receipt.getTotalPrice())
+            .totalPriceWithVat(String.valueOf(receipt.getTotalPriceWithVat()))
             .build())
         .partner(PartnerDto.builder()
             .name(receipt.getPartnerName())
@@ -145,4 +150,5 @@ public class ReceiptMapper {
         .note(document.getNote())
         .build();
   }
+
 }

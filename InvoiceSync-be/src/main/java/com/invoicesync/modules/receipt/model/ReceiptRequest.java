@@ -1,5 +1,6 @@
 package com.invoicesync.modules.receipt.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -58,26 +59,30 @@ public record ReceiptRequest(
 
     @NotNull(message = "111")
     @NotEmpty(message = "111")
-    String totalPrice,
+    BigDecimal totalPriceWithoutVat,
 
     @NotNull(message = "112")
     @NotEmpty(message = "112")
-    String accounting,
+    BigDecimal totalPriceWithVat,
 
     @NotNull(message = "113")
     @NotEmpty(message = "113")
-    String classificationVAT,
+    String accounting,
 
     @NotNull(message = "114")
     @NotEmpty(message = "114")
-    String classificationKVVAT,
+    String classificationVAT,
 
     @NotNull(message = "115")
     @NotEmpty(message = "115")
-    String description,
+    String classificationKVVAT,
 
     @NotNull(message = "116")
     @NotEmpty(message = "116")
+    String description,
+
+    @NotNull(message = "117")
+    @NotEmpty(message = "117")
     List<ReceiptItemRequest> items
 ) {
 

@@ -17,16 +17,20 @@ public class ReceiptItemDto {
 
   private String name;
 
-  private String accountText;
-
   private int quantity;
-
-  private BigDecimal priceWithoutVAT;
 
   private int vatRate;
 
-  private BigDecimal priceWithVAT;
+  private BigDecimal unitPriceWithoutVat;
+
+  private BigDecimal unitPriceWithVat;
+
+  private BigDecimal totalItemPriceWithoutVat;
+
+  private BigDecimal totalItemPriceWithVat;
 
   private String accountValue;
+
+  private String accountText;
 
 }

@@ -1,13 +1,9 @@
 package com.invoicesync.modules.receipt.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.invoicesync.core.common.BaseEntity;
-import com.invoicesync.core.enums.InvoiceStatus;
-import com.invoicesync.modules.company.model.Company;
-import com.invoicesync.modules.document.model.ReceiptDocument;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,6 +14,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import com.invoicesync.core.common.BaseEntity;
+import com.invoicesync.core.enums.InvoiceStatus;
+import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.document.model.ReceiptDocument;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -139,8 +141,14 @@ public class Receipt extends BaseEntity {
   /**
    * Total price of the receipt (including VAT if applicable).
    */
-  @Column(name = "total_price")
-  private String totalPrice;
+  @Column(name = "total_price_with_vat")
+  private BigDecimal totalPriceWithVat;
+
+  /**
+   * Total price of the receipt (excluding VAT if applicable).
+   */
+  @Column(name = "total_price_without_vat")
+  private BigDecimal totalPriceWithoutVat;
 
   /**
    *
@@ -178,4 +186,5 @@ public class Receipt extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "receipt_status")
   private InvoiceStatus status;
+
 }

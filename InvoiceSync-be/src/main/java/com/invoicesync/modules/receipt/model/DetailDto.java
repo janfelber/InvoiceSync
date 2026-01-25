@@ -17,7 +17,9 @@ public class DetailDto {
 
   private String dateTax;
 
-  private String totalPrice;
+  private String totalPriceWithVat;
+
+  private String totalPriceWithoutVat;
 
   private String accountValue;
 

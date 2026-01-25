@@ -148,7 +148,7 @@
                 </td>
 
                 <td class="px-4 py-3 text-right text-sm text-slate-900">
-                  €{{ item.priceWithoutVAT | number:'1.2-2' }}
+                  €{{ item.unitPriceWithVat | number:'1.2-2' }}
                 </td>
 
                 <td class="px-4 py-3 text-center">
@@ -158,7 +158,7 @@
                 </td>
 
                 <td class="px-4 py-3 text-right text-sm font-medium text-slate-900">
-                  €83.12
+                  €{{ item.totalItemPriceWithVat }}
                 </td>
 
                 <td class="px-4 py-3 text-right">
@@ -196,15 +196,15 @@
           <div class="space-y-2">
             <div class="flex justify-between text-sm">
               <span class="text-slate-600">Subtotal (without VAT)</span>
-              <span class="font-medium text-slate-900">€21.56</span>
+              <span class="font-medium text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithoutVat }}</span>
             </div>
             <div class="flex justify-between text-sm">
               <span class="text-slate-600">Total VAT</span>
-              <span class="font-medium text-slate-900">€21.56</span>
+              <span class="font-medium text-slate-900">€{{ vatAmount | number:'1.2-2' }}</span>
             </div>
             <div class="pt-2 border-t border-slate-200 flex justify-between">
               <span class="font-semibold text-slate-900">Total Amount</span>
-              <span class="text-xl font-bold text-slate-900">€23.05</span>
+              <span class="text-xl font-bold text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithVat }}</span>
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@
       <div class="p-5 mb-4 bg-white border border-slate-200 rounded-lg">
         <h3 class="text-sm text-gray-600">Total Amount</h3>
         <div class="flex items-center justify-between border-gray-200">
-          <p class="text-3xl font-bold text-gray-900 pb-4">€{{ receiptResponse.receiptDetails?.totalPrice }}</p>
+          <p class="text-3xl font-bold text-gray-900 pb-4">€{{ receiptResponse.receiptDetails?.totalPriceWithVat }}</p>
         </div>
         <div class="space-y-2 text-sm text-gray-600 border-gray-200">
           <div class="flex items-center space-x-2 text-sm text-gray-600 pb-2">
