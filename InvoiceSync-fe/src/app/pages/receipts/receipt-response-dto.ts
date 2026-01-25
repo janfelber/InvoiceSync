@@ -6,7 +6,7 @@ export interface ReceiptResponseDto {
   createdAt: any;
   companyName: string;
   receiptDetails: {
-    totalPrice: string
+    totalPriceWithVat: string
   }
   partner: {
     name: string;

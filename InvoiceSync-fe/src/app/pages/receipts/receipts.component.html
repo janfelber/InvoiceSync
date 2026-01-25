@@ -425,7 +425,7 @@
           <td class="px-4 py-4">{{ receipt.partner?.registrationNumber }}</td>
           <td class="px-4 py-4">{{ receipt.partner?.taxId }}</td>
           <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-            {{ receipt.receiptDetails?.totalPrice | currency:'EUR':'symbol':'1.2-2' }}
+            {{ receipt.receiptDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
           </td>
           <td>dwadawd</td>
           <td class="px-4 py-3 flex items-center">

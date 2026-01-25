@@ -22,23 +22,36 @@ public final class ParseUtils {
     final String street =
         orgNode.path("streetName").asText() + " " + orgNode.path("propertyRegistrationNumber").asText();
 
+    BigDecimal totalPriceWithoutVat = BigDecimal.ZERO;
+
     final List<ReceiptItemRequest> items = new ArrayList<>();
     for (final JsonNode itemNode : receiptNode.path("items")) {
-      final double price = itemNode.path("price").asDouble();
+      final BigDecimal totalItemPriceWithVat = itemNode.path("price").decimalValue();
       final int vatRate = itemNode.path("vatRate").asInt();
+      final int quantity = itemNode.path("quantity").asInt();
 
-      final BigDecimal priceWithoutVAT = new BigDecimal(price).divide(BigDecimal.valueOf(1 + (double) vatRate / 100), 2,
-          RoundingMode.HALF_UP);
+      final BigDecimal unitPriceWithVat =
+          totalItemPriceWithVat.divide(BigDecimal.valueOf(quantity), 2, RoundingMode.HALF_UP);
+
+      final BigDecimal unitPriceWithoutVat =
+          unitPriceWithVat.divide(BigDecimal.ONE.add(BigDecimal.valueOf(vatRate).divide(BigDecimal.valueOf(100))), 2,
+              RoundingMode.HALF_UP);
+
+      final BigDecimal totalItemPriceWithoutVat = unitPriceWithoutVat.multiply(BigDecimal.valueOf(quantity));
+
+      totalPriceWithoutVat = totalPriceWithoutVat.add(totalItemPriceWithoutVat);
 
       items.add(new ReceiptItemRequest(
           null, // id (autogenerované)
           null, // receiptId (nastaví sa až po uložení Receipt)
           itemNode.path("name").asText(),
-          itemNode.path("quantity").asInt(),
-          priceWithoutVAT,
-          itemNode.path("vatRate").asInt(),
+          quantity,
+          vatRate,
+          unitPriceWithoutVat,
+          unitPriceWithVat,
+          totalItemPriceWithoutVat,
+          totalItemPriceWithVat,
           null,
-          new BigDecimal(itemNode.path("price").asText()),
           null
       ));
     }
@@ -51,15 +64,19 @@ public final class ParseUtils {
         parseDateOnly(receiptNode.path("createDate").asText()),     // date
         parseDateOnly(receiptNode.path("issueDate").asText()),      // datePayment
         parseDateOnly(receiptNode.path("issueDate").asText()),      // dateTax
-        orgNode.path("name").asText(),                               // partnerName
+        orgNode.path("name").asText(),                              // partnerName
         orgNode.path("municipality").asText(),                      // partnerCity
-        street,                                                     // partnerStreet
+        street,                                                        // partnerStreet
         orgNode.path("postalCode").asText(),                        // partnerZip
         orgNode.path("ico").asText(),                               // partnerRegistrationNumber
         orgNode.path("dic").asText(),                               // partnerTaxId
         orgNode.path("icDph").asText(),                             // partnerVatId
-        receiptNode.path("totalPrice").asText(),                    // totalPrice
-        null, null, null, null, // accounting, classificationVAT, classificationKVVAT, description
+        totalPriceWithoutVat,
+        receiptNode.path("totalPrice").decimalValue(), // totalPrice,
+        null,
+        null,
+        null,
+        null,
         items
     );
   }

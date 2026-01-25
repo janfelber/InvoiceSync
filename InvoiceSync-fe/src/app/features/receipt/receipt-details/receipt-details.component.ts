@@ -60,6 +60,12 @@ export class ReceiptDetailsComponent implements OnInit {
   receiptForm!: FormGroup;
   groupedAccounts: any[] = [];
 
+  get vatAmount(): number {
+    const withVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithVat ?? 0);
+    const withoutVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithoutVat ?? 0);
+    return withVat - withoutVat;
+  }
+
   items: {
     accountText?: string;
     name?: string;
@@ -90,7 +96,7 @@ export class ReceiptDetailsComponent implements OnInit {
   };
 
 
-  private initForm(): void {
+    private initForm(): void {
     this.receiptForm = this.fb.group({
       receiptDetails: this.fb.group({
         numberRequested: [''],
@@ -134,7 +140,10 @@ export class ReceiptDetailsComponent implements OnInit {
       accountText: [itemData.accountText],
       name: [itemData.name],
       quantity: [itemData.quantity],
-      priceWithoutVAT: [itemData.priceWithoutVAT],
+      unitPriceWithoutVat: [itemData.unitPriceWithoutVat],
+      unitPriceWithVat: [itemData.unitPriceWithVat],
+      totalItemPriceWithoutVat: [itemData.totalItemPriceWithoutVat],
+      totalItemPriceWithVat: [itemData.totalItemPriceWithVat],
       vatRate: [itemData.vatRate],
       priceWithVAT: [itemData.priceWithVAT],
       accountValue: [itemData.accountValue],

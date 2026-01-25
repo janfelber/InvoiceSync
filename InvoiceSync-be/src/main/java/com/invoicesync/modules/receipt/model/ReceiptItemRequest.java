@@ -6,14 +6,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ReceiptItemRequest(
     Long id,
+
     Long receiptId,
+
     @JsonProperty("description")
     String name,
 
     Integer quantity,
-    BigDecimal priceWithoutVat,
+
     Integer vatRate,
+
+    @JsonProperty("unitPriceWithoutVat")
+    BigDecimal unitPriceWithoutVat,
+
+    @JsonProperty("unitPriceWithVat")
+    BigDecimal unitPriceWithVat,
+
+    BigDecimal totalItemPriceWithoutVat,
+
+    BigDecimal totalItemPriceWithVat,
+
     String accountValue,
-    BigDecimal priceWithVat,
+
     String accountText
-) {}
+) {
+
+}

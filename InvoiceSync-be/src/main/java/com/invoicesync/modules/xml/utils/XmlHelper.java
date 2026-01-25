@@ -80,7 +80,7 @@ public class XmlHelper {
       final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());  // Sadza DPH, napr. 19
 
       // Cena bez DPH
-      final BigDecimal priceWithoutVAT = item.getPriceWithoutVAT();
+      final BigDecimal priceWithoutVAT = item.getUnitPriceWithoutVat();
 
       // Vypočítať DPH ako čiastku (t.j. podiel z ceny bez DPH)
       final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
@@ -88,10 +88,10 @@ public class XmlHelper {
 
       // Handle homeCurrency and pricing
       final Element homeCurrency = doc.createElement(ReceivedInvoice.HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getPriceWithoutVAT()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
       createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceWithVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getUnitPriceWithVat()));
       invoiceItem.appendChild(homeCurrency);
 
       final Element accounting = doc.createElement(ReceivedInvoice.ACCOUNTING);
@@ -134,8 +134,7 @@ public class XmlHelper {
 
     if (myIdentity.getSurname() != null) {
       replaceTextContent(doc, SURNAME, myIdentity.getSurname(), ReceiptCash.MY_IDENTITY);
-    }
-    else {
+    } else {
       replaceTextContent(doc, SURNAME, "", ReceiptCash.MY_IDENTITY);
     }
 
@@ -154,8 +153,7 @@ public class XmlHelper {
 
     if (myIdentity.getSurname() != null) {
       replaceTextContent(doc, SURNAME, myIdentity.getSurname(), ReceiptCash.MY_IDENTITY);
-    }
-    else {
+    } else {
       replaceTextContent(doc, SURNAME, "", ReceiptCash.MY_IDENTITY);
     }
 
@@ -190,6 +188,8 @@ public class XmlHelper {
   }
 
   public void updateCashReceiptItems(final Document doc, final List<ReceiptItemDto> items) {
+    System.out.println("items na export" + items);
+
     final Element receiptItemsParent = (Element) doc.getElementsByTagName(ReceiptCash.DETAIL)
         .item(0);
     for (final ReceiptItemDto item : items) {
@@ -206,17 +206,17 @@ public class XmlHelper {
       final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());  // Sadza DPH, napr. 19
 
       // Cena bez DPH
-      final BigDecimal priceWithoutVAT = item.getPriceWithoutVAT();
+      final BigDecimal priceWithoutVAT = item.getUnitPriceWithoutVat();
 
       // Vypočítať DPH ako čiastku (t.j. podiel z ceny bez DPH)
       final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
           .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
       final Element homeCurrency = doc.createElement(ReceiptCash.HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getPriceWithoutVAT()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
       createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceWithVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getTotalItemPriceWithVat()));
       receiptItem.appendChild(homeCurrency);
 
       final Element accounting = doc.createElement(ReceiptCash.ACCOUNTING);
@@ -245,17 +245,17 @@ public class XmlHelper {
       final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());  // Sadza DPH, napr. 19
 
       // Cena bez DPH
-      final BigDecimal priceWithoutVAT = item.getPriceWithoutVAT();
+      final BigDecimal priceWithoutVAT = item.getUnitPriceWithoutVat();
 
       // Vypočítať DPH ako čiastku (t.j. podiel z ceny bez DPH)
       final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
           .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
       final Element homeCurrency = doc.createElement(ReceiptCard.HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getPriceWithoutVAT()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getPriceWithoutVAT()));
+      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
       createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getPriceWithVAT()));
+      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getUnitPriceWithVat()));
       receiptItem.appendChild(homeCurrency);
 
       final Element accounting = doc.createElement(ReceiptCard.ACCOUNTING);
