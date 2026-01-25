@@ -94,5 +94,10 @@ export const ApiPaths = {
   mobile: {
     BASE: '/auth/mobile',
     QR_GENERATE: '/qr',
+  },
+  ai: {
+    BASE: '/synxie',
+    ALL_CONVERSATIONS: '/conversations',
+    CONVERSATION_MESSAGES: (id: number) => `/conversation/${id}`,
   }
 };

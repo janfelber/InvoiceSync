@@ -2,12 +2,13 @@ package com.invoicesync.core.enums;
 
 import lombok.Getter;
 
-
 @Getter
 public enum FeatureEnum {
-  EKON_SPECIALTY(1, "Turns on various specifics for Ekon Consult.");
+  EKON_SPECIALTY(1, "Turns on various specifics for Ekon Consult."),
+  SYNXIE_ASSISTANT(2, "Access to Synxie AI assistant features.");
 
   private final long id;
+
   private final String description;
 
   FeatureEnum(final int id, final String description) {
@@ -17,7 +18,9 @@ public enum FeatureEnum {
 
   public static FeatureEnum fromId(final long id) {
     for (final FeatureEnum f : values()) {
-      if (f.getId() == id) return f;
+      if (f.getId() == id) {
+        return f;
+      }
     }
     throw new IllegalArgumentException("Unknown Feature id: " + id);
   }
