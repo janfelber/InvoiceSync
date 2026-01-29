@@ -50,6 +50,11 @@ export class CompanyService {
     return this.apiService.instance.get( url);
   }
 
+  findByRegistrationNumber(params: { registrationNumber: string }): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.company.FIND_BY_REGISTRATION_NUMBER(params.registrationNumber)}`
+    )
+  }
+
   /**
    * Saves a new company to the backend.
    *

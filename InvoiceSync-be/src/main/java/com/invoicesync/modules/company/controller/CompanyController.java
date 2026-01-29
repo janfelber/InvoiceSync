@@ -1,5 +1,7 @@
 package com.invoicesync.modules.company.controller;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
 import com.invoicesync.modules.company.service.CompanyService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,6 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class CompanyController {
 
   private final CompanyService companyService;
+
+  @GetMapping("/by-registration-number/{registrationNumber}")
+  public ResponseEntity<CompanyBillingDto> getCompanyByRegistrationNumber(
+      @PathVariable final String registrationNumber, final Authentication connectedUser) {
+    return ResponseEntity.ok(companyService.findByRegistrationNumber(registrationNumber, connectedUser));
+  }
 
   @GetMapping("/user")
   public ResponseEntity<PageResponse<CompanyResponseDto>> findAllCompaniesByUser(

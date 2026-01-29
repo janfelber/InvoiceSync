@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -55,8 +57,6 @@ import com.invoicesync.modules.subscription.guard.service.LimitGuardService;
 import com.invoicesync.partner.CompaniesRegistry;
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -440,4 +440,5 @@ public class InvoiceServiceImpl implements InvoiceService {
   private String removeOdberatel(final String text) {
     return ODBERATEL_BLOCK.matcher(text).replaceAll("$2").trim();
   }
+
 }

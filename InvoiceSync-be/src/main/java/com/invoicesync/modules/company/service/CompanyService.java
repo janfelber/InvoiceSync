@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
 
@@ -18,6 +19,8 @@ public interface CompanyService {
    * @return paginated response of companies
    */
   PageResponse<CompanyResponseDto> findAllCompaniesByUser(int size, int page, Authentication connectedUser);
+
+  CompanyBillingDto findByRegistrationNumber(String registrationNumber, Authentication connectedUser);
 
   /**
    * Finds a company by its unique ID.

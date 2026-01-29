@@ -3,8 +3,10 @@ package com.invoicesync.modules.company.mapper;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
+import com.invoicesync.partner.PartnerItem;
 
 @Service
 public class CompanyMapper {
@@ -37,6 +39,16 @@ public class CompanyMapper {
         .cashReceiptNumber(company.getCashReceiptNumber())
         .cardReceiptNumber(company.getCardReceiptNumber())
         .build();
+  }
+
+  public CompanyBillingDto toCompanyBilling(PartnerItem partner) {
+    return new CompanyBillingDto(
+        partner.getName(),
+        partner.getStreet() + ", " + partner.getCity() + " " + partner.getZip(),
+        partner.getRegistrationNumber(),
+        partner.getTaxId(),
+        partner.getVatId()
+    );
   }
 
 }

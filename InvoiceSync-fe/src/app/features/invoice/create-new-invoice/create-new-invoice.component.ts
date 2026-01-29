@@ -1,12 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
+import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {initFlowbite} from 'flowbite'
 import {CompanyService} from "../../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../../core/models/page-response-company-response-dto";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import {toast} from "ngx-sonner";
 
+interface SupplierDraft {
+  name: string;
+  address: string;
+  registrationNumber: string;
+  taxId: string;
+  vatId: string;
+}
+
+interface RecipientDraft {
+  name: string;
+  address: string;
+  registrationNumber: string;
+  taxId: string;
+  vatId: string;
+}
 
 @Component({
   selector: 'app-create-new-invoice',
@@ -19,23 +35,36 @@ import html2canvas from 'html2canvas';
   templateUrl: './create-new-invoice.component.html',
   styleUrl: './create-new-invoice.component.css'
 })
-export class CreateNewInvoice implements OnInit{
+export class CreateNewInvoice implements OnInit {
 
   public companyResponse: PageResponseCompanyResponseDto = {
     content: []
   };
-
-  loadingCompanyDetails = false;
-  selectedCompanyDetails: any = null;
 
   subtotal = 0;
   tax = 0;
   shipping = 0;
   total = 0;
 
+  supplierDraft: SupplierDraft = {
+    name: '',
+    address: '',
+    registrationNumber: '',
+    taxId: '',
+    vatId: ''
+  };
+
+  recipientDraft: RecipientDraft = {
+    name: '',
+    address: '',
+    registrationNumber: '',
+    taxId: '',
+    vatId: ''
+  }
 
   invoice = {
     invoiceNumber: '',
+    variableSymbol: '',
     dateIssued: '',
     dateDue: '',
     dateTax: '',
@@ -57,13 +86,8 @@ export class CreateNewInvoice implements OnInit{
     totalWithoutTax: 500,
     totalTax: 100,
     totalWithTax: 600,
-    //implement this part to generate invoice as PDF
-    paymentMethod: 'Prevod',
-    iban: 'SK12 3456 7890 1234 5678 9012',
-    swift: 'UNCRSKBX',
     note: ''
   }
-
 
   items: {
     name: string;
@@ -76,23 +100,16 @@ export class CreateNewInvoice implements OnInit{
     totalWithTax: number;
   }[] = [];
 
-  newItem = {
-    name: '',
-    quantity: 1,
-    unit: 'ks',
-    unitPrice: null as number | null,
-    taxRate: 23
-  };
-
 
   constructor(
     private companyService: CompanyService
   ) {
   }
-    ngOnInit(): void {
-      initFlowbite();
-      this.onFetchCompanies();
-    }
+
+  ngOnInit(): void {
+    initFlowbite();
+    this.onFetchCompanies();
+  }
 
   onFetchCompanies() {
     this.companyService.findAllCompaniesByUser().then(response => {
@@ -111,7 +128,7 @@ export class CreateNewInvoice implements OnInit{
     }
 
     // @ts-ignore
-    html2canvas(invoiceElement, { scale: 1, useCORS: true }).then(canvas => {
+    html2canvas(invoiceElement, {scale: 1, useCORS: true}).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -137,53 +154,96 @@ export class CreateNewInvoice implements OnInit{
     });
   }
 
-  onCompanySelected(companyId: any) {
-    this.loadingCompanyDetails = true;
+  findCompanyByRegistrationNumberSupplier(registrationNumber: string) {
+    this.companyService.findByRegistrationNumber({
+      registrationNumber: registrationNumber,
+    }).then(response => {
+      const company = response.data;
 
-    this.companyService.getCompanyById({ companyId })
+      this.supplierDraft = {
+        name: company.name,
+        address: company.address,
+        registrationNumber: company.registrationNumber,
+        taxId: company.taxId,
+        vatId: company.vatId
+      };
+    }).catch(error => {
+      if (error.response?.status === 403) {
+        toast.info("Spoločnosť s týmto IČO nebola nájdená. Prosím, vyplňte údaje manuálne.");
+      }
+    })
+  }
+
+  findCompanyByRegistrationNumberRecipient(registrationNumber: string) {
+    this.companyService.findByRegistrationNumber({
+      registrationNumber: registrationNumber,
+    }).then(response => {
+      const company = response.data;
+
+      this.recipientDraft = {
+        name: company.name,
+        address: company.address,
+        registrationNumber: company.registrationNumber,
+        taxId: company.taxId,
+        vatId: company.vatId
+      };
+    }).catch(error => {
+      if (error.response?.status === 403) {
+        toast.info("Spoločnosť s týmto IČO nebola nájdená. Prosím, vyplňte údaje manuálne.");
+      }
+    })
+  }
+
+
+  onCompanySelected(companyId: any) {
+
+    this.companyService.getCompanyById({companyId})
       .then(response => {
-        setTimeout(() => {
-          this.selectedCompanyDetails = response.data;
-          this.loadingCompanyDetails = false;
-          console.log(this.selectedCompanyDetails);
-        }, 2000);
+        const company = response.data;
+
+        this.supplierDraft = {
+          name: company.name,
+          address: `${company.street}, ${company.zip} ${company.city}`,
+          registrationNumber: company.registrationNumber,
+          taxId: company.taxId,
+          vatId: company.vatId
+        };
       })
       .catch(error => {
         console.error('Chyba pri načítavaní údajov o spoločnosti:', error);
-        this.loadingCompanyDetails = false;
+      });
+  }
+
+  onRecipientSelected(companyId: any) {
+
+    this.companyService.getCompanyById({companyId})
+      .then(response => {
+        const company = response.data;
+
+        this.recipientDraft = {
+          name: company.name,
+          address: `${company.street}, ${company.zip} ${company.city}`,
+          registrationNumber: company.registrationNumber,
+          taxId: company.taxId,
+          vatId: company.vatId
+        };
+      })
+      .catch(error => {
+        console.error('Chyba pri načítavaní údajov o spoločnosti:', error);
       });
   }
 
   addItem() {
-    if (this.newItem.name && this.newItem.unitPrice != null && this.newItem.quantity != null) {
-
-      const totalWithoutTax = this.newItem.unitPrice * this.newItem.quantity;
-
-      const taxAmount = totalWithoutTax * (this.newItem.taxRate / 100);
-
-      const totalWithTax = totalWithoutTax + taxAmount;
-
-      this.items.push({
-        name: this.newItem.name,
-        quantity: this.newItem.quantity,
-        unit: this.newItem.unit ?? 'ks',
-        unitPrice: this.newItem.unitPrice,
-        taxRate: this.newItem.taxRate,
-        totalWithoutTax,
-        taxAmount,
-        totalWithTax
-      });
-
-      this.newItem = {
-        name: '',
-        quantity: 1,
-        unit: 'ks',
-        unitPrice: null,
-        taxRate: 19
-      };
-
-      this.calculateSummary();
-    }
+    this.items.push({
+      name: "",
+      quantity: 0,
+      unit: "",
+      unitPrice: 0,
+      taxRate: 23,
+      totalWithoutTax: 0,
+      taxAmount: 0,
+      totalWithTax: 0
+    });
   }
 
   calculateSummary() {
@@ -192,14 +252,19 @@ export class CreateNewInvoice implements OnInit{
     this.total = this.subtotal + this.tax + this.shipping;
   }
 
-  increaseQuantity() {
-    if (this.newItem.quantity == null) this.newItem.quantity = 1;
-    else this.newItem.quantity++;
+  removeItem(index: number) {
+    this.items.splice(index, 1);
   }
 
-  decreaseQuantity() {
-    if (this.newItem.quantity != null && this.newItem.quantity > 1) {
-      this.newItem.quantity--;
-    }
+  updateItemTotals(item: any) {
+    const qty = item.quantity || 0;
+    const price = item.unitPrice || 0;
+    const taxRate = item.taxRate || 0;
+
+    item.totalWithoutTax = qty * price;
+    item.taxAmount = item.totalWithoutTax * (taxRate / 100);
+    item.totalWithTax = item.totalWithoutTax + item.taxAmount;
+
+    this.calculateSummary();
   }
 }
