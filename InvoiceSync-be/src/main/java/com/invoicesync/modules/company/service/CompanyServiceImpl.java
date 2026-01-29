@@ -4,6 +4,9 @@ import static com.invoicesync.modules.company.dto.specification.CompanySpecifica
 
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,13 +19,12 @@ import com.invoicesync.core.enums.NumberConfigType;
 import com.invoicesync.modules.accountingdocument.AccountDocumentNumberService;
 import com.invoicesync.modules.company.mapper.CompanyMapper;
 import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
 import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.partner.CompaniesRegistry;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -66,6 +68,16 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
+  public CompanyBillingDto findByRegistrationNumber(final String registrationNumber,
+      final Authentication connectedUser) {
+
+    return companiesRegistry.findByIco(registrationNumber)
+        .map(companyMapper::toCompanyBilling)
+        .orElseThrow(() ->
+            new EntityNotFoundException("No company found with the registration number: " + registrationNumber));
+  }
+
+  @Override
   public CompanyResponseDto findById(final Long companyId) {
     return companyRepository.findById(companyId)
         .map(companyMapper::toCompanyResponse)
@@ -86,16 +98,36 @@ public class CompanyServiceImpl implements CompanyService {
       throw new IllegalArgumentException("Company not found");
     }
 
-    if (request.name() != null) oldCompany.setName(request.name());
-    if (request.city() != null) oldCompany.setCity(request.city());
-    if (request.street() != null) oldCompany.setStreet(request.street());
-    if (request.streetNumber() != null) oldCompany.setStreetNumber(request.streetNumber());
-    if (request.zip() != null) oldCompany.setZip(request.zip());
-    if (request.taxId() != null) oldCompany.setTaxId(request.taxId());
-    if (request.vatId() != null) oldCompany.setVatId(request.vatId());
-    if (request.registrationNumber() != null) oldCompany.setRegistrationNumber(request.registrationNumber());
-    if (request.cashReceiptNumber() != null) oldCompany.setCashReceiptNumber(request.cashReceiptNumber());
-    if (request.cardReceiptNumber() != null) oldCompany.setCardReceiptNumber(request.cardReceiptNumber());
+    if (request.name() != null) {
+      oldCompany.setName(request.name());
+    }
+    if (request.city() != null) {
+      oldCompany.setCity(request.city());
+    }
+    if (request.street() != null) {
+      oldCompany.setStreet(request.street());
+    }
+    if (request.streetNumber() != null) {
+      oldCompany.setStreetNumber(request.streetNumber());
+    }
+    if (request.zip() != null) {
+      oldCompany.setZip(request.zip());
+    }
+    if (request.taxId() != null) {
+      oldCompany.setTaxId(request.taxId());
+    }
+    if (request.vatId() != null) {
+      oldCompany.setVatId(request.vatId());
+    }
+    if (request.registrationNumber() != null) {
+      oldCompany.setRegistrationNumber(request.registrationNumber());
+    }
+    if (request.cashReceiptNumber() != null) {
+      oldCompany.setCashReceiptNumber(request.cashReceiptNumber());
+    }
+    if (request.cardReceiptNumber() != null) {
+      oldCompany.setCardReceiptNumber(request.cardReceiptNumber());
+    }
     return companyRepository.save(oldCompany);
   }
 

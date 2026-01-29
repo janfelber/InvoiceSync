@@ -3,6 +3,7 @@ export const ApiPaths = {
     BASE: '/company',
     FIND_ALL_BY_USER: '/user',
     BY_ID: (companyId: number) => `/${companyId}`,
+    FIND_BY_REGISTRATION_NUMBER: (registrationNumber: string) => `/by-registration-number/${registrationNumber}`,
     SAVE: '/save',
     CREATE_BY_REGISTRATION_NUMBER: (registrationNumber: string) => `/save/${registrationNumber}`,
     UPDATE_BY_ID: (companyId: number) => `/update/${companyId}`,
