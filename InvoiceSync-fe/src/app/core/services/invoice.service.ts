@@ -36,6 +36,13 @@ export class InvoiceService {
     );
   }
 
+  createInvoice(invoiceRequest: any, companyId: number) {
+    return this.apiService.instance.post(
+      `${this.baseUrl}${ApiPaths.invoice.CREATE_INVOICE}?companyId=${companyId}`,
+      invoiceRequest
+    );
+  }
+
   findAllInvoicesByCompany(params: { page: number; size: number; companyId: number }): Promise<any> {
     return this.apiService.instance.get(
       `${this.baseUrl}${ApiPaths.invoice.FIND_BY_COMPANY(params.companyId)}?page=${params.page}&size=${params.size}`

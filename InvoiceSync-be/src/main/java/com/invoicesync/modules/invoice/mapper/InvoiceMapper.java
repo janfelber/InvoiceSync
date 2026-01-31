@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.core.enums.InvoiceStatus;
 import com.invoicesync.core.identity.MyIdentity;
 import com.invoicesync.core.identity.PartnerDto;
+import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.InvoiceDocument;
 import com.invoicesync.modules.invoice.model.Invoice;
+import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceDetails;
 import com.invoicesync.modules.invoice.model.InvoiceItem;
 import com.invoicesync.modules.invoice.model.InvoiceRequest;
@@ -50,6 +52,46 @@ public class InvoiceMapper {
     return invoice;
   }
 
+  public Invoice toCreateInvoice(final InvoiceCreate request, final Company company) {
+
+    final Invoice invoice = Invoice.builder()
+        .invoiceNumber(request.invoiceDetails().numberRequested())
+        .variableSymbol(request.invoiceDetails().variableSymbol())
+        .issueDate(request.invoiceDetails().issueDate())
+        .taxDate(request.invoiceDetails().taxDate())
+        .accountingDate(request.invoiceDetails().accountingDate())
+        .dueDate(request.invoiceDetails().dueDate())
+        .partnerName(request.partner().getName())
+        .partnerStreet(request.partner().getStreet())
+        .partnerCity(request.partner().getCity())
+        .partnerZip(request.partner().getZip())
+        .partnerRegistrationNumber(request.partner().getRegistrationNumber())
+        .partnerTaxId(request.partner().getTaxId())
+        .partnerVatId(request.partner().getVatId())
+        .status(InvoiceStatus.UNPROCESSED)
+        .invoiceType(request.invoiceDetails().invoiceType().toString())
+        .company(company)
+        .build();
+
+    final List<InvoiceItem> items = request.items().stream()
+        .map(itemRequest -> {
+          final InvoiceItem item = new InvoiceItem();
+          item.setInvoice(invoice);
+          item.setName(itemRequest.getName());
+          item.setQuantity(itemRequest.getQuantity());
+          item.setUnitType(itemRequest.getUnitType());
+          item.setUnitPriceWithoutVat(itemRequest.getUnitPriceWithoutVat());
+          item.setUnitPriceWithVat(itemRequest.getUnitPriceWithVat());
+          item.setVatRate(itemRequest.getVatRate());
+          return item;
+        })
+        .toList();
+
+    invoice.setItems(items);
+
+    return invoice;
+  }
+
   public InvoiceResponseTable toInvoiceTableResponse(final Invoice invoice) {
     return InvoiceResponseTable.builder()
         .id(invoice.getId())
@@ -76,9 +118,9 @@ public class InvoiceMapper {
             .accountText(item.getAccountText())
             .name(item.getName())
             .quantity(item.getQuantity())
-            .unitPriceWithoutVat(item.getPriceWithoutVAT())
+            .unitPriceWithoutVat(item.getUnitPriceWithoutVat())
             .vatRate(item.getVatRate())
-            .unitPriceWithVat(item.getPriceWithVAT())
+            .unitPriceWithVat(item.getUnitPriceWithVat())
             .accountValue(item.getAccountValue())
             .build())
         .collect(Collectors.toList());

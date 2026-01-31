@@ -51,6 +51,7 @@ export const ApiPaths = {
     BASE: '/invoice',
     FIND_ALL_BY_USER: '/user',
     SAVE: '/save',
+    CREATE_INVOICE: `/create-invoice`,
     FIND_BY_COMPANY: (companyId: number) => `/${companyId}/invoices`,
     BY_ID: (invoiceId: number) => `/${invoiceId}`,
     DOCUMENTS: (invoiceId: number) => `/${invoiceId}/documents`,

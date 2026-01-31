@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
 
@@ -23,6 +24,9 @@ public interface InvoiceService {
    * @return ID of the newly created invoice
    */
   Long saveInvoice(final MultipartFile file, final Long companyId, final Authentication connectedUser);
+
+  Long createInvoice(final InvoiceCreate invoiceCreateRequest, final Long companyId,
+      final Authentication connectedUser);
 
   /**
    * Finds an invoice by its unique ID.

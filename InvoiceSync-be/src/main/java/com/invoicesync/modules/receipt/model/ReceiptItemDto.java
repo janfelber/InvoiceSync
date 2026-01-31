@@ -19,6 +19,8 @@ public class ReceiptItemDto {
 
   private int quantity;
 
+  private String unitType;
+
   private int vatRate;
 
   private BigDecimal unitPriceWithoutVat;

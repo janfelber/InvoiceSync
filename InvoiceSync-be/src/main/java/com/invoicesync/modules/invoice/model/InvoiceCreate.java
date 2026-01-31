@@ -2,25 +2,14 @@ package com.invoicesync.modules.invoice.model;
 
 import java.util.List;
 
-import com.invoicesync.core.enums.InvoiceType;
-import com.invoicesync.core.identity.MyIdentity;
 import com.invoicesync.core.identity.PartnerDto;
 import com.invoicesync.modules.receipt.model.ReceiptItemDto;
 
-public record InvoiceRequestDTO(
-
+public record InvoiceCreate(
+    Long companyId,
     InvoiceRequestDetailsDTO invoiceDetails,
-
     PartnerDto partner,
-
-    MyIdentity myIdentity,
-
     List<ReceiptItemDto> items
-
 ) {
-
-  public InvoiceType invoiceType() {
-    return invoiceDetails.invoiceType();
-  }
 
 }
