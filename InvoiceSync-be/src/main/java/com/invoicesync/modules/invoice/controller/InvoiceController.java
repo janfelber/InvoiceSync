@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
 import com.invoicesync.modules.invoice.service.InvoiceService;
@@ -70,6 +72,17 @@ public class InvoiceController {
       @RequestParam("companyId") final Long companyId,
       final Authentication connectedUser) throws IOException {
     return ResponseEntity.ok(invoiceService.saveInvoice(pdfFile, companyId, connectedUser));
+  }
+
+  @PostMapping("/create-invoice")
+  public ResponseEntity<Long> createInvoice(
+      @RequestParam Long companyId,
+      @RequestBody InvoiceCreate invoiceCreateRequest,
+      Authentication connectedUser) {
+
+    return ResponseEntity.ok(
+        invoiceService.createInvoice(invoiceCreateRequest, companyId, connectedUser)
+    );
   }
 
   // //get import by id

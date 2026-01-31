@@ -10,13 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Invoice item entity representing a single product or service on a {@link com.invoicesync.modules.invoice.model.Invoice}.
+ * Invoice item entity representing a single product or service on a
+ * {@link com.invoicesync.modules.invoice.model.Invoice}.
  */
 @Data
 @Builder
@@ -51,10 +53,10 @@ public class InvoiceItem {
   private int quantity;
 
   /**
-   * Price per unit, excluding VAT.
+   * Unit type of the product or service(e.g., pcs, kg).
    */
-  @Column(name = "price_without_vat")
-  private BigDecimal priceWithoutVAT;
+  @Column(name = "unit_type")
+  private String unitType;
 
   /**
    * VAT rate of the item(e.g., 19, 23, 20).
@@ -63,16 +65,34 @@ public class InvoiceItem {
   private int vatRate;
 
   /**
-   * Accounting code for the item(e.g., 431, 562, 211).
+   * Price per unit, excluding VAT.
    */
-  @Column(name = "account_value")
-  private String accountValue;
+  @Column(name = "unit_price_without_vat")
+  private BigDecimal unitPriceWithoutVat;
 
   /**
    * Price per unit, including VAT.
    */
-  @Column(name = "price_with_vat")
-  private BigDecimal priceWithVAT;
+  @Column(name = "unit_price_with_vat")
+  private BigDecimal unitPriceWithVat;
+
+  /**
+   * Total price of item, excluding VAT.
+   */
+  @Column(name = "total_item_price_without_vat")
+  private BigDecimal totalItemPriceWithoutVat;
+
+  /**
+   * Total price of item, including VAT.
+   */
+  @Column(name = "total_item_price_with_vat")
+  private BigDecimal totalItemPriceWithVat;
+
+  /**
+   * Accounting code for the item(e.g., 431, 562, 211).
+   */
+  @Column(name = "account_value")
+  private String accountValue;
 
   /**
    * Description or note for accounting purposes.

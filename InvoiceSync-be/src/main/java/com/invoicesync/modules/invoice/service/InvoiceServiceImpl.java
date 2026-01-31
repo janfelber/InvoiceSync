@@ -48,6 +48,7 @@ import com.invoicesync.modules.document.model.InvoiceDocument;
 import com.invoicesync.modules.document.repository.InvoiceDocumentRepository;
 import com.invoicesync.modules.invoice.mapper.InvoiceMapper;
 import com.invoicesync.modules.invoice.model.Invoice;
+import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceRequest;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
@@ -200,6 +201,19 @@ public class InvoiceServiceImpl implements InvoiceService {
     uploadDocument(file, false, newInvoice.getId(), connectedUser, null);
 
     return newInvoice.getId();
+  }
+
+  @Override
+  public Long createInvoice(final InvoiceCreate invoiceRequest, final Long companyId,
+      final Authentication connectedUser) {
+    final Company company = companyRepository.findById(companyId)
+        .orElseThrow(() -> new EntityNotFoundException("Company " + companyId + " not found"));
+
+    final Invoice createdInvoice = invoiceMapper.toCreateInvoice(invoiceRequest, company);
+
+    invoiceRepository.save(createdInvoice);
+
+    return createdInvoice.getId();
   }
 
   @Override

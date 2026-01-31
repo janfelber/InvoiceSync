@@ -85,6 +85,7 @@
             Export
           </button>
           <button
+            (click)="createInvoice()"
             class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -109,14 +110,15 @@
                   <label for="invoiceNumber" class="flex items-center gap-2 text-sm leading-none font-medium">Invoice
                     Number</label>
                   <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200" id="invoiceNumber"
-                         name="invoiceNumber" [(ngModel)]="invoice.invoiceNumber" placeholder="FW-XXXXXX">
+                         name="invoiceNumber" [(ngModel)]="invoice.invoiceDetails.numberRequested"
+                         placeholder="FW-XXXXXX">
                 </div>
                 <div class="space-y-2">
                   <label for="variableSymbol" class="flex items-center gap-2 text-sm leading-none font-medium">Variable
                     Symbol</label>
                   <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                          id="variableSymbol"
-                         [(ngModel)]="invoice.variableSymbol"
+                         [(ngModel)]="invoice.invoiceDetails.variableSymbol"
                          name="variableSymbol">
                 </div>
               </div>
@@ -126,14 +128,14 @@
                     *</label>
                   <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                          id="dateIssued"
-                         name="dateIssued" [(ngModel)]="invoice.dateIssued">
+                         name="dateIssued" [(ngModel)]="invoice.invoiceDetails.issueDate">
                 </div>
                 <div class="space-y-2">
                   <label for="dateDue" class="flex items-center gap-2 text-sm leading-none font-medium">Due Date
                     *</label>
                   <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                          id="dateDue"
-                         name="dateDue" [(ngModel)]="invoice.dateDue">
+                         name="dateDue" [(ngModel)]="invoice.invoiceDetails.dueDate">
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
@@ -142,7 +144,7 @@
                     *</label>
                   <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                          id="dateTax"
-                         name="dateTax" [(ngModel)]="invoice.dateTax">
+                         name="dateTax" [(ngModel)]="invoice.invoiceDetails.taxDate">
                 </div>
               </div>
             </div>
@@ -782,7 +784,7 @@
                     <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                            id="itemPrice"
                            name="itemPrice"
-                           [(ngModel)]="item.unit"
+                           [(ngModel)]="item.unitType"
                            (ngModelChange)="updateItemTotals(item)">
                   </div>
                   <div class="space-y-2">
@@ -791,7 +793,7 @@
                     <input type=number class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
                            id="itemPrice"
                            name="itemPrice"
-                           [(ngModel)]="item.unitPrice"
+                           [(ngModel)]="item.unitPriceWithoutVat"
                            (ngModelChange)="updateItemTotals(item)">
                   </div>
                   <div class="space-y-2">
@@ -799,7 +801,7 @@
                     <div class="flex w-full h-9">
                       <select
                         class="block w-full min-w-17 bg-gray-50 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        [(ngModel)]="item.taxRate" name="productTax" (ngModelChange)="updateItemTotals(item)">
+                        [(ngModel)]="item.vatRate" name="productTax" (ngModelChange)="updateItemTotals(item)">
                         <option [ngValue]="19">19%</option>
                         <option [ngValue]="23">23%</option>
                         <option [ngValue]="25">25%</option>
@@ -831,7 +833,7 @@
                   class="w-full min-h-[100px] resize-none rounded-md border border-slate-200 px-3 py-2 text-sm bg-white
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                   disabled:cursor-not-allowed disabled:opacity-50"
-                  [(ngModel)]="invoice.note">
+                  [(ngModel)]="invoice.invoiceDetails.note">
 
                 </textarea>
               </div>
@@ -867,7 +869,7 @@
                                 <div>
                                   <p class="whitespace-nowrap text-slate-400 text-right">Dátum vystavenia</p>
                                   <p class="whitespace-nowrap font-bold text-main text-right">
-                                    {{ invoice.dateIssued }}
+                                    {{ invoice.invoiceDetails.issueDate }}
                                   </p>
                                 </div>
                               </td>
@@ -875,7 +877,7 @@
                                 <div>
                                   <p class="whitespace-nowrap text-slate-400 text-right">Faktúra #</p>
                                   <p
-                                    class="whitespace-nowrap font-bold text-main text-right">{{ invoice.invoiceNumber }}</p>
+                                    class="whitespace-nowrap font-bold text-main text-right">{{ invoice.invoiceDetails.numberRequested }}</p>
                                 </div>
                               </td>
                             </tr>
@@ -949,9 +951,9 @@
                     <tr *ngFor="let item of items; let i = index">
                       <td class="border-b py-3 pl-2">{{ item.name }}</td>
                       <td class="border-b py-3 pl-2 text-right">{{ item.quantity }}</td>
-                      <td class="border-b py-3 pl-2 text-center"> {{ item.unit }}</td>
-                      <td class="border-b py-3 pl-2 text-center">{{ item.unitPrice | number:'1.2-2' }} €</td>
-                      <td class="border-b py-3 pl-2 text-center">{{ item.taxRate }}%</td>
+                      <td class="border-b py-3 pl-2 text-center"> {{ item.unitType }}</td>
+                      <td class="border-b py-3 pl-2 text-center">{{ item.unitPriceWithoutVat | number:'1.2-2' }} €</td>
+                      <td class="border-b py-3 pl-2 text-center">{{ item.vatRate }}%</td>
                       <td class="border-b py-3 pl-2 pr-3 text-right">{{ item.totalWithoutTax | number:'1.2-2' }} €</td>
                       <td class="border-b py-3 pl-2 pr-3 text-right">{{ item.taxAmount | number:'1.2-2' }} €</td>
                       <td class="border-b py-3 pl-2 pr-3 text-right">{{ item.totalWithTax | number:'1.2-2' }} €</td>
@@ -1009,26 +1011,26 @@
                   <div class="space-y-1">
                     <div class="flex">
                       <span class="w-[120px]">Dátum vystavenia:</span>
-                      <span class="pl-1">{{ invoice.dateIssued }}</span>
+                      <span class="pl-1">{{ invoice.invoiceDetails.issueDate }}</span>
                     </div>
                     <div class="flex gap-1">
                       <span class="w-[120px]">Dátum dodania:</span>
-                      <span>{{ invoice.dateTax }}</span>
+                      <span>{{ invoice.invoiceDetails.taxDate }}</span>
                     </div>
                     <div class="flex gap-1">
                       <span class="w-[120px]">Dátum splatnosti:</span>
-                      <span>{{ invoice.dateDue }}</span>
+                      <span>{{ invoice.invoiceDetails.dueDate }}</span>
                     </div>
                     <div class="flex gap-1">
                       <span class="w-[120px]">Variabilný symbol:</span>
-                      <span>{{ invoice.variableSymbol }}</span>
+                      <span>{{ invoice.invoiceDetails.variableSymbol }}</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="px-14 py-10 text-sm text-neutral-700">
-                  <p class="text-main font-bold" *ngIf="invoice.note">Poznámka</p>
-                  <p>{{ invoice.note }}</p>
+                  <p class="text-main font-bold" *ngIf="invoice.invoiceDetails.note">Poznámka</p>
+                  <p>{{ invoice.invoiceDetails.note }}</p>
                 </div>
               </div>
             </div>

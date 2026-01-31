@@ -7,6 +7,7 @@ import {PageResponseCompanyResponseDto} from "../../../core/models/page-response
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {toast} from "ngx-sonner";
+import {InvoiceService} from "../../../core/services/invoice.service";
 
 interface SupplierDraft {
   name: string;
@@ -46,6 +47,8 @@ export class CreateNewInvoice implements OnInit {
   shipping = 0;
   total = 0;
 
+  selectedSupplierCompany: number = 0;
+
   supplierDraft: SupplierDraft = {
     name: '',
     address: '',
@@ -63,47 +66,77 @@ export class CreateNewInvoice implements OnInit {
   }
 
   invoice = {
-    invoiceNumber: '',
-    variableSymbol: '',
-    dateIssued: '',
-    dateDue: '',
-    dateTax: '',
-    supplier: {
-      name: '',
-      address: '',
-      ico: '',
-      dic: '',
-      icDph: ''
+    invoiceDetails: {
+      numberRequested: '',
+      variableSymbol: '',
+      invoiceType: 'ISSUED',       // enum string
+      issueDate: '',
+      taxDate: '',
+      accountingDate: '',
+      dueDate: '',
+      note: ''
     },
-    customer: {
+
+    partner : this.recipientDraft,
+
+    myIdentity: {
       name: '',
-      address: '',
+      street: '',
+      city: '',
+      zip: '',
       registrationNumber: '',
       taxId: '',
-      vatId: ''
+      vatId: '',
+      iban: '',
+      swift: ''
     },
-    items: [],
-    totalWithoutTax: 500,
-    totalTax: 100,
-    totalWithTax: 600,
-    note: ''
-  }
+
+    items: []
+  };
 
   items: {
     name: string;
     quantity: number;
-    unit: string;
-    unitPrice: number;
-    taxRate: number;
+    unitType: string;
+    vatRate: number;
+    unitPriceWithoutVat: number;
+    unitPriceWithVat: number;
+    totalItemPriceWithoutVat: number;
+    totalItemPriceWithVat: number;
     totalWithoutTax: number;
     taxAmount: number;
     totalWithTax: number;
+    accountValue: string;
+    accountText: string;
   }[] = [];
 
 
   constructor(
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private invoiceService: InvoiceService,
   ) {
+  }
+
+  buildInvoice() {
+    return {
+      ...this.invoice,
+
+      partner: this.recipientDraft
+        ? {
+          name: this.recipientDraft.name ?? '',
+          street: this.recipientDraft.address ?? '',
+          registrationNumber: this.recipientDraft.registrationNumber ?? '',
+          taxId: this.recipientDraft.taxId ?? '',
+          vatId: this.recipientDraft.vatId ?? ''
+        }
+        : null,
+
+      items: [...this.items],
+
+      totalWithoutTax: this.subtotal ?? 0,
+      totalTax: this.tax ?? 0,
+      totalWithTax: this.total ?? 0
+    };
   }
 
   ngOnInit(): void {
@@ -118,6 +151,15 @@ export class CreateNewInvoice implements OnInit {
     }).catch(error => {
       console.error(error);
     });
+  }
+
+  createInvoice() {
+    const payload = this.buildInvoice();
+    this.invoiceService.createInvoice(
+      payload, this.selectedSupplierCompany
+    ).then(response => {
+      toast.success("Faktúra úspešne vytvorená");
+    })
   }
 
   exportPdf() {
@@ -201,6 +243,8 @@ export class CreateNewInvoice implements OnInit {
       .then(response => {
         const company = response.data;
 
+        this.selectedSupplierCompany = company.id;
+
         this.supplierDraft = {
           name: company.name,
           address: `${company.street}, ${company.zip} ${company.city}`,
@@ -237,12 +281,17 @@ export class CreateNewInvoice implements OnInit {
     this.items.push({
       name: "",
       quantity: 0,
-      unit: "",
-      unitPrice: 0,
-      taxRate: 23,
+      unitType: "",
+      vatRate: 23,
+      unitPriceWithoutVat: 0,
+      unitPriceWithVat: 0,
       totalWithoutTax: 0,
+      totalItemPriceWithoutVat: 0,
+      totalItemPriceWithVat: 0,
       taxAmount: 0,
-      totalWithTax: 0
+      totalWithTax: 0,
+      accountValue: "",
+      accountText: ""
     });
   }
 
@@ -258,11 +307,11 @@ export class CreateNewInvoice implements OnInit {
 
   updateItemTotals(item: any) {
     const qty = item.quantity || 0;
-    const price = item.unitPrice || 0;
-    const taxRate = item.taxRate || 0;
+    const price = item.unitPriceWithoutVat || 0;
+    const vatRate = item.vatRate || 0;
 
     item.totalWithoutTax = qty * price;
-    item.taxAmount = item.totalWithoutTax * (taxRate / 100);
+    item.taxAmount = item.totalWithoutTax * (vatRate / 100);
     item.totalWithTax = item.totalWithoutTax + item.taxAmount;
 
     this.calculateSummary();
