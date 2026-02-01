@@ -34,10 +34,17 @@ export class Invoices implements OnInit, AfterViewInit {
   isUploading = false;
   importFinished = false;
 
-  protected selectedCompanyId: any;
+  // @ts-ignore
+  protected selectedCompanyId: 0;
   protected companies: any[] = [];
-  selectedCompanyName = 'Vyber spoločnosť';
-  filteredInvoiceImports: any[] = [];
+  selectedCompanyName = 'Všetky spoločnosti';
+
+  activeTab = 'all';
+  tabs = [
+    { id: 'all', label: 'All Invoices' },
+    { id: 'issued', label: 'Issued Invoices' },
+    { id: 'received', label: 'Received Invoices' }
+  ];
 
   public companyResponse: PageResponseCompanyResponseDto = {
     content: []
@@ -160,6 +167,10 @@ export class Invoices implements OnInit, AfterViewInit {
     }
   }
 
+  setActiveTab(tabId: string) {
+    this.activeTab = tabId;
+  }
+
   async onUploadFile(): Promise<void> {
 
     console.log(this.selectedCompanyId)
@@ -187,18 +198,20 @@ export class Invoices implements OnInit, AfterViewInit {
   onSelectCompany(company: any) {
     this.selectedCompanyName = company.name;
     this.selectedCompanyId = company.id;
-    console.log(this.selectedCompanyName)
-    this.onCompanyChange(company);
+    if (company.id === 0) {
+      this.onFetchAllInvoices();
+    } else {
+      this.onCompanyChange(company);
+    }
   }
 
   onCompanyChange(company: any) {
-    this.axiosService.request(
-      "GET",
-      `/api/v1/imports/company/${company.id}/current-user`,
-      null,
-    ).then(response => {
-      //update imports
-      this.filteredInvoiceImports = response.data;
+    this.invoiceService.findAllInvoicesByCompany({
+      page: this.page,
+      size: this.size,
+      companyId: company.id
+    }).then(response => {
+      this.invoiceResponse = response.data;
     }).catch(error => {
       console.error(error);
     });
