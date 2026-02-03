@@ -1,6 +1,8 @@
 @import "tailwindcss";
-@import "flowbite";
+@custom-variant dark (&:where(.dark, .dark *));
+@plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
+@source "../node_modules/flowbite-datepicker";
 
 @keyframes pulse-error {
   0%   { background-color: #fefce8; } /* yellow-50 */
@@ -26,4 +28,9 @@
 
 button.active {
   @apply text-blue-600 bg-blue-50 border-blue-300;
+}
+
+html.dark body {
+  background-color: #111827; /* gray-900 */
+  color: #f9fafb; /* gray-50 */
 }
