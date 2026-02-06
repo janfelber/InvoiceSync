@@ -22,6 +22,8 @@ export class InvoiceInspect implements OnInit {
 
   invoiceId: any = null;
 
+  drawerOpen = false;
+
   public invoice: InvoiceDetailResponse = {};
 
   ngOnInit(): void {
@@ -38,5 +40,13 @@ export class InvoiceInspect implements OnInit {
 
         console.log(this.invoice);
       })
+  }
+
+  openDrawer(item: any): void {
+    this.drawerOpen = true;
+  }
+
+  closeDrawer() {
+    this.drawerOpen = false;
   }
 }

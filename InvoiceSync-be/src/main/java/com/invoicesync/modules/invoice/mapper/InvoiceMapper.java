@@ -35,13 +35,18 @@ public class InvoiceMapper {
         .dueDate(request.dueDate())
         .partnerRegistrationNumber(request.partnerRegistrationNumber())
         .status(InvoiceStatus.UNPROCESSED)
-        .invoiceType("NONE")
+        .invoiceType("ISSUED")
         .build();
 
     final List<InvoiceItem> items = request.items().stream()
         .map(itemRequest -> {
           final InvoiceItem item = new InvoiceItem();
           item.setName(itemRequest.name());
+          item.setUnitType(itemRequest.unitType());
+          item.setQuantity(itemRequest.quantity());
+          item.setVatRate(itemRequest.vatRate());
+          item.setUnitPriceWithoutVat(item.getTotalItemPriceWithoutVat());
+          item.setTotalItemPriceWithVat(itemRequest.totalItemPriceWithVat());
           item.setInvoice(invoice);
           return item;
         })
@@ -117,10 +122,12 @@ public class InvoiceMapper {
             .id(item.getId())
             .accountText(item.getAccountText())
             .name(item.getName())
+            .unitType(item.getUnitType())
             .quantity(item.getQuantity())
             .unitPriceWithoutVat(item.getUnitPriceWithoutVat())
             .vatRate(item.getVatRate())
             .unitPriceWithVat(item.getUnitPriceWithVat())
+            .totalItemPriceWithVat(item.getTotalItemPriceWithVat())
             .accountValue(item.getAccountValue())
             .build())
         .collect(Collectors.toList());

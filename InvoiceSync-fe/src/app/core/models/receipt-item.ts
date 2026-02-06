@@ -6,6 +6,7 @@ export interface ReceiptItem {
   id?: number;
   name?: string;
   quantity?: number;
+  unitType?: string;
   vatRate?: number;
   unitPriceWithoutVat?: number;
   unitPriceWithVat?: number;

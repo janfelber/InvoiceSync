@@ -45,6 +45,7 @@ public final class ParseUtils {
           null, // id (autogenerované)
           null, // receiptId (nastaví sa až po uložení Receipt)
           itemNode.path("name").asText(),
+          null,
           quantity,
           vatRate,
           unitPriceWithoutVat,

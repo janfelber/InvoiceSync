@@ -131,6 +131,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     final InvoiceRequest request;
     final String pdfText = ocrService.extractTextFromPDF(file, connectedUser);
 
+    System.out.println(pdfText);
+
     final int rawToken = countTokens(pdfText);
     log.info("Token count: {}", rawToken);
 
@@ -399,7 +401,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         - Date of Due
         - Variable Symbol
         - Supplier Registration Number
-        - Invoice Items (description, quantity, unit price, total)
+        - Invoice Items (description, quantity, unitType, unitPrice, total, vat rate in %(but the response should be vatRate, and slovak inpput should be DPH% this will you get to get parse))
         
         Return only the raw JSON without any explanation or extra text.
         The format of date should be YYYY-MM-DD

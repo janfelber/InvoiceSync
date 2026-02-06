@@ -12,8 +12,12 @@ public record ReceiptItemRequest(
     @JsonProperty("description")
     String name,
 
+    @JsonProperty("unitType")
+    String unitType,
+
     Integer quantity,
 
+    @JsonProperty("vatRate")
     Integer vatRate,
 
     @JsonProperty("unitPriceWithoutVat")
@@ -24,6 +28,7 @@ public record ReceiptItemRequest(
 
     BigDecimal totalItemPriceWithoutVat,
 
+    @JsonProperty("total")
     BigDecimal totalItemPriceWithVat,
 
     String accountValue,
