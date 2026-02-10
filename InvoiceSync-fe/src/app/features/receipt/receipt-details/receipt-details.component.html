@@ -37,6 +37,36 @@
       </button>
     </div>
   </div>
+
+  <div class="flex items-center gap-3 p-4">
+    <span class="text-sm font-medium text-slate-700">Mode:</span>
+    <div class="inline-flex rounded-lg border border-slate-200 bg-white p-1">
+      <!-- Active -->
+      <button
+        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white shadow-sm">
+        ✏️ Edit Mode
+      </button>
+
+      <!-- Inactive -->
+      <button
+        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white shadow-sm">
+        📄 Accounting Mode
+      </button>
+
+      <!-- Inactive -->
+      <button
+        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium transition-all bg-blue-600 text-white shadow-sm">
+        🔀 Merge Mode
+      </button>
+    </div>
+    <div class="flex-1">
+  <span class="text-sm text-slate-500">
+    
+  </span>
+    </div>
+
+  </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
 
     <div class="lg:col-span-2 space-y-6">
@@ -140,7 +170,8 @@
                   (click)="openDrawer(item)">
                 <td class="px-4 py-3">
                   <p class="text-sm font-medium text-slate-900">{{ item.name }}</p>
-                  <p class="text-xs text-slate-500">Učet: <span class="text-green-500">{{ item.accountValue }}</span> </p>
+                  <p class="text-xs text-slate-500">Učet: <span class="text-green-500">{{ item.accountValue }}</span>
+                  </p>
                 </td>
 
                 <td class="px-4 py-3 text-center text-sm text-slate-900">
@@ -196,7 +227,8 @@
           <div class="space-y-2">
             <div class="flex justify-between text-sm">
               <span class="text-slate-600">Subtotal (without VAT)</span>
-              <span class="font-medium text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithoutVat }}</span>
+              <span
+                class="font-medium text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithoutVat }}</span>
             </div>
             <div class="flex justify-between text-sm">
               <span class="text-slate-600">Total VAT</span>
@@ -204,7 +236,8 @@
             </div>
             <div class="pt-2 border-t border-slate-200 flex justify-between">
               <span class="font-semibold text-slate-900">Total Amount</span>
-              <span class="text-xl font-bold text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithVat }}</span>
+              <span
+                class="text-xl font-bold text-slate-900">€{{ receiptResponse.receiptDetails?.totalPriceWithVat }}</span>
             </div>
           </div>
         </div>
@@ -412,25 +445,25 @@
         </h3>
         <div class="space-y-2"></div>
 
-<!--        <div class="bg-white rounded-lg border border-slate-200 p-5">-->
-<!--          <h3 class="text-sm font-semibold text-slate-900 mb-4">-->
-<!--            Summary-->
-<!--          </h3>-->
-<!--          <div class="space-y-2">-->
-<!--            <div class="flex justify-between text-sm">-->
-<!--              <span class="text-slate-600">Subtotal (without VAT)</span>-->
-<!--              <span class="font-medium text-slate-900">€21.56</span>-->
-<!--            </div>-->
-<!--            <div class="flex justify-between text-sm">-->
-<!--              <span class="text-slate-600">Total VAT</span>-->
-<!--              <span class="font-medium text-slate-900">€21.56</span>-->
-<!--            </div>-->
-<!--            <div class="pt-2 border-t border-slate-200 flex justify-between">-->
-<!--              <span class="font-semibold text-slate-900">Total Amount</span>-->
-<!--              <span class="text-xl font-bold text-slate-900">€23.05</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--        <div class="bg-white rounded-lg border border-slate-200 p-5">-->
+        <!--          <h3 class="text-sm font-semibold text-slate-900 mb-4">-->
+        <!--            Summary-->
+        <!--          </h3>-->
+        <!--          <div class="space-y-2">-->
+        <!--            <div class="flex justify-between text-sm">-->
+        <!--              <span class="text-slate-600">Subtotal (without VAT)</span>-->
+        <!--              <span class="font-medium text-slate-900">€21.56</span>-->
+        <!--            </div>-->
+        <!--            <div class="flex justify-between text-sm">-->
+        <!--              <span class="text-slate-600">Total VAT</span>-->
+        <!--              <span class="font-medium text-slate-900">€21.56</span>-->
+        <!--            </div>-->
+        <!--            <div class="pt-2 border-t border-slate-200 flex justify-between">-->
+        <!--              <span class="font-semibold text-slate-900">Total Amount</span>-->
+        <!--              <span class="text-xl font-bold text-slate-900">€23.05</span>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
 
         <div class="w-full text-sm text-slate-700 py-2" *ngIf="receiptResponse.receiptDetails">
@@ -447,7 +480,7 @@
         </div>
 
         <div class="w-full text-sm text-slate-700 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label for="message" >Poznámka k bločku</label>
+          <label for="message">Poznámka k bločku</label>
 
           <form>
             <div class="w-full border border-slate-200 rounded-lg bg-gray-50">
