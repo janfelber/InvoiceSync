@@ -9,6 +9,7 @@ import {AuthService} from "../core/auth/auth.service";
 import {initFlowbite} from "flowbite";
 import {UserService} from "../core/services/user.service";
 import {UserInfoResponse} from "../pages/settings/user-info.response";
+import {ThemeService} from "../core/services/theme.service";
 
 @Component({
   selector: 'app-side-nav',
@@ -26,8 +27,12 @@ export class SideNavComponent implements OnInit {
   dropdownStates: { [key: string]: boolean } = {};
   public userInfo: any = null;
 
-  constructor(protected iconService: IconService, public authService: AuthService, public userService: UserService) {
-  }
+  constructor(
+    protected iconService: IconService,
+    public authService: AuthService,
+    public userService: UserService,
+    public themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     initFlowbite()

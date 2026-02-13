@@ -1,388 +1,353 @@
 <main>
-  <div class="pt-13 mx-4 mt-6">
-    <div class="header">
-      <nav class="flex mb-4" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-          <li class="inline-flex items-center">
-            <a routerLink="/home"
-               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
-              <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                   viewBox="0 0 20 20">
-                <path
-                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-              </svg>
-              Domov
-            </a>
-          </li>
-          <li aria-current="page">
-            <div class="flex items-center">
-              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                      d="m1 9 4-4-4-4"/>
-              </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Bločky</span>
-            </div>
-          </li>
-        </ol>
-      </nav>
-
-      <div class="flex items-center justify-between mb-4">
-        <h1 class="text-xl font-semibold text-black">Moje Bločky</h1>
-      </div>
-
-      <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
-      <!--        &lt;!&ndash; Total Receipts &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            Všetky bločky-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; This Month &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            TBA-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; Total Amount &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            Súhrnná hodnota-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; Last Import &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}-->
-      <!--          </p>-->
-      <!--        </div>-->
-      <!--      </div>-->
-    </div>
-
-    <div class="flex items-center justify-between w-full border-b border-gray-200 pb-5">
-      <div class="flex items-center gap-3">
-        <form class="w-[384px]">
-          <label for="simple-search" class="sr-only">Search</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                   viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-            </div>
-
-            <!-- search -->
-            <input type="text" id="simple-search" [(ngModel)]="searchText" name="search"
-                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 pe-12 h-10"
-                   placeholder="Vyhľadávanie" required/>
-
-            <button type="submit"
-                    class="absolute top-0 end-0 h-full px-3 text-sm font-medium text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-              Search
-            </button>
-          </div>
-        </form>
-
-        <button id="dropdownFilterButton"
-                data-dropdown-toggle="filterDropdown"
-                data-dropdown-delay="500"
-                type="button"
-                class="group w-[100px] h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">
-          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors"
-               xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z"/>
-          </svg>
-          Filter
-          <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
-               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="m1 1 4 4 4-4"/>
-          </svg>
-        </button>
-
-        <!-- Dropdown menu -->
-        <div id="filterDropdown"
-             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 dark:bg-white border border-black-500">
-        </div>
-
-        <!-- Dropdown for filter by company -->
-        <button id="dropdownCompanyButton"
-                data-dropdown-toggle="companiesDropdown"
-                data-dropdown-delay="500"
-                type="button"
-                class="group w-38 h-[38px] text-black bg-white hover:bg-gray-100 hover:text-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center inline-flex items-center gap-2 justify-center border border-gray-300">
-          <svg class="w-4 h-4 text-gray-800 group-hover:text-blue-600 transition-colors" aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M4 4a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2v14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2V5a1 1 0 0 1-1-1Zm5 2a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1Zm-5 4a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1H9Zm5 0a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1h-1Zm-3 4a2 2 0 0 0-2 2v3h2v-3h2v3h2v-3a2 2 0 0 0-2-2h-2Z"
-                  clip-rule="evenodd"/>
-          </svg>
-          <span>{{ selectedCompanyName }}</span>
-          <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
-               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="m1 1 4 4 4-4"/>
-          </svg>
-        </button>
-
-        <!-- Companies dropdown -->
-        <div id="companiesDropdown"
-             class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-56 shadow-sm">
-          <ul class="py-2 text-sm text-black dark:text-black" aria-labelledby="dropdownDefaultButton">
-            <li *ngIf="companyResponse.content.length > 0">
-              <a *ngFor="let company of companyResponse?.content"
-                 class="block px-4 py-2 hover:bg-gray-200"
-                 (click)="onCompanyChange(company)">
-                {{ company.name }}
+  <div class="dark:bg-[#1a1b1e]">
+    <div class="pt-13 mx-4 mt-6">
+      <div class="header">
+        <nav class="flex mb-4" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li class="inline-flex items-center">
+              <a routerLink="/home"
+                 class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-white">
+                <svg class="w-3 h-3 me-2.5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path
+                    d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+                </svg>
+                Domov
               </a>
             </li>
-            <li *ngIf="companyResponse.content.length === 0" class="block px-4 py-2 text-gray-500 italic">
-              Žiadne firmy nie sú k dispozícii
+            <li aria-current="page">
+              <div class="flex items-center">
+                <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 dark:text-white mx-1" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="m1 9 4-4-4-4"/>
+                </svg>
+                <span class="ms-1 text-sm font-medium text-gray-500 dark:text-white md:ms-2">Bločky</span>
+              </div>
             </li>
-          </ul>
+          </ol>
+        </nav>
+
+        <div class="flex items-center justify-between mb-4">
+          <h1 class="text-xl font-semibold text-black dark:text-white">Moje Bločky</h1>
         </div>
+
+        <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
+        <!--        &lt;!&ndash; Total Receipts &ndash;&gt;-->
+        <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+        <!--          <div class="mb-2">-->
+        <!--            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>-->
+        <!--          </div>-->
+        <!--          <div class="text-2xl font-bold tracking-tight">-->
+        <!--            TBA-->
+        <!--          </div>-->
+        <!--          <p class="text-sm text-muted-foreground">-->
+        <!--            Všetky bločky-->
+        <!--          </p>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash; This Month &ndash;&gt;-->
+        <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+        <!--          <div class="mb-2">-->
+        <!--            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>-->
+        <!--          </div>-->
+        <!--          <div class="text-2xl font-bold tracking-tight">-->
+        <!--            TBA-->
+        <!--          </div>-->
+        <!--          <p class="text-sm text-muted-foreground">-->
+        <!--            TBA-->
+        <!--          </p>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash; Total Amount &ndash;&gt;-->
+        <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+        <!--          <div class="mb-2">-->
+        <!--            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>-->
+        <!--          </div>-->
+        <!--          <div class="text-2xl font-bold tracking-tight">-->
+        <!--            TBA-->
+        <!--          </div>-->
+        <!--          <p class="text-sm text-muted-foreground">-->
+        <!--            Súhrnná hodnota-->
+        <!--          </p>-->
+        <!--        </div>-->
+
+        <!--        &lt;!&ndash; Last Import &ndash;&gt;-->
+        <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+        <!--          <div class="mb-2">-->
+        <!--            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>-->
+        <!--          </div>-->
+        <!--          <div class="text-2xl font-bold tracking-tight">-->
+        <!--            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}-->
+        <!--          </div>-->
+        <!--          <p class="text-sm text-muted-foreground">-->
+        <!--            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}-->
+        <!--          </p>-->
+        <!--        </div>-->
+        <!--      </div>-->
       </div>
 
+      <div class="flex items-center justify-between w-full border-b border-gray-200 pb-5">
+        <div class="flex items-center gap-3">
+          <form class="w-[384px]">
+            <label for="simple-search" class="sr-only">Search</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+              </div>
 
-      <!-- Import receipt button -->
-      <button
-        type="button"
-        class="w-41 h-9.5 text-sm text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
-        (click)="openImportModal()"
-      >
-        <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-             fill="currentColor" viewBox="0 0 24 24">
-          <path fill-rule="evenodd"
-                d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                clip-rule="evenodd"/>
-          <path fill-rule="evenodd"
-                d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
-                clip-rule="evenodd"/>
-        </svg>
-        Importovať bloček
-      </button>
-    </div>
-  </div>
+              <!-- search -->
+              <input type="text" id="simple-search" [(ngModel)]="searchText" name="search"
+                     class="bg-gray-50 dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] text-gray-900 dark:text-white text-sm rounded-lg block w-full ps-10 pe-12 h-10"
+                     placeholder="Vyhľadávanie" required/>
 
-  <app-modal
-    [show]="importModalOpen"
-    (closeModal)="closeImportModal()"
-    title="Import bločkov"
-  >
-    <form #importForm="ngForm">
-      <div class="grid gap-4 mb-6">
-
-        <div class="w-full max-w-md mx-auto">
-          <!-- Tabs -->
-          <div class="flex border-b border-blue-300 mb-4">
-            <button
-              class="w-1/2 py-2 text-center font-semibold"
-              [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'single', 'text-gray-600': activeTab !== 'single' }"
-              (click)="activeTab = 'single'"
-            >
-              Jeden obrázok
-            </button>
-            <button
-              class="w-1/2 py-2 text-center font-semibold"
-              [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'multiple', 'text-gray-600': activeTab !== 'multiple' }"
-              (click)="activeTab = 'multiple'"
-            >
-              Viac obrázkov
-            </button>
-          </div>
-
-          <!-- Single Image Upload -->
-          <div *ngIf="activeTab === 'single'" class="space-y-4">
-            <!-- choose company -->
-            <div>
-              <label for="companySelect" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
-              <select
-                id="companySelect"
-                [(ngModel)]="selectedCompanyId"
-                name="selectedCompany"
-                required
-                class="block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
-                <option *ngFor="let company of companyResponse?.content" [value]="company.id">
-                  {{ company.name }}
-                </option>
-              </select>
+              <button type="submit"
+                      class="absolute top-0 end-0 h-full px-3 text-sm font-medium text-white bg-blue-700 dark:bg-[#79a1fe] dark:text-[#1a1b1e]  rounded-e-lg border border-blue-700 dark:border-[#383852] focus:outline-none focus:ring-blue-300">
+                Search
+              </button>
             </div>
+          </form>
 
-            <!-- single upload -->
-            <div [class.opacity-50]="!selectedCompanyId">
-              <label
-                for="single-upload"
-                class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                [class.cursor-not-allowed]="!selectedCompanyId"
-              >
-                <div class="flex flex-col items-center pt-5 pb-6">
-                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                       height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                          d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm.394 9.553a1 1 0 0 0-1.817.062l-2.5 6A1 1 0 0 0 8 19h8a1 1 0 0 0 .894-1.447l-2-4A1 1 0 0 0 13.2 13.4l-.53.706-1.276-2.553ZM13 9.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"
-                          clip-rule="evenodd"/>
-                  </svg>
 
-                  <p class="text-sm text-gray-600">
-                    <strong>Vyberte jeden obrázok</strong> (napr. QR kód)
+          <button
+            id="dropdownFilterButton"
+            data-dropdown-toggle="filterDropdown"
+            type="button"
+            class="flex items-center justify-between gap-2
+         w-[280px] h-9.5
+         rounded-md border
+         border-gray-300
+         dark:border-[#383852]
+         bg-white
+         dark:bg-[#1a1b1e]
+         px-3 py-2
+         text-sm
+         transition
+         focus:outline-none focus:ring-2 focus:ring-blue-500
+         disabled:opacity-50 disabled:cursor-not-allowed
+         overflow-hidden"
+          >
+            <span class="truncate max-w-full block dark:text-white">{{ selectedCompanyName }}</span>
+            <svg class="w-2.5 h-2.5
+            text-gray-800
+            dark:text-[#79a1fe]
+            group-hover:text-blue-600
+            transition-colors"
+                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="m1 1 4 4 4-4"/>
+            </svg>
+          </button>
+
+          <div class="relative">
+            <div
+              id="filterDropdown"
+              class=" z-10 hidden
+            w-[280px]
+            rounded-md
+            border
+            border-gray-200
+            dark:border-[#383852]
+            bg-white
+            dark:bg-[#1a1b1e]
+            shadow-lg">
+              <ul class="p-1 text-sm
+              text-gray-700
+              dark:text-white
+              font-medium">
+                <li>
+                  <a
+                    (click)="onSelectCompany({ id: 0, name: 'Všetky spoločnosti' })"
+                    class="flex w-full items-center justify-between rounded-md px-3 py-2 cursor-pointer transition"
+                    [ngClass]="{
+                      'bg-blue-50 text-blue-700 font-semibold': selectedCompanyId === 0,
+                      'hover:bg-gray-100 hover:text-gray-900': selectedCompanyId !== 0
+                    }"
+                  >
+                    Všetky spoločnosti
+                  </a>
+                </li>
+                <li *ngFor="let company of companyResponse.content">
+                  <a
+                    (click)="onSelectCompany(company)"
+                    class="flex w-full items-center justify-between rounded-md px-3 py-2 transition cursor-pointer"
+                    [ngClass]="{
+                    'bg-blue-50 text-blue-700 font-semibold': company.id === selectedCompanyId,
+                    'hover:bg-gray-100 hover:text-gray-900': company.id !== selectedCompanyId
+                  }"
+                  >
+                <span class="truncate">
+                  {{ company.name }}
+                </span>
+                    <svg
+                      *ngIf="company.id === selectedCompanyId"
+                      class="w-4 h-4
+                      text-blue-600
+                      dark:text-[#79a1fe]
+                      shrink-0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <button data-modal-target="default-modal" data-modal-toggle="default-modal" type="button"
+                class="w-41 h-9.5 text-sm
+          text-white
+          bg-blue-700
+          dark:bg-[#79a1fe]
+          dark:text-[#1a1b1e]
+          rounded-lg
+          focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-1"
+
+        >
+          <svg class="w-4.5 h-4.5 text-white dark:text-[#1a1b1e]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+               width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/>
+          </svg>
+
+          Importovať bloček
+        </button>
+
+        <div id="default-modal" tabindex="-1" aria-hidden="true"
+             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+              <!-- Modal header -->
+              <div
+                class="flex items-start justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
+
+                <!-- Title + description -->
+                <div class="flex flex-col gap-1">
+                  <h2 class="text-lg font-semibold leading-none dark:text-white">
+                    Upload Receipts
+                  </h2>
+                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Upload receipt images to process and add them to your records
                   </p>
                 </div>
-                <input
-                  id="single-upload"
-                  type="file"
-                  accept=".jpg,.png"
-                  class="hidden"
-                  (change)="onSingleFileSelected($event)"
-                  [disabled]="!selectedCompanyId"
-                />
-              </label>
-            </div>
 
-            <!-- name of the uploaded file -->
-            <div *ngIf="singleFile" class="mt-2 text-sm text-blue-800">
-              Vybraný súbor: <strong>{{ singleFile.name }}</strong>
-            </div>
-          </div>
-
-          <!-- Multiple Image Upload -->
-          <div *ngIf="activeTab === 'multiple'" class="space-y-4">
-            <!-- Výber firmy -->
-            <div>
-              <label for="companySelectMulti" class="block mb-2 text-sm font-medium text-gray-700">Vyberte firmu</label>
-              <select
-                id="companySelectMulti"
-                [(ngModel)]="selectedCompanyId"
-                name="selectedCompanyMulti"
-                required
-                class="block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
-                <option *ngFor="let company of companyResponse?.content" [value]="company.id">
-                  {{ company.name }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Upload box -->
-            <div [class.opacity-50]="!selectedCompanyId">
-              <label
-                for="multi-upload"
-                class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg bg-gray-50 hover:bg-gray-100"
-                [class.cursor-not-allowed]="!selectedCompanyId"
-              >
-                <div class="flex flex-col items-center pt-5 pb-6">
-                  <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                       height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                          d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
-                          clip-rule="evenodd"/>
+                <!-- Close button -->
+                <button
+                  type="button"
+                  class="ml-4 inline-flex h-8 w-8 items-center justify-center
+           rounded-lg text-sm text-gray-400
+           hover:bg-gray-200 hover:text-gray-900
+           dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-hide="default-modal">
+                  <svg class="h-3 w-3" aria-hidden="true"
+                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round"
+                          stroke-linejoin="round" stroke-width="2"
+                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                   </svg>
-                  <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
-                  <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <div class="px-4 pb-4 md:px-5 md:pb-5 space-y-4">
+                <!-- Company selector -->
+                <div>
+                  <label for="modalCompanySelect" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Vyberte firmu</label>
+                  <select
+                    id="modalCompanySelect"
+                    [(ngModel)]="modalCompanyId"
+                    name="modalCompany"
+                    class="block w-full p-2.5 text-sm
+                      bg-gray-50 dark:bg-[#1a1b1e]
+                      border border-gray-300 dark:border-[#383852]
+                      text-gray-900 dark:text-white
+                      rounded-lg
+                      focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
+                    <option *ngFor="let company of companyResponse?.content" [ngValue]="company.id">
+                      {{ company.name }}
+                    </option>
+                  </select>
                 </div>
-                <input
-                  id="multi-upload"
-                  type="file"
-                  accept=".jpg,.png"
-                  multiple
-                  class="hidden"
-                  (change)="onMultipleFilesSelected($event)"
-                  [disabled]="!selectedCompanyId"
-                />
-              </label>
-            </div>
 
-            <!-- upload images -->
-            <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
-              <div class="grid grid-cols-2 gap-3">
-                <div *ngFor="let file of multipleFiles"
-                     class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
-                  <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
-                       stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M12 4v16m-6-8h12"/>
-                  </svg>
-                  <div class="flex-1 overflow-hidden">
-                    <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
-                    <p class="text-[11px] text-gray-500">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
-                  </div>
+                <!-- File upload -->
+                <div [class.opacity-50]="!modalCompanyId">
+                  <label
+                    for="multi-upload"
+                    class="flex flex-col items-center justify-center w-full h-56 border-2 border-gray-300 rounded-lg"
+                    [class.cursor-not-allowed]="!modalCompanyId"
+                    [class.cursor-pointer]="modalCompanyId"
+                    [class.hover:bg-gray-50]="modalCompanyId"
+                    [class.dark:hover:bg-gray-800]="modalCompanyId"
+                  >
+                    <div class="flex flex-col items-center pt-5 pb-6">
+                      <svg class="w-8 h-8 text-black dark:text-white mb-3" aria-hidden="true"
+                           xmlns="http://www.w3.org/2000/svg" width="24"
+                           height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                              d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
+                              clip-rule="evenodd"/>
+                      </svg>
+                      <p class="text-sm text-gray-600 dark:text-white"><strong>Vyberte alebo pretiahnite viac obrázkov
+                        účteniek</strong></p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400">Podporované: .jpg, .png, .jpeg</p>
+                    </div>
+                    <input
+                      id="multi-upload"
+                      type="file"
+                      accept=".jpg,.png,.jpeg"
+                      multiple
+                      class="hidden"
+                      (change)="onSingleFileSelected($event)"
+                      [disabled]="!modalCompanyId"
+                    />
+                  </label>
                 </div>
+              </div>
+              <!-- Modal footer -->
+              <div
+                class="flex items-center justify-end p-4 md:p-5
+         border-t border-gray-200 rounded-b
+         dark:border-gray-600">
+
+                <button
+                  (click)="onSubmit()"
+                  data-modal-hide="default-modal"
+                  type="button"
+                  class="text-white bg-blue-700 hover:bg-blue-800
+           focus:ring-4 focus:outline-none focus:ring-blue-300
+           font-medium rounded-lg text-sm px-5 py-2
+           dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                  Process Receipts
+                </button>
+
               </div>
             </div>
           </div>
-
-          <div *ngIf="multipleFiles.length > 0" class="max-h-64 overflow-y-auto pr-1">
-            <div class="grid grid-cols-2 gap-3">
-              <div *ngFor="let file of multipleFiles"
-                   class="relative border rounded p-3 bg-white shadow flex items-start gap-2">
-                <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor"
-                     stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 4v16m-6-8h12"/>
-                </svg>
-                <div class="flex-1 overflow-hidden">
-                  <p class="text-sm font-medium text-gray-800 truncate">{{ file.file.name }}</p>
-                  <p class="text-[11px] text-gray-500">{{ (file.file.size / 1024).toFixed(1) }} KB</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
 
+
       </div>
-      <hr class="h-px my-4 bg-gray-200 border-0">
-      <button
-        [disabled]="isUploading"
-        type="submit"
-        class="relative text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        (click)="onSubmit()"
-      >
-        <ng-container *ngIf="!isUploading; else loading">
-          Importovať
-        </ng-container>
-        <ng-template #loading>
-          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-          </svg>
-          Nahrávam...
-        </ng-template>
-      </button>
-    </form>
-  </app-modal>
+
+    </div>
+  </div>
 
 
   <!-- Table Container -->
@@ -390,63 +355,87 @@
     <div class="flex items-center justify-between p-4">
     </div>
 
-    <table class="min-w-full text-sm text-left text-gray-900 border-b border-gray-200">
-      <thead class="text-xs uppercase bg-gray-50 text-gray-500">
+    <table
+      class="min-w-full text-sm text-left text-gray-900 dark:text-white border-b border-gray-200 dark:border-[#383852]">
+      <thead class="text-xs uppercase bg-gray-50 dark:bg-[#2a2b30] text-gray-500 dark:text-gray-300">
       <tr>
-        <th class="pl-2 pr-1 py-3">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+        <th class="pl-2 pr-1 py-3 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
+          <input type="checkbox"
+                 class="w-4 h-4 text-blue-600 dark:text-[#79a1fe] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
         </th>
-        <th class="px-4 py-3 font-semibold">BLOČEK ID</th>
-        <th class="px-4 py-3 font-semibold">DODÁVATEĽ</th>
-        <th class="px-4 py-3 font-semibold">DÁTUM IMPORTU</th>
-        <th class="px-4 py-3 font-semibold">ODOBERATEĽ</th>
-        <th class="px-4 py-3 font-semibold">IČO</th>
-        <th class="px-4 py-3 font-semibold">DIČ</th>
-        <th class="px-4 py-3 font-semibold">Cena (€)</th>
-        <th class="px-4 py-3 font-semibold">Status</th>
-        <th class="px-4 py-3 font-semibold"></th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">BLOČEK ID
+        </th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">DODÁVATEĽ
+        </th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">DÁTUM
+          IMPORTU
+        </th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">ODOBERATEĽ
+        </th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">IČO</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">DIČ</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Cena (€)</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Status</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0"></th>
       </tr>
       </thead>
 
       <!-- data present -->
       <ng-container *ngIf="receiptResponse.content.length > 0; else noData">
-        <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let receipt of receiptResponse.content!">
-          <td class="pl-2 pr-1 py-4">
+        <tbody class="divide-y divide-gray-200 dark:divide-[#383852]">
+        <tr *ngFor="let receipt of receiptResponse.content!; even as even"
+            [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
+            class="dark:hover:bg-gray-700 dark:border-[#383852]">
+          <td class="pl-2 pr-1 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <input type="checkbox"
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                   class="w-4 h-4 text-blue-600 dark:text-[#79a1fe] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
           </td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
-            <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">#{{ receipt.id }}</a>
+          <td
+            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
+            <a [routerLink]="['/web/receipts', receipt.id]"
+               class="text-blue-600 dark:text-[#79a1fe] hover:underline">#{{ receipt.id }}</a>
           </td>
-          <td class="px-4 py-4">{{ receipt.partner?.name }}</td>
-          <td class="px-4 py-4">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
-          <td class="px-4 py-4">{{ receipt.companyName }}</td>
-          <td class="px-4 py-4">{{ receipt.partner?.registrationNumber }}</td>
-          <td class="px-4 py-4">{{ receipt.partner?.taxId }}</td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <td
+            class="px-4 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ receipt.partner?.name }}
+          </td>
+          <td
+            class="px-4 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ receipt.createdAt | date:'dd.MM.yyyy' }}
+          </td>
+          <td
+            class="px-4 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ receipt.companyName }}
+          </td>
+          <td
+            class="px-4 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ receipt.partner?.registrationNumber }}
+          </td>
+          <td
+            class="px-4 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ receipt.partner?.taxId }}
+          </td>
+          <td
+            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             {{ receipt.receiptDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
           </td>
-          <td>dwadawd</td>
-          <td class="px-4 py-3 flex items-center">
+          <td class="border-r border-gray-200 dark:border-[#383852] last:border-r-0">dwadawd</td>
+          <td class="px-4 py-3 flex items-center border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <button [id]="'dropdown-button-' + receipt.id"
                     [attr.data-dropdown-toggle]="'dropdown-' + receipt.id"
-                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none"
+                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:text-gray-800 rounded-lg focus:outline-none"
                     type="button">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-5 h-5 dark:hover:text-white" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
               </svg>
             </button>
             <div [id]="'dropdown-' + receipt.id"
-                 class="hidden z-10 w-42 bg-white rounded divide-y divide-gray-100 shadow">
+                 class="hidden z-10 w-42 bg-white dark:bg-[#1a1b1e] dark:border-[#383852] rounded divide-y divide-gray-100 dark:divide-[#383852] shadow">
 
-              <ul class="py-2 px-2 text-sm text-gray-500" [attr.aria-labelledby]="'dropdown-button-' + receipt.id">
+              <ul class="py-2 px-2 text-sm text-gray-500 dark:text-gray-400"
+                  [attr.aria-labelledby]="'dropdown-button-' + receipt.id">
                 <li>
                   <a (click)="editReceipt(receipt.id)">
                     <div
                       class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                      <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black"
+                           aria-hidden="true"
                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                            viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -519,19 +508,26 @@
     <div class="border-b border-gray-200 pb-5">
       <div class="mx-4 mt-4 flex items-center justify-between">
         <div class="text-sm text-gray-600">
-          <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+          <span class="text-sm font-normal text-gray-50 dark:text-white mb-4 md:mb-0 block w-full md:inline md:w-auto">
             Zobrazuje
-            <span class="font-semibold text-gray-900">
+            <span class="font-semibold
+            text-gray-900
+            dark:text-white"
+            >
               {{ (page * size) + 1 }}
             </span>
             –
-            <span class="font-semibold text-gray-900">
+            <span class="font-semibold
+            text-gray-900
+            dark:text-white">
               {{
                 Math.min((page + 1) * size, receiptResponse?.totalElements)
               }}
             </span>
             z
-            <span class="font-semibold text-gray-900">
+            <span class="font-semibold
+            text-gray-900
+            dark:text-white">
               {{ receiptResponse.totalElements }}
             </span>
           </span>
@@ -540,41 +536,78 @@
         <div class="flex items-center gap-4">
           <nav aria-label="navigation">
             <ul class="flex items-center -space-x-px h-8 text-sm">
+
+              <!-- Previous -->
               <li>
                 <button
                   (click)="goToPreviousPage()"
                   [disabled]="page === 0"
-                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight
+                 text-gray-600 bg-white
+                 border border-e-0 border-gray-300 rounded-s-lg
+                 hover:bg-gray-100 hover:text-gray-800
+                 disabled:opacity-50 disabled:pointer-events-none
+
+                 dark:bg-gray-800
+                 dark:text-gray-300
+                 dark:border-gray-600
+                 dark:hover:bg-gray-700
+                 dark:hover:text-white
+                 dark:disabled:opacity-40">
                   <span class="sr-only">Previous</span>
-                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                       fill="none" viewBox="0 0 6 10">
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
+                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M5 1 1 5l4 4"/>
                   </svg>
                 </button>
               </li>
 
-              <li *ngFor="let _ of [].constructor(this.receiptResponse.totalPages); let pageIndex = index">
+              <!-- Pages -->
+              <li *ngFor="let _ of [].constructor(receiptResponse.totalPages); let pageIndex = index">
                 <a
                   (click)="goToPage(pageIndex)"
-                  [class.active]="page == pageIndex"
+                  [class.active]="page === pageIndex"
                   aria-current="page"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "> {{ pageIndex + 1 }} </a>
+                  class="flex items-center justify-center px-3 h-8 leading-tight
+                 text-gray-600 bg-white border border-gray-300
+                 hover:bg-gray-100 hover:text-gray-800
+
+                 dark:bg-gray-800
+                 dark:text-gray-300
+                 dark:border-gray-600
+                 dark:hover:bg-gray-700
+                 dark:hover:text-white">
+                  {{ pageIndex + 1 }}
+                </a>
               </li>
 
+              <!-- Next -->
               <li>
                 <button
                   (click)="goToNextPage()"
                   [disabled]="IsLastPage"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+                  class="flex items-center justify-center px-3 h-8 leading-tight
+                 text-gray-600 bg-white
+                 border border-gray-300 rounded-e-lg
+                 hover:bg-gray-100 hover:text-gray-800
+                 disabled:opacity-50 disabled:pointer-events-none
+
+                 dark:bg-gray-800
+                 dark:text-gray-300
+                 dark:border-gray-600
+                 dark:hover:bg-gray-700
+                 dark:hover:text-white
+                 dark:disabled:opacity-40">
                   <span class="sr-only">Next</span>
-                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                       fill="none" viewBox="0 0 6 10">
+                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
+                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="m1 9 4-4-4-4"/>
                   </svg>
                 </button>
               </li>
+
             </ul>
           </nav>
         </div>
