@@ -4,21 +4,22 @@
     Tabuľka môže obsahovať viac stĺpcov – potiahnite do strany →
   </div>
 
-  <div class="flex-1 overflow-auto rounded-lg border border-gray-200">
+  <div class="flex-1 overflow-auto rounded-lg border border-gray-200 dark:border-[#383852]">
     <table class="min-w-full border-collapse">
-      <thead class="sticky top-0 bg-gray-100 z-10">
-      <tr class="text-gray-700 text-sm">
+      <thead class="sticky top-0 bg-gray-100 dark:bg-[#2a2b30] z-10">
+      <tr class="text-gray-700 dark:text-gray-300 text-sm">
         <th *ngFor="let col of excelColumns"
-            class="px-3 py-2 text-left font-semibold whitespace-nowrap border-b border-gray-300">
+            class="px-3 py-2 text-left font-semibold whitespace-nowrap border-b border-gray-300 dark:border-[#383852]">
           {{ col }}
         </th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let row of excelSheet; let rowIndex = index"
-          class="hover:bg-gray-50 text-sm">
+      <tr *ngFor="let row of excelSheet; let rowIndex = index; let even = even"
+          class="hover:bg-gray-50 text-sm"
+          [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
         <td *ngFor="let col of excelColumns"
-            class="px-3 py-2 whitespace-nowrap border-b border-r border-gray-200">
+            class="px-3 py-2 whitespace-nowrap border-b border-r border-gray-200 dark:border-[#383852]">
           {{ row[col] || '' }}
         </td>
       </tr>

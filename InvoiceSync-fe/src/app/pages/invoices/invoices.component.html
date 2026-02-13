@@ -326,54 +326,55 @@
   <div class="w-full">
     <div class="flex items-center justify-between">
     </div>
-    <table class="min-w-full text-sm text-left text-gray-900 border-b border-gray-200">
-      <thead class="text-xs uppercase bg-gray-50 text-gray-500">
+    <table class="min-w-full text-sm text-left text-gray-900 dark:text-white border-b border-gray-200 dark:border-[#383852]">
+      <thead class="text-xs uppercase bg-gray-50 dark:bg-[#2a2b30] text-gray-500 dark:text-gray-300">
       <tr>
-        <th class="pl-2 pr-1 py-3">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+        <th class="pl-2 pr-1 py-3 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
         </th>
-        <th class="px-4 py-3 font-semibold">Číslo faktúry</th>
-        <th class="px-4 py-3 font-semibold">Variabilný symbol</th>
-        <th class="px-4 py-3 font-semibold">Dodávateľ</th>
-        <th class="px-4 py-3 font-semibold">Dátum splatnosti</th>
-        <th class="px-4 py-3 font-semibold">Status</th>
-        <th class="px-4 py-3 font-semibold">Typ faktúry</th>
-        <th class="px-4 py-3 font-semibold"></th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Číslo faktúry</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Variabilný symbol</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Dodávateľ</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Dátum splatnosti</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Status</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Typ faktúry</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0"></th>
       </tr>
       </thead>
 
       <!-- data present -->
       <ng-container *ngIf="invoiceResponse.content.length > 0; else noData">
-        <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let invoice of invoiceResponse.content!" class="hover:bg-gray-100 transition-colors duration-150">
-          <td class="pl-2 pr-1 py-4">
+        <tbody class="divide-y divide-gray-200 dark:divide-[#383852]">
+        <tr *ngFor="let invoice of invoiceResponse.content!; even as even" class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
+            [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
+          <td class="pl-2 pr-1 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <input type="checkbox"
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
           </td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <a [routerLink]="['/web/invoices/', invoice.id]"
                class="text-blue-600 hover:underline"> {{ invoice.invoiceDetails.invoiceNumber }} </a>
           </td>
           <td
-            class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.invoiceDetails.variableSymbol }}
+            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.variableSymbol }}
           </td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.partner.name }}</td>
+          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.partner.name }}</td>
           <td
-            class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.invoiceDetails.dueDate | date:'dd.MM.yyyy' }}
+            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.dueDate | date:'dd.MM.yyyy' }}
           </td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <span
               class="text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm"
               [ngClass]="getStatusClasses(invoice.invoiceDetails.status)">
               {{ getStatusText(invoice.invoiceDetails.status) }}
             </span>
           </td>
-          <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap">{{ invoice.invoiceDetails.invoiceType }}
+          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.invoiceType }}
           </td>
-          <td class="px-4 py-3 flex items-center">
+          <td class="px-4 py-3 flex items-center border-r border-gray-200 dark:border-[#383852] last:border-r-0">
             <button [id]="'dropdown-button-' + invoice.id"
                     [attr.data-dropdown-toggle]="'dropdown-' + invoice.id"
-                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none"
+                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:text-gray-800 rounded-lg focus:outline-none"
                     type="button">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -381,9 +382,9 @@
               </svg>
             </button>
             <div [id]="'dropdown-' + invoice.id"
-                 class="hidden z-10 w-42 bg-white rounded divide-y divide-gray-100 shadow">
+                 class="hidden z-10 w-42 bg-white dark:bg-[#2a2b30] rounded divide-y divide-gray-100 dark:divide-[#383852] shadow">
 
-              <ul class="py-2 px-2 text-sm text-gray-500" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">
+              <ul class="py-2 px-2 text-sm text-gray-500 dark:text-gray-400" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">
                 <li>
                   <a>
                     <div
@@ -493,7 +494,7 @@
       <ng-template #noData>
         <tbody>
         <tr>
-          <td colspan="9" class="px-4 py-8 text-center text-gray-500 text-sm">
+          <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
             <div class="flex flex-col items-center justify-center gap-2">
               <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                    height="24" fill="none" viewBox="0 0 24 24">
