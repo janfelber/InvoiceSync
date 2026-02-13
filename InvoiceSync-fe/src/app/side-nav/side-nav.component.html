@@ -1,10 +1,10 @@
-<nav class="fixed top-0 z-50 w-full h-16 bg-white border-b border-gray-200">
+<nav class="fixed top-0 z-50 w-full h-16 bg-white dark:bg-[#1a1b1e] border-b border-gray-200 dark:border-gray-700">
   <div class="h-full px-3 lg:px-5 lg:pl-3 flex items-center">
     <div class="flex items-center justify-between w-full">
       <div class="flex items-center justify-start rtl:justify-end">
         <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
                 type="button"
-                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600">
           <span class="sr-only">Open sidebar</span>
           <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                xmlns="http://www.w3.org/2000/svg">
@@ -14,13 +14,13 @@
         </button>
         <a class="flex ms-2 md:me-24">
           <img ngSrc="../../assets/SmallLogo.svg" class="h-8 me-3" alt="FlowBite Logo" height="24" width="24"/>
-          <span class="self-center sm:text-xl whitespace-nowrap SideMenuHeader-name">InvoiceSync</span>
+          <span class="self-center sm:text-xl whitespace-nowrap SideMenuHeader-name dark:text-white">InvoiceSync</span>
         </a>
       </div>
       <div class="flex items-center">
         <div class="flex items-center ms-3">
           <div>
-            <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
+            <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     aria-expanded="false" data-dropdown-toggle="dropdown-user">
               <span class="sr-only">Open user menu</span>
               <div
@@ -29,14 +29,14 @@
               </div>
             </button>
           </div>
-          <div class="absolute right-0 hidden z-10 w-60 bg-white rounded divide-y divide-gray-100 shadow"
+          <div class="absolute right-0 hidden z-10 w-60 bg-white dark:bg-gray-800 rounded divide-y divide-gray-100 dark:divide-gray-700 shadow"
                id="dropdown-user">
-            <ul class="py-2 px-2 text-sm text-gray-500" role="none">
+            <ul class="py-2 px-2 text-sm text-gray-500 dark:text-gray-400" role="none">
               <li>
                 <a routerLink="/web/settings">
                   <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                          viewBox="0 0 24 24">
                       <path clip-rule="evenodd" fill-rule="evenodd"
@@ -49,8 +49,8 @@
               <li>
                 <a routerLink="/web/privacy">
                   <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                          viewBox="0 0 24 24">
                       <path fill-rule="evenodd"
@@ -64,8 +64,8 @@
               <li>
                 <a routerLink="/web/limiter">
                   <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
+                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                    <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                          viewBox="0 0 24 24">
                       <path fill-rule="evenodd"
@@ -80,23 +80,10 @@
                 </a>
               </li>
             </ul>
-            <!--                       <div class="py-2 px-2" role="none" >-->
-            <!--                        <a >-->
-            <!--                          <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-            <!--                            <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-            <!--                              <path fill-rule="evenodd" d="M11 4.717c-2.286-.58-4.16-.756-7.045-.71A1.99 1.99 0 0 0 2 6v11c0 1.133.934 2.022 2.044 2.007 2.759-.038 4.5.16 6.956.791V4.717Zm2 15.081c2.456-.631 4.198-.829 6.956-.791A2.013 2.013 0 0 0 22 16.999V6a1.99 1.99 0 0 0-1.955-1.993c-2.885-.046-4.76.13-7.045.71v15.081Z" clip-rule="evenodd"/>-->
-            <!--                            </svg>-->
-            <!--                            <span>Help Guide</span>-->
-            <!--                          </div>-->
-
-            <!--                        </a>-->
-            <!--                        <p class="text-sm font-medium text-gray-900 truncate" role="none">-->
-            <!--                        </p>-->
-            <!--                      </div>-->
             <div class="py-2 px-2" role="none">
               <a (click)="logout()">
                 <div
-                  class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 hover:text-black text-sm">
+                  class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-black dark:hover:text-white text-sm">
                   <svg class="w-4 h-4 mr-1.5 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                        width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -105,7 +92,7 @@
                   <span class="text-red-500">Odhlasiť sa</span>
                 </div>
               </a>
-              <p class="text-sm font-medium text-gray-900 truncate" role="none">
+              <p class="text-sm font-medium text-gray-900 dark:text-white truncate" role="none">
               </p>
             </div>
           </div>
@@ -117,19 +104,19 @@
 </nav>
 
 <aside id="sidebar-multi-level-sidebar"
-       class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full sm:translate-x-0 border-r border-gray-200"
+       class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full sm:translate-x-0 border-r border-gray-200 dark:border-gray-700"
        aria-label="Sidebar">
-  <div class="h-full px-3 py-4 overflow-y-auto bg-white">
+  <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-[#1a1b1e]">
     <ul class="space-y-2">
       <li *ngFor="let item of menu">
         <ng-container *ngIf="item.children?.length; else singleLink">
           <button
             type="button"
             (click)="toggleDropdown(item.label)"
-            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+            class="flex items-center w-full p-2 text-base text-gray-900 dark:text-gray-200 transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
-              class="w-6 h-6 text-gray-500"
+              class="w-6 h-6 text-gray-500 dark:text-gray-400"
               fill="currentColor"
               viewBox="0 0 20 20"
               [innerHTML]="iconService.getSvg(item.icon || '')"
@@ -157,8 +144,8 @@
             <li *ngFor="let child of item.children">
               <a
                 [routerLink]="child.route"
-                routerLinkActive="bg-gray-100"
-                class="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                routerLinkActive="bg-gray-100 dark:bg-gray-700"
+                class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <span>{{ child.label }}</span>
               </a>
@@ -169,11 +156,11 @@
         <ng-template #singleLink>
           <a
             [routerLink]="item.route"
-            routerLinkActive="bg-gray-100"
-            class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group"
+            routerLinkActive="bg-gray-100 dark:bg-gray-700"
+            class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group"
           >
             <svg
-              class="w-6 h-6 text-gray-500"
+              class="w-6 h-6 text-gray-500 dark:text-gray-400"
               fill="currentColor"
               viewBox="0 0 20 20"
               [innerHTML]="iconService.getSvg(item.icon || '')"
@@ -184,9 +171,9 @@
       </li>
       <li>
         <a routerLink="/web/settings"
-           routerLinkActive="bg-gray-100"
-           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
-          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " fill="currentColor"
+           routerLinkActive="bg-gray-100 dark:bg-gray-700"
+           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor"
                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path clip-rule="evenodd" fill-rule="evenodd"
                   d="M8.34 1.804A1 1 0 019.32 1h1.36a1 1 0 01.98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 011.262.125l.962.962a1 1 0 01.125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 01.804.98v1.361a1 1 0 01-.804.98l-1.473.295a6.95 6.95 0 01-.587 1.416l.834 1.25a1 1 0 01-.125 1.262l-.962.962a1 1 0 01-1.262.125l-1.25-.834a6.953 6.953 0 01-1.416.587l-.294 1.473a1 1 0 01-.98.804H9.32a1 1 0 01-.98-.804l-.295-1.473a6.957 6.957 0 01-1.416-.587l-1.25.834a1 1 0 01-1.262-.125l-.962-.962a1 1 0 01-.125-1.262l.834-1.25a6.957 6.957 0 01-.587-1.416l-1.473-.294A1 1 0 011 10.68V9.32a1 1 0 01.804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 01.125-1.262l.962-.962A1 1 0 015.38 3.03l1.25.834a6.957 6.957 0 011.416-.587l.294-1.473zM13 10a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -195,11 +182,11 @@
         </a>
       </li>
     </ul>
-    <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200">
+    <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
       <li>
         <a routerLink="/web/mobile-app"
-           class="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
-          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " aria-hidden="true"
+           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
                   d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
@@ -210,9 +197,9 @@
       </li>
       <li data-tooltip-target="coming-soon-integrations">
         <a routerLink=""
-           class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 rounded-lg group"
+           class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg group"
            tabindex="-1" aria-disabled="true">
-          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " aria-hidden="true"
+          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
             <path
               d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
@@ -220,11 +207,11 @@
           <span class="ml-3">Integrácie</span>
         </a>
       </li>
-      <li data-tooltip-target="coming-soon-help">
-        <a routerLink=""
-           class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 rounded-lg group"
-           tabindex="-1" aria-disabled="true">
-          <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 " viewBox="0 0 24 24"
+      <li>
+        <a routerLink="/web/help"
+           routerLinkActive="bg-gray-100 dark:bg-gray-700"
+           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
+          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2">
             <path d="M4 12v-1a8 8 0 0116 0v1"/>
             <path d="M4 15v2a2 2 0 002 2h1v-6H4zM20 15v2a2 2 0 01-2 2h-1v-6h3z"/>
@@ -233,15 +220,32 @@
         </a>
       </li>
     </ul>
-    <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 " role="alert">
+    <div class="mt-4 px-2">
+      <button (click)="themeService.toggle()"
+              class="flex items-center w-full p-2 text-sm text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+        @if (themeService.isDark()) {
+          <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+          </svg>
+          <span class="ml-3">Svetlý režim</span>
+        } @else {
+          <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+          </svg>
+          <span class="ml-3">Tmavý režim</span>
+        }
+      </button>
+    </div>
+
+    <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 dark:bg-blue-900/20" role="alert">
       <div class="flex items-center mb-3">
-        <span class="bg-purple-100 text-purple-800 text-xs font-semibold me-2 px-2.5 py-0.5 rounded-sm">Beta</span>
+        <span class="bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-semibold me-2 px-2.5 py-0.5 rounded-sm">Beta</span>
       </div>
-      <p class="mb-3 text-sm text-blue-800">
+      <p class="mb-3 text-sm text-blue-800 dark:text-blue-300">
         Aplikácia <strong>InvoiceSync</strong> je momentálne vo fáze <strong>Beta verzie</strong>. Niektoré funkcie sa
         môžu ešte meniť alebo vylepšovať. Vaša spätná väzba nám pomôže službu vyladiť.
       </p>
-      <a class="text-sm text-blue-800 underline font-medium hover:text-blue-900" href="#">
+      <a class="text-sm text-blue-800 dark:text-blue-300 underline font-medium hover:text-blue-900 dark:hover:text-blue-200" href="#">
         Pošli spätnú väzbu
       </a>
     </div>
@@ -253,11 +257,6 @@
     <div class="tooltip-arrow" data-popper-arrow></div>
   </div>
 
-  <div id="coming-soon-help" role="tooltip"
-       class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-    Podporna čoskoro dostupná
-    <div class="tooltip-arrow" data-popper-arrow></div>
-  </div>
 
   <div id="coming-soon-guide" role="tooltip"
        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">

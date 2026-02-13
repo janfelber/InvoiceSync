@@ -1,8 +1,8 @@
 <div class="w-full min-h-screen flex flex-col p-4">
-  <div class="bg-[#f7f7fc] rounded-lg overflow-hidden border border-gray-300">
+  <div class="bg-[#f7f7fc] dark:bg-[#2a2b30] rounded-lg overflow-hidden border border-gray-300 dark:border-[#383852]">
     <div class="flex flex-col space-y-0">
-      <div class="flex items-center justify-between py-2.5 px-8 border-b border-gray-300">
-        <h2 class="text-lg font-semibold text-gray-700">Dokumenty</h2>
+      <div class="flex items-center justify-between py-2.5 px-8 border-b border-gray-300 dark:border-[#383852]">
+        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Dokumenty</h2>
       </div>
       <div class="flex items-center justify-between py-2 px-8">
         <button
@@ -87,26 +87,27 @@
     </app-modal>
 
 
-    <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300">
-      <thead class="text-xs text-gray-700 bg-[#f7f7fc] border-b border-gray-100">
+    <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300 dark:border-[#383852]">
+      <thead class="text-xs text-gray-700 dark:text-gray-300 bg-[#f7f7fc] dark:bg-[#2a2b30] border-b border-gray-100 dark:border-[#383852]">
       <tr>
-        <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Názov</th>
-        <th scope="col" class="px-4 py-3 border-r  border-gray-300 last:border-r-0">Dokument</th>
-        <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Importovaný</th>
-        <th scope="col" class="px-4 py-3 border-r border-gray-300 last:border-r-0">Poznámka</th>
+        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Názov</th>
+        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Dokument</th>
+        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Importovaný</th>
+        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Poznámka</th>
         <th scope="col" class="px-4 py-3 w-[60px] text-center">Akcie</th>
       </tr>
       </thead>
       <tbody>
-      <tr class="bg-white even:bg-[#f7f7fc] last:border-b-0" *ngFor="let document of documents">
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.documentName }}</td>
-        <td class="px-4 py-3 border-r border-gray-300 last:border-r-0 text-blue-600 hover:underline">
+      <tr class="last:border-b-0" *ngFor="let document of documents; let even = even"
+          [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
+        <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.documentName }}</td>
+        <td class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0 text-blue-600 hover:underline">
           <a href="#">{{ document.fileName }}</a>
         </td>
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.createdAt | date:'dd.MM.yyyy' }}</td>
-        <td class="px-4 py-3 text-black border-r border-gray-300 last:border-r-0">{{ document.note }}</td>
+        <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.createdAt | date:'dd.MM.yyyy' }}</td>
+        <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.note }}</td>
         <!-- Actions -->
-        <td class="w-[60px] border-r border-gray-300 last:border-r-0">
+        <td class="w-[60px] border-r border-gray-300 dark:border-[#383852] last:border-r-0">
           <div class="flex items-center justify-center h-full">
 <!--            <button-->
 <!--              class="p-1.5 rounded-md hover:bg-gray-200 cursor-pointer transition-colors">-->

@@ -39,6 +39,7 @@ export class ReceiptsComponent implements OnInit {
 
   public selectedCompanyName: string = 'Spoločnosť';
   public selectedCompanyId: any;
+  public modalCompanyId: any = null;
   public lastImportDate?: string;
   public searchText: string = '';
 
@@ -109,8 +110,19 @@ export class ReceiptsComponent implements OnInit {
   }
 
   async onUploadFiles(files: File[]): Promise<void> {
-    await this.receiptService.saveReceipt({ files, companyId: this.selectedCompanyId });
+    await this.receiptService.saveReceipt({ files, companyId: this.modalCompanyId });
   }
+
+  onSelectCompany(company: any) {
+    this.selectedCompanyName = company.name;
+    this.selectedCompanyId = company.id;
+    if (company.id === 0) {
+      this.onFetchCompanies();
+    } else {
+      this.onCompanyChange(company);
+    }
+  }
+
 
   onCompanyChange(company: any) {
     this.receiptService.findAllReceiptsByCompany({
@@ -119,8 +131,6 @@ export class ReceiptsComponent implements OnInit {
         companyId: company.id
       }
     ).then(response => {
-      this.selectedCompanyName = company.name
-      this.selectedCompanyId = company.id
       this.receiptResponse = response.data;
     }).catch(error => {
       console.error(error);
@@ -128,7 +138,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
-    if (!this.selectedCompanyId) return;
+    if (!this.modalCompanyId) return;
 
     this.isUploading = true;
     try {
@@ -185,7 +195,7 @@ export class ReceiptsComponent implements OnInit {
   closeImportModal() {
     this.importModalOpen = false;
     this.resetAll();
-    this.selectedCompanyId = null;
+    this.modalCompanyId = null;
   }
 
   editReceipt(id: number) {
@@ -261,7 +271,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   get IsLastPage(): boolean {
-    return this.page == this.companyResponse.totalPages as number - 1
+    return this.page >= ((this.receiptResponse.totalPages ?? 1) - 1);
   }
 
   protected readonly Math = Math;

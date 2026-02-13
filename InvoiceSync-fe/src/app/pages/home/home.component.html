@@ -1,29 +1,28 @@
 <div class="w-full min-h-screen">
   <div class="mx-auto p-4 pt-20">
     <div class="flex items-center justify-between mb-10">
-      <h1 class="text-3xl font-semibold text-gray-700">Domov</h1>
-      <button class="px-8 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" (click)="openModal()">
+      <h1 class="text-3xl font-semibold text-gray-700 dark:text-gray-200">Domov</h1>
+      <button class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 dark:bg-[#79a1fe] dark:text-[#1a1b1e] transition" (click)="openModal()">
         Pridať spoločnosť
       </button>
     </div>
-
 
     <app-modal
       [show]="modalOpen"
       (closeModal)="closeModal()"
       title="Nová spoločnosť"
     >
-      <div class="flex border-b border-blue-300 mb-4">
+      <div class="flex border-b border-blue-300 dark:border-gray-600 mb-4">
         <button
           class="w-1/2 py-2 text-center font-semibold"
-          [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'by_registration', 'text-gray-600': activeTab !== 'by_registration' }"
+          [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'by_registration', 'text-gray-600 dark:text-gray-400': activeTab !== 'by_registration' }"
           (click)="activeTab = 'by_registration'"
         >
           Podľa Iča
         </button>
         <button
           class="w-1/2 py-2 text-center font-semibold"
-          [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'manual', 'text-gray-600': activeTab !== 'manual' }"
+          [ngClass]="{ 'text-blue-600 border-b-2 border-blue-600': activeTab === 'manual', 'text-gray-600 dark:text-gray-400': activeTab !== 'manual' }"
           (click)="activeTab = 'manual'"
         >
           Manuálne
@@ -32,13 +31,13 @@
 
       <form *ngIf="activeTab === 'by_registration'" (ngSubmit)="saveCompany()">
         <div class="col-span-2">
-          <label for="registrationNumber" class="block text-sm font-medium text-gray-900">Názov firmy</label>
+          <label for="registrationNumber" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Názov firmy</label>
           <input
             id="registrationNumber"
             name="registrationNumber"
             required
             [(ngModel)]="registrationNumber"
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+            class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           />
         </div>
       </form>
@@ -46,90 +45,90 @@
       <form *ngIf="activeTab === 'manual'" [formGroup]="companyForm" (ngSubmit)="saveCompany()">
         <div class="grid gap-4 mb-6 grid-cols-2">
           <div class="col-span-2">
-            <label for="companyName" class="block text-sm font-medium text-gray-900">Názov firmy</label>
+            <label for="companyName" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Názov firmy</label>
             <input
               id="companyName"
               formControlName="name"
               required
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj názov firmy"
             />
           </div>
 
           <div>
-            <label for="city" class="block text-sm font-medium text-gray-900">Mesto</label>
+            <label for="city" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Mesto</label>
             <input
               id="city"
               formControlName="city"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj mesto"
             />
           </div>
 
           <div>
-            <label for="zip" class="block text-sm font-medium text-gray-900">PSČ</label>
+            <label for="zip" class="block text-sm font-medium text-gray-900 dark:text-gray-200">PSČ</label>
             <input
               id="zip"
               formControlName="zip"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj PSČ"
             />
           </div>
 
           <div>
-            <label for="street" class="block text-sm font-medium text-gray-900">Ulica</label>
+            <label for="street" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Ulica</label>
             <input
               id="street"
               formControlName="street"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj ulicu"
             />
           </div>
 
           <div class="col-span-1">
-            <label for="streetNumber" class="block text-sm font-medium text-gray-900">Číslo</label>
+            <label for="streetNumber" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Číslo</label>
             <input
               id="streetNumber"
               formControlName="streetNumber"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="123"
             />
           </div>
 
           <div>
-            <label for="vatId" class="block text-sm font-medium text-gray-900">IČ DPH</label>
+            <label for="vatId" class="block text-sm font-medium text-gray-900 dark:text-gray-200">IČ DPH</label>
             <input
               id="vatId"
               formControlName="vatId"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj IČ DPH"
             />
           </div>
 
           <div>
-            <label for="taxId" class="block text-sm font-medium text-gray-900">DIČ</label>
+            <label for="taxId" class="block text-sm font-medium text-gray-900 dark:text-gray-200">DIČ</label>
             <input
               id="taxId"
               formControlName="taxId"
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj DIČ"
             />
           </div>
 
           <div class="col-span-2">
-            <label for="registrationNumber" class="block text-sm font-medium text-gray-900">IČO</label>
+            <label for="registrationNumber" class="block text-sm font-medium text-gray-900 dark:text-gray-200">IČO</label>
             <input
               id="registrationNumber"
               formControlName="registrationNumber"
               required
-              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg p-2.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               placeholder="Zadaj IČO"
             />
           </div>
         </div>
       </form>
 
-      <hr class="h-px my-4 bg-gray-200 border-0">
+      <hr class="h-px my-4 bg-gray-200 dark:bg-gray-600 border-0">
       <button
         (click)="saveCompany()"
         type="submit"
@@ -138,10 +137,10 @@
       </button>
     </app-modal>
 
-    <div class="bg-white rounded-2xl overflow-hidden border border-gray-200">
+    <div class="bg-white dark:bg-[#2a2b30] rounded-2xl overflow-hidden border border-gray-200 dark:border-[#383852]">
       <div class="flex items-center justify-between p-4">
         <div class="flex flex-col gap-1 w-full">
-          <label class="text-sm text-gray-600 font-bold">Čo hľadáte?</label>
+          <label class="text-sm text-gray-600 dark:text-gray-400 font-bold">Čo hľadáte?</label>
 
           <div class="flex items-center gap-3 w-full">
             <!-- Vyhľadávacie pole -->
@@ -156,18 +155,18 @@
                   </svg>
                 </div>
                 <input type="text" [(ngModel)]="searchText" id="simple-search" name="search"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                       class="bg-gray-50 dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
                        placeholder="Vyhľadávanie" required/>
               </div>
             </form>
             <button type="button" disabled
-                    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-24 focus:outline-none">
+                    class="text-white bg-blue-600 hover:bg-blue-700 dark:bg-[#79a1fe] dark:text-[#1a1b1e] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-24 focus:outline-none">
               Filter
             </button>
             <button
               type="button"
               disabled
-              class="text-blue-600 border border-blue-600 hover:bg-blue-50 focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 w-24 focus:outline-none">
+              class="text-blue-600 dark:text-[#79a1fe] border border-blue-600 dark:border-[#79a1fe] hover:bg-blue-50 dark:hover:bg-[#79a1fe] focus:ring-4 focus:ring-blue-100 font-medium rounded-lg text-sm px-5 py-2.5 w-24 focus:outline-none">
               Reset
             </button>
           </div>
@@ -175,72 +174,70 @@
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl overflow-hidden mt-10 border border-gray-200">
+    <div class="bg-white dark:bg-[#2a2b30] rounded-2xl overflow-hidden mt-10 border border-gray-200 dark:border-[#383852]">
 
-      <div class="flex items-center justify-between p-4">
-        <h2 class="text-lg font-semibold text-gray-700">Spoločnosti</h2>
+      <div class="flex items-center justify-between p-4 border-b dark:border-b-[#383852]">
+        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Spoločnosti</h2>
       </div>
 
-      <table class="w-full text-sm text-left rtl:text-right text-black">
-        <thead class="text-xs text-black uppercase bg-gray-100">
+      <table class="w-full text-sm text-left rtl:text-right text-black dark:text-gray-300">
+        <thead class="text-xs text-black dark:text-gray-300 uppercase bg-gray-100 dark:bg-[#2a2b30]">
         <tr>
-          <th scope="col" class="p-4">
+          <th scope="col" class="p-4 border-r border-gray-200 dark:border-[#383852]">
             <div class="flex items-center">
               <input id="checkbox-all-search" type="checkbox"
-                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500">
+                     class="w-4 h-4 text-[#79a1fe] bg-gray-100 dark:bg-[#2a2b30] border-gray-300 dark:border-gray-600 rounded-sm focus:ring-blue-500">
               <label for="checkbox-all-search" class="sr-only">checkbox</label>
             </div>
           </th>
-          <th scope="col" class="px-6 py-3" *ngFor="let header of headers">{{ header }}</th>
+          <th scope="col" class="px-6 py-3 dark:bg-[#2a2b30] border-r border-gray-200 dark:border-[#383852] last:border-r-0" *ngFor="let header of headers">{{ header }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr class="bg-white border-b border-gray-200 hover:bg-gray-200 last:border-b-0"
-            *ngFor="let company of companyResponse.content">
-          <td class="w-4 p-4">
+        <tr class="border-b border-gray-200 dark:border-[#383852] hover:bg-gray-200 dark:hover:bg-gray-700 last:border-b-0"
+            [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
+            *ngFor="let company of companyResponse.content; even as even">
+          <td class="w-4 p-4 border-r border-gray-200 dark:border-[#383852]">
             <div class="flex items-center">
               <input id="checkbox-table-search-1" type="checkbox"
-                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500">
+                     class="w-4 h-4 text-[#79a1fe] bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded-sm focus:ring-blue-500">
               <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
             </div>
           </td>
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852]">
             <a [routerLink]="['/web/company', company.id]" [queryParams]="{ name: company.name }"
-               class="text-blue-600 hover:underline font-medium">
+               class="text-[#79a1fe] hover:underline font-medium">
               {{ company.name }}
             </a>
           </th>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-r border-gray-200 dark:border-[#383852]">
             {{ company.city }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-r border-gray-200 dark:border-[#383852]">
             {{ company.taxId }}
           </td>
           <td class="px-6 py-4">
             {{ company.vatId }}
           </td>
-          <!--                  <td class="px-6 py-4">-->
-          <!--                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>-->
-          <!--                  </td>-->
         </tr>
         </tbody>
       </table>
     </div>
 
     <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-      <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
     Zobrazuje
-    <span class="font-semibold text-gray-900">
+    <span class="font-semibold text-gray-900 dark:text-white">
       {{ (page * size) + 1 }}
     </span>
     –
-    <span class="font-semibold text-gray-900">
+    <span class="font-semibold text-gray-900 dark:text-white">
       {{
         Math.min((page + 1) * size, companyResponse?.totalElements)
       }}
     </span>
     z
-    <span class="font-semibold text-gray-900">
+    <span class="font-semibold text-gray-900 dark:text-white">
       {{ companyResponse.totalElements }}
     </span>
   </span>
@@ -249,7 +246,7 @@
           <button
             (click)="goToPreviousPage()"
             [disabled]="page === 0"
-            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-e-0 border-gray-300 dark:border-gray-700 rounded-s-lg hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white disabled:opacity-50 disabled:pointer-events-none">
             <span class="sr-only">Previous</span>
             <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
@@ -261,8 +258,8 @@
             (click)="goToPage(pageIndex)"
             [class.active]="page === pageIndex"
             class="flex items-center justify-center px-3 h-8 leading-tight
-           text-gray-500 bg-white border border-gray-300 hover:bg-gray-100
-           hover:text-gray-700 transition-colors duration-200"
+           text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 hover:bg-gray-100
+           dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors duration-200"
           >
             {{ pageIndex + 1 }}
           </button>
@@ -271,7 +268,7 @@
           <button
             (click)="goToNextPage()"
             [disabled]="IsLastPage"
-            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
+            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-e-lg hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white disabled:opacity-50 disabled:pointer-events-none">
             <span class="sr-only">Next</span>
             <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -282,5 +279,3 @@
     </nav>
   </div>
 </div>
-
-
