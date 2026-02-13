@@ -29,8 +29,3 @@
 button.active {
   @apply text-blue-600 bg-blue-50 border-blue-300;
 }
-
-html.dark body {
-  background-color: #111827; /* gray-900 */
-  color: #f9fafb; /* gray-50 */
-}

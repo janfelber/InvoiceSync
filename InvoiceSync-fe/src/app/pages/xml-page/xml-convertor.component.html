@@ -235,31 +235,33 @@
     </div>
 
 
-    <table class="min-w-full text-sm text-left text-gray-900 border-b border-gray-200">
-      <thead class="text-xs uppercase bg-gray-50 text-gray-500">
+    <table class="min-w-full text-sm text-left text-gray-900 dark:text-white border-b border-gray-200 dark:border-[#383852]">
+      <thead class="text-xs uppercase bg-gray-50 dark:bg-[#2a2b30] text-gray-500 dark:text-gray-300">
       <tr>
-        <th class="pl-2 py-1">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+        <th class="pl-2 py-1 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
         </th>
-        <th class="w-2/5 py-2 font-semibold">NÁZOV SÚBORU</th>
-        <th class="px-4 py-3 font-semibold">DÁTUM IMPORTU</th>
-        <th class="px-4 py-3 font-semibold">AKCIE</th>
+        <th class="w-2/5 py-2 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">NÁZOV SÚBORU</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">DÁTUM IMPORTU</th>
+        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">AKCIE</th>
       </tr>
       </thead>
 
-      <tbody *ngIf="xmlFileResponse.content.length > 0; else noData" class="bg-white divide-y divide-gray-200">
-      <tr *ngFor="let xmlFile of xmlFileResponse.content">
-        <td class="pl-2 py-1">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+      <tbody *ngIf="xmlFileResponse.content.length > 0; else noData" class="divide-y divide-gray-200 dark:divide-[#383852]">
+      <tr *ngFor="let xmlFile of xmlFileResponse.content; even as even"
+          [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
+          class="dark:hover:bg-gray-700">
+        <td class="pl-2 py-1 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
+          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
         </td>
-        <td class="w-2/5 font-medium text-gray-900 whitespace-nowrap">
+        <td class="w-2/5 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
           <a class="text-blue-600 hover:underline">{{ xmlFile.fileName.split('.')?.slice(0, -1)?.join('.') }}</a>
         </td>
-        <td class="px-4 py-3">{{ xmlFile.createdAt | date: 'dd.MM.yyyy' }}</td>
-        <td class="px-4 py-3 items-center">
+        <td class="px-4 py-3 border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ xmlFile.createdAt | date: 'dd.MM.yyyy' }}</td>
+        <td class="px-4 py-3 items-center border-r border-gray-200 dark:border-[#383852] last:border-r-0">
           <svg
             (click)="downloadFile(xmlFile.id, xmlFile.fileName)"
-            class="w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+            class="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
             height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
                   d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z"
@@ -277,7 +279,7 @@
       <ng-template #noData>
         <tbody>
         <tr>
-          <td colspan="9" class="px-4 py-8 text-center text-gray-500 text-sm">
+          <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
             <div class="flex flex-col items-center justify-center gap-2">
               <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                    height="24" fill="none" viewBox="0 0 24 24">
