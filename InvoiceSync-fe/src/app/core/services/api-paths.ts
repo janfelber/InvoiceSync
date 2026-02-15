@@ -84,5 +84,9 @@ export const ApiPaths = {
     BASE: '/user',
     ME: '/me',
     FULL_NAME: '/me/name',
+  },
+  mobile: {
+    BASE: '/auth/mobile',
+    QR_GENERATE: '/qr',
   }
 };
