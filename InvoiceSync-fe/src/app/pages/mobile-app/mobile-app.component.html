@@ -1,59 +1,266 @@
-<div class="flex flex-col md:flex-row h-screen w-full bg-white">
+<div class="flex flex-col md:flex-row h-screen w-full bg-white dark:bg-[#1a1b1e]">
 
-  <!-- LEFT SIDE – INFO -->
-  <div class="md:w-1/2 flex flex-col justify-center items-center px-8 py-12 text-center bg-white">
-    <img src="../../../assets/mobile-app.svg"
-         alt="Mobile App"
-         class="w-64 h-auto mb-8 drop-shadow-md transition-opacity duration-700 ease-in opacity-100" />
+  <div class="pt-13 mx-4 mt-6">
+    <div class="header">
+      <nav class="flex mb-4" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+          <li class="inline-flex items-center">
+            <a routerLink="/home"
+               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-white">
+              <svg class="w-3 h-3 me-2.5 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                   fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path
+                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+              </svg>
+              Domov
+            </a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 dark:text-white mx-1" aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ms-1 text-sm font-medium text-gray-500 dark:text-white md:ms-2">InvoiceSync Go</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
 
-    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight transition-transform duration-500 ease-out">
-      InvoiceSync Go je na ceste
-    </h1>
-    <p class="text-gray-600 text-base md:text-lg max-w-md mb-6 leading-relaxed">
-      Pracujeme na mobilnej aplikácii, ktorá vám umožní spravovať faktúry a bločky kdekoľvek a kedykoľvek.
-    </p>
+      <div class="flex justify-between mb-4">
+        <h1 class="text-xl font-semibold text-black dark:text-white">Invoice Sync Go</h1>
+      </div>
 
-    <!-- E-mail input + button -->
-    <div class="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md mt-2">
-      <input
-        type="email"
-        [(ngModel)]="email"
-        name="email"
-        placeholder="Zadaj svoj e-mail"
-        required
-        class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-      />
-      <button
-        (click)="onSubscribe()"
-        class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition hover:scale-105">
-        Daj mi vedieť
-      </button>
+      <div
+        class="bg-white dark:bg-[#1a1b1e] rounded-lg border border-slate-200 dark:border-[#383852] p-5 flex flex-col gap-6">
+        <!-- QR Code Section -->
+        <h2 class="text-lg font-medium mb-4 flex items-center gap-2 dark:text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               class="lucide lucide-qr-code w-5 h-5 text-blue-600 dark:text-white"
+               data-fg-ege108="56.42:62.1071:/src/app/components/MobileApp.tsx:205:17:8819:44:e:QrCode::::::BW4G">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+          </svg>
+          Rýchle prihlásenie cez QR kód
+        </h2>
+
+        <p class="text-sm text-gray-600 dark:text-white mb-4">
+          Naskenujte QR kód mobilnou aplikáciou a prihláste sa automaticky bez zadávania hesla
+        </p>
+
+        <div class="flex flex-col items-center gap-3 mt-4 mb-4">
+
+          <!-- Expired state -->
+          <div *ngIf="qrExpired && !qrData" class="flex flex-col items-center gap-3 w-full">
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 w-full text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-400 mx-auto mb-2" fill="none"
+                   stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path stroke-linecap="round" d="M12 6v6l4 2"/>
+              </svg>
+              <p class="text-sm font-medium text-red-800">QR kód vypršal</p>
+              <p class="text-xs text-red-600 mt-1">Vygenerujte nový kód pre prihlásenie</p>
+            </div>
+            <button (click)="generateLoginQrCode()"
+                    [disabled]="qrLoading"
+                    class="inline-flex justify-center items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed w-full">
+              <svg *ngIf="qrLoading" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                   fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              Vygenerovať nový QR kód
+            </button>
+          </div>
+
+          <!-- Initial generate button -->
+          <button *ngIf="!qrData && !qrExpired"
+                  (click)="generateLoginQrCode()"
+                  [disabled]="qrLoading"
+                  class="inline-flex justify-center items-center gap-2
+                  bg-blue-700
+                  hover:bg-blue-800
+                  text-white
+                  px-5 py-2.5 rounded-lg text-sm font-medium shadow transition hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed w-full">
+            <svg *ngIf="qrLoading" class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+            </svg>
+            <svg *ngIf="!qrLoading" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+            </svg>
+            Pripojiť zariadenie
+          </button>
+
+          <!-- QR code + countdown -->
+          <div *ngIf="qrData" class="flex flex-col items-center gap-3 w-full">
+            <div class="bg-white p-4 rounded-xl shadow-md">
+              <qrcode [qrdata]="qrData"
+                      [width]="230"
+                      errorCorrectionLevel="M">
+              </qrcode>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="w-64 flex flex-col items-center gap-1.5">
+              <div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                <div class="h-1.5 rounded-full transition-all duration-1000 ease-linear"
+                     [style.width.%]="(qrTimeLeft / 300) * 100"
+                     [class]="qrTimeLeft < 15 ? 'bg-red-500' : 'bg-blue-600'">
+                </div>
+              </div>
+
+              <!-- Timer text -->
+              <span class="text-sm font-medium dark:text-white"
+                    [class]="qrTimeLeft < 15 ? 'text-red-500' : 'text-gray-500'">
+            Naskenujte do {{ qrMinutes }}:{{ qrSeconds }}
+          </span>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 w-full">
+              <div class="flex items-start gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="lucide lucide-circle-check w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"
+                     data-fg-ege125="56.42:62.1071:/src/app/components/MobileApp.tsx:234:23:10233:71:e:CheckCircle2::::::CELI">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+                <div class="text-sm">
+                  <div class="font-medium text-blue-900 mb-1">
+                    Ako na to:
+                  </div>
+                  <ol class="text-blue-800 space-y-1 list-decimal list-inside">
+                    <li>Otvorte aplikáciu InvoiceSync na mobile</li>
+                    <li>Kliknite na "Oskenovať prihlasovací QR kód"</li>
+                    <li>Naskenujte tento kód fotoaparátom</li>
+                    <li>Budete automaticky prihlásení</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
+      <!--        &lt;!&ndash; Total Receipts &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            Všetky bločky-->
+      <!--          </p>-->
+      <!--        </div>-->
+
+      <!--        &lt;!&ndash; This Month &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            TBA-->
+      <!--          </p>-->
+      <!--        </div>-->
+
+      <!--        &lt;!&ndash; Total Amount &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            TBA-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            Súhrnná hodnota-->
+      <!--          </p>-->
+      <!--        </div>-->
+
+      <!--        &lt;!&ndash; Last Import &ndash;&gt;-->
+      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
+      <!--          <div class="mb-2">-->
+      <!--            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>-->
+      <!--          </div>-->
+      <!--          <div class="text-2xl font-bold tracking-tight">-->
+      <!--            {{ lastImportDate ? (lastImportDate | date: 'd. M. y') : 'Žiadny import' }}-->
+      <!--          </div>-->
+      <!--          <p class="text-sm text-muted-foreground">-->
+      <!--            o {{ lastImportDate ? (lastImportDate | date: 'HH:mm') : ' ' }}-->
+      <!--          </p>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
 
-  <!-- RIGHT SIDE – COUNTDOWN -->
-  <div class="md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#eff6ff] to-blue-100 px-8 py-12">
-    <h2 class="text-2xl md:text-3xl font-semibold text-blue-900 mb-8 transition-opacity duration-700">
-      Spustenie aplikácie o
-    </h2>
+  <!-- LEFT SIDE – INFO -->
+  <div class="md:w-1/2 flex flex-col justify-center items-center px-8 py-12 text-center bg-white dark:bg-[#1a1b1e]">
+    <!--    <img src="../../../assets/mobile-app.svg"-->
+    <!--         alt="Mobile App"-->
+    <!--         class="w-64 h-auto mb-8 drop-shadow-md transition-opacity duration-700 ease-in opacity-100" />-->
 
-    <div class="flex gap-6 text-center">
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ days }}</div>
-        <div class="text-sm text-gray-500">dní</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ hours }}</div>
-        <div class="text-sm text-gray-500">hodín</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ minutes }}</div>
-        <div class="text-sm text-gray-500">minút</div>
-      </div>
-      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">
-        <div class="text-3xl font-bold text-gray-800">{{ seconds }}</div>
-        <div class="text-sm text-gray-500">sekúnd</div>
-      </div>
-    </div>
+    <!--    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight transition-transform duration-500 ease-out">-->
+    <!--      InvoiceSync Go je na ceste-->
+    <!--    </h1>-->
+    <!--    <p class="text-gray-600 text-base md:text-lg max-w-md mb-6 leading-relaxed">-->
+    <!--      Pracujeme na mobilnej aplikácii, ktorá vám umožní spravovať faktúry a bločky kdekoľvek a kedykoľvek.-->
+    <!--    </p>-->
+
+    <!-- E-mail input + button -->
+    <!--    <div class="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md mt-2">-->
+    <!--      <input-->
+    <!--        type="email"-->
+    <!--        [(ngModel)]="email"-->
+    <!--        name="email"-->
+    <!--        placeholder="Zadaj svoj e-mail"-->
+    <!--        required-->
+    <!--        class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"-->
+    <!--      />-->
+    <!--      <button-->
+    <!--        (click)="onSubscribe()"-->
+    <!--        class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium shadow transition hover:scale-105">-->
+    <!--        Daj mi vedieť-->
+    <!--      </button>-->
+    <!--    </div>-->
+    <!--  </div>-->
+
+    <!-- RIGHT SIDE – COUNTDOWN -->
+    <!--  <div class="md:w-1/2 flex flex-col justify-center items-center bg-gradient-to-br from-[#eff6ff] to-blue-100 px-8 py-12">-->
+    <!--    <h2 class="text-2xl md:text-3xl font-semibold text-blue-900 mb-8 transition-opacity duration-700">-->
+    <!--      Spustenie aplikácie o-->
+    <!--    </h2>-->
+
+    <!--    <div class="flex gap-6 text-center">-->
+    <!--      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">-->
+    <!--        <div class="text-3xl font-bold text-gray-800">{{ days }}</div>-->
+    <!--        <div class="text-sm text-gray-500">dní</div>-->
+    <!--      </div>-->
+    <!--      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">-->
+    <!--        <div class="text-3xl font-bold text-gray-800">{{ hours }}</div>-->
+    <!--        <div class="text-sm text-gray-500">hodín</div>-->
+    <!--      </div>-->
+    <!--      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">-->
+    <!--        <div class="text-3xl font-bold text-gray-800">{{ minutes }}</div>-->
+    <!--        <div class="text-sm text-gray-500">minút</div>-->
+    <!--      </div>-->
+    <!--      <div class="bg-white shadow rounded-lg px-4 py-3 w-20 transition-transform duration-300 hover:scale-105">-->
+    <!--        <div class="text-3xl font-bold text-gray-800">{{ seconds }}</div>-->
+    <!--        <div class="text-sm text-gray-500">sekúnd</div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
   </div>
 </div>

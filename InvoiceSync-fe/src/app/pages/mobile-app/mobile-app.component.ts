@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {initFlowbite} from "flowbite";
 import {EmailSubscribeService} from "../../core/services/emailsubscribe.service";
 import {EmailSubscribeRequest} from "../../core/models/email-subscribe-request";
 import {EmailSubscribeType} from "../../core/enums/email-subscribe-type";
 import {FormsModule} from "@angular/forms";
+import {NgIf} from "@angular/common";
 import {ToastrService} from "ngx-toastr";
+import {QRCodeComponent} from "angularx-qrcode";
+import {MobileService} from "../../core/services/mobile.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-mobile-app',
   templateUrl: './mobile-app.component.html',
   imports: [
-    FormsModule
+    FormsModule,
+    NgIf,
+    QRCodeComponent,
+    RouterLink
   ],
   styleUrls: ['./mobile-app.component.css']
 })
-export class MobileAppComponent implements OnInit {
+export class MobileAppComponent implements OnInit, OnDestroy {
   targetDate = new Date('2026-01-01T00:00:00');
   intervalId: any;
 
@@ -23,17 +30,61 @@ export class MobileAppComponent implements OnInit {
   minutes: string = '00';
   seconds: string = '00';
 
+  qrData: string | null = null;
+  qrTimeLeft: number = 0;
+  qrIntervalId: any;
+  qrLoading: boolean = false;
+  qrHasExpired: boolean = false;
+
   email: string = '';
 
   constructor(
     private emailSubscribeService: EmailSubscribeService,
     private toastr: ToastrService,
+    private mobileService: MobileService,
   ) { }
 
   ngOnInit() {
     this.updateCountdown();
     this.startCountdown();
     initFlowbite();
+  }
+
+  get qrMinutes(): string {
+    return String(Math.floor(this.qrTimeLeft / 60)).padStart(2, '0');
+  }
+
+  get qrSeconds(): string {
+    return String(this.qrTimeLeft % 60).padStart(2, '0');
+  }
+
+  get qrExpired(): boolean {
+    return this.qrHasExpired;
+  }
+
+  generateLoginQrCode() {
+    this.qrLoading = true;
+    this.qrHasExpired = false;
+    this.mobileService.generateLoginQrCode().then(result => {
+      this.qrData = result.data.qrData;
+      this.startQrCountdown(result.data.expiresIn ?? 60);
+    }).finally(() => {
+      this.qrLoading = false;
+    });
+  }
+
+  startQrCountdown(seconds: number) {
+    clearInterval(this.qrIntervalId);
+    this.qrTimeLeft = seconds;
+
+    this.qrIntervalId = setInterval(() => {
+      this.qrTimeLeft--;
+      if (this.qrTimeLeft <= 0) {
+        clearInterval(this.qrIntervalId);
+        this.qrData = null;
+        this.qrHasExpired = true;
+      }
+    }, 1000);
   }
 
   updateCountdown() {
@@ -117,6 +168,11 @@ export class MobileAppComponent implements OnInit {
           );
         }
       });
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+    clearInterval(this.qrIntervalId);
   }
 
   private validateEmail(email: string): boolean {
