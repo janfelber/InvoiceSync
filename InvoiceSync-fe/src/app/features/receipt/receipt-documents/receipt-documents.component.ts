@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ReceiptService} from "../../../core/services/receipt.service";
@@ -14,7 +14,8 @@ import {ToastrService} from "ngx-toastr";
     FormsModule,
     MatDialogWindowComponent,
     NgForOf,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './receipt-documents.component.html',
   styleUrl: './receipt-documents.component.css'

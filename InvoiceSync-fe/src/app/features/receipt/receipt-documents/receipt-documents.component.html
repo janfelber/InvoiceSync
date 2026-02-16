@@ -7,7 +7,7 @@
       <div class="flex items-center justify-between py-2 px-8">
         <button
           (click)="openAddDocumentModal()"
-          class="flex items-center px-3 py-2 text-sm text-gray-900 bg-[#f7f7fc] border border-gray-300 rounded-sm hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 max-w-[522.27px] h-[32px]">
+          class="flex items-center px-3 py-2 text-sm text-gray-900 bg-[#f7f7fc] dark:bg-transparent dark:border-gray-400 dark:hover:bg-gray-700 dark:text-slate-100 border border-gray-300 rounded-sm hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 max-w-[522.27px] h-[32px]">
           <svg class="w-4 h-4 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,18 +29,18 @@
 
           <div class="w-full">
             <div class="mb-3">
-              <label for="name" class="block text-sm font-medium text-gray-900">Názov</label>
+              <label for="name" class="block text-sm font-medium text-gray-900 dark:text-slate-100">Názov</label>
               <input
                 id="name"
                 [(ngModel)]="documentName"
                 name="name"
                 required
-                class="mt-1 block w-full h-10 border border-gray-300 rounded-lg px-4 text-sm"
+                class="mt-1 block w-full h-10 border dark:bg-[#1a1b1e] dark:border-[#383852] border-gray-300 rounded-lg px-4 text-sm"
               />
             </div>
 
             <div class="w-full max-w-md mb-4">
-              <label for="importFile" class="block text-sm font-medium text-gray-900 mb-2">
+              <label for="importFile" class="block text-sm font-medium  text-gray-900 dark:text-slate-100 mb-2">
                 Dokument
               </label>
               <input
@@ -48,7 +48,7 @@
                 (change)="onFileSelected($event)"
                 name="importFile"
                 type="file"
-                class="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg px-4
+                class="mt-1 block w-full text-sm dark:bg-[#1a1b1e] dark:border-[#383852] text-gray-900 border dark:text-slate-100 border-gray-300 rounded-lg px-4
            file:mr-2 file:py-2.1 file:px-6 file:rounded-lg file:border-0
             file:bg-gray-100 file:text-gray-700
            hover:file:bg-gray-200"
@@ -56,13 +56,13 @@
             </div>
 
             <div>
-              <label for="companyName" class="block text-sm font-medium text-gray-900">Poznámka</label>
+              <label for="companyName" class="block text-sm font-medium text-gray-900 dark:text-slate-100">Poznámka</label>
               <input
                 id="note"
                 [(ngModel)]="note"
                 name="note"
                 required
-                class="mt-1 block w-full h-10 border border-gray-300 rounded-lg px-4 text-sm"
+                class="mt-1 block w-full h-10 border border-gray-300 dark:bg-[#1a1b1e] dark:border-[#383852] rounded-lg px-4 text-sm"
               />
             </div>
           </div>
@@ -91,11 +91,13 @@
 
 
     <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300 dark:border-[#383852]">
-      <thead class="text-xs text-gray-700 dark:text-gray-300 bg-[#f7f7fc] dark:bg-[#2a2b30] border-b border-gray-100 dark:border-[#383852]">
+      <thead
+        class="text-xs text-gray-700 dark:text-gray-300 bg-[#f7f7fc] dark:bg-[#2a2b30] border-b border-gray-100 dark:border-[#383852]">
       <tr>
         <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Názov</th>
         <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Dokument</th>
-        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Importovaný</th>
+        <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Importovaný
+        </th>
         <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Poznámka</th>
         <th scope="col" class="px-4 py-3 w-[60px] text-center">Akcie</th>
       </tr>
@@ -103,14 +105,19 @@
       <tbody>
       <tr class="last:border-b-0" *ngFor="let document of documents; let even = even"
           [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
-        <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.documentName }}</td>
-        <td class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0 text-blue-600 hover:underline">
+        <td
+          class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.documentName }}
+        </td>
+        <td
+          class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0 text-blue-600 hover:underline">
           <a href="#"> {{ document.fileName }}</a>
         </td>
         <td
           class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.createdAt | date:'dd.MM.yyyy' }}
         </td>
-        <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.note }}</td>
+        <td
+          class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ document.note }}
+        </td>
         <!-- Actions -->
         <td class="w-[60px] border-r border-gray-300 dark:border-[#383852] last:border-r-0">
           <div class="flex items-center justify-center h-full">
