@@ -57,6 +57,30 @@ export class ReceiptDetailsComponent implements OnInit {
   receipt: any = {};
   selectedItemName: string = '';
 
+  currentMode: 'edit' | 'accounting' | 'merge' = 'edit';
+  selectedForMerge = new Set<number>();
+
+  setMode(mode: 'edit' | 'accounting' | 'merge'): void {
+    if (mode !== 'merge') {
+      this.selectedForMerge.clear();
+    }
+    this.currentMode = mode;
+  }
+
+  toggleMergeSelection(itemId: number | undefined): void {
+    if (itemId == null) return;
+    if (this.selectedForMerge.has(itemId)) {
+      this.selectedForMerge.delete(itemId);
+    } else {
+      this.selectedForMerge.add(itemId);
+    }
+  }
+
+  isSelectedForMerge(itemId: number | undefined): boolean {
+    if (itemId == null) return false;
+    return this.selectedForMerge.has(itemId);
+  }
+
   receiptForm!: FormGroup;
   groupedAccounts: any[] = [];
 
