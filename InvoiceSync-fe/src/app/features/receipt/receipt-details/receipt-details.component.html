@@ -111,15 +111,43 @@
                   <path d="M10 18h4"></path>
                 </svg>
                 <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Supplier</h3>
+                <button *ngIf="currentMode === 'edit'"
+                        (click)="editingSupplier = !editingSupplier"
+                        class="ml-auto text-slate-400 hover:text-blue-600 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path>
+                  </svg>
+                </button>
               </div>
 
-              <div class="space-y-1">
+              <div class="space-y-1" *ngIf="!editingSupplier">
                 <p class="font-medium text-slate-900 dark:text-slate-100">{{ receiptResponse.partner?.name }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">{{ receiptResponse.partner?.street }}
                   , {{ receiptResponse.partner?.zip }} {{ receiptResponse.partner?.city }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">DIČ: {{ receiptResponse.partner?.taxId }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">IČ DPH: {{ receiptResponse.partner?.registrationNumber }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">IČO: {{ receiptResponse.partner?.vatId }}</p>
+              </div>
+
+              <div class="space-y-2" *ngIf="editingSupplier">
+                <input class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm font-medium"
+                       [(ngModel)]="receiptResponse.partner.name" placeholder="Názov"/>
+                <input class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                       [(ngModel)]="receiptResponse.partner.street" placeholder="Ulica"/>
+                <div class="flex gap-2">
+                  <input class="w-1/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                         [(ngModel)]="receiptResponse.partner.zip" placeholder="PSČ"/>
+                  <input class="w-2/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                         [(ngModel)]="receiptResponse.partner.city" placeholder="Mesto"/>
+                </div>
+                <input class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                       [(ngModel)]="receiptResponse.partner.taxId" placeholder="DIČ"/>
+                <input class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                       [(ngModel)]="receiptResponse.partner.registrationNumber" placeholder="IČ DPH"/>
+                <input class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                       [(ngModel)]="receiptResponse.partner.vatId" placeholder="IČO"/>
               </div>
             </div>
 
@@ -192,25 +220,81 @@
                          class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                          (click)="$event.stopPropagation(); toggleMergeSelection(item.id)"/>
                 </td>
-                <td class="px-4 py-3">
-                  <p class="text-sm font-medium text-slate-900 dark:text-white">{{ item.name }}</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-300">Učet: <span class="text-green-500">{{ item.accountValue }}</span> </p>
+
+                <!-- Name -->
+                <td class="px-4 py-3" [class.group]="currentMode === 'edit'"
+                    (click)="startEditingCell($event, 'name-' + item.id)">
+                  @if (currentMode === 'edit' && editingCell === 'name-' + item.id) {
+                    <input class="w-full border border-blue-500 rounded px-2 py-0.5 text-sm font-medium
+                                  dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                           [(ngModel)]="item.name"
+                           (blur)="editingCell = null"
+                           (keydown.enter)="editingCell = null"
+                           autofocus/>
+                  } @else {
+                    <p class="text-sm font-medium text-slate-900 dark:text-white"
+                       [ngClass]="currentMode === 'edit' ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer' : ''">
+                      {{ item.name }}
+                    </p>
+                  }
+                  <p class="text-xs text-slate-500 dark:text-slate-300">Učet: <span class="text-green-500">{{ item.accountValue }}</span></p>
                 </td>
 
-                <td class="px-4 py-3 text-center text-sm text-slate-900 dark:text-slate-100">
-                  {{ item.quantity }}
+                <!-- Quantity -->
+                <td class="px-4 py-3 text-center" [class.group]="currentMode === 'edit'"
+                    (click)="startEditingCell($event, 'qty-' + item.id)">
+                  @if (currentMode === 'edit' && editingCell === 'qty-' + item.id) {
+                    <input type="number" class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center
+                                                dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                           [(ngModel)]="item.quantity"
+                           (blur)="editingCell = null"
+                           (keydown.enter)="editingCell = null"
+                           autofocus/>
+                  } @else {
+                    <span class="text-sm text-slate-900 dark:text-slate-100"
+                          [ngClass]="currentMode === 'edit' ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer' : ''">
+                      {{ item.quantity }}
+                    </span>
+                  }
                 </td>
 
-                <td class="px-4 py-3 text-right text-sm text-slate-900 dark:text-slate-100">
-                  €{{ item.unitPriceWithVat | number:'1.2-2' }}
+                <!-- Unit Price -->
+                <td class="px-4 py-3 text-right" [class.group]="currentMode === 'edit'"
+                    (click)="startEditingCell($event, 'price-' + item.id)">
+                  @if (currentMode === 'edit' && editingCell === 'price-' + item.id) {
+                    <input type="number" step="0.01" class="w-20 border border-blue-500 rounded px-2 py-0.5 text-sm text-right
+                                                           dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                           [(ngModel)]="item.unitPriceWithVat"
+                           (blur)="editingCell = null"
+                           (keydown.enter)="editingCell = null"
+                           autofocus/>
+                  } @else {
+                    <span class="text-sm text-slate-900 dark:text-slate-100"
+                          [ngClass]="currentMode === 'edit' ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer' : ''">
+                      €{{ item.unitPriceWithVat | number:'1.2-2' }}
+                    </span>
+                  }
                 </td>
 
-                <td class="px-4 py-3 text-center dark:text-slate-100">
-          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700">
-            {{ item.vatRate }}%
-          </span>
+                <!-- VAT Rate -->
+                <td class="px-4 py-3 text-center" [class.group]="currentMode === 'edit'"
+                    (click)="startEditingCell($event, 'vat-' + item.id)">
+                  @if (currentMode === 'edit' && editingCell === 'vat-' + item.id) {
+                    <input type="number" class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center
+                                                dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                           [(ngModel)]="item.vatRate"
+                           (blur)="editingCell = null"
+                           (keydown.enter)="editingCell = null"
+                           autofocus/>
+                  } @else {
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700"
+                          [ngClass]="currentMode === 'edit' ? 'group-hover:bg-blue-100 cursor-pointer' : ''">
+                      {{ item.vatRate }}%
+                    </span>
+                  }
                 </td>
 
+                <!-- Total (read-only) -->
                 <td class="px-4 py-3 text-right text-sm font-medium text-slate-900 dark:text-slate-100">
                   €{{ item.totalItemPriceWithVat }}
                 </td>
