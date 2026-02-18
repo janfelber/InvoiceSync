@@ -6,8 +6,11 @@ import static com.invoicesync.modules.receipt.dto.specification.ReceiptSpecifica
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -197,10 +200,34 @@ public class ReceiptServiceImpl implements ReceiptService {
       if (dto.id() != null && existingItemsMap.containsKey(dto.id())) {
         final ReceiptItem existingItem = existingItemsMap.get(dto.id());
 
+        // unitPriceWithVat is the source of truth — always recompute derived prices
+        // from the incoming dto values so any combination of changes (price, vatRate, quantity) is handled correctly
+        final BigDecimal unitPriceWithoutVat = dto.unitPriceWithVat()
+            .divide(BigDecimal.valueOf(1 + dto.vatRate() / 100.0), 2, RoundingMode.HALF_UP);
+
+        existingItem.setName(dto.name());
+        existingItem.setQuantity(dto.quantity());
+        existingItem.setVatRate(dto.vatRate());
+        existingItem.setUnitPriceWithVat(dto.unitPriceWithVat());
+        existingItem.setUnitPriceWithoutVat(unitPriceWithoutVat);
+        existingItem.setTotalItemPriceWithoutVat(unitPriceWithoutVat.multiply(BigDecimal.valueOf(dto.quantity())));
+        existingItem.setTotalItemPriceWithVat(dto.unitPriceWithVat().multiply(BigDecimal.valueOf(dto.quantity())));
         existingItem.setAccountValue(dto.accountValue());
         existingItem.setAccountText(dto.accountText());
       }
     }
+
+    final BigDecimal newTotalWithVat = receipt.getItems().stream()
+        .map(ReceiptItem::getTotalItemPriceWithVat)
+        .filter(Objects::nonNull)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+    final BigDecimal newTotalWithoutVat = receipt.getItems().stream()
+        .map(ReceiptItem::getTotalItemPriceWithoutVat)
+        .filter(Objects::nonNull)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    receipt.setTotalPriceWithVat(newTotalWithVat);
+    receipt.setTotalPriceWithoutVat(newTotalWithoutVat);
 
     receiptRepository.save(receipt);
     return receipt;
