@@ -58,6 +58,14 @@ export class ReceiptDetailsComponent implements OnInit {
   selectedItemName: string = '';
 
   currentMode: 'edit' | 'accounting' | 'merge' = 'edit';
+  editingSupplier = false;
+  editingCell: string | null = null;
+
+  startEditingCell(event: Event, cellKey: string): void {
+    if (this.currentMode !== 'edit') return;
+    event.stopPropagation();
+    this.editingCell = cellKey;
+  }
   selectedForMerge = new Set<number>();
 
   setMode(mode: 'edit' | 'accounting' | 'merge'): void {
@@ -116,7 +124,7 @@ export class ReceiptDetailsComponent implements OnInit {
   };
 
   receiptRequest: ReceiptRequest = {
-    items: []
+    items: this.items,
   };
 
 
@@ -349,7 +357,10 @@ export class ReceiptDetailsComponent implements OnInit {
       partnerRegistrationNumber: this.receiptResponse.partner?.registrationNumber,
       partnerTaxId: this.receiptResponse.partner?.taxId,
       partnerVatId: this.receiptResponse.partner?.vatId,
-      items: this.items
+      items: this.items.map(item => ({
+        ...item,
+        description: item.name
+      }))
     }
 
     this.receiptService.updateReceipt({
