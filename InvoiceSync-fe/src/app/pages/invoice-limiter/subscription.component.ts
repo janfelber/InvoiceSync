@@ -7,8 +7,8 @@ import {initFlowbite} from "flowbite";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 
 @Component({
-  selector: 'app-invoice-limiter',
-  templateUrl: './invoice-limiter.component.html',
+  selector: 'app-subscription',
+  templateUrl: './subscription.component.html',
   imports: [
     CommonModule,
     FormsModule,
@@ -16,9 +16,9 @@ import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialo
     RouterLink,
     MatDialogWindowComponent
   ],
-  styleUrls: ['./invoice-limiter.component.css']
+  styleUrls: ['./subscription.component.css']
 })
-export class InvoiceLimiterComponent implements OnInit {
+export class SubscriptionComponent implements OnInit {
 
   loadingSubscriptionInfo = false;
   subscriptionUpgradeEssentialsOpen = false
