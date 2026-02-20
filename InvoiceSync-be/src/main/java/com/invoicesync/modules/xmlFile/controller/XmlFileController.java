@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.xmlFile.dto.XmlFileResponseDto;
 import com.invoicesync.modules.xmlFile.service.XmlFileService;
@@ -25,12 +26,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/xml-file")
+@RequestMapping(Api.XML_FILE)
 public class XmlFileController {
 
   private final XmlFileService xmlFileService;
 
-  @GetMapping("/user")
+  @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<XmlFileResponseDto>> getCurrentUserXmlFiles(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -38,7 +39,7 @@ public class XmlFileController {
     return ResponseEntity.ok(xmlFileService.finalAllXmlImportsByUser(page, size, connectedUser));
   }
 
-  @PostMapping("/save")
+  @PostMapping(Api.SAVE)
   public ResponseEntity<List<Long>> saveXmlFiles(@RequestParam("file") final MultipartFile[] files,
       final Authentication connectedUser) {
     final List<Long> savedIds = Arrays.stream(files)
@@ -49,7 +50,7 @@ public class XmlFileController {
   }
 
   //
-  @PostMapping("/generate-zip/{importId}")
+  @PostMapping(Api.XML_FILE_GENERATE_ZIP)
   public ResponseEntity<byte[]> processAndGenerateZip(@PathVariable final Long importId,
       final Authentication connectedUser) {
     try {

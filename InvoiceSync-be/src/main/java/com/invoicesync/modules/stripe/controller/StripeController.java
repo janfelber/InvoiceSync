@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.modules.stripe.service.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
@@ -24,7 +25,7 @@ public class StripeController {
     this.stripeService = stripeService;
   }
 
-  @PostMapping("/stripe/webhook")
+  @PostMapping(Api.STRIPE_WEBHOOK)
   public ResponseEntity<String> handleStripeWebhook(
       @RequestBody final String payload,
       @RequestHeader("Stripe-Signature") final String sigHeader
