@@ -17,21 +17,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
-import com.invoicesync.modules.datatransfer.service.DataTransferService;
 import com.invoicesync.modules.datatransfer.dto.DataTransferHeaderMappingDto;
 import com.invoicesync.modules.datatransfer.dto.DataTransferResponseDto;
+import com.invoicesync.modules.datatransfer.service.DataTransferService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/convert")
+@RequestMapping(Api.CONVERT)
 @RequiredArgsConstructor
 public class DataTransferController {
 
   private final DataTransferService dataTransferService;
 
-  @GetMapping("/imports")
+  @GetMapping(Api.CONVERT_GET_IMPORTS)
   public ResponseEntity<PageResponse<DataTransferResponseDto>> findAllConvertImportsByUser(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -39,18 +40,18 @@ public class DataTransferController {
     return ResponseEntity.ok(dataTransferService.findImportByUser(page, size, connectedUser));
   }
 
-  @GetMapping("/{convert-id}")
+  @GetMapping(Api.CONVERT_GET_BY_ID)
   public ResponseEntity<DataTransferResponseDto> getConvertById(@PathVariable("convert-id") final Long convertId) {
     return ResponseEntity.ok(dataTransferService.findById(convertId));
   }
 
-  @PostMapping("/save")
+  @PostMapping(Api.SAVE)
   public ResponseEntity<Long> save(@RequestParam("file") final MultipartFile file,
       final Authentication connectedUser) {
     return ResponseEntity.ok(dataTransferService.saveConvert(file, connectedUser));
   }
 
-  @PostMapping("/{convertId}/mapping")
+  @PostMapping(Api.CONVERT_SAVE_MAPPING)
   public ResponseEntity<Void> saveMapping(
       @PathVariable final Long convertId,
       @RequestBody final List<DataTransferHeaderMappingDto> mappings,
@@ -60,7 +61,7 @@ public class DataTransferController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping(value = "/{convertId}/download", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  @GetMapping(value = Api.CONVERT_DOWNLOAD, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   public ResponseEntity<byte[]> downloadConvert(@PathVariable final Long convertId,
       final Authentication connectedUser) {
     final byte[] newExcel = dataTransferService.downloadConvert(convertId, connectedUser);
