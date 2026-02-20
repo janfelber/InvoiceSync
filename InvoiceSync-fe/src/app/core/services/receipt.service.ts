@@ -7,6 +7,7 @@ import {CompanyRequest} from "../models/company-request";
 import {ReceiptRequest} from "../models/receipt-request";
 import {ApiService} from "../auth/api";
 import {AddDocumentData} from "../models/add-document-data";
+import {MergeItemsRequest} from "../models/merge-items-request";
 
 @Injectable({
   providedIn: 'root'
@@ -103,5 +104,8 @@ export class ReceiptService {
     )
   }
 
+  mergeReceiptItems(receiptId: number, itemToMerge: MergeItemsRequest): Promise<any> {
+    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.receipt.MERGE_RECEIPT_ITEMS(receiptId)}`, itemToMerge)
+  }
 
 }
