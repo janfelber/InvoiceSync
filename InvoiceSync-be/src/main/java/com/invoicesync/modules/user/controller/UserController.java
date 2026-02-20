@@ -5,11 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.modules.user.model.UserDto;
 import com.invoicesync.modules.user.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(Api.USER)
 public class UserController {
 
   private final UserService userService;
@@ -18,12 +19,12 @@ public class UserController {
     this.userService = userService;
   }
 
-  @GetMapping("/me")
+  @GetMapping(Api.USER_ME)
   public UserDto getCurrentUserInfo(final Authentication connectedUser) {
     return userService.getCurrentUserInfo(connectedUser);
   }
 
-  @GetMapping("/me/name")
+  @GetMapping(Api.USER_ME_NAME)
   public String getUserName(final Authentication connectedUser) {
     return userService.getUserName(connectedUser);
   }

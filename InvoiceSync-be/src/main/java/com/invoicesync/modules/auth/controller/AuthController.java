@@ -2,6 +2,10 @@ package com.invoicesync.modules.auth.controller;
 
 import java.time.Duration;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -10,30 +14,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.modules.auth.model.LoginRequest;
 import com.invoicesync.modules.auth.model.LoginResponse;
 import com.invoicesync.modules.auth.model.RegisterRequest;
 import com.invoicesync.modules.auth.service.AuthService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(Api.AUTH)
 @RequiredArgsConstructor
 public class AuthController {
 
   private final AuthService authService;
 
-  @PostMapping("/register")
+  @PostMapping(Api.REGISTER)
   public ResponseEntity<?> register(@Valid @RequestBody final RegisterRequest request) {
     authService.registerUser(request);
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/login")
+  @PostMapping(Api.LOGIN)
   public ResponseEntity<?> login(@Valid @RequestBody final LoginRequest request, final HttpServletResponse response) {
     final LoginResponse loginResponse = authService.login(request);
 
@@ -56,13 +58,13 @@ public class AuthController {
     ));
   }
 
-  @PostMapping("/refresh-token")
+  @PostMapping(Api.REFRESH_TOKEN)
   public ResponseEntity<?> refreshToken(final HttpServletRequest request) {
     final LoginResponse loginResponse = authService.refreshToken(request);
     return ResponseEntity.ok(loginResponse);
   }
 
-  @PostMapping("/logout")
+  @PostMapping(Api.LOGOUT)
   public ResponseEntity<?> logout(final HttpServletResponse response) {
     final ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
         .httpOnly(true)
@@ -76,4 +78,5 @@ public class AuthController {
 
     return ResponseEntity.ok().build();
   }
+
 }

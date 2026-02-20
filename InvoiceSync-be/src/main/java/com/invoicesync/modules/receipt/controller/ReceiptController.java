@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.exception.LimitExceededException;
 import com.invoicesync.modules.document.model.AddDocumentData;
@@ -38,14 +39,14 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/receipt")
+@RequestMapping(Api.RECEIPT)
 public class ReceiptController {
 
   private final PohodaXmlService pohodaXmlService;
 
   private final ReceiptService receiptService;
 
-  @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  @PostMapping(value = Api.RECEIPT_EXPORT_POHODA, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequest request,
       final Authentication connectedUser) {
     try {
@@ -65,7 +66,7 @@ public class ReceiptController {
     }
   }
 
-  @PostMapping("/export/receipt")
+  @PostMapping(Api.RECEIPT_EXPORT_RECEIPT)
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
       final Authentication connectedUser) {
     final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
@@ -78,7 +79,7 @@ public class ReceiptController {
   }
 
   //get receipts for current user
-  @GetMapping("/user")
+  @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<ReceiptResponseDto>> findAllReceiptsByUser(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -88,7 +89,7 @@ public class ReceiptController {
   }
 
   //get receipts by company id
-  @GetMapping("/company/{company-id}")
+  @GetMapping(Api.RECEIPT_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<ReceiptResponseDto>> findReceiptsByCompanyId(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -98,12 +99,12 @@ public class ReceiptController {
     return ResponseEntity.ok(receiptService.findReceiptsByCompanyId(page, size, companyId, connectedUser));
   }
 
-  @GetMapping("/{receipt-id}")
+  @GetMapping(Api.RECEIPT_GET_BY_ID)
   public ResponseEntity<ReceiptDetailDto> getReceiptById(@PathVariable("receipt-id") final Long receiptId) {
     return ResponseEntity.ok(receiptService.findById(receiptId));
   }
 
-  @GetMapping("/{receipt-id}/documents")
+  @GetMapping(Api.RECEIPT_GET_DOCUMENTS)
   public ResponseEntity<List<DocumentTableResponse>> findDocumentsByReceiptId(
       @PathVariable("receipt-id") final Long receiptId,
       final Authentication connectedUser) {
@@ -112,7 +113,7 @@ public class ReceiptController {
     );
   }
 
-  @PostMapping("/save")
+  @PostMapping(Api.RECEIPT_SAVE)
   public ResponseEntity<List<Long>> saveReceipts(
       @RequestParam("file") final MultipartFile[] files,
       @RequestParam("companyId") final Long companyId,
@@ -126,7 +127,7 @@ public class ReceiptController {
     return ResponseEntity.ok(savedIds);
   }
 
-  @PostMapping("/{receipt-id}/items/merge")
+  @PostMapping(Api.RECEIPT_MERGE_ITEMS)
   public void mergeReceiptItems(
       @PathVariable("receipt-id") final Long receiptId,
       @RequestBody final MergeItemsRequest request,
@@ -135,7 +136,7 @@ public class ReceiptController {
     receiptService.mergeReceiptItems(receiptId, request, connectedUser);
   }
 
-  @PostMapping(value = "/upload/document/{receipt-id}", consumes = "multipart/form-data")
+  @PostMapping(value = Api.RECEIPT_UPLOAD_DOCUMENT, consumes = "multipart/form-data")
   public ResponseEntity<?> uploadDocument(
       @RequestPart("file") final MultipartFile document,
       @PathVariable("receipt-id") final Long receiptId,
@@ -146,18 +147,18 @@ public class ReceiptController {
     return ResponseEntity.ok().build();
   }
 
-  @PatchMapping("/update/{receiptId}")
+  @PatchMapping(Api.RECEIPT_UPDATE)
   public ResponseEntity<Receipt> updateReceipt(@PathVariable final Long receiptId,
       @RequestBody final ReceiptRequest receipt) {
     return ResponseEntity.ok(receiptService.updateReceiptById(receiptId, receipt));
   }
 
-  @DeleteMapping("/{receiptId}")
+  @DeleteMapping(Api.RECEIPT_DELETE)
   public void deleteReceipt(@PathVariable final Long receiptId, final Authentication connectedUser) {
     receiptService.deleteReceiptById(receiptId, connectedUser);
   }
 
-  @DeleteMapping("/delete/document/{document-id}")
+  @DeleteMapping(Api.RECEIPT_DELETE_DOCUMENT)
   public ResponseEntity<Long> deleteDocument(
       @PathVariable("document-id") final Long documentId,
       final Authentication connectedUser

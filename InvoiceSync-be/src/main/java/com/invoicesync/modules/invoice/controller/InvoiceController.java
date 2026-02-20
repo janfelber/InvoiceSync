@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
@@ -27,7 +28,7 @@ import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
 import com.invoicesync.modules.invoice.service.InvoiceService;
 
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping(Api.INVOICE)
 public class InvoiceController {
 
   private final InvoiceService invoiceService;
@@ -39,7 +40,7 @@ public class InvoiceController {
     this.invoiceService = invoiceService;
   }
 
-  @GetMapping("/user")
+  @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findAllInvoicesByUser(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -47,7 +48,7 @@ public class InvoiceController {
     return ResponseEntity.ok(invoiceService.findAllInvoicesByUser(page, size, connectedUser));
   }
 
-  @GetMapping("/{company-id}/invoices")
+  @GetMapping(Api.INVOICE_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findInvoicesByCompanyId(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -57,7 +58,7 @@ public class InvoiceController {
         invoiceService.findInvoicesByCompanyId(page, size, companyId, connectedUser));
   }
 
-  @GetMapping("/{invoice-id}/documents")
+  @GetMapping(Api.INVOICE_GET_DOCUMENTS)
   public ResponseEntity<List<DocumentTableResponse>> findDocumentsByInvoiceId(
       @PathVariable("invoice-id") final Long invoiceId,
       final Authentication connectedUser) {
@@ -66,7 +67,7 @@ public class InvoiceController {
     );
   }
 
-  @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PostMapping(value = Api.SAVE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Long> saveInvoice(
       @RequestParam("file") final MultipartFile pdfFile,
       @RequestParam("companyId") final Long companyId,
@@ -74,7 +75,7 @@ public class InvoiceController {
     return ResponseEntity.ok(invoiceService.saveInvoice(pdfFile, companyId, connectedUser));
   }
 
-  @PostMapping("/create-invoice")
+  @PostMapping(Api.INVOICE_CREATE)
   public ResponseEntity<Long> createInvoice(
       @RequestParam Long companyId,
       @RequestBody InvoiceCreate invoiceCreateRequest,
@@ -86,12 +87,12 @@ public class InvoiceController {
   }
 
   // //get import by id
-  @GetMapping("/{invoice-id}")
+  @GetMapping(Api.INVOICE_GET_BY_ID)
   public InvoiceResponse getInvoiceById(@PathVariable("invoice-id") final Long invoiceId) {
     return invoiceService.findById(invoiceId);
   }
 
-  @PostMapping(value = "/upload/document/{invoice-id}", consumes = "multipart/form-data")
+  @PostMapping(value = Api.INVOICE_UPLOAD_DOCUMENT, consumes = "multipart/form-data")
   public ResponseEntity<?> uploadDocument(
       @RequestPart("file") final MultipartFile document,
       @PathVariable("invoice-id") final Long invoiceId,
@@ -102,7 +103,7 @@ public class InvoiceController {
     return ResponseEntity.accepted().build();
   }
 
-  @DeleteMapping("/delete/document/{document-id}")
+  @DeleteMapping(Api.INVOICE_DELETE_DOCUMENT)
   public ResponseEntity<Long> deleteDocument(
       @PathVariable("document-id") final Long documentId,
       final Authentication connectedUser
@@ -111,7 +112,7 @@ public class InvoiceController {
     return ResponseEntity.ok(documentId);
   }
 
-  @DeleteMapping("/delete/{invoice-id}")
+  @DeleteMapping(Api.INVOICE_DELETE)
   public void deleteInvoice(
       @PathVariable("invoice-id") final Long invoiceId,
       final Authentication connectedUser

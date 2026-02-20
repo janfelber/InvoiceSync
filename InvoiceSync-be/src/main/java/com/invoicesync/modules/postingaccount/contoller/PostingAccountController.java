@@ -2,6 +2,8 @@ package com.invoicesync.modules.postingaccount.contoller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,25 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
-import com.invoicesync.modules.postingaccount.service.PostingAccountService;
 import com.invoicesync.core.enums.PostingAccountType;
 import com.invoicesync.modules.postingaccount.model.AddedAccountDTO;
 import com.invoicesync.modules.postingaccount.model.ClassDTO;
 import com.invoicesync.modules.postingaccount.model.PostingAccountRequest;
 import com.invoicesync.modules.postingaccount.model.PostingAccountResponse;
+import com.invoicesync.modules.postingaccount.service.PostingAccountService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post-account")
+@RequestMapping(Api.POST_ACCOUNT)
 public class PostingAccountController {
 
   private final PostingAccountService postingAccountService;
 
-  @GetMapping("/{companyId}/accounts")
+  @GetMapping(Api.POST_ACCOUNT_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<PostingAccountResponse>> getAllPostingAccounts(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -41,28 +43,28 @@ public class PostingAccountController {
     return ResponseEntity.ok(postingAccountService.getAllPostingAccounts(page, size, type, companyId, connectedUser));
   }
 
-  @GetMapping("/{companyId}/classes")
+  @GetMapping(Api.POST_ACCOUNT_GET_CLASSES)
   public ResponseEntity<List<ClassDTO>> getAvailableAccount(@PathVariable("companyId") final Long companyId,
       @RequestParam(name = "type", defaultValue = "INTERNAL") final PostingAccountType type,
       final Authentication connectedUser) {
     return ResponseEntity.ok(postingAccountService.getAvailableAccount(companyId, type, connectedUser));
   }
 
-  @PostMapping("/import")
+  @PostMapping(Api.POST_ACCOUNT_IMPORT)
   public ResponseEntity<List<AddedAccountDTO>> readSimple(@RequestParam("file") final MultipartFile file,
       @RequestParam("companyId") final Long companyId) {
     final List<AddedAccountDTO> added = postingAccountService.importExternalPostingAccounts(file, companyId);
     return ResponseEntity.ok(added);
   }
 
-  @PostMapping("/save")
+  @PostMapping(Api.SAVE)
   public ResponseEntity<Long> savePostingAccount(
       @Valid @RequestBody final PostingAccountRequest request
   ) {
     return ResponseEntity.ok(postingAccountService.savePostingAccount(request));
   }
 
-  @DeleteMapping("/{accountId}")
+  @DeleteMapping(Api.POST_ACCOUNT_DELETE)
   public void deletePostingAccount(@PathVariable final Long accountId, final Authentication connectedUser) {
     postingAccountService.deletePostingAccount(accountId, connectedUser);
   }

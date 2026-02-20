@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.modules.admin.service.AdminService;
 import com.invoicesync.modules.feature.model.FeatureDto;
@@ -22,12 +23,12 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping(Api.ADMIN)
 public class AdminController {
 
   private final AdminService adminService;
 
-  @GetMapping("/users")
+  @GetMapping(Api.ADMIN_GET_USERS)
   public PageResponse<UserDto> findAllUsers(
       @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
       @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
@@ -36,12 +37,12 @@ public class AdminController {
     return adminService.getUsers(page, size, connectedUser);
   }
 
-  @GetMapping("/user/{userId}")
+  @GetMapping(Api.ADMIN_GET_USER)
   public UserDto getUserInfo(@PathVariable final UUID userId) {
     return adminService.getUserInfo(userId);
   }
 
-  @PutMapping("/user/{userId}/features")
+  @PutMapping(Api.ADMIN_UPDATE_USER_FEATURES)
   public List<FeatureDto> updateUserFeatures(@PathVariable final UUID userId,
       @RequestBody final UpdateUserFeatureRequest request) {
     return adminService.updateUserFeatures(userId, request);
