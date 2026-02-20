@@ -26,6 +26,7 @@ import com.invoicesync.core.exception.LimitExceededException;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.service.PohodaXmlService;
+import com.invoicesync.modules.receipt.model.MergeItemsRequest;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
@@ -41,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 public class ReceiptController {
 
   private final PohodaXmlService pohodaXmlService;
+
   private final ReceiptService receiptService;
 
   @PostMapping(value = "/export/pohoda", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -66,13 +68,13 @@ public class ReceiptController {
   @PostMapping("/export/receipt")
   public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
       final Authentication connectedUser) {
-      final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
+    final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
 
-      final HttpHeaders headers = new HttpHeaders();
-      headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
-      headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
+    final HttpHeaders headers = new HttpHeaders();
+    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
+    headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
 
-      return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
+    return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
   }
 
   //get receipts for current user
@@ -124,6 +126,15 @@ public class ReceiptController {
     return ResponseEntity.ok(savedIds);
   }
 
+  @PostMapping("/{receipt-id}/items/merge")
+  public void mergeReceiptItems(
+      @PathVariable("receipt-id") final Long receiptId,
+      @RequestBody final MergeItemsRequest request,
+      Authentication connectedUser
+  ) {
+    receiptService.mergeReceiptItems(receiptId, request, connectedUser);
+  }
+
   @PostMapping(value = "/upload/document/{receipt-id}", consumes = "multipart/form-data")
   public ResponseEntity<?> uploadDocument(
       @RequestPart("file") final MultipartFile document,
@@ -154,4 +165,5 @@ public class ReceiptController {
     receiptService.deleteReceiptDocument(documentId, connectedUser);
     return ResponseEntity.ok(documentId);
   }
+
 }

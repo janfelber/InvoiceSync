@@ -6,6 +6,7 @@ import static com.invoicesync.modules.receipt.dto.specification.ReceiptSpecifica
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,6 +50,7 @@ import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.ReceiptDocument;
 import com.invoicesync.modules.document.repository.ReceiptDocumentRepository;
 import com.invoicesync.modules.receipt.mapper.ReceiptMapper;
+import com.invoicesync.modules.receipt.model.MergeItemsRequest;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
 import com.invoicesync.modules.receipt.model.ReceiptItem;
@@ -278,6 +280,54 @@ public class ReceiptServiceImpl implements ReceiptService {
     } else {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this receipt.");
     }
+  }
+
+  @Override
+  public void mergeReceiptItems(final Long receiptId, final MergeItemsRequest request,
+      final Authentication connectedUser) {
+
+    final Receipt receipt = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
+
+    if (!receipt.getCreatedBy().equals(connectedUser.getName())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to modify this receipt.");
+    }
+
+    final List<ReceiptItem> itemsToMerge = receipt.getItems().stream()
+        .filter(item -> request.itemIds().contains(item.getId()))
+        .toList();
+
+    if (itemsToMerge.size() < 2) {
+      throw new IllegalArgumentException("At least two items must be selected for merging.");
+    }
+
+    final BigDecimal unitPriceWithVat = itemsToMerge.stream()
+        .map(ReceiptItem::getUnitPriceWithVat)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    final BigDecimal unitPriceWithoutVat = itemsToMerge.stream()
+        .map(ReceiptItem::getUnitPriceWithoutVat)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    final ReceiptItem mergedItem = new ReceiptItem();
+    mergedItem.setReceipt(receipt);
+    mergedItem.setName(request.description());
+    mergedItem.setAccountText(itemsToMerge.get(0).getAccountText());
+    mergedItem.setAccountValue(itemsToMerge.get(0).getAccountValue());
+    mergedItem.setQuantity(1);
+    mergedItem.setVatRate(itemsToMerge.get(0).getVatRate());
+    mergedItem.setUnitPriceWithVat(unitPriceWithVat);
+    mergedItem.setUnitPriceWithoutVat(unitPriceWithoutVat);
+
+    // After merging, quantity is always 1, so unit price equals total price.
+    // Both fields hold the same value: the sum of all merged items' totals.
+    mergedItem.setTotalItemPriceWithVat(unitPriceWithVat);
+    mergedItem.setTotalItemPriceWithoutVat(unitPriceWithoutVat);
+
+    receipt.getItems().removeAll(itemsToMerge);
+    receipt.getItems().add(mergedItem);
+
+    receiptRepository.save(receipt);
   }
 
   // @Override
