@@ -1,7 +1,7 @@
-import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ReceiptRequest} from "../../../core/models/receipt-request";
 import {CommonModule} from '@angular/common';
 import {initFlowbite} from 'flowbite'
@@ -48,14 +48,20 @@ export class ReceiptDetailsComponent implements OnInit {
     this.onFetchReceipt();
   }
 
+  modalOpen = false;
+  mergeConfirmOpen = false;
+  drawerOpen = false;
+
   receiptId: any = null;
   companyId: any = null;
-  @ViewChild('successToast') successToast!: ElementRef;
-
-  modalOpen = false;
-  drawerOpen = false;
+  selectedItemForAccount: any = null;
   receipt: any = {};
+  selectedAccountsPerItem: { [itemId: number]: Account } = {};
+  groupedAccounts: any[] = [];
+  receiptForm!: FormGroup;
+
   selectedItemName: string = '';
+  mergedItemName = '';
 
   currentMode: 'edit' | 'accounting' | 'merge' = 'edit';
   selectedForMerge = new Set<number>();
@@ -80,9 +86,6 @@ export class ReceiptDetailsComponent implements OnInit {
     if (itemId == null) return false;
     return this.selectedForMerge.has(itemId);
   }
-
-  receiptForm!: FormGroup;
-  groupedAccounts: any[] = [];
 
   get vatAmount(): number {
     const withVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithVat ?? 0);
@@ -271,8 +274,6 @@ export class ReceiptDetailsComponent implements OnInit {
     }
   }
 
-  selectedAccountsPerItem: { [itemId: number]: Account } = {};
-
   assignAccountToItem(): void {
     const selectedAccount = this.selectedAccountsPerItem[this.selectedItemForAccount];
     if (!selectedAccount) {
@@ -295,8 +296,6 @@ export class ReceiptDetailsComponent implements OnInit {
     this.selectedAccountsPerItem[itemId] = account;
     console.log('Zvolený účet:', account.id, 'pre item:', itemId);
   }
-
-  selectedItemForAccount: any = null;
 
   openDrawer(item: any): void {
     this.selectedItemForAccount = item.id;
@@ -359,6 +358,49 @@ export class ReceiptDetailsComponent implements OnInit {
       this.modalOpen = false;
       toast.success('Zmeny bločka uložené');
       this.onFetchReceipt()
+    });
+  }
+
+  get selectedItemsForMerge(): any[] {
+    return (this.receiptResponse.items || []).filter((item: any) => this.selectedForMerge.has(item.id));
+  }
+
+  get mergeTotal(): number {
+    return this.selectedItemsForMerge.reduce((sum, item) => sum + (item.totalItemPriceWithVat || 0), 0);
+  }
+
+  get hasMixedVatRates(): boolean {
+    const rates = new Set(this.selectedItemsForMerge.map(item => item.vatRate));
+    return rates.size > 1;
+  }
+
+  get dominantVatRate(): number {
+    const counts = new Map<number, number>();
+    for (const item of this.selectedItemsForMerge) {
+      counts.set(item.vatRate, (counts.get(item.vatRate) ?? 0) + 1);
+    }
+    let dominant = this.selectedItemsForMerge[0]?.vatRate;
+    let max = 0;
+    for (const [rate, count] of counts) {
+      if (count > max) { max = count; dominant = rate; }
+    }
+    return dominant;
+  }
+
+  mergeItems(): void {
+    this.mergedItemName = this.selectedItemsForMerge[0]?.name ?? '';
+    this.mergeConfirmOpen = true;
+  }
+
+  async confirmMerge(): Promise<void> {
+    this.receiptService.mergeReceiptItems(
+      this.receiptId,
+      { itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName }
+    ).then(() => {
+      this.mergeConfirmOpen = false;
+      this.selectedForMerge.clear();
+      this.onFetchReceipt();
+      toast.success('Položky boli úspešne zlúčené');
     });
   }
 }
