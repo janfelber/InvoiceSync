@@ -29,7 +29,7 @@ export const MENU_ITEMS: MenuItem[] = [
   },
   {
     label: 'Predplatné',
-    route: '/web/limiter',
+    route: '/web/subscription',
     icon: 'subscription'
   },
 ];
