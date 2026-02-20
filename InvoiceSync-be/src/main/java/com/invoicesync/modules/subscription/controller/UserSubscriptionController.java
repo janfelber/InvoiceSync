@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.modules.stripe.service.StripeService;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
 import com.invoicesync.modules.subscription.model.UserSubscriptionResponseDTO;
@@ -20,19 +21,19 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/subscription")
+@RequestMapping(Api.SUBSCRIPTION)
 public class UserSubscriptionController {
 
   private final UserSubscriptionService userSubscriptionService;
 
   private final StripeService stripeService;
 
-  @GetMapping("/user/plan")
+  @GetMapping(Api.SUBSCRIPTION_GET_USER_PLAN)
   public ResponseEntity<UserSubscriptionResponseDTO> getUserPlan(final Authentication connectedUser) {
     return ResponseEntity.ok(userSubscriptionService.getSubscriptionPlanByUserId(connectedUser));
   }
 
-  @PostMapping("/subscribe")
+  @PostMapping(Api.SUBSCRIPTION_SUBSCRIBE)
   public ResponseEntity<Map<String, Object>> subscribeToPlan(
       @RequestBody final Map<String, String> request,
       final Authentication connectedUser
@@ -57,12 +58,12 @@ public class UserSubscriptionController {
     }
   }
 
-  @GetMapping("/user/limit")
+  @GetMapping(Api.SUBSCRIPTION_GET_USER_LIMIT)
   public LimitResponseDTO getUserLimits(final Authentication connectedUser) {
     return userSubscriptionService.getUserLimits(connectedUser);
   }
 
-  @PostMapping("/cancel")
+  @PostMapping(Api.SUBSCRIPTION_CANCEL)
   public ResponseEntity<Map<String, String>> cancelSubscription(final Authentication connectedUser)
       throws StripeException {
     userSubscriptionService.cancelUserSubscription(connectedUser);

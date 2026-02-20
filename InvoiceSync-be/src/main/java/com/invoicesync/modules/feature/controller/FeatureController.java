@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.modules.feature.model.FeatureDto;
 import com.invoicesync.modules.feature.service.FeatureService;
 
 @RestController
-@RequestMapping("/feature")
+@RequestMapping(Api.FEATURE)
 public class FeatureController {
 
   private final FeatureService featureService;
@@ -21,8 +22,9 @@ public class FeatureController {
     this.featureService = featureService;
   }
 
-  @GetMapping("/{user-id}")
+  @GetMapping(Api.FEATURE_GET_BY_USER_ID)
   public List<FeatureDto> getAllFeatures(@PathVariable("user-id") final UUID userId) {
     return featureService.getAllFeatures(userId);
   }
+
 }
