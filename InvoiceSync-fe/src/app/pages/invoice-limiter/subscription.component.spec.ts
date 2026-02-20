@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvoiceLimiterComponent } from './invoice-limiter.component';
+import { SubscriptionComponent } from './subscription.component';
 
-describe('InvoiceLimiterComponent', () => {
-  let component: InvoiceLimiterComponent;
-  let fixture: ComponentFixture<InvoiceLimiterComponent>;
+describe('SubscriptionComponent', () => {
+  let component: SubscriptionComponent;
+  let fixture: ComponentFixture<SubscriptionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InvoiceLimiterComponent]
+      imports: [SubscriptionComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InvoiceLimiterComponent);
+    fixture = TestBed.createComponent(SubscriptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
