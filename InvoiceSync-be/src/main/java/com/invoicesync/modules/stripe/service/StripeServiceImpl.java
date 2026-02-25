@@ -59,8 +59,10 @@ public class StripeServiceImpl implements StripeService {
 
     if (existing != null) {
       // Renewal: update billing period and reset monthly usage counters
-      final LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()), ZoneId.systemDefault());
-      final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()), ZoneId.systemDefault());
+      final LocalDateTime start =
+          LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()), ZoneId.systemDefault());
+      final LocalDateTime end =
+          LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()), ZoneId.systemDefault());
       existing.setStartDate(start);
       existing.setEndDate(end);
       existing.setSubscriptionActive(true);
@@ -118,7 +120,7 @@ public class StripeServiceImpl implements StripeService {
                   .putMetadata("userId", userId)
                   .build()
           )
-          .setSuccessUrl(frontendUrl + "/web/limiter")
+          .setSuccessUrl(frontendUrl + "/web/subscription")
           .setCancelUrl(frontendUrl + "/home")
           .setPaymentMethodOptions(
               SessionCreateParams.PaymentMethodOptions.builder()
