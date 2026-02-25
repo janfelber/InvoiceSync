@@ -1,9 +1,12 @@
 package com.invoicesync.modules.subscription.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 
+import com.invoicesync.modules.stripe.model.UserBillingHistory;
+import com.invoicesync.modules.stripe.model.UserDefaultCard;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
 import com.invoicesync.modules.subscription.model.UserSubscriptionResponseDTO;
 import com.invoicesync.modules.user.model.User;
@@ -39,5 +42,9 @@ public interface UserSubscriptionService {
   void cancelUserSubscription(Authentication connectedUser) throws StripeException;
 
   Map<String, Object> startOrUpdateSubscription(String planName, Authentication connectedUser);
+
+  UserDefaultCard getUserDefaultCard(Authentication connectedUser);
+
+  List<UserBillingHistory> getUserBillingHistory(Authentication connectedUser);
 
 }
