@@ -68,7 +68,7 @@ export class SubscriptionComponent implements OnInit {
   }
 
   invoiceHistory: {
-    invoiceId: string;
+    invoiceNumber: string;
     dateInvoiced: string;
     billingReason: string;
     amount: number;

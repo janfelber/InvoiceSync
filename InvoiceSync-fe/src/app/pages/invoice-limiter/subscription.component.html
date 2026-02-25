@@ -249,7 +249,7 @@
               <tr *ngFor="let invoice of invoiceHistory; even as even"
                   [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-slate-50/50 dark:bg-[#2a2b30]'"
                   >
-                <td class="px-4 py-3 font-medium text-slate-900 dark:text-white">{{ invoice.invoiceId }}</td>
+                <td class="px-4 py-3 font-medium text-slate-900 dark:text-white">{{ invoice.invoiceNumber }}</td>
                 <td
                   class="px-4 py-3 text-slate-500 dark:text-slate-400">{{ +invoice.dateInvoiced * 1000 | date:'d.M.yyyy' }}
                 </td>
