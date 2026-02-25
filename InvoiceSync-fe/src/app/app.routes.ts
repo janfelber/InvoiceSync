@@ -4,9 +4,7 @@ import {HomeComponent} from './pages/home/home.component';
 import {Invoices} from './pages/invoices/invoices.component';
 import {XmlConvertorComponent} from './pages/xml-page/xml-convertor.component';
 import {ReceiptsComponent} from './pages/receipts/receipts.component';
-import {ReceiptDetailsComponent} from './features/receipt/receipt-details/receipt-details.component';
 import {CompanyDetailsComponent} from './features/home/company-details/company-details.component';
-import {InvoiceLimiterComponent} from './pages/invoice-limiter/invoice-limiter.component';
 import {CreateNewInvoice} from './features/invoice/create-new-invoice/create-new-invoice.component';
 import {PricingComponent} from './pages/pricing/pricing.component';
 import {MobileAppComponent} from './pages/mobile-app/mobile-app.component';
@@ -26,6 +24,7 @@ import {AdminUserInfoComponent} from "./admin/admin-user-info/admin-user-info.co
 import {UserSettingsComponent} from "./user-settings/user-settings.component";
 import {FeatureGuard} from "./core/services/feature.guard";
 import {ReceiptInspectComponent} from "./features/receipt/receipt-inspect/receipt-inspect.component";
+import {SubscriptionComponent} from "./pages/invoice-limiter/subscription.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -64,7 +63,7 @@ export const routes: Routes = [
       {path: 'web/receipts/:id', component: ReceiptInspectComponent},
       {path: 'web/company/:id', component: CompanyDetailsComponent},
       {path: 'web/invoices/:id', component: InvoiceDisplay},
-      {path: 'web/limiter', component: InvoiceLimiterComponent},
+      {path: 'web/subscription', component: SubscriptionComponent},
       {path: 'web/mobile-app', component: MobileAppComponent},
       {path: 'web/data-transfer', component: DataTransferTableComponent},
       {path: 'web/data-transfer/:id', component: DataTransferDetailComponent},
