@@ -124,6 +124,10 @@ public final class Api {
   // Stripe
   public static final String STRIPE_WEBHOOK = "/stripe/webhook";
 
+  public static final String STRIPE_GET_USER_DEFAULT_CARD = "/stripe/user/default-card";
+
+  public static final String STRIPE_GET_USER_BILLING_HISTORY = "/stripe/user/billing-history";
+
   // Statistics
   public static final String STATS = "/stats";
 

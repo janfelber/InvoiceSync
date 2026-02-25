@@ -32,8 +32,10 @@ export class SubscriptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSubscriptionPlan()
+    this.getSubscriptionPlan();
     this.getUserLimits();
+    this.getUserDefaultCard();
+    this.getUserBillingHistory();
     initFlowbite();
   }
 
@@ -65,9 +67,34 @@ export class SubscriptionComponent implements OnInit {
     features: []
   }
 
+  invoiceHistory: {
+    invoiceId: string;
+    dateInvoiced: string;
+    billingReason: string;
+    amount: number;
+    status: string;
+    invoicePdfUrl: string;
+  }[] = [];
+
+  private readonly billingReasonLabels: Record<string, string> = {
+    subscription_create: 'Nové predplatné',
+    subscription_update: 'Zmena predplatného',
+    subscription_cycle: 'Mesačná obnova'
+  };
+
+  translateBillingReason(reason: string): string {
+    return this.billingReasonLabels[reason] ?? reason;
+  }
+
+  defaultUserCard = {
+    brand: "",
+    last4: "",
+    expMonth: 0,
+    expYear: 0
+  }
+
 
   goToPricing(): void {
-    this.closeUpgradeEssentials()
     this.router.navigate(['/pricing']);
   }
 
@@ -97,6 +124,20 @@ export class SubscriptionComponent implements OnInit {
     this.subscriptionService.getUserLimits()
       .then(response => {
         this.userLimit = response.data;
+      });
+  }
+
+  getUserDefaultCard() {
+    this.subscriptionService.getUserDefaultCard()
+      .then(response => {
+        this.defaultUserCard = response.data;
+      });
+  }
+
+  getUserBillingHistory() {
+    this.subscriptionService.getUserBillingHistory()
+      .then(response => {
+        this.invoiceHistory = response.data;
       });
   }
 

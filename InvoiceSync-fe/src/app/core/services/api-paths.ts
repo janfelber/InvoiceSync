@@ -43,6 +43,8 @@ export const ApiPaths = {
     SUBSCRIBE: '/subscribe',
     USER_LIMITS: '/user/limit',
     CANCEL: '/cancel',
+    GET_USER_DEFAULT_CARD: '/stripe/user/default-card',
+    GET_USER_BILLING_HISTORY: '/stripe/user/billing-history',
   },
   emailSubscribe: {
     BASE: '/email-subscribe',
