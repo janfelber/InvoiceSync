@@ -1,5 +1,9 @@
 package com.invoicesync.modules.stripe.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -50,10 +54,25 @@ public class StripeServiceImpl implements StripeService {
     final var line = invoice.getLines().getData().getFirst();
     final String userIdStr = line.getMetadata().get("userId");
 
+    final String stripeSubscriptionId = invoice.getParent().getSubscriptionDetails().getSubscription();
+    final UserSubscription existing = userSubscriptionRepository.findByStripeSubscriptionId(stripeSubscriptionId);
 
-
-    final UserSubscription subscription = userSubscriptionMapper.fromStripeInvoice(invoice, userIdStr);
-    userSubscriptionRepository.save(subscription);
+    if (existing != null) {
+      // Renewal: update billing period and reset monthly usage counters
+      final LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()), ZoneId.systemDefault());
+      final LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()), ZoneId.systemDefault());
+      existing.setStartDate(start);
+      existing.setEndDate(end);
+      existing.setSubscriptionActive(true);
+      existing.setMonthlyUsedInvoiceExport(0);
+      existing.setMonthlyUsedInvoiceCreate(0);
+      existing.setMonthlyUsedReceiptExport(0);
+      userSubscriptionRepository.save(existing);
+    } else {
+      // New subscription: create from invoice data
+      final UserSubscription subscription = userSubscriptionMapper.fromStripeInvoice(invoice, userIdStr);
+      userSubscriptionRepository.save(subscription);
+    }
   }
 
   @Override

@@ -33,4 +33,12 @@ export class SubscriptionService {
     return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.subscription.CANCEL}`);
   }
 
+  getUserDefaultCard(): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.subscription.GET_USER_DEFAULT_CARD}`)
+  }
+
+  getUserBillingHistory(): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.subscription.GET_USER_BILLING_HISTORY}`)
+  }
+
 }
