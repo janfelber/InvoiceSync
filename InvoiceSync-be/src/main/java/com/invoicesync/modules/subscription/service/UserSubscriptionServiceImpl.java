@@ -4,6 +4,7 @@ import static com.invoicesync.core.enums.SubscriptionPlan.NONE;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
+import com.invoicesync.modules.stripe.StripeMapper;
+import com.invoicesync.modules.stripe.model.UserBillingHistory;
+import com.invoicesync.modules.stripe.model.UserDefaultCard;
 import com.invoicesync.modules.stripe.service.StripeService;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
 import com.invoicesync.modules.subscription.mapper.UserSubscriptionMapper;
@@ -20,8 +24,12 @@ import com.invoicesync.modules.subscription.model.UserSubscriptionResponseDTO;
 import com.invoicesync.modules.subscription.repository.UserSubscriptionRepository;
 import com.invoicesync.modules.user.model.User;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Invoice;
+import com.stripe.model.InvoiceCollection;
+import com.stripe.model.PaymentMethod;
 import com.stripe.model.Subscription;
 import com.stripe.model.checkout.Session;
+import com.stripe.param.InvoiceListParams;
 import com.stripe.param.SubscriptionUpdateParams;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +43,8 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
   private UserSubscriptionRepository userSubscriptionRepository;
 
   private UserSubscriptionMapper userSubscriptionMapper;
+
+  private final StripeMapper stripeMapper;
 
   private final StripeConfig priceConfig;
 
@@ -140,6 +150,10 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
     final String stripeSubscriptionId = userSubscription.getStripeSubscriptionId();
 
+    if (stripeSubscriptionId == null) {
+      throw new IllegalStateException("Cannot cancel: no Stripe subscription is linked to this plan.");
+    }
+
     final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
 
     final SubscriptionUpdateParams params =
@@ -153,28 +167,91 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
     final String userId = connectedUser.getName();
     final SubscriptionPlan newPlan = SubscriptionPlan.valueOf(planName.toUpperCase());
     final String newPriceId = priceConfig.getPriceIdForPlan(newPlan);
-    final Session session = stripeService.createCheckoutSession(userId, newPriceId);
 
     final Optional<UserSubscription> existingSubOpt =
         userSubscriptionRepository.findByCreatedByAndSubscriptionActive(userId, true);
+
+    // No active subscription → new checkout
     if (existingSubOpt.isEmpty()) {
+      final Session session = stripeService.createCheckoutSession(userId, newPriceId);
       return Map.of("id", session.getId());
     }
 
     final UserSubscription existingSub = existingSubOpt.get();
 
-    if (existingSubOpt.get().getSubscriptionPlan() == SubscriptionPlan.FREE) {
+    // FREE → paid: deactivate FREE plan and go through checkout
+    if (existingSub.getSubscriptionPlan() == SubscriptionPlan.FREE) {
       existingSub.setSubscriptionActive(false);
       userSubscriptionRepository.save(existingSub);
+      final Session session = stripeService.createCheckoutSession(userId, newPriceId);
+      return Map.of("id", session.getId());
+    }
+
+    // Paid → paid upgrade: use Stripe API directly
+    final String stripeSubscriptionId = existingSub.getStripeSubscriptionId();
+    if (stripeSubscriptionId == null) {
+      // Stripe subscription not linked (webhook missed) — fall back to checkout
+      existingSub.setSubscriptionActive(false);
+      userSubscriptionRepository.save(existingSub);
+      final Session session = stripeService.createCheckoutSession(userId, newPriceId);
       return Map.of("id", session.getId());
     }
 
     stripeService.upgradeSubscription(existingSub, newPriceId);
 
-    existingSub.setSubscriptionPlan(newPlan);
-    existingSub.setSubscriptionPrice(BigDecimal.valueOf(newPlan.getMonthlyPrice()));
     userSubscriptionRepository.save(existingSub);
-    return Map.of("id", session.getId());
+    return Map.of("upgraded", true);
+  }
+
+  @Override
+  public UserDefaultCard getUserDefaultCard(final Authentication connectedUser) {
+
+    final UserSubscription subscription = userSubscriptionRepository
+        .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
+        .orElseThrow(() -> new IllegalStateException("No active subscription found"));
+
+    final String stripeSubscriptionId = subscription.getStripeSubscriptionId();
+
+    if (stripeSubscriptionId == null) {
+      return new UserDefaultCard("", "", 0L, 0L);
+    }
+
+    try {
+      final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
+      final String paymentMethodId = stripeSubscription.getDefaultPaymentMethod();
+
+      if (paymentMethodId == null) {
+        return new UserDefaultCard("", "", 0L, 0L);
+      }
+
+      final PaymentMethod userDefaultPayment = PaymentMethod.retrieve(paymentMethodId);
+
+      return stripeMapper.toUserDefaultCard(userDefaultPayment);
+    } catch (StripeException e) {
+      return new UserDefaultCard("", "", 0L, 0L);
+    }
+  }
+
+  @Override
+  public List<UserBillingHistory> getUserBillingHistory(final Authentication connectedUser) {
+    final UserSubscription subscription = userSubscriptionRepository
+        .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
+        .orElseThrow(() -> new IllegalStateException("No active subscription found"));
+
+    try {
+      final String stripeCustomerId = subscription.getStripeCustomerId();
+
+      InvoiceListParams params = InvoiceListParams.builder().setCustomer(stripeCustomerId).setLimit(10L).build();
+
+      final InvoiceCollection userInvoices = Invoice.list(params);
+
+      return userInvoices.getData().stream()
+          .map(stripeMapper::toUserBillingHistory)
+          .toList();
+    } catch (StripeException e) {
+      return List.of();
+    }
+
   }
 
 }

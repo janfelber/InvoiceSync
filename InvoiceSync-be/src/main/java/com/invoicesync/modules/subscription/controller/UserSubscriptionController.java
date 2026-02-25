@@ -1,5 +1,6 @@
 package com.invoicesync.modules.subscription.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.core.Api;
+import com.invoicesync.modules.stripe.model.UserBillingHistory;
+import com.invoicesync.modules.stripe.model.UserDefaultCard;
 import com.invoicesync.modules.stripe.service.StripeService;
 import com.invoicesync.modules.subscription.guard.model.LimitResponseDTO;
 import com.invoicesync.modules.subscription.model.UserSubscriptionResponseDTO;
@@ -68,6 +71,16 @@ public class UserSubscriptionController {
       throws StripeException {
     userSubscriptionService.cancelUserSubscription(connectedUser);
     return ResponseEntity.ok(Map.of("message", "Subscription cancelled successfully"));
+  }
+
+  @GetMapping(Api.STRIPE_GET_USER_DEFAULT_CARD)
+  public UserDefaultCard getUserDefaultCard(Authentication connectedUser) {
+    return userSubscriptionService.getUserDefaultCard(connectedUser);
+  }
+
+  @GetMapping(Api.STRIPE_GET_USER_BILLING_HISTORY)
+  public List<UserBillingHistory> getUserBillingHistory(final Authentication connectedUser) {
+    return userSubscriptionService.getUserBillingHistory(connectedUser);
   }
 
 }
