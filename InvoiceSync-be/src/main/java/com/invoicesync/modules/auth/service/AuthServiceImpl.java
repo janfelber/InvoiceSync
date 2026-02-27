@@ -5,6 +5,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,8 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.core.enums.Role;
 import com.invoicesync.core.enums.FeatureEnum;
+import com.invoicesync.core.enums.Role;
+import com.invoicesync.core.exception.CompanyRegistrationNumberExists;
+import com.invoicesync.core.exception.CompanyRegistrationNumberNotFound;
+import com.invoicesync.core.exception.RegisterEmailExists;
+import com.invoicesync.core.exception.UserNameExists;
 import com.invoicesync.modules.auth.model.LoginRequest;
 import com.invoicesync.modules.auth.model.LoginResponse;
 import com.invoicesync.modules.auth.model.RegisterRequest;
@@ -24,10 +32,8 @@ import com.invoicesync.modules.auth.security.JwtService;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.model.UserAccessDto;
 import com.invoicesync.modules.user.repository.UserRepository;
+import com.invoicesync.partner.CompaniesRegistry;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -40,6 +46,8 @@ public class AuthServiceImpl implements AuthService {
 
   private final UserRepository userRepository;
 
+  private final CompaniesRegistry companiesRegistry;
+
   private final PasswordEncoder passwordEncoder;
 
   private final AuthenticationManager authenticationManager;
@@ -48,13 +56,28 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public void registerUser(final RegisterRequest registerRequest) {
     if (userRepository.existsByUsername(registerRequest.getUsername())) {
-      throw new RuntimeException("Username already exists: " + registerRequest.getUsername());
+      throw new UserNameExists("Username already exists: " + registerRequest.getUsername());
+    }
+
+    if (userRepository.existsByEmail(registerRequest.getEmail())) {
+      throw new RegisterEmailExists("Email already exists: " + registerRequest.getEmail());
+    }
+
+    if (userRepository.existsByRegistrationNumber(registerRequest.getRegistrationNumber())) {
+      throw new CompanyRegistrationNumberExists(
+          "Registration number already exists: " + registerRequest.getRegistrationNumber());
+    }
+
+    if (!companiesRegistry.findByIco(registerRequest.getRegistrationNumber()).isPresent()) {
+      throw new CompanyRegistrationNumberNotFound(
+          "Registration number not found: " + registerRequest.getRegistrationNumber());
     }
 
     final User user = User.builder()
         .email(registerRequest.getEmail())
         .username(registerRequest.getUsername())
         .fullName(registerRequest.getFullName())
+        .registrationNumber(registerRequest.getRegistrationNumber())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
         .phoneNumber(registerRequest.getPhoneNumber())
         .role(Role.ROLE_USER)
@@ -83,7 +106,6 @@ public class AuthServiceImpl implements AuthService {
         .map(FeatureEnum::fromId)
         .map(Enum::name)
         .collect(Collectors.toSet());
-
 
     final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), featureNames);
 
