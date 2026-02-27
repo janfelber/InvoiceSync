@@ -5,11 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.invoicesync.core.enums.Role;
-import com.invoicesync.core.enums.FeatureEnum;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -21,6 +16,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.invoicesync.core.enums.FeatureEnum;
+import com.invoicesync.core.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,6 +44,9 @@ public class User {
   private String fullName;
 
   private String username;
+
+  @Column(name = "registration_number")
+  private String registrationNumber;
 
   private String password;
 

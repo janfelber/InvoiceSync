@@ -1,5 +1,7 @@
 package com.invoicesync.core.exception;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +33,30 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NumberConfigMissingException.class)
   public ResponseEntity<String> handleNumberConfigMissingException(final NumberConfigMissingException ex) {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(CompanyRegistrationNumberNotFound.class)
+  public ResponseEntity<String> handleCompanyRegistrationNumberNotFound(final CompanyRegistrationNumberNotFound ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(UserNameExists.class)
+  public ResponseEntity<Map<String, String>> handleUserNameExists(final UserNameExists ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(Map.of("field", "username", "message", ex.getMessage()));
+  }
+
+  @ExceptionHandler(CompanyRegistrationNumberExists.class)
+  public ResponseEntity<Map<String, String>> handleCompanyRegistrationNumberExists(
+      final CompanyRegistrationNumberExists ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(Map.of("field", "registrationNumber", "message", ex.getMessage()));
+  }
+
+  @ExceptionHandler(RegisterEmailExists.class)
+  public ResponseEntity<Map<String, String>> handleRegisterEmailExists(final RegisterEmailExists ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(Map.of("field", "email", "message", ex.getMessage()));
   }
 
 }
