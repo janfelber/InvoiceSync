@@ -23,22 +23,28 @@
             <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     aria-expanded="false" data-dropdown-toggle="dropdown-user">
               <span class="sr-only">Open user menu</span>
-              <div
-                class="h-8 w-8 rounded-md flex items-center justify-center bg-orange-500 text-white font-semibold text-sm uppercase">
+              <div class="h-8 w-8 rounded-md flex items-center justify-center bg-orange-500 text-white font-semibold text-sm uppercase">
                 {{ getInitials(userInfo!) }}
               </div>
             </button>
           </div>
           <div class="absolute right-0 hidden z-10 w-60 bg-white dark:bg-gray-800 rounded divide-y divide-gray-100 dark:divide-gray-700 shadow"
                id="dropdown-user">
+            <!-- User info header -->
+            <div class="px-4 py-3">
+              <div class="flex items-center gap-2.5">
+                <div class="h-8 w-8 rounded-md flex items-center justify-center bg-orange-500 text-white font-semibold text-xs uppercase shrink-0">
+                  {{ getInitials(userInfo!) }}
+                </div>
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ userInfo }}</p>
+              </div>
+            </div>
             <ul class="py-2 px-2 text-sm text-gray-500 dark:text-gray-400" role="none">
               <li>
                 <a routerLink="/web/settings">
-                  <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                  <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
                     <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                         viewBox="0 0 24 24">
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                       <path clip-rule="evenodd" fill-rule="evenodd"
                       d="M8.34 1.804A1 1 0 019.32 1h1.36a1 1 0 01.98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 011.262.125l.962.962a1 1 0 01.125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 01.804.98v1.361a1 1 0 01-.804.98l-1.473.295a6.95 6.95 0 01-.587 1.416l.834 1.25a1 1 0 01-.125 1.262l-.962.962a1 1 0 01-1.262.125l-1.25-.834a6.953 6.953 0 01-1.416.587l-.294 1.473a1 1 0 01-.98.804H9.32a1 1 0 01-.98-.804l-.295-1.473a6.957 6.957 0 01-1.416-.587l-1.25.834a1 1 0 01-1.262-.125l-.962-.962a1 1 0 01-.125-1.262l.834-1.25a6.957 6.957 0 01-.587-1.416l-1.473-.294A1 1 0 011 10.68V9.32a1 1 0 01.804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 01.125-1.262l.962-.962A1 1 0 015.38 3.03l1.25.834a6.957 6.957 0 011.416-.587l.294-1.473zM13 10a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
@@ -48,11 +54,9 @@
               </li>
               <li>
                 <a routerLink="/web/privacy">
-                  <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                  <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
                     <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                         viewBox="0 0 24 24">
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                       <path fill-rule="evenodd"
                             d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
                             clip-rule="evenodd"/>
@@ -63,11 +67,9 @@
               </li>
               <li>
                 <a routerLink="/web/subscription">
-                  <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
+                  <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-black dark:hover:text-white text-sm">
                     <svg class="w-4 h-4 mr-1.5 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white" aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                         viewBox="0 0 24 24">
+                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                       <path fill-rule="evenodd"
                             d="M4 5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H4Zm0 6h16v6H4v-6Z"
                             clip-rule="evenodd"/>
@@ -82,8 +84,7 @@
             </ul>
             <div class="py-2 px-2" role="none">
               <a (click)="logout()">
-                <div
-                  class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-black dark:hover:text-white text-sm">
+                <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-black dark:hover:text-white text-sm">
                   <svg class="w-4 h-4 mr-1.5 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                        width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,11 +93,8 @@
                   <span class="text-red-500">Odhlasiť sa</span>
                 </div>
               </a>
-              <p class="text-sm font-medium text-gray-900 dark:text-white truncate" role="none">
-              </p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -104,29 +102,36 @@
 </nav>
 
 <aside id="sidebar-multi-level-sidebar"
-       class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 transition-transform -translate-x-full sm:translate-x-0 border-r border-gray-200 dark:border-gray-700"
+       class="fixed top-0 left-0 z-40 w-52 h-screen pt-16 transition-transform -translate-x-full sm:translate-x-0 border-r border-gray-200 dark:border-gray-700"
        aria-label="Sidebar">
   <div class="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-[#1a1b1e]">
-    <ul class="space-y-2">
+
+    <!-- Main Navigation -->
+    <ul class="space-y-1">
       <li *ngFor="let item of menu">
         <ng-container *ngIf="item.children?.length; else singleLink">
+          <!-- Dropdown Button -->
           <button
             type="button"
             (click)="toggleDropdown(item.label)"
-            class="flex items-center w-full p-2 text-base text-gray-900 dark:text-gray-200 transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="flex items-center w-full px-2 py-2 text-sm rounded-md group transition-colors"
+            [ngClass]="isChildActive(item)
+              ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+              : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
           >
             <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-400"
+              class="w-5 h-5 shrink-0 transition-colors"
+              [ngClass]="isChildActive(item) ? 'text-gray-700 dark:text-white' : 'text-gray-400 dark:text-gray-500'"
               fill="currentColor"
               viewBox="0 0 20 20"
               [innerHTML]="iconService.getSvg(item.icon || '')"
             ></svg>
-            <span class="flex-1 ml-3 text-left whitespace-nowrap">
-        {{ item.label }}
-      </span>
-
+            <span class="flex-1 ml-3 text-left whitespace-nowrap">{{ item.label }}</span>
             <svg
-              class="w-6 h-6 transition-transform duration-200"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              class="w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform duration-200"
               [ngClass]="{ 'rotate-180': dropdownStates[item.label] }"
             >
               <path
@@ -137,17 +142,22 @@
             </svg>
           </button>
 
+          <!-- Child items with left border line -->
           <ul
             *ngIf="dropdownStates[item.label]"
-            class="py-2 space-y-2 transition-all duration-300 ease-in-out overflow-hidden"
+            class="mt-1 ml-6 pl-2 space-y-0.5 border-l border-gray-200 dark:border-gray-700"
           >
             <li *ngFor="let child of item.children">
               <a
+                #childRla="routerLinkActive"
                 [routerLink]="child.route"
-                routerLinkActive="bg-gray-100 dark:bg-gray-700"
-                class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-gray-700"
+                routerLinkActive
+                class="flex items-center px-2 py-1.5 text-sm transition-colors rounded-md"
+                [ngClass]="childRla.isActive
+                  ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+                  : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
               >
-                <span>{{ child.label }}</span>
+                {{ child.label }}
               </a>
             </li>
           </ul>
@@ -155,12 +165,17 @@
 
         <ng-template #singleLink>
           <a
+            #rla="routerLinkActive"
             [routerLink]="item.route"
-            routerLinkActive="bg-gray-100 dark:bg-gray-700"
-            class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group"
+            routerLinkActive
+            class="flex items-center px-2 py-2 text-sm rounded-md group transition-colors"
+            [ngClass]="rla.isActive
+              ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+              : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
           >
             <svg
-              class="w-6 h-6 text-gray-500 dark:text-gray-400"
+              class="w-5 h-5 shrink-0 transition-colors"
+              [ngClass]="rla.isActive ? 'text-gray-700 dark:text-white' : 'text-gray-400 dark:text-gray-500'"
               fill="currentColor"
               viewBox="0 0 20 20"
               [innerHTML]="iconService.getSvg(item.icon || '')"
@@ -169,67 +184,78 @@
           </a>
         </ng-template>
       </li>
-      <li>
-        <a routerLink="/web/settings"
-           routerLinkActive="bg-gray-100 dark:bg-gray-700"
-           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor"
-               viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path clip-rule="evenodd" fill-rule="evenodd"
-                  d="M8.34 1.804A1 1 0 019.32 1h1.36a1 1 0 01.98.804l.295 1.473c.497.144.971.342 1.416.587l1.25-.834a1 1 0 011.262.125l.962.962a1 1 0 01.125 1.262l-.834 1.25c.245.445.443.919.587 1.416l1.473.294a1 1 0 01.804.98v1.361a1 1 0 01-.804.98l-1.473.295a6.95 6.95 0 01-.587 1.416l.834 1.25a1 1 0 01-.125 1.262l-.962.962a1 1 0 01-1.262.125l-1.25-.834a6.953 6.953 0 01-1.416.587l-.294 1.473a1 1 0 01-.98.804H9.32a1 1 0 01-.98-.804l-.295-1.473a6.957 6.957 0 01-1.416-.587l-1.25.834a1 1 0 01-1.262-.125l-.962-.962a1 1 0 01-.125-1.262l.834-1.25a6.957 6.957 0 01-.587-1.416l-1.473-.294A1 1 0 011 10.68V9.32a1 1 0 01.804-.98l1.473-.295c.144-.497.342-.971.587-1.416l-.834-1.25a1 1 0 01.125-1.262l.962-.962A1 1 0 015.38 3.03l1.25.834a6.957 6.957 0 011.416-.587l.294-1.473zM13 10a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
-          <span class="ml-3">Nastavenia</span>
-        </a>
-      </li>
     </ul>
-    <ul class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
-      <li>
-        <a routerLink="/web/mobile-app"
-           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd"
-                  d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                  clip-rule="evenodd"/>
-          </svg>
-          <span class="ml-3">Mobilná aplikácia</span>
-        </a>
-      </li>
-      <li data-tooltip-target="coming-soon-integrations">
-        <a routerLink=""
-           class="pointer-events-none opacity-50 flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg group"
-           tabindex="-1" aria-disabled="true">
-          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
-            <path
-              d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
-          </svg>
-          <span class="ml-3">Integrácie</span>
-        </a>
-      </li>
-      <li>
-        <a routerLink="/web/help"
-           routerLinkActive="bg-gray-100 dark:bg-gray-700"
-           class="flex items-center p-2 text-base text-gray-900 dark:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-          <svg class="w-6 h-6 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 12v-1a8 8 0 0116 0v1"/>
-            <path d="M4 15v2a2 2 0 002 2h1v-6H4zM20 15v2a2 2 0 01-2 2h-1v-6h3z"/>
-          </svg>
-          <span class="ml-3">Pomoc</span>
-        </a>
-      </li>
-    </ul>
+
+    <!-- Secondary Navigation -->
+    <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
+      <p class="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">Ďalšie</p>
+      <ul class="space-y-1">
+        <li>
+          <a
+            #mobileRla="routerLinkActive"
+            routerLink="/web/mobile-app"
+            routerLinkActive
+            class="flex items-center px-2 py-2 text-sm rounded-md group transition-colors"
+            [ngClass]="mobileRla.isActive
+              ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+              : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
+          >
+            <svg
+              class="w-5 h-5 shrink-0 transition-colors"
+              [ngClass]="mobileRla.isActive ? 'text-gray-700 dark:text-white' : 'text-gray-400 dark:text-gray-500'"
+              aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd"
+                    d="M5 4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4Zm12 12V5H7v11h10Zm-5 1a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+                    clip-rule="evenodd"/>
+            </svg>
+            <span class="ml-3">Mobilná aplikácia</span>
+          </a>
+        </li>
+        <li>
+          <!-- Integrácie – coming soon -->
+          <div class="flex items-center px-2 py-2 text-sm rounded-lg border-l-[3px] border-transparent text-gray-400 dark:text-gray-500 cursor-not-allowed">
+            <svg class="w-5 h-5 shrink-0" aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
+              <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
+            </svg>
+            <span class="ml-3">Integrácie</span>
+            <span class="ml-auto text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">Čoskoro</span>
+          </div>
+        </li>
+        <li>
+          <a
+            #helpRla="routerLinkActive"
+            routerLink="/web/help"
+            routerLinkActive
+            class="flex items-center px-2 py-2 text-sm rounded-md group transition-colors"
+            [ngClass]="helpRla.isActive
+              ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+              : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
+          >
+            <svg
+              class="w-5 h-5 shrink-0 transition-colors"
+              [ngClass]="helpRla.isActive ? 'text-gray-700 dark:text-white' : 'text-gray-400 dark:text-gray-500'"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v-1a8 8 0 0116 0v1"/>
+              <path d="M4 15v2a2 2 0 002 2h1v-6H4zM20 15v2a2 2 0 01-2 2h-1v-6h3z"/>
+            </svg>
+            <span class="ml-3">Pomoc</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Dark/Light mode toggle -->
     <div class="mt-4 px-2">
       <button (click)="themeService.toggle()"
-              class="flex items-center w-full p-2 text-sm text-gray-900 rounded-lg hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+              class="flex items-center w-full px-2 py-2 text-sm text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
         @if (themeService.isDark()) {
-          <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-5 h-5 shrink-0 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
             <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
           </svg>
           <span class="ml-3">Svetlý režim</span>
         } @else {
-          <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-5 h-5 shrink-0 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
           </svg>
           <span class="ml-3">Tmavý režim</span>
@@ -237,9 +263,17 @@
       </button>
     </div>
 
-    <div id="dropdown-cta" class="p-4 mt-6 rounded-lg bg-blue-50 dark:bg-blue-900/20" role="alert">
-      <div class="flex items-center mb-3">
-        <span class="bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-semibold me-2 px-2.5 py-0.5 rounded-sm">Beta</span>
+    <!-- Beta Notice (dismissible) -->
+    <div *ngIf="!isBetaNoticeDismissed" class="p-4 mt-4 rounded-lg bg-blue-50 dark:bg-blue-900/20" role="alert">
+      <div class="flex items-center justify-between mb-3">
+        <span class="bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded-sm">Beta</span>
+        <button (click)="dismissBetaNotice()"
+                class="text-blue-400 dark:text-blue-500 hover:text-blue-600 dark:hover:text-blue-300 transition-colors"
+                aria-label="Dismiss">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
       </div>
       <p class="mb-3 text-sm text-blue-800 dark:text-blue-300">
         Aplikácia <strong>InvoiceSync</strong> je momentálne vo fáze <strong>Beta verzie</strong>. Niektoré funkcie sa
@@ -249,18 +283,6 @@
         Pošli spätnú väzbu
       </a>
     </div>
-  </div>
 
-  <div id="coming-soon-integrations" role="tooltip"
-       class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-    Integrácie čoskoro dostupné
-    <div class="tooltip-arrow" data-popper-arrow></div>
-  </div>
-
-
-  <div id="coming-soon-guide" role="tooltip"
-       class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-    Sprievodca čoskoro dostupný
-    <div class="tooltip-arrow" data-popper-arrow></div>
   </div>
 </aside>
