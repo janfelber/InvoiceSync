@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {NgOptimizedImage} from "@angular/common";
-import {RouterLink, RouterLinkActive} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {MENU_ITEMS} from "./nav-data";
 import {MenuItem} from "./MenuItem";
 import {IconService} from "./icons/icon.service";
@@ -26,16 +26,19 @@ export class SideNavComponent implements OnInit {
   menu: MenuItem[] = [];
   dropdownStates: { [key: string]: boolean } = {};
   public userInfo: any = null;
+  isBetaNoticeDismissed = false;
 
   constructor(
     protected iconService: IconService,
     public authService: AuthService,
     public userService: UserService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    initFlowbite()
+    initFlowbite();
+    this.isBetaNoticeDismissed = localStorage.getItem('betaNoticeDismissed') === 'true';
     this.getUserName();
     this.menu = this.filterMenu(MENU_ITEMS, this.authService.userFeatures);
   }
@@ -62,8 +65,21 @@ export class SideNavComponent implements OnInit {
     this.dropdownStates[label] = !this.dropdownStates[label];
   }
 
+  isChildActive(item: MenuItem): boolean {
+    return item.children?.some(child =>
+      child.route ? this.router.isActive(child.route, {
+        paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored'
+      }) : false
+    ) ?? false;
+  }
+
   logout() {
     this.authService.logout();
+  }
+
+  dismissBetaNotice(): void {
+    this.isBetaNoticeDismissed = true;
+    localStorage.setItem('betaNoticeDismissed', 'true');
   }
 
   getInitials(name: string): string {
