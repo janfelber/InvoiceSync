@@ -18,6 +18,8 @@ public class ReceiptResponseDto {
 
   private Long id;
 
+  private Long orderNumber;
+
   private LocalDateTime createdAt;
 
   private DetailDto receiptDetails;
