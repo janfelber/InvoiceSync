@@ -40,7 +40,7 @@ import lombok.experimental.SuperBuilder;
 public class Receipt extends BaseEntity {
 
   /**
-   * TODO implement this
+   *
    * Unique, incrementing number of the receipt within the company.
    * This number must change for every export of new receipt to ensure it can be imported
    * into external accounting software (e.g., Pohoda) without conflicts.
@@ -49,6 +49,15 @@ public class Receipt extends BaseEntity {
    */
   @Column(name = "cash_receipt_number")
   private String receiptNumber;
+
+  /**
+   * User-facing sequential import number. Increments per user on each receipt import.
+   * Assigned atomically via {@code user_receipt_counter} table to prevent duplicates.
+   * Once assigned, this number is permanent — it does not change if other receipts are deleted,
+   * making it a stable reference for support and audit purposes.
+   */
+  @Column(name = "receipt_order")
+  private Long receiptOrder;
 
   // @ManyToOne
   // @JoinColumn(name = "\"user_id\"")
