@@ -51,6 +51,7 @@ import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.ReceiptDocument;
 import com.invoicesync.modules.document.repository.ReceiptDocumentRepository;
+import com.invoicesync.modules.receipt.counter.UserReceiptCounterRepository;
 import com.invoicesync.modules.receipt.mapper.ReceiptMapper;
 import com.invoicesync.modules.receipt.model.MergeItemsRequest;
 import com.invoicesync.modules.receipt.model.Receipt;
@@ -77,6 +78,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private final ReceiptDocumentRepository receiptDocumentRepository;
 
+  private final UserReceiptCounterRepository userReceiptCounterRepository;
+
   // private final CurrentUserService currentUserService;
 
   @Autowired
@@ -86,13 +89,15 @@ public class ReceiptServiceImpl implements ReceiptService {
       final FileStorageService fileStorageService,
       final ReceiptRepository receiptRepository,
       final ReceiptDocumentRepository documentRepository,
-      final ReceiptDocumentRepository receiptDocumentRepository) {
+      final ReceiptDocumentRepository receiptDocumentRepository,
+      final UserReceiptCounterRepository userReceiptCounterRepository) {
     this.ekasaClient = ekasaClient;
     this.receiptMapper = receiptMapper;
     this.fileStorageService = fileStorageService;
     this.receiptRepository = receiptRepository;
     this.documentRepository = documentRepository;
     this.receiptDocumentRepository = receiptDocumentRepository;
+    this.userReceiptCounterRepository = userReceiptCounterRepository;
   }
 
   @Override
@@ -159,6 +164,8 @@ public class ReceiptServiceImpl implements ReceiptService {
       final ReceiptRequest request = ParseUtils.parseReceiptRequest(rootNode, companyId);
 
       final Receipt receipt = receiptMapper.toReceipt(request);
+      final Long nextOrder = userReceiptCounterRepository.getAndIncrementReceiptOrder(connectedUser.getName());
+      receipt.setReceiptOrder(nextOrder);
 
       receiptRepository.save(receipt);
       uploadReceiptDocument(qrCodeImage, false, receipt.getId(), connectedUser, null);
@@ -422,7 +429,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     final BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
     try {
       final Result result = new MultiFormatReader().decode(bitmap);
-      System.out.println(result.getText());
       return result.getText();
     } catch (NotFoundException e) {
       return "QR kód nebol nájdený.";

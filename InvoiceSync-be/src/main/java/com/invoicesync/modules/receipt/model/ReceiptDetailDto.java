@@ -16,7 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReceiptDetailDto {
+
   private Long id;
+
+  private Long orderNumber;
 
   private LocalDateTime createdAt;
 

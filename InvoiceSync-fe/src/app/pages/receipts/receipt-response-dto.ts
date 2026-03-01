@@ -1,13 +1,11 @@
-/* tslint:disable */
-/* eslint-disable */
-
 export interface ReceiptResponseDto {
   id: number;
+  orderNumber: number;
   createdAt: any;
   companyName: string;
   receiptDetails: {
-    totalPriceWithVat: string
-  }
+    totalPriceWithVat: string;
+  };
   partner: {
     name: string;
     city: string;
@@ -16,5 +14,5 @@ export interface ReceiptResponseDto {
     registrationNumber: string;
     taxId: string;
     vatId: string;
-  }
+  };
 }
