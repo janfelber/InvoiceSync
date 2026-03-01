@@ -84,6 +84,7 @@ public class ReceiptMapper {
 
     return ReceiptDetailDto.builder()
         .id(receipt.getId())
+        .orderNumber(receipt.getReceiptOrder())
         .createdAt(receipt.getCreatedDate())
         .receiptDetails(DetailDto.builder()
             .date(receipt.getDate())
@@ -124,6 +125,7 @@ public class ReceiptMapper {
   public ReceiptResponseDto toReceiptTableResponse(final Receipt receipt) {
     return ReceiptResponseDto.builder()
         .id(receipt.getId())
+        .orderNumber(receipt.getReceiptOrder())
         .createdAt(receipt.getCreatedDate())
         .companyName(receipt.getCompany().getName())
         .receiptDetails(DetailDto.builder()
