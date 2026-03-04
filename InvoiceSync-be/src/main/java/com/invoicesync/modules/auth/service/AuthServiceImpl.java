@@ -24,6 +24,9 @@ import com.invoicesync.core.exception.CompanyRegistrationNumberExists;
 import com.invoicesync.core.exception.CompanyRegistrationNumberNotFound;
 import com.invoicesync.core.exception.RegisterEmailExists;
 import com.invoicesync.core.exception.UserNameExists;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.auth.model.LoginRequest;
 import com.invoicesync.modules.auth.model.LoginResponse;
 import com.invoicesync.modules.auth.model.RegisterRequest;
@@ -35,12 +38,16 @@ import com.invoicesync.modules.user.repository.UserRepository;
 import com.invoicesync.partner.CompaniesRegistry;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
   private final UserDetailsService userDetailsService;
+
+  private final UserActivityService userActivityService;
 
   private final JwtService jwtService;
 
@@ -109,6 +116,9 @@ public class AuthServiceImpl implements AuthService {
 
     final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), featureNames);
 
+    userActivityService.save(UserActivityRecord.forType(String.valueOf(user.getId()), UserActivityType.LOGGED_IN,
+        "User logged in"));
+
     return new LoginResponse(
         tokenPair.getAccessToken(),
         tokenPair.getRefreshToken(),
@@ -160,7 +170,20 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public void logout(final HttpServletRequest logoutRequest) {
-
+    final String authHeader = logoutRequest.getHeader("Authorization");
+    log.debug("Logout - Authorization header: {}", authHeader != null ? "present" : "missing");
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      log.warn("Logout called without Bearer token - activity will not be logged");
+      return;
+    }
+    final String userId = jwtService.getUsernameFromToken(authHeader.substring(7));
+    if (userId != null) {
+      userActivityService.save(UserActivityRecord.forType(
+          userId,
+          UserActivityType.LOGGED_OUT,
+          "User logged out"
+      ));
+    }
   }
 
 }

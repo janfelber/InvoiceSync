@@ -19,14 +19,17 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError(err => {
-        if (err.status === 401) {
-          // token vypršal, skúsiť refresh
+        if (err.status === 401 && !req.url.includes('/auth/refresh-token')) {
           return this.authService.refreshToken().pipe(
             switchMap(() => {
               const newToken = this.authService.getToken();
               return next.handle(req.clone({
                 headers: req.headers.set('Authorization', `Bearer ${newToken}`)
               }));
+            }),
+            catchError(() => {
+              this.authService.logout();
+              return throwError(err);
             })
           );
         }
