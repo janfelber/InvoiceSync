@@ -4,8 +4,6 @@ import {FormsModule} from "@angular/forms";
 import {initFlowbite} from 'flowbite'
 import {CompanyService} from "../../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../../core/models/page-response-company-response-dto";
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import {toast} from "ngx-sonner";
 import {InvoiceService} from "../../../core/services/invoice.service";
 
@@ -163,37 +161,8 @@ export class CreateNewInvoice implements OnInit {
   }
 
   exportPdf() {
-    const invoiceElement = document.getElementById('invoice');
-    if (!invoiceElement) {
-      console.error('Element s id "invoice" nebol nájdený');
-      return;
-    }
-
-    // @ts-ignore
-    html2canvas(invoiceElement, {scale: 1, useCORS: true}).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      const imgPropsWidth = canvas.width;
-      const imgPropsHeight = canvas.height;
-
-      const margin = 0;
-      const usableWidth = pdfWidth;
-      let imgHeight = (imgPropsHeight * usableWidth) / imgPropsWidth;
-      let imgWidth = usableWidth;
-
-      if (imgHeight > pdfHeight) {
-        imgHeight = pdfHeight;
-        imgWidth = (imgPropsWidth * imgHeight) / imgPropsHeight;
-      }
-
-      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-      pdf.save('invoice.pdf');
-    }).catch(err => {
-      console.error('Chyba pri generovaní PDF', err);
-    });
+    // PDF generation moved to backend
+    throw new Error('Not implemented');
   }
 
   findCompanyByRegistrationNumberSupplier(registrationNumber: string) {
