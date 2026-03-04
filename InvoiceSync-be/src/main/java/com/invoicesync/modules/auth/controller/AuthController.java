@@ -65,7 +65,8 @@ public class AuthController {
   }
 
   @PostMapping(Api.LOGOUT)
-  public ResponseEntity<?> logout(final HttpServletResponse response) {
+  public ResponseEntity<?> logout(final HttpServletRequest request, final HttpServletResponse response) {
+    authService.logout(request);
     final ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
         .httpOnly(true)
         .secure(false)
