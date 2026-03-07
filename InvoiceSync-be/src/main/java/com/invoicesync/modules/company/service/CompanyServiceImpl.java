@@ -2,8 +2,6 @@ package com.invoicesync.modules.company.service;
 
 import static com.invoicesync.modules.company.dto.specification.CompanySpecification.withUserId;
 
-import java.util.List;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -51,20 +49,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<Company> companies = companyRepository.findAll(withUserId(connectedUser.getName()), pageable);
-
-    final List<CompanyResponseDto> companyResponse = companies.stream()
-        .map(companyMapper::toCompanyResponse)
-        .toList();
-
-    return new PageResponse<>(
-        companyResponse,
-        companies.getNumber(),
-        companies.getSize(),
-        companies.getTotalElements(),
-        companies.getTotalPages(),
-        companies.isFirst(),
-        companies.isLast()
-    );
+  
+    return PageResponse.from(companies, companyMapper::toCompanyResponse);
   }
 
   @Override

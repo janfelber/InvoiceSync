@@ -1,5 +1,7 @@
 package com.invoicesync.modules.admin.service;
 
+import static com.invoicesync.core.enums.Role.ROLE_ADMIN;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -33,24 +35,13 @@ public class AdminServiceImpl implements AdminService {
 
   private final UserMapper userMapper;
 
+  //TODO try not to use string as parameter it should be in some one file where it can be called
   @Override
   public PageResponse<UserDto> getUsers(final int page, final int size, final Authentication connectedUser) {
     final Pageable pageable = PageRequest.of(page, size);
-    final Page<User> users = userRepository.findAll(pageable);
+    final Page<User> users = userRepository.findByRoleNot(ROLE_ADMIN, pageable);
 
-    final List<UserDto> usersResponse = users.stream()
-        .map(userMapper::toUserInfo)
-        .filter(u -> !"ROLE_ADMIN".equals(u.getRole()))
-        .toList();
-    return new PageResponse<>(
-        usersResponse,
-        users.getNumber(),
-        users.getSize(),
-        users.getTotalElements(),
-        users.getTotalPages(),
-        users.isFirst(),
-        users.isLast()
-    );
+    return PageResponse.from(users, userMapper::toUserInfo);
   }
 
   @Override
