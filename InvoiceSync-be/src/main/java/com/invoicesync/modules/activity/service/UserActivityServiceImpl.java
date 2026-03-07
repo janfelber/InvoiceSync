@@ -1,5 +1,7 @@
 package com.invoicesync.modules.activity.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.modules.activity.mapper.UserActivityMapper;
@@ -20,6 +22,11 @@ public class UserActivityServiceImpl implements UserActivityService {
   @Override
   public void save(final UserActivityRecord record) {
     repository.save(mapper.toUserActivity(record));
+  }
+
+  @Override
+  public List<UserActivityRecord> getAllActivities() {
+    return mapper.toRecordList(repository.findAll());
   }
 
 }
