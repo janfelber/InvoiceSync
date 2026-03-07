@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -42,13 +41,12 @@ public class XmlFileServiceImpl implements XmlFileService {
 
   @Override
   public Long saveXmlFile(final MultipartFile file, final Authentication connectedUser) {
-      final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-          .orElseThrow(() -> new IllegalStateException("User not found."));
+    final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
+        .orElseThrow(() -> new IllegalStateException("User not found."));
 
     if (!user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
       throw new IllegalStateException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
     }
-
 
     try {
       final String filename = file.getOriginalFilename();
@@ -76,18 +74,7 @@ public class XmlFileServiceImpl implements XmlFileService {
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<XmlFile> xmlFiles = xmlFileRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
-    final List<XmlFileResponseDto> xmlFileResponse = xmlFiles.stream()
-        .map(xmlMapper::toXmlTableResponse)
-        .toList();
-    return new PageResponse<>(
-        xmlFileResponse,
-        xmlFiles.getNumber(),
-        xmlFiles.getSize(),
-        xmlFiles.getTotalElements(),
-        xmlFiles.getTotalPages(),
-        xmlFiles.isFirst(),
-        xmlFiles.isLast()
-    );
+    return PageResponse.from(xmlFiles, xmlMapper::toXmlTableResponse);
   }
 
   /**

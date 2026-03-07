@@ -3,8 +3,11 @@ package com.invoicesync.modules.user.repository;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.invoicesync.core.enums.Role;
 import com.invoicesync.modules.user.model.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -18,5 +21,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
   boolean existsByRegistrationNumber(String registrationNumber);
 
   boolean existsByEmail(String email);
+
+  Page<User> findByRoleNot(Role role, Pageable pageable);
 
 }

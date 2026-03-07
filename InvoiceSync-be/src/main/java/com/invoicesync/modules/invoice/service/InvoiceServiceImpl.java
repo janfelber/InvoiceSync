@@ -65,6 +65,10 @@ public class InvoiceServiceImpl implements InvoiceService {
   private static final Pattern ODBERATEL_BLOCK =
       Pattern.compile("(?s)Odberateľ:?(.+?)(Faktúra č\\.|Dátum vystavenia|Faktúra)", Pattern.CASE_INSENSITIVE);
 
+  private static final Logger log = LoggerFactory.getLogger(InvoiceServiceImpl.class);
+
+  final CompaniesRegistry subjectRegistry;
+
   private final InvoiceRepository invoiceRepository;
 
   private final InvoiceDocumentRepository invoiceDocumentRepository;
@@ -85,12 +89,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final FileStorageService fileStorageService;
 
-  final CompaniesRegistry subjectRegistry;
-
   @Value("${openai.api.key}")
   private String openAiApiKey;
-
-  private static final Logger log = LoggerFactory.getLogger(InvoiceServiceImpl.class);
 
   public InvoiceServiceImpl(final InvoiceRepository invoiceRepository, final LimitGuardService limitGuardService,
       final CompanyRepository companyRepository,
@@ -264,15 +264,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     final List<InvoiceResponseTable> invoiceResponseTable = invoices.stream()
         .map(invoiceMapper::toInvoiceTableResponse)
         .toList();
-    return new PageResponse<>(
-        invoiceResponseTable,
-        invoices.getNumber(),
-        invoices.getSize(),
-        invoices.getTotalElements(),
-        invoices.getTotalPages(),
-        invoices.isFirst(),
-        invoices.isLast()
-    );
+
+    return PageResponse.from(invoices, invoiceMapper::toInvoiceTableResponse);
   }
 
   @Override
@@ -299,19 +292,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<Invoice> invoices = invoiceRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
-    final List<InvoiceResponseTable> invoiceResponse = invoices.stream()
-        .map(invoiceMapper::toInvoiceTableResponse)
-        .toList();
-
-    return new PageResponse<>(
-        invoiceResponse,
-        invoices.getNumber(),
-        invoices.getSize(),
-        invoices.getTotalElements(),
-        invoices.getTotalPages(),
-        invoices.isFirst(),
-        invoices.isLast()
-    );
+    return PageResponse.from(invoices, invoiceMapper::toInvoiceTableResponse);
   }
 
   @Override
