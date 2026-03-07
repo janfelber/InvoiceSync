@@ -2,9 +2,6 @@ package com.invoicesync.core;
 
 public final class Api {
 
-  private Api() {
-  }
-
   // General
   public static final String GET_BY_USER = "/user";
 
@@ -82,9 +79,9 @@ public final class Api {
 
   public static final String COMPANY_DELETE = "/delete/{companyId}";
 
-  // Post Accounting
-
   public static final String POST_ACCOUNT = "/post-account";
+
+  // Post Accounting
 
   public static final String POST_ACCOUNT_GET_BY_COMPANY = "/{companyId}/accounts";
 
@@ -109,6 +106,10 @@ public final class Api {
   public static final String ADMIN_GET_USER = "/user/{userId}";
 
   public static final String ADMIN_UPDATE_USER_FEATURES = "/user/{userId}/features";
+
+  public static final String ADMIN_USER_ACTIVITY = ADMIN + "/user-activity";
+
+  public static final String ADMIN_USER_ACTIVITY_TABLE = "/table";
 
   // Subscription
   public static final String SUBSCRIPTION = "/subscription";
@@ -163,5 +164,8 @@ public final class Api {
   public static final String POHODA = "/pohoda";
 
   public static final String POHODA_EXPORT_RECEIVED = "/export/received";
+
+  private Api() {
+  }
 
 }
