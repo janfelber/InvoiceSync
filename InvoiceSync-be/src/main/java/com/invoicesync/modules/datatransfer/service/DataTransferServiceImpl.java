@@ -32,13 +32,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.invoicesync.core.common.PageResponse;
-import com.invoicesync.modules.datatransfer.repository.DataTransferHeaderMappingRepository;
-import com.invoicesync.modules.datatransfer.mapper.DataTransferMapper;
-import com.invoicesync.modules.datatransfer.repository.DataTransferRepository;
 import com.invoicesync.modules.datatransfer.dto.DataTransferHeaderMappingDto;
 import com.invoicesync.modules.datatransfer.dto.DataTransferResponseDto;
+import com.invoicesync.modules.datatransfer.mapper.DataTransferMapper;
 import com.invoicesync.modules.datatransfer.model.DataTransfer;
 import com.invoicesync.modules.datatransfer.model.DataTransferHeader;
+import com.invoicesync.modules.datatransfer.repository.DataTransferHeaderMappingRepository;
+import com.invoicesync.modules.datatransfer.repository.DataTransferRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -58,25 +58,13 @@ public class DataTransferServiceImpl implements DataTransferService {
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<DataTransfer> converts = dataTransferRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
-    final List<DataTransferResponseDto> convertResponse = converts.stream()
-        .map(dataTransferMapper::toConvertTableResponse)
-        .toList();
-
-    return new PageResponse<>(
-        convertResponse,
-        converts.getNumber(),
-        converts.getSize(),
-        converts.getTotalElements(),
-        converts.getTotalPages(),
-        converts.isFirst(),
-        converts.isLast()
-    );
+    return PageResponse.from(converts, dataTransferMapper::toConvertTableResponse);
   }
 
   @Override
   public Long saveConvert(final MultipartFile file, final Authentication connectedUser) {
     try (InputStream inputStream = file.getInputStream();
-         Workbook workbook = new XSSFWorkbook(inputStream)) {
+        Workbook workbook = new XSSFWorkbook(inputStream)) {
       final Sheet sheet = workbook.getSheetAt(0);
       final Row headerRow = sheet.getRow(0);
 

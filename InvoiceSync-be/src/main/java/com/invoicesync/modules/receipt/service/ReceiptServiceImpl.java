@@ -109,15 +109,8 @@ public class ReceiptServiceImpl implements ReceiptService {
     final List<ReceiptResponseDto> receiptResponse = receipts.stream()
         .map(receiptMapper::toReceiptTableResponse)
         .toList();
-    return new PageResponse<>(
-        receiptResponse,
-        receipts.getNumber(),
-        receipts.getSize(),
-        receipts.getTotalElements(),
-        receipts.getTotalPages(),
-        receipts.isFirst(),
-        receipts.isLast()
-    );
+
+    return PageResponse.from(receipts, receiptMapper::toReceiptTableResponse);
   }
 
   @Override
@@ -126,18 +119,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
     final Page<Receipt> receipts = receiptRepository.findAll(withCompanyId(companyId), pageable);
 
-    final List<ReceiptResponseDto> receiptResponse = receipts.stream()
-        .map(receiptMapper::toReceiptTableResponse)
-        .toList();
-    return new PageResponse<>(
-        receiptResponse,
-        receipts.getNumber(),
-        receipts.getSize(),
-        receipts.getTotalElements(),
-        receipts.getTotalPages(),
-        receipts.isFirst(),
-        receipts.isLast()
-    );
+    return PageResponse.from(receipts, receiptMapper::toReceiptTableResponse);
   }
 
   @Override
