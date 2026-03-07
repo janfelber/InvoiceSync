@@ -37,4 +37,10 @@ export class AdminService {
     );
   }
 
+  getUsersActivity(): Promise<any> {
+    return this.apiService.instance.get(
+      `${this.baseUrl}${ApiPaths.admin.USERS_ACTIVITY}`
+    )
+  }
+
 }

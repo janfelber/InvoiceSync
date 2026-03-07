@@ -78,6 +78,7 @@ export const ApiPaths = {
     USERS: '/users',
     USER_BY_ID: (userId: string) => `/user/${userId}`,
     UPDATE_FEATURES: (userId: string) => `/user/${userId}/features`,
+    USERS_ACTIVITY: `/user-activity/table`,
   },
   feature: {
     BASE: '/feature',
