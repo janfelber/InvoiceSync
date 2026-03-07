@@ -128,19 +128,7 @@ public class PostingAccountServiceImpl implements PostingAccountService {
       case CASH -> cashDocumentAccountRepository.findAll(cashDocumentsCompanyId(companyId), pageable);
     };
 
-    final List<PostingAccountResponse> postingAccountResponse = accounts.stream()
-        .map(postingAccountMapper::toPostingAccountTableResponse)
-        .toList();
-
-    return new PageResponse<>(
-        postingAccountResponse,
-        accounts.getNumber(),
-        accounts.getSize(),
-        accounts.getTotalElements(),
-        accounts.getTotalPages(),
-        accounts.isFirst(),
-        accounts.isLast()
-    );
+    return PageResponse.from(accounts, postingAccountMapper::toPostingAccountTableResponse);
   }
 
   @Override
@@ -148,7 +136,7 @@ public class PostingAccountServiceImpl implements PostingAccountService {
     final List<AddedAccountDTO> addedAccounts = new ArrayList<>();
 
     try (InputStream inputStream = file.getInputStream();
-         Workbook workbook = new XSSFWorkbook(inputStream)) {
+        Workbook workbook = new XSSFWorkbook(inputStream)) {
 
       final Company company = companyRepository.findById(companyId)
           .orElseThrow(() -> new IllegalArgumentException("Company with ID " + companyId + " does not exist."));
