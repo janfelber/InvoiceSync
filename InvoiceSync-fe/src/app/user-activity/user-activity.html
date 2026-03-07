@@ -1,0 +1,32 @@
+
+<main>
+  <div class="pt-13 mx-4 mt-6">
+    <div class="bg-[#f7f7fc] dark:bg-[#2a2b30] rounded-lg overflow-hidden border border-gray-300 dark:border-[#383852]">
+      <div class="flex flex-col space-y-0">
+        <div class="flex items-center justify-between py-2.5 px-8">
+          <h2 class="text-lg font-semibold text-gray-700">Users</h2>
+        </div>
+      </div>
+
+      <table class="w-full text-sm text-left text-gray-500 border-t border-gray-300 dark:border-[#383852]">
+        <thead class="text-xs text-gray-700 dark:text-gray-300 bg-[#f7f7fc] dark:bg-[#2a2b30] border-b border-gray-100 dark:border-[#383852]">
+        <tr>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">User ID</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Description</th>
+          <th scope="col" class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">Timestamp</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="last:border-b-0" *ngFor="let activity of test; let even = even"
+            [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
+          <td class="px-4 py-3 border-r border-gray-300 dark:border-[#383852] last:border-r-0">
+            <a [routerLink]="['/admin/user', activity.userId]" class="text-blue-600 hover:underline">{{ activity.userId }}</a>
+          </td>
+          <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ activity.description }}</td>
+          <td class="px-4 py-3 text-black dark:text-white border-r border-gray-300 dark:border-[#383852] last:border-r-0">{{ activity.timestamp | date:'short' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
