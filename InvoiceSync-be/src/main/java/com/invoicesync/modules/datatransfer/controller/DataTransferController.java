@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.datatransfer.dto.DataTransferHeaderMappingDto;
 import com.invoicesync.modules.datatransfer.dto.DataTransferResponseDto;
 import com.invoicesync.modules.datatransfer.service.DataTransferService;
@@ -34,8 +35,8 @@ public class DataTransferController {
 
   @GetMapping(Api.CONVERT_GET_IMPORTS)
   public ResponseEntity<PageResponse<DataTransferResponseDto>> findAllConvertImportsByUser(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       final Authentication connectedUser) {
     return ResponseEntity.ok(dataTransferService.findImportByUser(page, size, connectedUser));
   }
