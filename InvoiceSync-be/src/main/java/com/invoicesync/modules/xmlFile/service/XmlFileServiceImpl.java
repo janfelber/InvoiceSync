@@ -9,14 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.FeatureEnum;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.repository.UserRepository;
@@ -71,7 +70,7 @@ public class XmlFileServiceImpl implements XmlFileService {
       throw new IllegalStateException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
     }
 
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<XmlFile> xmlFiles = xmlFileRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
     return PageResponse.from(xmlFiles, xmlMapper::toXmlTableResponse);

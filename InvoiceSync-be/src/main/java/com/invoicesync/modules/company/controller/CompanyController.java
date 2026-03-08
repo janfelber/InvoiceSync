@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
@@ -38,8 +39,8 @@ public class CompanyController {
 
   @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<CompanyResponseDto>> findAllCompaniesByUser(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       final Authentication connectedUser
   ) {
     return ResponseEntity.ok(companyService.findAllCompaniesByUser(page, size, connectedUser));

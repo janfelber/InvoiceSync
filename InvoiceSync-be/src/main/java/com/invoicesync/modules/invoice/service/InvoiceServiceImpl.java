@@ -22,9 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -37,6 +35,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
@@ -258,7 +257,7 @@ public class InvoiceServiceImpl implements InvoiceService {
   public PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(final int page, final int size,
       final Long companyId,
       final Authentication connectedUser) {
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Invoice> invoices = invoiceRepository.findAll(withCompanyId(companyId), pageable);
 
     final List<InvoiceResponseTable> invoiceResponseTable = invoices.stream()
@@ -289,7 +288,7 @@ public class InvoiceServiceImpl implements InvoiceService {
   @Override
   public PageResponse<InvoiceResponseTable> findAllInvoicesByUser(final int page, final int size,
       final Authentication connectedUser) {
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Invoice> invoices = invoiceRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
     return PageResponse.from(invoices, invoiceMapper::toInvoiceTableResponse);
