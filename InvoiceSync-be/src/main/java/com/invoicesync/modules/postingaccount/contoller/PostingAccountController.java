@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.PostingAccountType;
 import com.invoicesync.modules.postingaccount.model.AddedAccountDTO;
 import com.invoicesync.modules.postingaccount.model.ClassDTO;
@@ -36,8 +37,8 @@ public class PostingAccountController {
 
   @GetMapping(Api.POST_ACCOUNT_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<PostingAccountResponse>> getAllPostingAccounts(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       @RequestParam(name = "type", defaultValue = "INTERNAL") final PostingAccountType type,
       @PathVariable("companyId") final Long companyId, final Authentication connectedUser) {
     return ResponseEntity.ok(postingAccountService.getAllPostingAccounts(page, size, type, companyId, connectedUser));
