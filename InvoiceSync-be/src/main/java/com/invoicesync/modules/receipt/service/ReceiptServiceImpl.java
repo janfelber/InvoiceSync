@@ -22,9 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,6 +42,7 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.core.utils.ParseUtils;
@@ -103,12 +102,8 @@ public class ReceiptServiceImpl implements ReceiptService {
   @Override
   public PageResponse<ReceiptResponseDto> findAllReceiptsByUser(final int page, final int size,
       final Authentication connectedUser) {
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Receipt> receipts = receiptRepository.findAll(withUserId(connectedUser.getName()), pageable);
-
-    final List<ReceiptResponseDto> receiptResponse = receipts.stream()
-        .map(receiptMapper::toReceiptTableResponse)
-        .toList();
 
     return PageResponse.from(receipts, receiptMapper::toReceiptTableResponse);
   }
@@ -116,7 +111,7 @@ public class ReceiptServiceImpl implements ReceiptService {
   @Override
   public PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(final int page, final int size, final Long companyId,
       final Authentication connectedUser) {
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Receipt> receipts = receiptRepository.findAll(withCompanyId(companyId), pageable);
 
     return PageResponse.from(receipts, receiptMapper::toReceiptTableResponse);

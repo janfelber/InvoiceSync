@@ -6,13 +6,12 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.NumberConfigType;
 import com.invoicesync.modules.accountingdocument.AccountDocumentNumberService;
 import com.invoicesync.modules.company.mapper.CompanyMapper;
@@ -47,9 +46,9 @@ public class CompanyServiceImpl implements CompanyService {
   public PageResponse<CompanyResponseDto> findAllCompaniesByUser(final int page, int size,
       final Authentication connectedUser) {
 
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Company> companies = companyRepository.findAll(withUserId(connectedUser.getName()), pageable);
-  
+
     return PageResponse.from(companies, companyMapper::toCompanyResponse);
   }
 

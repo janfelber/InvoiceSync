@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.admin.service.AdminService;
 import com.invoicesync.modules.feature.model.FeatureDto;
 import com.invoicesync.modules.feature.model.UpdateUserFeatureRequest;
@@ -30,8 +31,8 @@ public class AdminController {
 
   @GetMapping(Api.ADMIN_GET_USERS)
   public PageResponse<UserDto> findAllUsers(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       final Authentication connectedUser
   ) {
     return adminService.getUsers(page, size, connectedUser);

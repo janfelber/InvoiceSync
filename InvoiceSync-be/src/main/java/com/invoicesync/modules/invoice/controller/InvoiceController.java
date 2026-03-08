@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.model.InvoiceCreate;
@@ -42,16 +43,16 @@ public class InvoiceController {
 
   @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findAllInvoicesByUser(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       final Authentication connectedUser) {
     return ResponseEntity.ok(invoiceService.findAllInvoicesByUser(page, size, connectedUser));
   }
 
   @GetMapping(Api.INVOICE_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findInvoicesByCompanyId(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       @PathVariable("company-id") final Long companyId,
       final Authentication connectedUser) {
     return ResponseEntity.ok(

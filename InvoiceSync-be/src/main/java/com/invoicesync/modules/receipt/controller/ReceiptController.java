@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.exception.LimitExceededException;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
@@ -81,8 +82,8 @@ public class ReceiptController {
   //get receipts for current user
   @GetMapping(Api.GET_BY_USER)
   public ResponseEntity<PageResponse<ReceiptResponseDto>> findAllReceiptsByUser(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       final Authentication connectedUser
   ) {
     return ResponseEntity.ok(receiptService.findAllReceiptsByUser(page, size, connectedUser));
@@ -91,8 +92,8 @@ public class ReceiptController {
   //get receipts by company id
   @GetMapping(Api.RECEIPT_GET_BY_COMPANY)
   public ResponseEntity<PageResponse<ReceiptResponseDto>> findReceiptsByCompanyId(
-      @RequestParam(name = "page", defaultValue = "0", required = false) final int page,
-      @RequestParam(name = "size", defaultValue = "10", required = false) final int size,
+      @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
+      @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       @PathVariable("company-id") final Long companyId,
       final Authentication connectedUser) {
 

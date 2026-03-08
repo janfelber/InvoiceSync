@@ -19,9 +19,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -32,6 +30,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.datatransfer.dto.DataTransferHeaderMappingDto;
 import com.invoicesync.modules.datatransfer.dto.DataTransferResponseDto;
 import com.invoicesync.modules.datatransfer.mapper.DataTransferMapper;
@@ -55,7 +54,7 @@ public class DataTransferServiceImpl implements DataTransferService {
   @Override
   public PageResponse<DataTransferResponseDto> findImportByUser(final int page, final int size,
       final Authentication connectedUser) {
-    final Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+    final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<DataTransfer> converts = dataTransferRepository.findAll(withUserId(connectedUser.getName()), pageable);
 
     return PageResponse.from(converts, dataTransferMapper::toConvertTableResponse);
