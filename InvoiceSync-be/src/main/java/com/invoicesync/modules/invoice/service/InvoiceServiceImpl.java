@@ -88,6 +88,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final FileStorageService fileStorageService;
 
+  private final InvoicePdfService invoicePdfService;
+
   @Value("${openai.api.key}")
   private String openAiApiKey;
 
@@ -97,7 +99,8 @@ public class InvoiceServiceImpl implements InvoiceService {
       final InvoiceDocumentRepository invoiceDocumentRepository,
       final FileStorageService fileStorageService,
       @Qualifier("openAiWebClient") final WebClient openAiClient, final ObjectMapper objectMapper,
-      final CompaniesRegistry subjectRegistry) {
+      final CompaniesRegistry subjectRegistry,
+      final InvoicePdfService invoicePdfService) {
     this.invoiceRepository = invoiceRepository;
     this.limitGuardService = limitGuardService;
     this.companyRepository = companyRepository;
@@ -106,6 +109,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     this.openAiClient = openAiClient;
     this.subjectRegistry = subjectRegistry;
     this.invoiceDocumentRepository = invoiceDocumentRepository;
+    this.invoicePdfService = invoicePdfService;
     this.encoding = Encodings.newDefaultEncodingRegistry()
         .getEncodingForModel("gpt-4o-mini")
         .orElseThrow(() -> new IllegalArgumentException("Encoding for model not found"));
@@ -283,6 +287,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     return documents.stream()
         .map(invoiceMapper::toInvoiceDocumentsTableResponse)
         .toList();
+  }
+
+  @Override
+  public byte[] generateInvoicePdf(final Long invoiceId) {
+    InvoiceResponse invoice = findById(invoiceId);
+    return invoicePdfService.generateInvoicePdf(invoice);
   }
 
   @Override
