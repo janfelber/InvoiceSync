@@ -60,6 +60,8 @@ public final class Api {
 
   public static final String INVOICE_CREATE = "/create-invoice";
 
+  public static final String INVOICE_EXPORT_PDF = "/{invoice-id}/pdf";
+
   public static final String INVOICE_UPLOAD_DOCUMENT = "/upload/document/{invoice-id}";
 
   public static final String INVOICE_DELETE_DOCUMENT = "/delete/document/{document-id}";
