@@ -4,7 +4,7 @@
       <nav class="flex mb-4 mx-4" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li class="inline-flex items-center">
-            <a href="/home" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+            <a href="/home" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600">
               <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                    viewBox="0 0 20 20">
                 <path
@@ -21,7 +21,7 @@
                       d="m1 9 4-4-4-4"/>
               </svg>
               <a href="/web/receipts"
-                 class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2">Faktúry</a>
+                 class="ms-1 text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-blue-600 md:ms-2">Faktúry</a>
             </div>
           </li>
           <li aria-current="page">
@@ -31,25 +31,25 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Nová faktúra</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:ms-2">Nová faktúra</span>
             </div>
           </li>
         </ol>
       </nav>
 
       <div class="flex items-center justify-between mb-4 mx-4">
-        <a href="/web/receipts" class="flex items-center space-x-2 text-black no-underline hover:underline">
-          <svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+        <a href="/web/receipts" class="flex items-center space-x-2 text-black dark:text-white no-underline hover:underline">
+          <svg class="w-6 h-6 text-black dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M5 12h14M5 12l4-4m-4 4 4 4"/>
           </svg>
-          <h1 class="text-lg font-semibold">Späť na bločky</h1>
+          <h1 class="text-lg font-semibold">Späť na Faktury</h1>
         </a>
       </div>
     </div>
 
-    <div class="min-h-screen bg-slate-50">
+    <div class="min-h-screen bg-slate-50 dark:bg-[#1a1b1e]">
 
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4">
         <div class="flex items-center gap-3 mb-2">
@@ -66,14 +66,14 @@
             </svg>
           </div>
           <div>
-            <h1 class="text-2xl font-bold text-slate-900"> Generate Invoice</h1>
-            <p class="text-sm text-slate-600"> Create and manage your invoices</p>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white"> Generate Invoice</h1>
+            <p class="text-sm text-slate-600 dark:text-gray-400"> Create and manage your invoices</p>
           </div>
         </div>
         <div class="flex gap-2">
           <button
             (click)="exportPdf()"
-            class="inline-flex items-center px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors">
+            class="inline-flex items-center px-4 py-2 border border-slate-300 dark:border-[#383852] rounded-lg text-sm font-medium text-slate-700 dark:text-gray-300 bg-white dark:bg-[#2a2b30] hover:bg-slate-50 dark:hover:bg-[#383852] transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                  class="lucide lucide-download mr-2"
@@ -102,64 +102,108 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4">
         <div class="space-y-4">
-          <div data-slot="card" class="bg-white rounded-lg border border-slate-200 p-5">
-            <h3 class="mb-4 font-medium"> Basic Information </h3>
+          <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
+            <h3 class="mb-4 font-medium dark:text-white"> Basic Information </h3>
             <div class="space-y-4">
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <label for="invoiceNumber" class="flex items-center gap-2 text-sm leading-none font-medium">Invoice
+                  <label for="invoiceNumber" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Invoice
                     Number</label>
-                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200" id="invoiceNumber"
+                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white" id="invoiceNumber"
                          name="invoiceNumber" [(ngModel)]="invoice.invoiceDetails.numberRequested"
                          placeholder="FW-XXXXXX">
                 </div>
                 <div class="space-y-2">
-                  <label for="variableSymbol" class="flex items-center gap-2 text-sm leading-none font-medium">Variable
+                  <label for="variableSymbol" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Variable
                     Symbol</label>
-                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                          id="variableSymbol"
                          [(ngModel)]="invoice.invoiceDetails.variableSymbol"
                          name="variableSymbol">
                 </div>
               </div>
+
+
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <label for="dateIssued" class="flex items-center gap-2 text-sm leading-none font-medium">Issue Date
-                    *</label>
-                  <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
-                         id="dateIssued"
-                         name="dateIssued" [(ngModel)]="invoice.invoiceDetails.issueDate">
+                  <label for="dateIssued" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Issue Date *</label>
+                  <div class="relative w-full">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                      </svg>
+                    </div>
+                    <input
+                      datepicker
+                      datepicker-autohide
+                      datepicker-format="dd.mm.yyyy"
+                      type="text"
+                      id="dateIssued"
+                      name="dateIssued"
+                      [(ngModel)]="invoice.invoiceDetails.issueDate"
+                      class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                      placeholder="Vybrať dátum"
+                    />
+                  </div>
                 </div>
                 <div class="space-y-2">
-                  <label for="dateDue" class="flex items-center gap-2 text-sm leading-none font-medium">Due Date
-                    *</label>
-                  <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
-                         id="dateDue"
-                         name="dateDue" [(ngModel)]="invoice.invoiceDetails.dueDate">
+                  <label for="dateDue" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Due Date *</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                      </svg>
+                    </div>
+                    <input
+                      datepicker
+                      datepicker-autohide
+                      datepicker-format="dd.mm.yyyy"
+                      type="text"
+                      id="dateDue"
+                      name="dateDue"
+                      [(ngModel)]="invoice.invoiceDetails.dueDate"
+                      class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                      placeholder="Vybrať dátum"
+                    />
+                  </div>
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
-                  <label for="dateTax" class="flex items-center gap-2 text-sm leading-none font-medium">Delivery Date
-                    *</label>
-                  <input type=date class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
-                         id="dateTax"
-                         name="dateTax" [(ngModel)]="invoice.invoiceDetails.taxDate">
+                  <label for="dateTax" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Delivery Date *</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                      </svg>
+                    </div>
+                    <input
+                      datepicker
+                      datepicker-autohide
+                      datepicker-format="dd.mm.yyyy"
+                      type="text"
+                      id="dateTax"
+                      name="dateTax"
+                      [(ngModel)]="invoice.invoiceDetails.taxDate"
+                      class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                      placeholder="Vybrať dátum"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div data-slot="card" class="bg-white rounded-lg border border-slate-200 p-5">
+          <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="mb-4 font-medium"> Supplier </h3>
+              <h3 class="mb-4 font-medium dark:text-white"> Supplier </h3>
             </div>
             <div class="space-y-4">
-              <div class="flex gap-2 p-1 bg-gray-100 rounded-lg"
+              <div class="flex gap-2 p-1 bg-gray-100 dark:bg-[#1a1b1e] rounded-lg"
                    role="tablist"
                    id="supplier-tabs"
                    data-tabs-toggle="#supplier-tabs-content"
-                   data-tabs-active-classes="bg-white shadow-sm text-blue-600"
-                   data-tabs-inactive-classes="text-gray-600 hover:text-blue-600">
+                   data-tabs-active-classes="bg-blue-600 text-white shadow-sm"
+                   data-tabs-inactive-classes="text-gray-600 dark:text-gray-400 hover:text-blue-600">
 
                 <button
                   class="flex-1 py-2 px-3 rounded-md font-medium text-sm transition-colors"
@@ -202,12 +246,12 @@
                    role="tabpanel"
                    aria-labelledby="saved-supplier-tab">
                 <div class="space-y-2 mb-4">
-                  <label for="supplier" class="flex items-center gap-2 text-sm leading-none font-medium">Choose
+                  <label for="supplier" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Choose
                     Supplier</label>
                   <select
-                    class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                    class="w-full border border-gray-300 dark:border-[#383852] rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     name="supplier"
-                    *ngIf="companyResponse.content!.length > 0"
+                    [disabled]="companyResponse.content!.length === 0"
                     (change)="onCompanySelected($event.target!.value)"
                   >
                     <option value="" disabled selected>Vyberte dodávateľa</option>
@@ -222,11 +266,11 @@
 
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierName"
                            disabled
                            name="supplierName"
@@ -234,11 +278,11 @@
                            [(ngModel)]="supplierDraft.name">
                   </div>
                   <div class="space-y-2">
-                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierAddress"
                            disabled
                            name="supplierAddress"
@@ -248,11 +292,11 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="supplierRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierRegistrationNumber"
                              disabled
                              name="supplierRegistrationNumber"
@@ -262,11 +306,11 @@
 
                     <div class="space-y-2">
                       <label for="supplierIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierIdentificationNumber"
                              disabled
                              name="supplierIdentificationNumber"
@@ -275,11 +319,11 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierVatIdentificationNumber"
                            disabled
                            name="supplierVatIdentificationNumber"
@@ -294,11 +338,11 @@
                    aria-labelledby="by-vat-supplier-tab"
                    class="hidden">
                 <div class="space-y-2 mb-4">
-                  <label for="supplier" class="flex items-center gap-2 text-sm leading-none font-medium">Registration
+                  <label for="supplier" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Registration
                     Number
                     Search</label>
                   <div class="flex gap-2">
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierVatIdentificationNumber"
                            name="supplierVatIdentificationNumber" [(ngModel)]="supplierDraft.registrationNumber"
                            placeholder="12345678">
@@ -317,29 +361,29 @@
                       Search
                     </button>
                   </div>
-                  <p class="text-xs text-gray-500">
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
                     Try: 00168874, 31418821, or 31436501
                   </p>
                 </div>
 
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierName"
                            disabled
                            name="supplierName" [(ngModel)]="supplierDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
                   <div class="space-y-2">
-                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierAddress"
                            disabled
                            name="supplierAddress" [(ngModel)]="supplierDraft.address"
@@ -348,11 +392,11 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="supplierRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierRegistrationNumber"
                              disabled
                              name="supplierRegistrationNumber" [(ngModel)]="supplierDraft.registrationNumber"
@@ -361,11 +405,11 @@
 
                     <div class="space-y-2">
                       <label for="supplierIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierIdentificationNumber"
                              disabled
                              name="supplierIdentificationNumber" [(ngModel)]="supplierDraft.taxId"
@@ -373,11 +417,11 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierVatIdentificationNumber"
                            disabled
                            name="supplierVatIdentificationNumber" [(ngModel)]="supplierDraft.vatId"
@@ -392,19 +436,19 @@
                    class="hidden">
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierName"
                            name="supplierName" [(ngModel)]="supplierDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
                   <div class="space-y-2">
-                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierAddress"
                            name="supplierAddress" [(ngModel)]="supplierDraft.address"
                            placeholder="Street 123, 00000 City">
@@ -412,11 +456,11 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="supplierRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierRegistrationNumber"
                              name="supplierRegistrationNumber" [(ngModel)]="supplierDraft.registrationNumber"
                              placeholder="12345678">
@@ -424,20 +468,20 @@
 
                     <div class="space-y-2">
                       <label for="supplierIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="supplierIdentificationNumber"
                              name="supplierIdentificationNumber" [(ngModel)]="supplierDraft.taxId"
                              placeholder="1020304050">
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierVatIdentificationNumber"
                            name="supplierVatIdentificationNumber" [(ngModel)]="supplierDraft.vatId"
                            placeholder="SK1234567890">
@@ -448,17 +492,17 @@
             </div>
 
           </div>
-          <div data-slot="card" class="bg-white rounded-lg border border-slate-200 p-5">
+          <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="mb-4 font-medium"> Recipient </h3>
+              <h3 class="mb-4 font-medium dark:text-white"> Recipient </h3>
             </div>
             <div class="space-y-4">
-              <div class="flex gap-2 p-1 bg-gray-100 rounded-lg"
+              <div class="flex gap-2 p-1 bg-gray-100 dark:bg-[#1a1b1e] rounded-lg"
                    role="tablist"
                    id="recipient-tabs"
                    data-tabs-toggle="#recipient-tabs-content"
-                   data-tabs-active-classes="bg-white shadow-sm text-blue-600"
-                   data-tabs-inactive-classes="text-gray-600 hover:text-blue-600">
+                   data-tabs-active-classes="bg-blue-600 text-white shadow-sm"
+                   data-tabs-inactive-classes="text-gray-600 dark:text-gray-400 hover:text-blue-600">
 
                 <button
                   class="flex-1 py-2 px-3 rounded-md font-medium text-sm transition-colors"
@@ -501,12 +545,12 @@
                    role="tabpanel"
                    aria-labelledby="saved-recipient-tab">
                 <div class="space-y-2 mb-4">
-                  <label for="recipient" class="flex items-center gap-2 text-sm leading-none font-medium">Choose
+                  <label for="recipient" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Choose
                     recipient</label>
                   <select
-                    class="w-full border border-gray-300 rounded-md p-2 bg-[#f9fafb]"
+                    class="w-full border border-gray-300 dark:border-[#383852] rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     name="recipient"
-                    *ngIf="companyResponse.content!.length > 0"
+                    [disabled]="companyResponse.content!.length === 0"
                     (change)="onRecipientSelected($event.target!.value)"
                   >
                     <option value="" disabled selected>Vyberte dodávateľa</option>
@@ -521,22 +565,22 @@
 
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientName"
                            disabled
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
                   <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientAddress"
                            disabled
                            name="recipientAddress" [(ngModel)]="recipientDraft.address"
@@ -545,11 +589,11 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="recipientRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientRegistrationNumber"
                              disabled
                              name="recipientRegistrationNumber" [(ngModel)]="recipientDraft.registrationNumber"
@@ -558,11 +602,11 @@
 
                     <div class="space-y-2">
                       <label for="recipientIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientIdentificationNumber"
                              disabled
                              name="recipientIdentificationNumber" [(ngModel)]="recipientDraft.taxId"
@@ -570,11 +614,11 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientVatIdentificationNumber"
                            disabled
                            name="recipientVatIdentificationNumber" [(ngModel)]="recipientDraft.vatId"
@@ -588,10 +632,10 @@
                    aria-labelledby="by-vat-recipient-tab"
                    class="hidden">
                 <div class="space-y-2 mb-4">
-                  <label for="recipient" class="flex items-center gap-2 text-sm leading-none font-medium">VAT ID
+                  <label for="recipient" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">VAT ID
                     Search</label>
                   <div class="flex gap-2">
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientVatIdentificationNumber"
                            name="recipientVatIdentificationNumber" [(ngModel)]="recipientDraft.registrationNumber"
                            placeholder="31418821">
@@ -608,29 +652,29 @@
                       Search
                     </button>
                   </div>
-                  <p class="text-xs text-gray-500">
+                  <p class="text-xs text-gray-500 dark:text-gray-400">
                     Try: 00168874, 31418821, or 31436501
                   </p>
                 </div>
 
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientName"
                            disabled
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
                   <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientAddress"
                            disabled
                            name="recipientAddress" [(ngModel)]="recipientDraft.address"
@@ -639,11 +683,11 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="recipientRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientRegistrationNumber"
                              disabled
                              name="recipientRegistrationNumber" [(ngModel)]="recipientDraft.registrationNumber"
@@ -652,11 +696,11 @@
 
                     <div class="space-y-2">
                       <label for="recipientIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                         <span class="text-xs text-slate-400">(auto-filled)</span>
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientIdentificationNumber"
                              disabled
                              name="recipientIdentificationNumber" [(ngModel)]="recipientDraft.taxId"
@@ -664,11 +708,11 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                       <span class="text-xs text-slate-400">(auto-filled)</span>
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientVatIdentificationNumber"
                            disabled
                            name="recipientVatIdentificationNumber" [(ngModel)]="recipientDraft.vatId"
@@ -683,19 +727,19 @@
                    class="hidden">
                 <div class="space-y-4 pt-2">
                   <div class="space-y-2">
-                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Name / Company *
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientName"
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
                   <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium">
+                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                       Address / Residence *
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientAddress"
                            name="recipientAddress" [(ngModel)]="recipientDraft.address"
                            placeholder="Street 123, 00000 City">
@@ -703,10 +747,10 @@
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
                       <label for="recipientRegistrationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Registration Number
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientRegistrationNumber"
                              name="recipientRegistrationNumber" [(ngModel)]="recipientDraft.registrationNumber"
                              placeholder="12345678">
@@ -714,20 +758,20 @@
 
                     <div class="space-y-2">
                       <label for="recipientIdentificationNumber"
-                             class="flex items-center gap-2 text-sm leading-none font-medium">
+                             class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                         Identification Number
                       </label>
-                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                              id="recipientIdentificationNumber"
                              name="recipientIdentificationNumber" [(ngModel)]="recipientDraft.taxId"
                              placeholder="1020304050">
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-sm font-medium">
+                    <label class="flex items-center gap-2 text-sm font-medium dark:text-gray-300">
                       VAT Identification Number
                     </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="recipientVatIdentificationNumber"
                            name="recipientVatIdentificationNumber" [(ngModel)]="recipientDraft.vatId"
                            placeholder="SK1234567890">
@@ -736,9 +780,9 @@
               </div>
             </div>
           </div>
-          <div data-slot="card" class="bg-white rounded-lg border border-slate-200 p-5">
+          <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="font-medium">Items</h3>
+              <h3 class="font-medium dark:text-white">Items</h3>
               <button
                 (click)="addItem()"
                 class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-sm font-medium gap-2 text-white bg-blue-600 hover:bg-blue-700 transition-colors">
@@ -754,16 +798,16 @@
             </div>
             <!-- ak chceš len keď nie sú položky -->
             <div class="space-y-3">
-              <div class="text-center py-8 text-gray-400" *ngIf="items.length === 0">
+              <div class="text-center py-8 text-gray-400 dark:text-gray-500" *ngIf="items.length === 0">
                 No items added yet. Click "Add Item" to get started.
               </div>
 
 
-              <div class="p-4 bg-gray-50 rounded-lg space-y-3" *ngFor="let item of items; let i = index">
+              <div class="p-4 bg-gray-50 dark:bg-[#1a1b1e] rounded-lg space-y-3" *ngFor="let item of items; let i = index">
                 <div class="space-y-2">
-                  <label for="itemName" class="flex items-center gap-2 text-sm leading-none font-medium">Product
+                  <label for="itemName" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Product
                     Name</label>
-                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 bg-white"
+                  <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] dark:text-white"
                          id="itemName"
                          name="itemName"
                          [(ngModel)]="item.name"
@@ -771,36 +815,36 @@
                 </div>
                 <div class="grid grid-cols-4 gap-2">
                   <div class="space-y-2">
-                    <label for="itemQty" class="flex items-center gap-2 text-sm leading-none font-medium">QTY</label>
-                    <input type=number class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <label for="itemQty" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">QTY</label>
+                    <input type=number class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="itemQty"
                            name="itemQty"
                            [(ngModel)]="item.quantity"
                            (ngModelChange)="updateItemTotals(item)">
                   </div>
                   <div class="space-y-2">
-                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium">Typ
+                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Typ
                       mnozstva</label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="itemPrice"
                            name="itemPrice"
                            [(ngModel)]="item.unitType"
                            (ngModelChange)="updateItemTotals(item)">
                   </div>
                   <div class="space-y-2">
-                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium">Price
+                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Price
                       wo/VAT</label>
-                    <input type=number class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200"
+                    <input type=number class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="itemPrice"
                            name="itemPrice"
                            [(ngModel)]="item.unitPriceWithoutVat"
                            (ngModelChange)="updateItemTotals(item)">
                   </div>
                   <div class="space-y-2">
-                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium">VAT</label>
+                    <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">VAT</label>
                     <div class="flex w-full h-9">
                       <select
-                        class="block w-full min-w-17 bg-gray-50 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        class="block w-full min-w-17 bg-gray-50 dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] dark:text-white rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         [(ngModel)]="item.vatRate" name="productTax" (ngModelChange)="updateItemTotals(item)">
                         <option [ngValue]="19">19%</option>
                         <option [ngValue]="23">23%</option>
@@ -810,7 +854,7 @@
                   </div>
                 </div>
                 <div class="flex justify-between items-center pt-2">
-                  <span class="text-sm">Total: €{{ item.totalWithTax | number:'1.2-2' }} </span>
+                  <span class="text-sm dark:text-gray-300">Total: €{{ item.totalWithTax | number:'1.2-2' }} </span>
                   <button class="text-red-600" (click)="removeItem(i)">
                     <svg class="text-slate-400 hover:text-red-600 p-1 rounded transition-colors" aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -822,15 +866,15 @@
               </div>
             </div>
           </div>
-          <div data-slot="card" class="bg-white rounded-lg border border-slate-200 p-5">
-            <h3 class="mb-4 font-medium"> Additional Information </h3>
+          <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
+            <h3 class="mb-4 font-medium dark:text-white"> Additional Information </h3>
             <div class="space-y-4">
               <div class="space-y-2">
                 <label for="supplierRegistrationNumber"
-                       class="flex items-center gap-2 text-sm leading-none font-medium">
+                       class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
                   Notes </label>
                 <textarea
-                  class="w-full min-h-[100px] resize-none rounded-md border border-slate-200 px-3 py-2 text-sm bg-white
+                  class="w-full min-h-[100px] resize-none rounded-md border border-slate-200 dark:border-[#383852] px-3 py-2 text-sm bg-white dark:bg-[#1a1b1e] dark:text-white
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                   disabled:cursor-not-allowed disabled:opacity-50"
                   [(ngModel)]="invoice.invoiceDetails.note">

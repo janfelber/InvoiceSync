@@ -145,7 +145,9 @@ export class CreateNewInvoice implements OnInit {
   onFetchCompanies() {
     this.companyService.findAllCompaniesByUser().then(response => {
       this.companyResponse = response.data;
-      console.log(this.companyResponse.content)
+      if (this.companyResponse.content!.length === 0) {
+        toast.info("Nemáte žiadne uložené spoločnosti. Použite vyhľadávanie alebo manuálne zadanie.");
+      }
     }).catch(error => {
       console.error(error);
     });
