@@ -32,13 +32,13 @@ button.active {
 
 /* Flowbite datepicker — dark mode */
 .dark .datepicker-picker {
-  background-color: var(--color-dark-card);
+  background-color: #2a2b30;
   border: 1px solid #383852;
   color: #e5e7eb;
 }
 
 .dark .datepicker-header {
-  background-color: var(--color-dark-card);
+  background-color: #2a2b30;
   border-bottom: 1px solid #383852;
 }
 
@@ -60,7 +60,7 @@ button.active {
 }
 
 .dark .datepicker-grid {
-  background-color: var(--color-dark-card);
+  background-color: #2a2b30;
 }
 
 .dark .datepicker-cell {
@@ -91,7 +91,7 @@ button.active {
 }
 
 .dark .datepicker-footer {
-  background-color: var(--color-dark-card);
+  background-color: #2a2b30;
   border-top: 1px solid #383852;
 }
 
