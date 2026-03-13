@@ -29,3 +29,78 @@
 button.active {
   @apply text-blue-600 bg-blue-50 border-blue-300;
 }
+
+/* Flowbite datepicker — dark mode */
+.dark .datepicker-picker {
+  background-color: var(--color-dark-card);
+  border: 1px solid #383852;
+  color: #e5e7eb;
+}
+
+.dark .datepicker-header {
+  background-color: var(--color-dark-card);
+  border-bottom: 1px solid #383852;
+}
+
+.dark .datepicker-title {
+  color: #e5e7eb;
+}
+
+.dark .datepicker-controls .prev-btn,
+.dark .datepicker-controls .next-btn,
+.dark .datepicker-controls .view-switch {
+  color: #e5e7eb;
+  background-color: transparent;
+}
+
+.dark .datepicker-controls .prev-btn:hover,
+.dark .datepicker-controls .next-btn:hover,
+.dark .datepicker-controls .view-switch:hover {
+  background-color: #383852;
+}
+
+.dark .datepicker-grid {
+  background-color: var(--color-dark-card);
+}
+
+.dark .datepicker-cell {
+  color: #e5e7eb;
+}
+
+.dark .datepicker-cell:hover:not(.disabled):not(.selected) {
+  background-color: #383852;
+}
+
+.dark .datepicker-cell.focused:not(.selected) {
+  background-color: #383852;
+}
+
+.dark .datepicker-cell.selected,
+.dark .datepicker-cell.selected:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.dark .datepicker-cell.disabled {
+  color: #6b7280;
+}
+
+.dark .datepicker-cell.day.next-month,
+.dark .datepicker-cell.day.prev-month {
+  color: #6b7280;
+}
+
+.dark .datepicker-footer {
+  background-color: var(--color-dark-card);
+  border-top: 1px solid #383852;
+}
+
+.dark .datepicker-footer .today-btn,
+.dark .datepicker-footer .clear-btn {
+  color: #60a5fa;
+}
+
+.dark .datepicker-footer .today-btn:hover,
+.dark .datepicker-footer .clear-btn:hover {
+  background-color: #383852;
+}
