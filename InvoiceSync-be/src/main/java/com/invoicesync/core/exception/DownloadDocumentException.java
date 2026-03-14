@@ -6,4 +6,8 @@ public class DownloadDocumentException extends RuntimeException {
     super(message);
   }
 
+  public DownloadDocumentException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
+
 }

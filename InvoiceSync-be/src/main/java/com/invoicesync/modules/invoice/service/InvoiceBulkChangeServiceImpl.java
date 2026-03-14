@@ -1,0 +1,59 @@
+package com.invoicesync.modules.invoice.service;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.zip.ZipOutputStream;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.invoicesync.core.exception.DownloadDocumentException;
+import com.invoicesync.modules.invoice.model.Invoice;
+import com.invoicesync.modules.invoice.repository.InvoiceRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+
+@Service
+@Transactional
+public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
+
+  private final InvoiceRepository invoiceRepository;
+
+  public InvoiceBulkChangeServiceImpl(final InvoiceRepository invoiceRepository) {
+    this.invoiceRepository = invoiceRepository;
+  }
+
+  @Override
+  public byte[] bulkDownloadInvoices(final List<Long> invoiceIds, final Authentication connectedUser) {
+    final List<Invoice> invoices = invoiceRepository.findAllById(invoiceIds);
+
+    if (invoices.size() != invoiceIds.size()) {
+      final Set<Long> foundIds = invoices.stream().map(Invoice::getId).collect(Collectors.toSet());
+      final List<Long> missing = invoiceIds.stream().filter(id -> !foundIds.contains(id)).toList();
+      throw new EntityNotFoundException("Invoices not found: " + missing);
+    }
+
+    invoices.forEach(invoice -> {
+      if (!invoice.getCompany().getCreatedBy().equals(connectedUser.getName())) {
+        throw new AccessDeniedException("You do not have access to invoice " + invoice.getId());
+      }
+    });
+
+    try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ZipOutputStream zip = new ZipOutputStream(baos)) {
+
+      // TODO: generate PDF per invoice and add to zip
+
+      zip.finish();
+      return baos.toByteArray();
+    } catch (IOException e) {
+      throw new DownloadDocumentException("Failed to create ZIP archive", e);
+    }
+  }
+
+}
