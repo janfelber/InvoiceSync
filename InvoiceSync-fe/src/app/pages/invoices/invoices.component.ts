@@ -1,16 +1,13 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AxiosService} from "../../core/axios.service";
-import {HttpErrorResponse} from "@angular/common/http";
 import {DatePipe} from "@angular/common";
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
-import {ToastrService} from "ngx-toastr";
 import {initDropdowns, initFlowbite} from "flowbite";
 import {InvoiceService} from "../../core/services/invoice.service";
 import {PageInvoiceResponse} from "./page-response-receipt-response";
-import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 
@@ -21,22 +18,25 @@ import {PageResponseCompanyResponseDto} from "../../core/models/page-response-co
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    RouterLink,
-    MatDialogWindowComponent,
+    RouterLink
   ],
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
 export class Invoices implements OnInit, AfterViewInit {
 
-  protected isLoading: boolean = true;
   uploadModalOpen = false;
   isUploading = false;
   importFinished = false;
+  filterOpen = true;
+
+  selectedFile: File | null = null;
 
   // @ts-ignore
   protected selectedCompanyId: 0;
-  protected companies: any[] = [];
+  public page: number = 0;
+  public size: number = 10;
+
   selectedCompanyName = 'Všetky spoločnosti';
 
   activeTab = 'all';
@@ -50,20 +50,22 @@ export class Invoices implements OnInit, AfterViewInit {
     content: []
   };
 
-  public page: number = 0;
-  public size: number = 10;
-
-  selectedFile: File | null = null;
-
   public invoiceResponse: PageInvoiceResponse = {
     content: []
   };
+
+  selectedStatus = '';
+  selectedStatusLabel = 'Všetky';
+  statusOptions = [
+    { value: '', label: 'Všetky' },
+    { value: 'Processed', label: 'Spracované' },
+    { value: 'Unprocessed', label: 'Nespracované' },
+  ];
 
   constructor(
     private companyService: CompanyService,
     private invoiceService: InvoiceService,
     private axiosService: AxiosService,
-    private toastr: ToastrService,
     private router: Router,
   ) {
   }
@@ -108,8 +110,13 @@ export class Invoices implements OnInit, AfterViewInit {
     this.router.navigate(['web/receipts/', id]);
   }
 
-  onRowCheckboxChange(importItem: any): void {
-    console.log(`Checkbox changed for import:`, importItem.id);
+  toggleFilter(): void {
+    this.filterOpen = !this.filterOpen;
+  }
+
+  onSelectStatus(s: { value: string; label: string }): void {
+    this.selectedStatus = s.value;
+    this.selectedStatusLabel = s.label;
   }
 
   onFetchAllInvoices(): void {
