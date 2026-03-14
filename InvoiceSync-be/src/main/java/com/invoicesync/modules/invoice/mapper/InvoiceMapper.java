@@ -83,6 +83,8 @@ public class InvoiceMapper {
           item.setUnitPriceWithoutVat(itemRequest.getUnitPriceWithoutVat());
           item.setUnitPriceWithVat(itemRequest.getUnitPriceWithVat());
           item.setVatRate(itemRequest.getVatRate());
+          item.setTotalItemPriceWithoutVat(itemRequest.getTotalItemPriceWithoutVat());
+          item.setTotalItemPriceWithVat(itemRequest.getTotalItemPriceWithVat());
           return item;
         })
         .toList();
@@ -118,9 +120,12 @@ public class InvoiceMapper {
             .accountText(item.getAccountText())
             .name(item.getName())
             .quantity(item.getQuantity())
+            .unitType(item.getUnitType())
             .unitPriceWithoutVat(item.getUnitPriceWithoutVat())
-            .vatRate(item.getVatRate())
             .unitPriceWithVat(item.getUnitPriceWithVat())
+            .vatRate(item.getVatRate())
+            .totalItemPriceWithoutVat(item.getTotalItemPriceWithoutVat())
+            .totalItemPriceWithVat(item.getTotalItemPriceWithVat())
             .accountValue(item.getAccountValue())
             .build())
         .collect(Collectors.toList());
