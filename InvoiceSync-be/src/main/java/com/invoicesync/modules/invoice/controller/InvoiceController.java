@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -81,9 +79,9 @@ public class InvoiceController {
 
   @PostMapping(Api.INVOICE_CREATE)
   public ResponseEntity<Long> createInvoice(
-      @RequestParam Long companyId,
-      @RequestBody InvoiceCreate invoiceCreateRequest,
-      Authentication connectedUser) {
+      @RequestParam final Long companyId,
+      @RequestBody final InvoiceCreate invoiceCreateRequest,
+      final Authentication connectedUser) {
 
     return ResponseEntity.ok(
         invoiceService.createInvoice(invoiceCreateRequest, companyId, connectedUser)
@@ -92,18 +90,14 @@ public class InvoiceController {
 
   @GetMapping(Api.INVOICE_EXPORT_PDF)
   public ResponseEntity<byte[]> downloadInvoicePdf(
-      @PathVariable("invoice-id") Long invoiceId) {
+      @PathVariable("invoice-id") final Long invoiceId) {
 
-    byte[] pdf = invoiceService.generateInvoicePdf(invoiceId);
+    final byte[] pdf = invoiceService.generateInvoicePdf(invoiceId);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_PDF);
-    headers.setContentDisposition(
-        ContentDisposition.attachment()
-            .filename("invoice-" + invoiceId + ".pdf")
-            .build());
-
-    return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"invoice-" + invoiceId + ".pdf\"")
+        .body(pdf);
   }
 
   // //get import by id
