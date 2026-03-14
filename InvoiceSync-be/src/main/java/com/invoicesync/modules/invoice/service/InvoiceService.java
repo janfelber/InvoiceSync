@@ -98,4 +98,6 @@ public interface InvoiceService {
    */
   List<DocumentTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
 
+  byte[] generateInvoicePdf(Long invoiceId);
+
 }

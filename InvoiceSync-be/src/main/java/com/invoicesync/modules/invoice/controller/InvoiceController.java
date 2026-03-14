@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -78,13 +79,25 @@ public class InvoiceController {
 
   @PostMapping(Api.INVOICE_CREATE)
   public ResponseEntity<Long> createInvoice(
-      @RequestParam Long companyId,
-      @RequestBody InvoiceCreate invoiceCreateRequest,
-      Authentication connectedUser) {
+      @RequestParam final Long companyId,
+      @RequestBody final InvoiceCreate invoiceCreateRequest,
+      final Authentication connectedUser) {
 
     return ResponseEntity.ok(
         invoiceService.createInvoice(invoiceCreateRequest, companyId, connectedUser)
     );
+  }
+
+  @GetMapping(Api.INVOICE_EXPORT_PDF)
+  public ResponseEntity<byte[]> downloadInvoicePdf(
+      @PathVariable("invoice-id") final Long invoiceId) {
+
+    final byte[] pdf = invoiceService.generateInvoicePdf(invoiceId);
+
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_PDF)
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"invoice-" + invoiceId + ".pdf\"")
+        .body(pdf);
   }
 
   // //get import by id
