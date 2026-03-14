@@ -291,7 +291,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   @Override
   public byte[] generateInvoicePdf(final Long invoiceId) {
-    InvoiceResponse invoice = findById(invoiceId);
+    final InvoiceResponse invoice = findById(invoiceId);
     return invoicePdfService.generateInvoicePdf(invoice);
   }
 
