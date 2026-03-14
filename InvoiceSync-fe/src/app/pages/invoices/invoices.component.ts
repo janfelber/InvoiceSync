@@ -25,6 +25,8 @@ import {PageResponseCompanyResponseDto} from "../../core/models/page-response-co
 })
 export class Invoices implements OnInit, AfterViewInit {
 
+  selectedIds = new Set<number>();
+
   uploadModalOpen = false;
   isUploading = false;
   importFinished = false;
@@ -226,21 +228,55 @@ export class Invoices implements OnInit, AfterViewInit {
 
   goToPreviousPage() {
     this.page--;
+    this.clearSelection();
     this.onFetchAllInvoices();
   }
 
   goToPage(page: number) {
     this.page = page;
+    this.clearSelection();
     this.onFetchAllInvoices();
   }
 
   goToNextPage() {
     this.page++;
+    this.clearSelection();
     this.onFetchAllInvoices();
   }
 
   get IsLastPage(): boolean {
     return this.page >= ((this.invoiceResponse?.totalPages ?? 1) - 1);
+  }
+
+  onRowCheckboxChange(id: number | undefined): void {
+    if (id == null) return;
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+  }
+
+  get allSelected(): boolean {
+    return this.invoiceResponse.content.length > 0 &&
+      this.invoiceResponse.content.every(i => i.id != null && this.selectedIds.has(i.id));
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.invoiceResponse.content.forEach(i => { if (i.id != null) this.selectedIds.delete(i.id); });
+    } else {
+      this.invoiceResponse.content.forEach(i => { if (i.id != null) this.selectedIds.add(i.id); });
+    }
+  }
+
+  clearSelection(): void {
+    this.selectedIds.clear();
+  }
+
+  downloadSelectedPdfs(): void {
+    // TODO: implement bulk PDF download
+    console.log('Download PDFs for:', Array.from(this.selectedIds));
   }
 
   protected readonly Math = Math;
