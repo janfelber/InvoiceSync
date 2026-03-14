@@ -1,578 +1,456 @@
-<main>
-  <div class="pt-13 mx-4 mt-6">
-    <div class="header">
-      <nav class="flex mb-4" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-          <li class="inline-flex items-center">
-            <a routerLink="/home"
-               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
-              <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                   viewBox="0 0 20 20">
-                <path
-                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-              </svg>
-              Domov
-            </a>
-          </li>
-          <li aria-current="page">
-            <div class="flex items-center">
-              <svg class="rtl:rotate-180 w-3 h-3 text-gray-700 hover:text-blue-600 mx-1" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                      d="m1 9 4-4-4-4"/>
-              </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Dokumenty</span>
-            </div>
-          </li>
-          <li aria-current="page">
-            <div class="flex items-center">
-              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                      d="m1 9 4-4-4-4"/>
-              </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2">Faktúry</span>
-            </div>
-          </li>
-        </ol>
-      </nav>
+<main class="pt-13 px-4 mt-6 pb-10">
 
-      <div class="flex items-center justify-between mb-4">
-        <h1 class="text-xl font-semibold text-black">Moje Faktúry</h1>
-      </div>
-
-      <!--      <div class="flex flex-wrap gap-4 mb-4 w-full">-->
-      <!--        &lt;!&ndash; Total Receipts &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Celkovo</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            Všetky bločky-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; This Month &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Tento mesiac</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            TBA-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; Total Amount &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Celková suma</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--            TBA-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--            Súhrnná hodnota-->
-      <!--          </p>-->
-      <!--        </div>-->
-
-      <!--        &lt;!&ndash; Last Import &ndash;&gt;-->
-      <!--        <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 flex-1 w-97 h-33">-->
-      <!--          <div class="mb-2">-->
-      <!--            <span class="rounded-sm bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">Posledný import</span>-->
-      <!--          </div>-->
-      <!--          <div class="text-2xl font-bold tracking-tight">-->
-      <!--          </div>-->
-      <!--          <p class="text-sm text-muted-foreground">-->
-      <!--          </p>-->
-      <!--        </div>-->
-      <!--      </div>-->
-    </div>
-
-    <div>
-      <div class="bg-card text-card-foreground flex flex-col gap-6 rounded-xl6 mb-4">
-        <div class="flex gap-1">
-          <div class="flex-1 relative">
-            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
-                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+  <!-- Breadcrumb + page title -->
+  <div class="mb-4">
+    <nav class="flex mb-2" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+          <a routerLink="/home" class="inline-flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+            <svg class="w-3 h-3 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
             </svg>
-            <input
-              type="text"
-              placeholder="Vyhľadávanie"
-              class="w-full h-9 rounded-md border border-gray-300 bg-white px-10 text-sm
-             transition placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500
-             disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            Domov
+          </a>
+        </li>
+        <li>
+          <div class="flex items-center">
+            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">Dokumenty</span>
           </div>
-          <button
-            id="dropdownFilterButton"
-            data-dropdown-toggle="filterDropdown"
-            type="button"
-            class="flex items-center justify-between gap-2
-         w-[300px] h-9
-         rounded-md border border-gray-300
-         bg-white
-         px-3 py-2
-         text-sm
-         transition
-         focus:outline-none focus:ring-2 focus:ring-blue-500
-         disabled:opacity-50 disabled:cursor-not-allowed
-         overflow-hidden"
-          >
-            <span class="truncate max-w-full block">{{ selectedCompanyName }}</span>
-            <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
-                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="m1 1 4 4 4-4"/>
+        </li>
+        <li aria-current="page">
+          <div class="flex items-center">
+            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
             </svg>
-          </button>
-
-          <div class="relative">
-            <div
-              id="filterDropdown"
-              class=" z-10 hidden
-            w-[300px]
-            rounded-md
-            border border-gray-200
-            bg-white
-            shadow-lg">
-              <ul class="p-1 text-sm text-gray-700 font-medium">
-                <li>
-                  <a
-                    (click)="onSelectCompany({ id: 0, name: 'Všetky spoločnosti' })"
-                    class="flex w-full items-center justify-between rounded-md px-3 py-2 cursor-pointer transition"
-                    [ngClass]="{
-                      'bg-blue-50 text-blue-700 font-semibold': selectedCompanyId === 0,
-                      'hover:bg-gray-100 hover:text-gray-900': selectedCompanyId !== 0
-                    }"
-                  >
-                    Všetky spoločnosti
-                  </a>
-                </li>
-                <li *ngFor="let company of companyResponse.content">
-                  <a
-                    (click)="onSelectCompany(company)"
-                    class="flex w-full items-center justify-between rounded-md px-3 py-2 transition cursor-pointer"
-                    [ngClass]="{
-                    'bg-blue-50 text-blue-700 font-semibold': company.id === selectedCompanyId,
-                    'hover:bg-gray-100 hover:text-gray-900': company.id !== selectedCompanyId
-                  }"
-                  >
-                <span class="truncate">
-                  {{ company.name }}
-                </span>
-                    <svg
-                      *ngIf="company.id === selectedCompanyId"
-                      class="w-4 h-4 text-blue-600 shrink-0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">Faktúry</span>
           </div>
-
-          <button id="dropdownFilterTypes"
-                  data-dropdown-toggle="filterDropdownTypes"
-                  data-dropdown-delay="500"
-                  type="button"
-                  class="  flex items-center justify-between gap-2
-                w-[250px] h-9
-                rounded-md border border-gray-300
-                bg-white
-                px-3 py-2
-                text-sm
-                transition
-                focus:outline-none
-                focus:ring-2 focus:ring-blue-500
-                disabled:opacity-50 disabled:cursor-not-allowed">
-            Filter
-            <svg class="w-2.5 h-2.5 text-gray-800 group-hover:text-blue-600 transition-colors"
-                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="m1 1 4 4 4-4"/>
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            (click)="openUploadModal()"
-            class="w-41 h-9 text-sm text-white bg-blue-600 rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-green-300 inline-flex items-center justify-center gap-2"
-          >
-            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                 fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd"
-                    d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
-                    clip-rule="evenodd"/>
-              <path fill-rule="evenodd"
-                    d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z"
-                    clip-rule="evenodd"/>
-            </svg>
-            Importovať faktúru
-          </button>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="flex gap-2 mb-4 mt-4">
+        </li>
+      </ol>
+    </nav>
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Moje Faktúry</h1>
+      <!-- TODO: Uncomment when a better approach for extracting invoice data from uploaded files is implemented.
       <button
-        *ngFor="let tab of tabs"
-        (click)="setActiveTab(tab.id)"
-        [ngClass]="{
-      'bg-blue-600 hover:bg-black text-white': activeTab === tab.id,
-      'bg-gray-200  text-gray-800 hover:bg-blue-600 hover:text-white': activeTab !== tab.id
-    }"
-        class="inline-flex items-center justify-center gap-1.5 h-8 px-3 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        {{ tab.label }}
+        type="button"
+        (click)="openUploadModal()"
+        class="inline-flex items-center gap-2 h-9 px-4 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
+          <path fill-rule="evenodd" d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+        </svg>
+        Importovať faktúru
       </button>
+      -->
     </div>
   </div>
 
+  <!-- Filter panel -->
+  <div class="-mx-4 mb-4 px-8 py-4 bg-gray-50 dark:bg-[#2a2b30] border-y border-gray-200 dark:border-[#383852]">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Filter</span>
+      <button (click)="toggleFilter()" type="button"
+              class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
+        {{ filterOpen ? 'Skryť' : 'Zobraziť' }}
+      </button>
+    </div>
 
-  <app-modal
-    [show]="uploadModalOpen"
-    (closeModal)="closeUploadModal()"
-    title="Import Excelu"
-  >
-    <form #importForm="ngForm">
-      <div class="grid gap-4 mb-6">
+    <div *ngIf="filterOpen">
+      <div class="flex">
 
-        <div class="mb-4">
-          <label for="company" class="block mb-2 text-sm font-medium text-gray-700">
-            Vyberte firmu
-          </label>
-          <select id="company" [(ngModel)]="selectedCompanyId" name="company"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-            <option *ngFor="let company of companyResponse.content" [value]="company.id">
-              {{ company.name }} - {{ company.taxId }}
-            </option>
-          </select>
-        </div>
+        <!-- Left column -->
+        <div class="flex-1 flex flex-col gap-3 pr-10">
 
-        <div>
-          <label
-            for="multi-upload"
-            class="flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-blue-300 rounded-lg bg-gray-50 hover:bg-gray-100"
-          >
-            <div class="flex flex-col items-center pt-5 pb-6">
-              <svg class="w-8 h-8 text-black mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                   height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd"
-                      d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
-                      clip-rule="evenodd"/>
-              </svg>
-              <p class="text-sm text-gray-600"><strong>Vyberte alebo pretiahnite viac obrázkov účteniek</strong></p>
-              <p class="text-xs text-gray-500">Podporované: .jpg, .png</p>
+          <!-- Company Filter -->
+          <div class="flex items-center gap-3">
+            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">Spoločnosť</label>
+            <div class="relative flex-1">
+              <button
+                id="dropdownFilterButton"
+                data-dropdown-toggle="filterDropdown"
+                type="button"
+                class="flex items-center justify-between gap-2 w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-3 text-sm text-gray-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden">
+                <span class="truncate max-w-full block">{{ selectedCompanyName }}</span>
+                <svg class="w-2.5 h-2.5 text-gray-500 dark:text-gray-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
+                </svg>
+              </button>
+              <div id="filterDropdown"
+                   class="z-10 hidden absolute left-0 top-9 w-full rounded-md border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
+                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <li>
+                    <a (click)="onSelectCompany({ id: 0, name: 'Všetky spoločnosti' })"
+                       class="flex w-full items-center justify-between rounded-md px-3 py-2 cursor-pointer transition"
+                       [ngClass]="{
+                         'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold': selectedCompanyId === 0,
+                         'hover:bg-gray-100 dark:hover:bg-[#383852]': selectedCompanyId !== 0
+                       }">
+                      Všetky spoločnosti
+                    </a>
+                  </li>
+                  <li *ngFor="let company of companyResponse.content">
+                    <a (click)="onSelectCompany(company)"
+                       class="flex w-full items-center justify-between rounded-md px-3 py-2 transition cursor-pointer"
+                       [ngClass]="{
+                         'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold': company.id === selectedCompanyId,
+                         'hover:bg-gray-100 dark:hover:bg-[#383852]': company.id !== selectedCompanyId
+                       }">
+                      <span class="truncate">{{ company.name }}</span>
+                      <svg *ngIf="company.id === selectedCompanyId"
+                           class="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0"
+                           xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-            <input
-              id="multi-upload"
-              type="file"
-              class="hidden"
-              (change)="onInvoiceUpload($event)"
-            />
-          </label>
+          </div>
+
+          <!-- Date due from -->
+          <div class="flex items-center gap-3">
+            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">Splatnosť od</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+              </div>
+              <input
+                datepicker
+                datepicker-autohide
+                datepicker-format="dd.mm.yyyy"
+                type="text"
+                id="dateDueFrom"
+                name="dateDueFrom"
+                class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                placeholder="Vybrať dátum"
+              />
+            </div>
+          </div>
+
         </div>
+
+        <!-- Right column -->
+        <div class="flex-1 flex flex-col gap-3 pl-10">
+
+          <!-- Status Filter-->
+          <div class="flex items-center gap-3">
+            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">Status</label>
+            <div class="relative flex-1">
+              <button
+                id="dropdownStatusButton"
+                data-dropdown-toggle="statusDropdown"
+                type="button"
+                class="flex items-center justify-between gap-2 w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-3 text-sm text-gray-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden">
+                <span class="truncate max-w-full block">{{ selectedStatusLabel }}</span>
+                <svg class="w-2.5 h-2.5 text-gray-500 dark:text-gray-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
+                </svg>
+              </button>
+              <div id="statusDropdown"
+                   class="z-10 hidden absolute left-0 top-9 w-full rounded-md border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
+                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 font-medium">
+                  <li *ngFor="let s of statusOptions">
+                    <a (click)="onSelectStatus(s)"
+                       class="flex w-full items-center justify-between rounded-md px-3 py-2 cursor-pointer transition"
+                       [ngClass]="{
+                         'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold': selectedStatus === s.value,
+                         'hover:bg-gray-100 dark:hover:bg-[#383852]': selectedStatus !== s.value
+                       }">
+                      {{ s.label }}
+                      <svg *ngIf="selectedStatus === s.value"
+                           class="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0"
+                           xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Date due to -->
+          <div class="flex items-center gap-3">
+            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">Splatnosť do</label>
+            <div class="relative w-full">
+              <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+              </div>
+              <input
+                datepicker
+                datepicker-autohide
+                datepicker-format="dd.mm.yyyy"
+                type="text"
+                id="dateDueTo"
+                name="dateDueTo"
+                class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                placeholder="Vybrať dátum"
+              />
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
-      <div *ngIf="selectedFile" class="mt-2 text-sm text-blue-800">
-        Vybraný súbor: <strong>{{ selectedFile.name }}</strong>
+      <div class="mt-4 flex items-center gap-2">
+        <button type="button"
+                class="h-8 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+          Filtrovať
+        </button>
+        <button type="button"
+                class="h-8 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+          Resetovať
+        </button>
       </div>
+    </div>
+  </div>
 
-      <hr class="h-px my-4 bg-gray-200 border-0">
-      <button
-        [disabled]="isUploading"
-        (click)="onUploadFile()"
-        type="submit"
-        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+  <!-- Tabs -->
+  <div class="flex gap-2 mb-4">
+    <button
+      *ngFor="let tab of tabs"
+      (click)="setActiveTab(tab.id)"
+      [ngClass]="{
+        'bg-blue-600 text-white hover:bg-blue-700': activeTab === tab.id,
+        'bg-white dark:bg-[#2a2b30] text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-[#383852] hover:bg-gray-50 dark:hover:bg-[#383852]': activeTab !== tab.id
+      }"
+      class="inline-flex items-center justify-center h-8 px-3 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+      {{ tab.label }}
+    </button>
+  </div>
 
-        <ng-container *ngIf="!isUploading; else loading">
-          Importovať
+  <!-- Card -->
+  <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] overflow-hidden">
+
+    <!-- Heading panel: record count + pagination + import -->
+    <div class="flex items-center gap-3 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+      <span class="text-sm text-gray-500 dark:text-gray-400 shrink-0">
+        Zobrazuje
+        <span class="font-semibold text-gray-700 dark:text-gray-200">{{ (page * size) + 1 }}</span>–<span class="font-semibold text-gray-700 dark:text-gray-200">{{ Math.min((page + 1) * size, invoiceResponse?.totalElements) }}</span>
+        z <span class="font-semibold text-gray-700 dark:text-gray-200">{{ invoiceResponse.totalElements }}</span>
+      </span>
+
+      <!-- Pagination -->
+      <nav class="flex items-center" aria-label="Pagination">
+        <ul class="flex items-center -space-x-px h-7 text-sm">
+          <li>
+            <button
+              (click)="goToPreviousPage()"
+              [disabled]="page === 0"
+              class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-s-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
+              <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+              </svg>
+            </button>
+          </li>
+          <li *ngFor="let _ of [].constructor(invoiceResponse.totalPages); let pageIndex = index">
+            <a (click)="goToPage(pageIndex)"
+               [class.active]="page == pageIndex"
+               class="flex items-center justify-center px-3 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] hover:bg-gray-100 dark:hover:bg-[#2a2b30] cursor-pointer transition-colors">
+              {{ pageIndex + 1 }}
+            </a>
+          </li>
+          <li>
+            <button
+              (click)="goToNextPage()"
+              [disabled]="IsLastPage"
+              class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-e-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
+              <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <!-- Actions bar: search -->
+    <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852]">
+
+      <!-- Search -->
+      <div class="flex-1 relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        </svg>
+        <input
+          type="text"
+          placeholder="Vyhľadávanie..."
+          class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm text-left border-collapse">
+        <thead class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-[#2a2b30] border-b border-gray-200 dark:border-[#383852]">
+          <tr class="divide-x divide-gray-200 dark:divide-[#383852]">
+            <th class="w-10 px-4 py-3">
+              <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
+            </th>
+            <th class="px-4 py-3">Číslo faktúry</th>
+            <th class="px-4 py-3">Variabilný symbol</th>
+            <th class="px-4 py-3">Dodávateľ</th>
+            <th class="px-4 py-3">Dátum splatnosti</th>
+            <th class="px-4 py-3">Status</th>
+            <th class="px-4 py-3">Typ faktúry</th>
+            <th class="w-12 px-4 py-3"></th>
+          </tr>
+        </thead>
+
+        <ng-container *ngIf="invoiceResponse.content.length > 0; else noData">
+          <tbody class="divide-y divide-gray-100 dark:divide-[#383852]">
+            <tr *ngFor="let invoice of invoiceResponse.content"
+                class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]">
+              <td class="px-4 py-3">
+                <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
+              </td>
+              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                <a [routerLink]="['/web/invoices/', invoice.id]" class="text-blue-600 hover:underline">
+                  {{ invoice.invoiceDetails?.invoiceNumber }}
+                </a>
+              </td>
+              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ invoice.invoiceDetails?.variableSymbol }}</td>
+              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ invoice.partner?.name }}</td>
+              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ invoice.invoiceDetails?.dueDate | date:'dd.MM.yyyy' }}</td>
+              <td class="px-4 py-3 whitespace-nowrap">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                      [ngClass]="getStatusClasses(invoice.invoiceDetails?.status)">
+                  {{ getStatusText(invoice.invoiceDetails?.status) }}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ invoice.invoiceDetails?.invoiceType }}</td>
+              <td class="px-4 py-3">
+                <button [id]="'dropdown-button-' + invoice.id"
+                        [attr.data-dropdown-toggle]="'dropdown-' + invoice.id"
+                        class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors focus:outline-none"
+                        type="button">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  </svg>
+                </button>
+                <div [id]="'dropdown-' + invoice.id"
+                     class="hidden z-10 w-40 rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
+                  <ul class="p-1 text-sm text-gray-700 dark:text-gray-300" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">
+                    <li>
+                      <a class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
+                          <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
+                        </svg>
+                        Upraviť
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="previewInvoice(invoice.id)" class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>
+                        </svg>
+                        Náhľad
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="p-1 border-t border-gray-100 dark:border-[#383852]">
+                    <a class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
+                      <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
+                      </svg>
+                      <span class="text-red-600 dark:text-red-400">Zmazať</span>
+                    </a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </ng-container>
 
+        <ng-template #noData>
+          <tbody>
+            <tr>
+              <td colspan="8" class="px-4 py-16 text-center">
+                <div class="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-500">
+                  <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/>
+                  </svg>
+                  <span class="text-sm">Nenašli sa žiadne faktúry pre zadané kritériá.</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- TODO: Uncomment when a better approach for extracting invoice data from uploaded files is implemented.
+<app-modal [show]="uploadModalOpen" (closeModal)="closeUploadModal()" title="Importovať faktúru">
+  <form #importForm="ngForm">
+    <div class="space-y-4 mb-4">
+
+      <div>
+        <label class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">Spoločnosť</label>
+        <select id="company" [(ngModel)]="selectedCompanyId" name="company"
+                class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] text-sm text-gray-900 dark:text-white px-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+          <option *ngFor="let company of companyResponse.content" [value]="company.id">
+            {{ company.name }} - {{ company.taxId }}
+          </option>
+        </select>
+      </div>
+
+      <div (click)="fileInput.click()"
+           class="flex flex-col items-center justify-center w-full h-44 border-2 border-dashed rounded-xl cursor-pointer transition-colors"
+           [ngClass]="selectedFile
+             ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/10 dark:border-blue-500/50'
+             : 'border-gray-300 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30] hover:bg-gray-100 dark:hover:bg-[#383852]/50'">
+        <div class="flex flex-col items-center py-6 px-4 text-center">
+          <svg class="w-9 h-9 mb-3" [ngClass]="selectedFile ? 'text-blue-500' : 'text-gray-400 dark:text-slate-500'"
+               fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2h-7Zm-.293 9.293a1 1 0 0 1 0 1.414L9.414 14l1.293 1.293a1 1 0 0 1-1.414 1.414l-2-2a1 1 0 0 1 0-1.414l2-2a1 1 0 0 1 1.414 0Zm2.586 1.414a1 1 0 0 1 1.414-1.414l2 2a1 1 0 0 1 0 1.414l-2 2a1 1 0 0 1-1.414-1.414L14.586 14l-1.293-1.293Z" clip-rule="evenodd"/>
+          </svg>
+          <p *ngIf="!selectedFile" class="text-sm font-medium text-gray-600 dark:text-slate-300">Kliknite pre výber súboru</p>
+          <p *ngIf="!selectedFile" class="text-xs text-gray-400 dark:text-slate-500 mt-1">Podporované: .jpg, .png</p>
+          <p *ngIf="selectedFile" class="text-sm font-semibold text-blue-600 dark:text-blue-400">{{ selectedFile.name }}</p>
+          <p *ngIf="selectedFile" class="text-xs text-blue-400 dark:text-blue-500 mt-1">{{ (selectedFile.size / 1024).toFixed(1) }} KB · Kliknite pre zmenu</p>
+        </div>
+        <input #fileInput type="file" class="hidden" (change)="onInvoiceUpload($event)"/>
+      </div>
+
+    </div>
+
+    <div class="border-t border-gray-200 dark:border-[#383852] pt-4 flex items-center justify-end gap-3">
+      <button type="button" (click)="closeUploadModal()"
+              class="px-4 py-2 text-sm rounded-lg border border-gray-300 dark:border-[#383852] text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-[#2a2b30] transition">
+        Zrušiť
+      </button>
+      <button [disabled]="isUploading" (click)="onUploadFile()" type="submit"
+              class="inline-flex items-center gap-2 bg-blue-700 hover:bg-blue-800 disabled:opacity-60 text-white font-medium rounded-lg text-sm px-5 py-2.5 transition">
+        <ng-container *ngIf="!isUploading; else loading">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v6.41A7.5 7.5 0 1 0 10.5 22H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M9 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0Zm6-3a1 1 0 0 1 1 1v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 1 1 0-2h1v-1a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+          </svg>
+          Importovať
+        </ng-container>
         <ng-template #loading>
-          <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-               viewBox="0 0 24 24">
+          <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
           </svg>
           Nahrávam...
         </ng-template>
       </button>
-    </form>
-  </app-modal>
-
-
-  <!-- Table Container -->
-  <div class="w-full">
-    <div class="flex items-center justify-between">
     </div>
-    <table class="min-w-full text-sm text-left text-gray-900 dark:text-white border-b border-gray-200 dark:border-[#383852]">
-      <thead class="text-xs uppercase bg-gray-50 dark:bg-[#2a2b30] text-gray-500 dark:text-gray-300">
-      <tr>
-        <th class="pl-2 pr-1 py-3 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
-          <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-        </th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Číslo faktúry</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Variabilný symbol</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Dodávateľ</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Dátum splatnosti</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Status</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0">Typ faktúry</th>
-        <th class="px-4 py-3 font-semibold border-r border-gray-200 dark:border-[#383852] last:border-r-0"></th>
-      </tr>
-      </thead>
-
-      <!-- data present -->
-      <ng-container *ngIf="invoiceResponse.content.length > 0; else noData">
-        <tbody class="divide-y divide-gray-200 dark:divide-[#383852]">
-        <tr *ngFor="let invoice of invoiceResponse.content!; even as even" class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150"
-            [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'">
-          <td class="pl-2 pr-1 py-4 border-r border-gray-200 dark:border-[#383852] last:border-r-0">
-            <input type="checkbox"
-                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-          </td>
-          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
-            <a [routerLink]="['/web/invoices/', invoice.id]"
-               class="text-blue-600 hover:underline"> {{ invoice.invoiceDetails.invoiceNumber }} </a>
-          </td>
-          <td
-            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.variableSymbol }}
-          </td>
-          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.partner.name }}</td>
-          <td
-            class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.dueDate | date:'dd.MM.yyyy' }}
-          </td>
-          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">
-            <span
-              class="text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm"
-              [ngClass]="getStatusClasses(invoice.invoiceDetails.status)">
-              {{ getStatusText(invoice.invoiceDetails.status) }}
-            </span>
-          </td>
-          <td class="px-4 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap border-r border-gray-200 dark:border-[#383852] last:border-r-0">{{ invoice.invoiceDetails.invoiceType }}
-          </td>
-          <td class="px-4 py-3 flex items-center border-r border-gray-200 dark:border-[#383852] last:border-r-0">
-            <button [id]="'dropdown-button-' + invoice.id"
-                    [attr.data-dropdown-toggle]="'dropdown-' + invoice.id"
-                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:text-gray-800 rounded-lg focus:outline-none"
-                    type="button">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
-              </svg>
-            </button>
-            <div [id]="'dropdown-' + invoice.id"
-                 class="hidden z-10 w-42 bg-white dark:bg-[#2a2b30] rounded divide-y divide-gray-100 dark:divide-[#383852] shadow">
-
-              <ul class="py-2 px-2 text-sm text-gray-500 dark:text-gray-400" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">
-                <li>
-                  <a>
-                    <div
-                      class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
-                           xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                           viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                              d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
-                              clip-rule="evenodd"/>
-                        <path fill-rule="evenodd"
-                              d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
-                              clip-rule="evenodd"/>
-                      </svg>
-                      <span>Edit</span>
-                    </div>
-                  </a>
-                </li>
-
-                <li>
-                  <a (click)="previewInvoice(invoice.id)">
-                    <div
-                      class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true"
-                           xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                           viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                              d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                              clip-rule="evenodd"/>
-                      </svg>
-                      <span>Náhľad</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-              <div class=" p-2">
-                <a>
-                  <div
-                    class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">
-                    <svg class="w-4 h-4 mr-1.5 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                         width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd"
-                            d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                    <span class="text-red-500">Zmazať</span>
-                  </div>
-                </a>
-              </div>
-
-            </div>
-          </td>
-          <!--          <td class="px-4 py-3 flex items-center">-->
-          <!--            <button [id]="'dropdown-button-' + invoice.id"-->
-          <!--                    [attr.data-dropdown-toggle]="'dropdown-' + invoice.id"-->
-          <!--                    class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none"-->
-          <!--                    type="button">-->
-          <!--              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">-->
-          <!--                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />-->
-          <!--              </svg>-->
-          <!--            </button>-->
-          <!--            <div [id]="'dropdown-' + invoice.id"-->
-          <!--                 class="hidden z-10 w-40 bg-white rounded divide-y divide-gray-100 shadow">-->
-          <!--              <ul class="py-2 px-2 text-sm text-gray-500" [attr.aria-labelledby]="'dropdown-button-' + invoice.id">-->
-          <!--                <li>-->
-          <!--                  <a>-->
-          <!--                    <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-          <!--                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-          <!--                        <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>-->
-          <!--                        <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>-->
-          <!--                      </svg>-->
-          <!--                      <span>Edit</span>-->
-          <!--                    </div>-->
-          <!--                  </a>-->
-          <!--                </li>-->
-
-          <!--                <li>-->
-          <!--                  <a (click)="previewInvoice(invoice.id)">-->
-          <!--                    <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-          <!--                      <svg class="w-4 h-4 mr-1.5 text-gray-500 group-hover:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-          <!--                        <path fill-rule="evenodd" d="M4.998 7.78C6.729 6.345 9.198 5 12 5c2.802 0 5.27 1.345 7.002 2.78a12.713 12.713 0 0 1 2.096 2.183c.253.344.465.682.618.997.14.286.284.658.284 1.04s-.145.754-.284 1.04a6.6 6.6 0 0 1-.618.997 12.712 12.712 0 0 1-2.096 2.183C17.271 17.655 14.802 19 12 19c-2.802 0-5.27-1.345-7.002-2.78a12.712 12.712 0 0 1-2.096-2.183 6.6 6.6 0 0 1-.618-.997C2.144 12.754 2 12.382 2 12s.145-.754.284-1.04c.153-.315.365-.653.618-.997A12.714 12.714 0 0 1 4.998 7.78ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd"/>-->
-          <!--                      </svg>-->
-          <!--                      <span>Náhľad</span>-->
-          <!--                    </div>-->
-          <!--                  </a>-->
-          <!--                </li>-->
-
-          <!--              </ul>-->
-          <!--              <div class=" p-2">-->
-          <!--                <a>-->
-          <!--                  <div class="group cursor-pointer px-4 py-2 pl-3 flex items-center rounded-md hover:bg-gray-100 hover:text-black text-sm">-->
-          <!--                    <svg class="w-4 h-4 mr-1.5 text-red-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">-->
-          <!--                      <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>-->
-          <!--                    </svg>-->
-          <!--                    <span class="text-red-500">Zmazať</span>-->
-          <!--                  </div>-->
-          <!--                </a>-->
-          <!--              </div>-->
-
-          <!--            </div>-->
-          <!--          </td>-->
-        </tr>
-        </tbody>
-      </ng-container>
-
-      <!-- no data -->
-      <ng-template #noData>
-        <tbody>
-        <tr>
-          <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
-            <div class="flex flex-col items-center justify-center gap-2">
-              <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                   height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M17 13c-.889.086-1.416.543-2.156 1.057a22.322 22.322 0 0 0-3.958 5.084 1.6 1.6 0 0 1-.582.628 1.549 1.549 0 0 1-1.466.087 1.587 1.587 0 0 1-.537-.406 1.666 1.666 0 0 1-.384-1.279l1.389-4.114M17 13h3V6.5A1.5 1.5 0 0 0 18.5 5v0A1.5 1.5 0 0 0 17 6.5V13Zm-6.5 1H5.585c-.286 0-.372-.014-.626-.15a1.797 1.797 0 0 1-.637-.572 1.873 1.873 0 0 1-.215-1.673l2.098-6.4C6.462 4.48 6.632 4 7.88 4c2.302 0 4.79.943 6.67 1.475"/>
-              </svg>
-              <span>Nenašli sa žiadne bločky pre zadané kritériá.</span>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </ng-template>
-    </table>
-    <div class="border-b border-gray-200 pb-5">
-      <div class="mx-4 mt-4 flex items-center justify-between">
-        <div class="text-sm text-gray-600">
-        <span class="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-            Zobrazuje
-            <span class="font-semibold text-gray-900">
-              {{ (page * size) + 1 }}
-            </span>
-            –
-            <span class="font-semibold text-gray-900">
-              {{
-                Math.min((page + 1) * size, invoiceResponse?.totalElements)
-              }}
-            </span>
-            z
-            <span class="font-semibold text-gray-900">
-              {{ invoiceResponse.totalElements }}
-            </span>
-          </span>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <nav aria-label="navigation">
-            <ul class="flex items-center -space-x-px h-8 text-sm">
-              <li>
-                <button
-                  (click)="goToPreviousPage()"
-                  [disabled]="page === 0"
-                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none">
-                  <span class="sr-only">Previous</span>
-                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                       fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M5 1 1 5l4 4"/>
-                  </svg>
-                </button>
-              </li>
-
-              <li *ngFor="let _ of [].constructor(this.invoiceResponse.totalPages); let pageIndex = index">
-                <a
-                  (click)="goToPage(pageIndex)"
-                  [class.active]="page == pageIndex"
-                  aria-current="page"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "> {{ pageIndex + 1 }} </a>
-              </li>
-
-              <li>
-                <button
-                  (click)="goToNextPage()"
-                  [disabled]="IsLastPage"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50 disabled:pointer-events-none"
-                >
-                  <span class="sr-only">Next</span>
-                  <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true"
-                       xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="m1 9 4-4-4-4"/>
-                  </svg>
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</main>
+  </form>
+</app-modal>
+-->
