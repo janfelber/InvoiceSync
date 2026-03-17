@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -16,16 +19,18 @@ import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.repository.InvoiceRepository;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 @Transactional
 public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
 
   private final InvoiceRepository invoiceRepository;
 
-  public InvoiceBulkChangeServiceImpl(final InvoiceRepository invoiceRepository) {
+  private final InvoiceService invoiceService;
+
+  public InvoiceBulkChangeServiceImpl(final InvoiceRepository invoiceRepository,
+      final InvoiceService invoiceService) {
     this.invoiceRepository = invoiceRepository;
+    this.invoiceService = invoiceService;
   }
 
   @Override
@@ -47,7 +52,12 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
     try (final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final ZipOutputStream zip = new ZipOutputStream(baos)) {
 
-      // TODO: generate PDF per invoice and add to zip
+      for (final Invoice invoice : invoices) {
+        final byte[] pdf = invoiceService.generateInvoicePdf(invoice.getId());
+        zip.putNextEntry(new ZipEntry("invoice-" + invoice.getInvoiceNumber() + ".pdf"));
+        zip.write(pdf);
+        zip.closeEntry();
+      }
 
       zip.finish();
       return baos.toByteArray();

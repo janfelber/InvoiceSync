@@ -155,6 +155,7 @@ export class CreateNewInvoice implements OnInit {
 
   createInvoice() {
     const payload = this.buildInvoice();
+    console.log(this.selectedSupplierCompany);
     this.invoiceService.createInvoice(
       payload, this.selectedSupplierCompany
     ).then(response => {
@@ -281,6 +282,7 @@ export class CreateNewInvoice implements OnInit {
     const price = item.unitPriceWithoutVat || 0;
     const vatRate = item.vatRate || 0;
 
+    item.unitPriceWithVat = price * (1 + vatRate / 100);
     item.totalWithoutTax = qty * price;
     item.taxAmount = item.totalWithoutTax * (vatRate / 100);
     item.totalWithTax = item.totalWithoutTax + item.taxAmount;
