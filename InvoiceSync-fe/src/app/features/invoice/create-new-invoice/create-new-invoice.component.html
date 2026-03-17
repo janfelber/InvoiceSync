@@ -553,7 +553,7 @@
                     [disabled]="companyResponse.content!.length === 0"
                     (change)="onRecipientSelected($event.target!.value)"
                   >
-                    <option value="" disabled selected>Vyberte dodávateľa</option>
+                    <option value="" disabled selected>Vyberte odoberatela</option>
                     <option
                       *ngFor="let company of companyResponse?.content"
                       [value]="company.id"

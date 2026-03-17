@@ -1,5 +1,7 @@
 package com.invoicesync.modules.invoice.mapper;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,16 +77,25 @@ public class InvoiceMapper {
 
     final List<InvoiceItem> items = request.items().stream()
         .map(itemRequest -> {
+          final BigDecimal unitPriceWithVat = itemRequest.getUnitPriceWithVat() != null
+              ? itemRequest.getUnitPriceWithVat()
+              : BigDecimal.ZERO;
+          final BigDecimal unitPriceWithoutVat = unitPriceWithVat
+              .divide(BigDecimal.valueOf(1 + itemRequest.getVatRate() / 100.0), 2, RoundingMode.HALF_UP);
+          final BigDecimal qty = BigDecimal.valueOf(itemRequest.getQuantity());
+
+          System.out.println(unitPriceWithVat);
+
           final InvoiceItem item = new InvoiceItem();
           item.setInvoice(invoice);
           item.setName(itemRequest.getName());
           item.setQuantity(itemRequest.getQuantity());
           item.setUnitType(itemRequest.getUnitType());
-          item.setUnitPriceWithoutVat(itemRequest.getUnitPriceWithoutVat());
-          item.setUnitPriceWithVat(itemRequest.getUnitPriceWithVat());
           item.setVatRate(itemRequest.getVatRate());
-          item.setTotalItemPriceWithoutVat(itemRequest.getTotalItemPriceWithoutVat());
-          item.setTotalItemPriceWithVat(itemRequest.getTotalItemPriceWithVat());
+          item.setUnitPriceWithVat(unitPriceWithVat);
+          item.setUnitPriceWithoutVat(unitPriceWithoutVat);
+          item.setTotalItemPriceWithVat(unitPriceWithVat.multiply(qty));
+          item.setTotalItemPriceWithoutVat(unitPriceWithoutVat.multiply(qty));
           return item;
         })
         .toList();
