@@ -274,9 +274,20 @@ export class Invoices implements OnInit, AfterViewInit {
     this.selectedIds.clear();
   }
 
-  downloadSelectedPdfs(): void {
-    // TODO: implement bulk PDF download
-    console.log('Download PDFs for:', Array.from(this.selectedIds));
+  downloadSelectedPdfs() {
+    this.invoiceService.bulkDownloadInvoices(this.selectedIds)
+      .then((response) => {
+        const blob = new Blob([response.data]);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'invoices.zip';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Download error:', error);
+      });
   }
 
   protected readonly Math = Math;

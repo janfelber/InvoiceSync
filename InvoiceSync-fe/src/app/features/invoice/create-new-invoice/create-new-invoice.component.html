@@ -141,6 +141,7 @@
                       id="dateIssued"
                       name="dateIssued"
                       [(ngModel)]="invoice.invoiceDetails.issueDate"
+                      (changeDate)="onDateChange('issueDate', $event)"
                       class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                       placeholder="Vybrať dátum"
                     />
@@ -162,6 +163,7 @@
                       id="dateDue"
                       name="dateDue"
                       [(ngModel)]="invoice.invoiceDetails.dueDate"
+                      (changeDate)="onDateChange('dueDate', $event)"
                       class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                       placeholder="Vybrať dátum"
                     />
@@ -185,6 +187,7 @@
                       id="dateTax"
                       name="dateTax"
                       [(ngModel)]="invoice.invoiceDetails.taxDate"
+                      (changeDate)="onDateChange('taxDate', $event)"
                       class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                       placeholder="Vybrať dátum"
                     />
