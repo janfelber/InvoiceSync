@@ -88,14 +88,9 @@
             <tbody class="bg-white dark:bg-[#1a1b1e] divide-y divide-slate-100 dark:divide-[#383852]">
               <tr *ngFor="let item of invoice.items; even as even"
                   [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
-                  class="hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors cursor-pointer"
-                  title="Kliknite pre priradenie účtu"
-                  (click)="openDrawer(item)">
+                  class="hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors">
                 <td class="px-4 py-3">
                   <p class="text-sm font-medium text-slate-900 dark:text-white">{{ item.name }}</p>
-                  <p *ngIf="item.accountValue" class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-                    Účet: <span class="text-green-600 dark:text-green-400 font-medium">{{ item.accountValue }}</span>
-                  </p>
                 </td>
                 <td class="px-4 py-3 text-right text-sm text-slate-900 dark:text-slate-100">{{ item.quantity }}</td>
                 <td class="px-4 py-3 text-right text-sm text-slate-900 dark:text-slate-100">{{ item.unitType }}</td>
@@ -167,27 +162,6 @@
         </div>
       </div>
 
-      <!-- Accounting -->
-      <div class="bg-white dark:bg-[#1a1b1e] rounded-lg border border-slate-200 dark:border-[#383852] p-5"
-           *ngIf="invoice.invoiceDetails">
-        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">Účtovníctvo</h3>
-
-        <div class="space-y-3">
-          <div>
-            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Predkontácia</label>
-            <input class="w-full border border-slate-200 dark:border-[#383852] rounded-md px-3 py-2 text-sm bg-slate-50 dark:bg-[#2a2b30] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"/>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Členenie DPH</label>
-            <input class="w-full border border-slate-200 dark:border-[#383852] rounded-md px-3 py-2 text-sm bg-slate-50 dark:bg-[#2a2b30] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"/>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Členenie KV DPH</label>
-            <input class="w-full border border-slate-200 dark:border-[#383852] rounded-md px-3 py-2 text-sm bg-slate-50 dark:bg-[#2a2b30] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"/>
-          </div>
-        </div>
-      </div>
-
       <!-- Payment method -->
       <div class="bg-white dark:bg-[#1a1b1e] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
         <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">Spôsob platby</h3>
@@ -216,85 +190,5 @@
     </div>
   </div>
 
-  <!-- ── Account selection drawer ── -->
-  <div
-    [class.translate-x-0]="drawerOpen"
-    [class.translate-x-full]="!drawerOpen"
-    class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] p-4 overflow-hidden bg-white w-96 dark:bg-[#1a1b1e] transform transition-transform duration-300 ease-in-out translate-x-full flex flex-col border-l border-slate-200 dark:border-[#383852]"
-    tabindex="-1">
-
-    <h5 class="inline-flex items-center mb-4 text-sm font-semibold text-slate-600 dark:text-slate-100">
-      <svg class="w-4 h-4 me-2.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-      </svg>
-      Vyberte účet
-    </h5>
-
-    <button
-      type="button"
-      (click)="closeDrawer()"
-      class="text-slate-400 hover:bg-slate-100 dark:hover:bg-gray-700 hover:text-slate-800 dark:hover:text-white rounded-full w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center transition">
-      <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-      </svg>
-      <span class="sr-only">Zavrieť</span>
-    </button>
-
-    <div class="flex-1 overflow-y-auto pr-1">
-      <div class="space-y-3">
-        <div *ngFor="let accClass of groupedAccounts">
-          <details class="border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] rounded-lg text-sm">
-            <summary class="cursor-pointer text-slate-800 dark:text-slate-100 px-3 py-2 flex justify-between items-center hover:bg-slate-50 dark:hover:bg-gray-700 rounded-md transition">
-              {{ accClass.className }}
-              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </summary>
-            <div class="px-3 pb-3 pt-2 bg-slate-50 dark:bg-[#2a2b30] space-y-3">
-              <div *ngFor="let cat of accClass.categories">
-                <div class="text-xs font-medium text-slate-600 dark:text-slate-100 mb-1">{{ cat.categoryName }}</div>
-                <div class="space-y-1 pl-2">
-                  <label
-                    *ngFor="let acc of cat.accounts"
-                    class="flex items-center p-2 border border-slate-200 dark:border-[#383852] rounded-md cursor-pointer text-sm text-slate-700 dark:text-slate-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200"
-                    [class.bg-blue-100]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                    [class.border-blue-400]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id">
-                    <input
-                      type="radio"
-                      [name]="'account-' + selectedItemForAccount"
-                      class="accent-blue-600 hidden"
-                      [value]="acc"
-                      [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                      [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
-                      (change)="onAccountChange(selectedItemForAccount, acc)"/>
-                    {{ acc.number }} - {{ acc.name }}
-                  </label>
-                </div>
-              </div>
-            </div>
-          </details>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="selectedAccountsPerItem[selectedItemForAccount]"
-         class="mt-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-400 text-sm rounded-md p-3">
-      Pre položku <strong>{{ selectedItemName }}</strong> bol vybraný účet:
-      <strong>{{ selectedAccountsPerItem[selectedItemForAccount]?.number }} – {{ selectedAccountsPerItem[selectedItemForAccount]?.name }}</strong>
-    </div>
-
-    <div class="mt-4 flex justify-between gap-2">
-      <button
-        (click)="assignAccountToItem()"
-        class="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm">
-        Použiť účet
-      </button>
-      <button
-        (click)="closeDrawer()"
-        class="flex-1 border border-slate-300 dark:border-[#383852] py-2 rounded-md hover:bg-slate-100 dark:hover:bg-gray-700 dark:text-slate-100 transition text-sm">
-        Zavrieť
-      </button>
-    </div>
-  </div>
 
 </main>
