@@ -1,62 +1,38 @@
-<div class="fixed inset-0 top-16 flex bg-gray-50 dark:bg-[#111213]">
+<div class="fixed top-16 bottom-0 left-0 sm:left-52 right-0 flex flex-col bg-gray-50 dark:bg-[#111213]">
 
-  <!-- ── Left Sidebar ── -->
-  <aside class="w-64 shrink-0 flex flex-col bg-white dark:bg-[#1a1b1e] border-r border-gray-200 dark:border-[#2e2f3e]">
-
-    <!-- Brand -->
-    <div class="px-4 pt-5 pb-4 border-b border-gray-100 dark:border-[#2e2f3e]">
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
-          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M17.44 3a1 1 0 0 1 .707.293l2.56 2.56a1 1 0 0 1 0 1.414L18.194 9.78 14.22 5.806l2.513-2.513A1 1 0 0 1 17.44 3Zm-4.634 4.22-9.513 9.513a1 1 0 0 0 0 1.414l2.56 2.56a1 1 0 0 0 1.414 0l9.513-9.513-3.974-3.974ZM6 6a1 1 0 0 1 1 1v1h1a1 1 0 0 1 0 2H7v1a1 1 0 1 1-2 0v-1H4a1 1 0 0 1 0-2h1V7a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
-          </svg>
-        </div>
-        <div>
-          <p class="text-sm font-semibold text-gray-900 dark:text-white">Synxie</p>
-          <p class="text-xs text-gray-400">AI účtovný asistent</p>
-        </div>
+  <!-- ── Header ── -->
+  <div class="flex items-center justify-between px-6 py-3 bg-white dark:bg-[#1a1b1e] border-b border-gray-200 dark:border-[#383852] shrink-0">
+    <div class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M17.44 3a1 1 0 0 1 .707.293l2.56 2.56a1 1 0 0 1 0 1.414L18.194 9.78 14.22 5.806l2.513-2.513A1 1 0 0 1 17.44 3Zm-4.634 4.22-9.513 9.513a1 1 0 0 0 0 1.414l2.56 2.56a1 1 0 0 0 1.414 0l9.513-9.513-3.974-3.974ZM6 6a1 1 0 0 1 1 1v1h1a1 1 0 0 1 0 2H7v1a1 1 0 1 1-2 0v-1H4a1 1 0 0 1 0-2h1V7a1 1 0 0 1 1-1Z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+      <div>
+        <p class="text-sm font-semibold text-gray-900 dark:text-white">Synxie</p>
+        <p class="text-xs text-gray-400 dark:text-gray-500">AI účtovný asistent</p>
       </div>
     </div>
-
-    <!-- New Chat button -->
-    <div class="px-3 pt-3">
+    <div class="flex items-center gap-2">
+      <button (click)="historyDrawerOpen = true"
+              class="inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-gray-200 dark:border-[#383852] text-sm font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-transparent hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        História
+      </button>
       <button (click)="newChat()"
-              class="w-full flex items-center gap-2 h-9 px-3 rounded-lg border border-gray-200 dark:border-[#383852] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#2e2f3e] transition">
+              class="inline-flex items-center gap-2 h-9 px-3 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
         Nový chat
       </button>
     </div>
+  </div>
 
-    <!-- Conversation list -->
-    <div class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-      <p class="px-2 pb-1.5 text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Nedávne</p>
-
-      <button *ngFor="let chat of lastChatsList"
-              (click)="loadConversationMessages(chat.conversationId)"
-              class="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-left transition group"
-              [ngClass]="activeConversationId === chat.conversationId
-                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400'
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#2a2b30] hover:text-gray-900 dark:hover:text-white'">
-        <svg class="w-4 h-4 shrink-0 text-gray-400 dark:text-gray-500"
-             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-        </svg>
-        <span class="truncate flex-1">{{ chat.title }}</span>
-      </button>
-
-      <div *ngIf="lastChatsList.length === 0"
-           class="px-2 py-8 text-center text-xs text-gray-400 dark:text-gray-500">
-        Žiadne predchádzajúce chaty
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- ── Main Chat Area ── -->
-  <div class="flex-1 flex flex-col min-w-0">
+  <!-- ── Chat area ── -->
+  <div class="flex-1 flex flex-col min-h-0">
 
     <!-- Empty state -->
     <ng-container *ngIf="messages.length === 0; else chatView">
@@ -70,12 +46,10 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm mb-8">
           Tvoj AI účtovný asistent. Opýtaj sa ma čokoľvek o faktúrach, DPH, účtovníctve alebo InvoiceSync.
         </p>
-
-        <!-- Suggestion chips -->
         <div class="grid grid-cols-2 gap-2.5 max-w-lg w-full">
           <button *ngFor="let s of suggestions"
                   (click)="sendSuggestion(s)"
-                  class="flex items-start gap-2.5 text-left px-4 py-3 rounded-xl border border-gray-200 dark:border-[#2e2f3e] bg-white dark:bg-[#1a1b1e] hover:border-blue-300 dark:hover:border-blue-800 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group">
+                  class="flex items-start gap-2.5 text-left px-4 py-3 rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] hover:border-blue-300 dark:hover:border-blue-800 hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-all group">
             <svg class="w-3.5 h-3.5 mt-0.5 shrink-0 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
@@ -91,26 +65,21 @@
         <div class="max-w-2xl mx-auto space-y-6">
 
           <ng-container *ngFor="let message of messages">
-
-            <!-- User message -->
             <div *ngIf="message.role === 'USER'" class="flex justify-end">
               <div class="max-w-[75%] bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm leading-relaxed shadow-sm">
                 {{ message.content }}
               </div>
             </div>
-
-            <!-- Assistant message -->
             <div *ngIf="message.role === 'ASSISTANT'" class="flex items-start gap-3">
               <div class="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center shrink-0 mt-0.5">
                 <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path fill-rule="evenodd" d="M17.44 3a1 1 0 0 1 .707.293l2.56 2.56a1 1 0 0 1 0 1.414L18.194 9.78 14.22 5.806l2.513-2.513A1 1 0 0 1 17.44 3Zm-4.634 4.22-9.513 9.513a1 1 0 0 0 0 1.414l2.56 2.56a1 1 0 0 0 1.414 0l9.513-9.513-3.974-3.974Z" clip-rule="evenodd"/>
                 </svg>
               </div>
-              <div class="max-w-[75%] bg-white dark:bg-[#1a1b1e] border border-gray-100 dark:border-[#2e2f3e] rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 leading-relaxed shadow-sm">
+              <div class="max-w-[75%] bg-white dark:bg-[#1a1b1e] border border-gray-100 dark:border-[#383852] rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 leading-relaxed shadow-sm">
                 {{ message.content }}
               </div>
             </div>
-
           </ng-container>
 
           <!-- Typing indicator -->
@@ -120,7 +89,7 @@
                 <path fill-rule="evenodd" d="M17.44 3a1 1 0 0 1 .707.293l2.56 2.56a1 1 0 0 1 0 1.414L18.194 9.78 14.22 5.806l2.513-2.513A1 1 0 0 1 17.44 3Zm-4.634 4.22-9.513 9.513a1 1 0 0 0 0 1.414l2.56 2.56a1 1 0 0 0 1.414 0l9.513-9.513-3.974-3.974Z" clip-rule="evenodd"/>
               </svg>
             </div>
-            <div class="bg-white dark:bg-[#1a1b1e] border border-gray-100 dark:border-[#2e2f3e] rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+            <div class="bg-white dark:bg-[#1a1b1e] border border-gray-100 dark:border-[#383852] rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
               <div class="flex gap-1 items-center h-4">
                 <span class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style="animation-delay: 0ms"></span>
                 <span class="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style="animation-delay: 150ms"></span>
@@ -134,30 +103,69 @@
     </ng-template>
 
     <!-- ── Input bar ── -->
-    <div class="border-t border-gray-200 dark:border-[#2e2f3e] bg-white dark:bg-[#1a1b1e] px-6 py-4">
-      <div class="max-w-2xl mx-auto">
-        <div class="flex items-end gap-3 bg-gray-50 dark:bg-[#111213] border border-gray-200 dark:border-[#383852] rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition">
-          <textarea
-            #inputRef
-            [(ngModel)]="userMessage"
-            (keydown.enter)="onEnter($event)"
-            placeholder="Opýtaj sa ma niečo o účtovníctve, DPH alebo faktúrach..."
-            rows="1"
-            class="flex-1 bg-transparent resize-none text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none leading-relaxed max-h-36"
-          ></textarea>
-          <button (click)="sendMessage()"
-                  [disabled]="!userMessage.trim() || isLoading"
-                  class="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition shrink-0">
-            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
-          </button>
-        </div>
-        <p class="text-center text-[11px] text-gray-400 dark:text-gray-500 mt-2">
-          Synxie môže robiť chyby. Dôležité rozhodnutia si vždy over.
-        </p>
+    <div class="border-t border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-6 py-3 shrink-0">
+      <div class="max-w-2xl mx-auto flex items-center gap-2">
+        <textarea
+          #inputRef
+          [(ngModel)]="userMessage"
+          (keydown.enter)="onEnter($event)"
+          placeholder="Opýtaj sa ma niečo..."
+          rows="1"
+          class="flex-1 resize-none text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 bg-slate-50 dark:bg-[#2a2b30] border border-gray-200 dark:border-[#383852] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors leading-relaxed max-h-32"
+        ></textarea>
+        <button (click)="sendMessage()"
+                [disabled]="!userMessage.trim() || isLoading"
+                class="flex items-center justify-center w-9 h-9 rounded-lg transition-all shrink-0"
+                [ngClass]="userMessage.trim() && !isLoading
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                  : 'bg-gray-100 dark:bg-[#2a2b30] text-gray-400 dark:text-gray-500 cursor-not-allowed'">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+          </svg>
+        </button>
       </div>
     </div>
 
   </div>
+
+  <!-- ── História drawer ── -->
+  <div *ngIf="historyDrawerOpen"
+       (click)="historyDrawerOpen = false"
+       class="fixed inset-0 bg-black/30 z-40">
+  </div>
+
+  <div [class.translate-x-0]="historyDrawerOpen"
+       [class.translate-x-full]="!historyDrawerOpen"
+       class="fixed top-16 bottom-0 right-0 z-50 w-80 bg-white dark:bg-[#1a1b1e] border-l border-gray-200 dark:border-[#383852] transform transition-transform duration-300 ease-in-out translate-x-full flex flex-col">
+
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-[#383852]">
+      <h5 class="text-sm font-semibold text-gray-900 dark:text-white">História chatov</h5>
+      <button (click)="historyDrawerOpen = false"
+              class="text-gray-400 hover:bg-gray-100 dark:hover:bg-[#2a2b30] hover:text-gray-900 dark:hover:text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto py-2 px-2">
+      <div *ngIf="lastChatsList.length === 0"
+           class="px-2 py-12 text-center text-xs text-gray-400 dark:text-gray-500">
+        Žiadne predchádzajúce chaty
+      </div>
+      <button *ngFor="let chat of lastChatsList"
+              (click)="loadConversationMessages(chat.conversationId); historyDrawerOpen = false"
+              class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-left transition-colors group"
+              [ngClass]="activeConversationId === chat.conversationId
+                ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#2a2b30] hover:text-gray-900 dark:hover:text-white'">
+        <svg class="w-4 h-4 shrink-0 text-gray-400 dark:text-gray-500 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        <span class="truncate flex-1">{{ chat.title }}</span>
+      </button>
+    </div>
+
+  </div>
+
 </div>

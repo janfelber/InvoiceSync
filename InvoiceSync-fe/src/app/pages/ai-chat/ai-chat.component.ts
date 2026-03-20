@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AiService} from "../../core/services/ai.service";
 import {LastChat} from "../../core/models/last-chats-list";
@@ -11,9 +11,9 @@ import {ChatDto} from "../../core/models/chat-dto";
     NgForOf,
     NgIf,
     FormsModule,
+    NgClass,
   ],
-  templateUrl: './ai-chat.component.html',
-  styleUrl: './ai-chat.component.css'
+  templateUrl: './ai-chat.component.html'
 })
 export class AiChatComponent implements OnInit {
 
@@ -26,6 +26,7 @@ export class AiChatComponent implements OnInit {
   protected userMessage = '';
   protected isLoading = false;
   protected activeConversationId: number | null = null;
+  protected historyDrawerOpen = false;
 
   protected suggestions: string[] = [
     'Čo je prenesená daňová povinnosť?',
@@ -89,17 +90,17 @@ export class AiChatComponent implements OnInit {
 
     this.messages.push({ role: 'USER', content } as ChatDto);
 
-    this.aiService.sendMessage(content, this.activeConversationId).then((response) => {
-      const reply = response.data as ChatDto;
-      this.messages.push(reply);
-      if (reply.conversationId) {
-        this.activeConversationId = reply.conversationId;
-        this.loadUserConversations();
-      }
-    }).catch(() => {
-      this.messages.push({ role: 'ASSISTANT', content: 'Nastala chyba. Skús to znova.' } as ChatDto);
-    }).finally(() => {
-      this.isLoading = false;
-    });
+    // this.aiService.sendMessage(content, this.activeConversationId).then((response) => {
+    //   const reply = response.data as ChatDto;
+    //   this.messages.push(reply);
+    //   if (reply.conversationId) {
+    //     this.activeConversationId = reply.conversationId;
+    //     this.loadUserConversations();
+    //   }
+    // }).catch(() => {
+    //   this.messages.push({ role: 'ASSISTANT', content: 'Nastala chyba. Skús to znova.' } as ChatDto);
+    // }).finally(() => {
+    //   this.isLoading = false;
+    // });
   }
 }
