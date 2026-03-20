@@ -1,114 +1,105 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {RouterLink} from "@angular/router";
-import {NgClass, NgForOf, NgIf, NgSwitch, NgSwitchCase} from "@angular/common";
-import {FormBuilder, FormsModule} from "@angular/forms";
-import {initFlowbite} from "flowbite";
+import {NgForOf, NgIf} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 import {AiService} from "../../core/services/ai.service";
-import {LastChat } from "../../core/models/last-chats-list";
+import {LastChat} from "../../core/models/last-chats-list";
 import {ChatDto} from "../../core/models/chat-dto";
-
-interface ChatMessage {
-  from: 'user' | 'ai';
-  text: string;
-}
 
 @Component({
   selector: 'app-ai-chat',
   imports: [
-    RouterLink,
-    NgClass,
-    FormsModule,
     NgForOf,
-    NgSwitch,
-    NgSwitchCase,
-    NgIf
+    NgIf,
+    FormsModule,
   ],
   templateUrl: './ai-chat.component.html',
   styleUrl: './ai-chat.component.css'
 })
-export class AiChatComponent implements OnInit{
-  constructor(
-    private aiService: AiService,
-  ) {
+export class AiChatComponent implements OnInit {
 
-  }
+  constructor(private aiService: AiService) {}
 
-  ngOnInit(): void {
-    this.loadUserConversations();
-      initFlowbite();
-  }
-  @ViewChild('chatContainer') private chatContainer!: ElementRef;
-  chatsOpen = false;
-
-  currentMessage = '';
-  // messages: ChatMessage[] = [
-  //   { from: 'ai', text: 'Ahoj! Ja som tvoj AI asistent.' },
-  //   { from: 'user', text: 'Ahoj, ako sa máš?' },
-  //   { from: 'ai', text: 'Mám sa dobre, ďakujem! Čím ti môžem pomôcť?' },
-  // ];
+  @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
   protected lastChatsList: LastChat[] = [];
   protected messages: ChatDto[] = [];
+  protected userMessage = '';
+  protected isLoading = false;
+  protected activeConversationId: number | null = null;
 
-  // sendMessage() {
-  //   if (!this.currentMessage.trim()) return;
-  //
-  //   this.messages.push({ from: 'user', text: this.currentMessage });
-  //
-  //   const userMsg = this.currentMessage;
-  //   this.currentMessage = '';
-  //
-  //   // fake AI odpoveď
-  //   setTimeout(() => {
-  //     const fakeReplies = [
-  //       'Zaujímavá otázka!',
-  //       'To si musíš overiť.',
-  //       'Samozrejme, viem ti s tým pomôcť.',
-  //       'Môžeš skúsiť toto riešenie.'
-  //     ];
-  //     const reply = fakeReplies[Math.floor(Math.random() * fakeReplies.length)];
-  //     this.messages.push({ from: 'ai', text: reply });
-  //     this.scrollToBottom();
-  //   }, 500);
-  //
-  //   this.scrollToBottom();
-  // }
+  protected suggestions: string[] = [
+    'Čo je prenesená daňová povinnosť?',
+    'Ako vypočítam DPH z faktúry?',
+    'Aký je rozdiel medzi dobropisom a faktúrou?',
+    'Kedy musím podať daňové priznanie?',
+  ];
 
-  clearChat() {
-    this.messages = [];
+  ngOnInit(): void {
+    this.loadUserConversations();
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
   private scrollToBottom(): void {
     try {
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      const el = this.scrollContainer?.nativeElement;
+      if (el) el.scrollTop = el.scrollHeight;
     } catch {}
   }
 
-  loadUserConversations() {
+  loadUserConversations(): void {
     this.aiService.getUserConversations().then((response) => {
       this.lastChatsList = response.data as LastChat[];
-      console.log(this.lastChatsList);
-    })
+    });
   }
 
-  loadConversationMessages(conversationId: number) {
-    this.aiService.getMessagesForConversation(
-      conversationId
-    ).then((response) => {
+  loadConversationMessages(conversationId: number): void {
+    this.activeConversationId = conversationId;
+    this.aiService.getMessagesForConversation(conversationId).then((response) => {
       this.messages = response.data as ChatDto[];
-      console.log(response);
-    })
+    });
   }
 
-  openChatsList() {
-    this.chatsOpen = true;
+  newChat(): void {
+    this.messages = [];
+    this.activeConversationId = null;
+    this.userMessage = '';
   }
 
-  closeChatsList() {
-    this.chatsOpen = false;
+  sendSuggestion(text: string): void {
+    this.userMessage = text;
+    this.sendMessage();
+  }
+
+  onEnter(event: KeyboardEvent): void {
+    if (!event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
+    }
+  }
+
+  sendMessage(): void {
+    if (!this.userMessage.trim() || this.isLoading) return;
+
+    const content = this.userMessage.trim();
+    this.userMessage = '';
+    this.isLoading = true;
+
+    this.messages.push({ role: 'USER', content } as ChatDto);
+
+    this.aiService.sendMessage(content, this.activeConversationId).then((response) => {
+      const reply = response.data as ChatDto;
+      this.messages.push(reply);
+      if (reply.conversationId) {
+        this.activeConversationId = reply.conversationId;
+        this.loadUserConversations();
+      }
+    }).catch(() => {
+      this.messages.push({ role: 'ASSISTANT', content: 'Nastala chyba. Skús to znova.' } as ChatDto);
+    }).finally(() => {
+      this.isLoading = false;
+    });
   }
 }
