@@ -1,0 +1,204 @@
+<div class="min-h-screen bg-gray-50 dark:bg-[#111213]">
+
+  <!-- Top bar -->
+  <div class="bg-white dark:bg-[#1a1b1e] border-b border-gray-200 dark:border-[#2e2f3e] px-6 py-3 flex items-center gap-3">
+    <a routerLink="/home"
+       class="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Back
+    </a>
+    <span class="text-gray-200 dark:text-gray-700">/</span>
+    <span class="text-sm font-medium text-gray-900 dark:text-white">Help & Tutorials</span>
+  </div>
+
+  <div class="flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 min-h-[calc(100vh-49px)] bg-white dark:bg-[#1a1b1e] border-r border-gray-200 dark:border-[#2e2f3e] flex flex-col shrink-0">
+
+      <!-- Sidebar header -->
+      <div class="px-4 pt-6 pb-4 border-b border-gray-100 dark:border-[#2e2f3e]">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-900 dark:text-white">Tutorials</p>
+            <p class="text-xs text-gray-400">{{ totalCount }} videos total</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category nav -->
+      <nav class="flex-1 p-3 space-y-0.5">
+        <button *ngFor="let cat of categories"
+                (click)="selectCategory(cat)"
+                class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-left group"
+                [ngClass]="selectedCategory.id === cat.id
+                  ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-[#2a2b30] hover:text-gray-900 dark:hover:text-white'">
+
+          <!-- Icon -->
+          <span class="w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition"
+                [ngClass]="selectedCategory.id === cat.id
+                  ? 'bg-blue-100 dark:bg-blue-900/50'
+                  : 'bg-gray-100 dark:bg-[#2a2b30] group-hover:bg-gray-200 dark:group-hover:bg-[#383852]'">
+            <!-- Chart of Accounts -->
+            <svg *ngIf="cat.id === 'accounts'"
+                 class="w-3.5 h-3.5"
+                 [ngClass]="selectedCategory.id === cat.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"/>
+            </svg>
+            <!-- Invoices -->
+            <svg *ngIf="cat.id === 'invoices'"
+                 class="w-3.5 h-3.5"
+                 [ngClass]="selectedCategory.id === cat.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <!-- Receipts -->
+            <svg *ngIf="cat.id === 'receipts'"
+                 class="w-3.5 h-3.5"
+                 [ngClass]="selectedCategory.id === cat.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <!-- Getting Started -->
+            <svg *ngIf="cat.id === 'getting-started'"
+                 class="w-3.5 h-3.5"
+                 [ngClass]="selectedCategory.id === cat.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </span>
+
+          <span class="flex-1 truncate">{{ cat.label }}</span>
+
+          <span *ngIf="categoryCount(cat) > 0"
+                class="text-xs tabular-nums px-1.5 py-0.5 rounded-md"
+                [ngClass]="selectedCategory.id === cat.id
+                  ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400'
+                  : 'bg-gray-100 dark:bg-[#2a2b30] text-gray-500 dark:text-gray-400'">
+            {{ categoryCount(cat) }}
+          </span>
+        </button>
+      </nav>
+
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 overflow-auto">
+
+      <!-- Category hero -->
+      <div class="px-8 pt-8 pb-6 border-b border-gray-200 dark:border-[#2e2f3e]">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ selectedCategory.label }}</h1>
+        <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400 max-w-xl">{{ selectedCategory.description }}</p>
+
+        <!-- App filter pills (only if multiple apps) -->
+        <div *ngIf="apps.length > 1" class="flex gap-2 mt-5">
+          <button *ngFor="let app of apps"
+                  (click)="selectApp(app)"
+                  class="h-8 px-3.5 rounded-full text-sm font-medium transition"
+                  [ngClass]="selectedApp === app
+                    ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900'
+                    : 'bg-white dark:bg-[#1a1b1e] border border-gray-200 dark:border-[#2e2f3e] text-gray-600 dark:text-gray-300 hover:border-gray-300 dark:hover:border-[#4a4b5e]'">
+            {{ app }}
+          </button>
+        </div>
+
+        <!-- Single app label -->
+        <div *ngIf="apps.length === 1" class="mt-4">
+          <span class="inline-flex items-center gap-1.5 h-7 px-3 rounded-full bg-gray-100 dark:bg-[#2a2b30] text-xs font-medium text-gray-600 dark:text-gray-300">
+            <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+            {{ selectedApp }}
+          </span>
+        </div>
+      </div>
+
+      <div class="p-8">
+
+        <!-- Videos -->
+        <div *ngIf="tutorials.length > 0" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div *ngFor="let item of tutorials; let i = index"
+               class="group bg-white dark:bg-[#1a1b1e] border border-gray-200 dark:border-[#2e2f3e] rounded-xl overflow-hidden hover:border-blue-300 dark:hover:border-blue-800 transition-all hover:shadow-sm">
+
+            <!-- Video area -->
+            <div class="relative aspect-video bg-gray-900 overflow-hidden">
+              <video *ngIf="playingIndex === i"
+                     #videoRef
+                     class="w-full h-full object-cover"
+                     [src]="item.src"
+                     (ended)="onVideoEnded()"
+                     controls>
+              </video>
+
+              <ng-container *ngIf="playingIndex !== i">
+                <video #videoRef class="hidden" [src]="item.src" (ended)="onVideoEnded()"></video>
+
+                <img *ngIf="item.thumbnail" [src]="item.thumbnail" [alt]="item.text"
+                     class="w-full h-full object-cover opacity-75 group-hover:opacity-90 transition-opacity"/>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+
+                <div *ngIf="item.thumbnailText"
+                     class="absolute top-3 left-3 px-2 py-1 rounded-md bg-black/50 backdrop-blur-sm text-xs text-white font-medium">
+                  {{ item.thumbnailText }}
+                </div>
+
+                <!-- Duration badge placeholder -->
+                <div class="absolute bottom-3 right-3 px-1.5 py-0.5 rounded bg-black/60 text-xs text-white font-mono">
+                  video
+                </div>
+
+                <button (click)="togglePlay(i)"
+                        class="absolute inset-0 flex items-center justify-center">
+                  <div class="w-11 h-11 rounded-full bg-white/90 flex items-center justify-center shadow-lg
+                              group-hover:scale-110 transition-transform duration-150">
+                    <svg class="w-4 h-4 text-gray-900 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                </button>
+              </ng-container>
+
+              <button *ngIf="playingIndex === i" (click)="togglePlay(i)"
+                      class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition">
+                <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-4 py-3.5">
+              <p class="text-sm font-medium text-gray-800 dark:text-white leading-snug">{{ item.text }}</p>
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ selectedApp }} · {{ selectedCategory.label }}</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div *ngIf="tutorials.length === 0"
+             class="flex flex-col items-center justify-center py-24 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-white dark:bg-[#1a1b1e] border border-gray-200 dark:border-[#2e2f3e] flex items-center justify-center mb-5 shadow-sm">
+            <svg class="w-7 h-7 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.069A1 1 0 0121 8.862v6.276a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
+            </svg>
+          </div>
+          <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">No tutorials yet</p>
+          <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 max-w-xs">
+            Tutorials for <strong class="text-gray-500 dark:text-gray-400">{{ selectedCategory.label }}</strong> are coming soon.
+          </p>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+</div>
