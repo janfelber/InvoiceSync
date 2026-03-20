@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
+import {DecimalPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {initFlowbite} from 'flowbite'
 import {CompanyService} from "../../../core/services/company.service";
@@ -29,7 +29,8 @@ interface RecipientDraft {
     DecimalPipe,
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    NgClass,
   ],
   templateUrl: './create-new-invoice.component.html',
   styleUrl: './create-new-invoice.component.css'
@@ -277,8 +278,34 @@ export class CreateNewInvoice implements OnInit {
     this.items.splice(index, 1);
   }
 
+  dueDayPreset: number = 30;
+  readonly duePresets = [14, 30, 60, 90];
+
   onDateChange(field: 'issueDate' | 'dueDate' | 'taxDate', event: Event) {
     this.invoice.invoiceDetails[field] = (event.target as HTMLInputElement).value;
+    if (field === 'issueDate') {
+      this.setDuePreset(this.dueDayPreset);
+    }
+  }
+
+  setDuePreset(days: number): void {
+    this.dueDayPreset = days;
+    if (!this.invoice.invoiceDetails.issueDate) return;
+    const parts = this.invoice.invoiceDetails.issueDate.split('.');
+    if (parts.length !== 3) return;
+    const base = new Date(+parts[2], +parts[1] - 1, +parts[0]);
+    base.setDate(base.getDate() + days);
+    const dd = String(base.getDate()).padStart(2, '0');
+    const mm = String(base.getMonth() + 1).padStart(2, '0');
+    this.invoice.invoiceDetails.dueDate = `${dd}.${mm}.${base.getFullYear()}`;
+  }
+
+  syncVariableSymbol() {
+    this.invoice.invoiceDetails.variableSymbol = this.invoice.invoiceDetails.numberRequested;
+  }
+
+  syncDeliveryDate() {
+    this.invoice.invoiceDetails.taxDate = this.invoice.invoiceDetails.issueDate;
   }
 
   updateItemTotals(item: any) {

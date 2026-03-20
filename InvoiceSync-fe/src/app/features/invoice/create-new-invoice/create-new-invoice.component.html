@@ -105,17 +105,24 @@
           <div data-slot="card" class="bg-white dark:bg-[#2a2b30] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
             <h3 class="mb-4 font-medium dark:text-white"> Basic Information </h3>
             <div class="space-y-4">
-              <div class="grid grid-cols-2 gap-4">
+              <!-- Invoice Number + sync + Variable Symbol -->
+              <div class="grid items-end gap-2" style="grid-template-columns: 1fr auto 1fr">
                 <div class="space-y-2">
-                  <label for="invoiceNumber" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Invoice
-                    Number</label>
+                  <label for="invoiceNumber" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Invoice Number</label>
                   <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white" id="invoiceNumber"
                          name="invoiceNumber" [(ngModel)]="invoice.invoiceDetails.numberRequested"
                          placeholder="FW-XXXXXX">
                 </div>
+                <button type="button"
+                        (click)="syncVariableSymbol()"
+                        title="Kopírovať do variabilného symbolu"
+                        class="h-9 w-9 flex items-center justify-center rounded-md border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0-4-4m4 4-4 4m0 6H4m0 0 4 4m-4-4 4-4"/>
+                  </svg>
+                </button>
                 <div class="space-y-2">
-                  <label for="variableSymbol" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Variable
-                    Symbol</label>
+                  <label for="variableSymbol" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Variable Symbol</label>
                   <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                          id="variableSymbol"
                          [(ngModel)]="invoice.invoiceDetails.variableSymbol"
@@ -123,8 +130,8 @@
                 </div>
               </div>
 
-
-              <div class="grid grid-cols-2 gap-4">
+              <!-- Issue Date + sync + Delivery Date -->
+              <div class="grid items-end gap-2" style="grid-template-columns: 1fr auto 1fr">
                 <div class="space-y-2">
                   <label for="dateIssued" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Issue Date *</label>
                   <div class="relative w-full">
@@ -147,30 +154,14 @@
                     />
                   </div>
                 </div>
-                <div class="space-y-2">
-                  <label for="dateDue" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Due Date *</label>
-                  <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                      </svg>
-                    </div>
-                    <input
-                      datepicker
-                      datepicker-autohide
-                      datepicker-format="dd.mm.yyyy"
-                      type="text"
-                      id="dateDue"
-                      name="dateDue"
-                      [(ngModel)]="invoice.invoiceDetails.dueDate"
-                      (changeDate)="onDateChange('dueDate', $event)"
-                      class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
-                      placeholder="Vybrať dátum"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
+                <button type="button"
+                        (click)="syncDeliveryDate()"
+                        title="Kopírovať dátum vystavenia do dátumu dodania"
+                        class="h-9 w-9 flex items-center justify-center rounded-md border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0-4-4m4 4-4 4m0 6H4m0 0 4 4m-4-4 4-4"/>
+                  </svg>
+                </button>
                 <div class="space-y-2">
                   <label for="dateTax" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Delivery Date *</label>
                   <div class="relative">
@@ -193,6 +184,41 @@
                     />
                   </div>
                 </div>
+              </div>
+
+              <!-- Due Date + presets -->
+              <div class="space-y-2">
+                  <label for="dateDue" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Due Date *</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                      </svg>
+                    </div>
+                    <input
+                      datepicker
+                      datepicker-autohide
+                      datepicker-format="dd.mm.yyyy"
+                      type="text"
+                      id="dateDue"
+                      name="dateDue"
+                      [(ngModel)]="invoice.invoiceDetails.dueDate"
+                      (changeDate)="onDateChange('dueDate', $event)"
+                      class="flex h-9 w-full min-w-0 rounded-md border ps-9 pe-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                      placeholder="Vybrať dátum"
+                    />
+                  </div>
+                  <div class="flex gap-1.5">
+                    <button *ngFor="let d of duePresets"
+                            type="button"
+                            (click)="setDuePreset(d)"
+                            class="px-5 py-1.5 text-xs font-medium rounded-md border transition-colors"
+                            [ngClass]="dueDayPreset === d
+                              ? 'bg-blue-600 border-blue-600 text-white'
+                              : 'bg-white dark:bg-[#1a1b1e] border-slate-200 dark:border-slate-500 text-slate-600 dark:text-slate-200 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 dark:hover:border-blue-500'">
+                      {{ d }}d
+                    </button>
+                  </div>
               </div>
             </div>
           </div>
