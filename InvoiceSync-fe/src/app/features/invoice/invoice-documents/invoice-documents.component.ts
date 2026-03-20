@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {InvoiceService} from "../../../core/services/invoice.service";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -15,7 +15,8 @@ import {initFlowbite} from "flowbite";
     FormsModule,
     MatDialogWindowComponent,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './invoice-documents.component.html',
   styleUrl: './invoice-documents.component.css'
