@@ -3,119 +3,102 @@
 <head>
   <meta charset="UTF-8"/>
   <style>
-    * {
-      margin:     0;
-      padding:    0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Liberation Sans', Arial, sans-serif;
       font-size:   13px;
-      color:       #2d2d2d;
+      color:       #111111;
+      background:  #ffffff;
     }
 
     .page {
-      width:   100%;
-      padding: 0;
+      padding: 56px 64px;
     }
 
-    /* ── Blue header ── */
-    .header {
-      background: #0067DD;
-      padding:    28px 48px;
-    }
-
+    /* ── Header ── */
     .header-logo {
-      width: 130px;
+      width: 120px;
+      margin-bottom: 48px;
     }
 
-    .header-right {
-      text-align:     right;
-      vertical-align: middle;
-    }
-
-    .header-invoice-label {
-      color:       rgba(255, 255, 255, 0.7);
-      font-size:   11px;
-      white-space: nowrap;
-    }
-
-    .header-invoice-number {
-      color:       #ffffff;
-      font-size:   22px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    .header-date-label {
-      color:       rgba(255, 255, 255, 0.7);
-      font-size:   11px;
-      white-space: nowrap;
-      margin-top:  8px;
-    }
-
-    .header-date-value {
-      color:       #ffffff;
-      font-size:   13px;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-
-    /* ── Parties section ── */
-    .parties {
-      padding:    32px 48px;
-      border-bottom: 1px solid #e8edf2;
-    }
-
-    .party-label {
-      font-size:      10px;
-      font-weight:    bold;
-      color:          #0067DD;
+    .invoice-label {
+      font-size:      11px;
+      color:          #888888;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1.5px;
       margin-bottom:  6px;
     }
 
-    .party-name {
-      font-size:   14px;
+    .invoice-number {
+      font-size:   28px;
       font-weight: bold;
-      color:       #1a1a1a;
-      margin-bottom: 4px;
+      color:       #111111;
+    }
+
+    .header-meta-label {
+      font-size:   11px;
+      color:       #888888;
+      margin-top:  16px;
+      margin-bottom: 3px;
+    }
+
+    .header-meta-value {
+      font-size:   13px;
+      color:       #111111;
+      font-weight: bold;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border:     none;
+      border-top: 1px solid #e8e8e8;
+      margin:     36px 0;
+    }
+
+    /* ── Parties ── */
+    .party-label {
+      font-size:      10px;
+      color:          #888888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom:  10px;
+    }
+
+    .party-name {
+      font-size:     14px;
+      font-weight:   bold;
+      color:         #111111;
+      margin-bottom: 6px;
     }
 
     .party-detail {
-      color:       #6b7280;
       font-size:   12px;
-      line-height: 1.6;
+      color:       #555555;
+      line-height: 1.9;
     }
 
-    /* ── Items table ── */
-    .items-section {
-      padding: 32px 48px;
-    }
-
+    /* ── Items ── */
     .items-table {
       width:           100%;
       border-collapse: collapse;
+      margin-top:      36px;
     }
 
     .items-table thead td {
-      background:    #f4f7fb;
-      color:         #0067DD;
-      font-weight:   bold;
-      font-size:     11px;
+      font-size:      10px;
+      color:          #888888;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding:       10px 12px;
-      border-bottom: 2px solid #0067DD;
+      letter-spacing: 0.8px;
+      padding-bottom: 10px;
+      border-bottom:  1px solid #e8e8e8;
     }
 
     .items-table tbody td {
-      padding:       12px 12px;
-      border-bottom: 1px solid #f0f0f0;
-      color:         #2d2d2d;
+      padding:       14px 0;
+      border-bottom: 1px solid #f2f2f2;
       font-size:     13px;
+      color:         #111111;
     }
 
     .items-table tbody tr:last-child td {
@@ -124,249 +107,169 @@
 
     /* ── Totals ── */
     .totals-table {
+      width:           260px;
       border-collapse: collapse;
-      min-width:       240px;
+      margin-top:      24px;
     }
 
     .totals-table td {
-      padding: 8px 12px;
+      padding: 6px 0;
     }
 
-    .totals-label {
-      color:       #6b7280;
-      white-space: nowrap;
+    .t-label {
       font-size:   12px;
+      color:       #888888;
     }
 
-    .totals-value {
+    .t-value {
+      font-size:   12px;
+      color:       #111111;
       text-align:  right;
-      font-weight: bold;
-      color:       #1a1a1a;
-      white-space: nowrap;
-      font-size:   12px;
     }
 
-    .totals-divider {
-      border-top: 1px solid #e8edf2;
+    .t-divider td {
+      border-top:  1px solid #e8e8e8;
+      padding-top: 14px;
+      margin-top:  8px;
     }
 
-    .total-final-label {
-      background:  #0067DD;
-      color:       white;
+    .t-total-label {
+      font-size:   15px;
       font-weight: bold;
-      padding:     12px;
-      white-space: nowrap;
-      font-size:   13px;
+      color:       #111111;
     }
 
-    .total-final-value {
-      background:  #0067DD;
-      color:       white;
+    .t-total-value {
+      font-size:   15px;
       font-weight: bold;
-      padding:     12px;
+      color:       #0067DD;
       text-align:  right;
-      white-space: nowrap;
-      font-size:   13px;
-    }
-
-    /* ── Payment details ── */
-    .payment-section {
-      background: #f4f7fb;
-      padding:    24px 48px;
-      margin-top: 32px;
-    }
-
-    .payment-title {
-      font-size:      10px;
-      font-weight:    bold;
-      color:          #0067DD;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom:  12px;
-    }
-
-    .payment-row-label {
-      color:       #6b7280;
-      font-size:   12px;
-      width:       160px;
-    }
-
-    .payment-row-value {
-      color:       #1a1a1a;
-      font-size:   12px;
-      font-weight: bold;
     }
 
     /* ── Footer ── */
     .footer {
-      background: #0067DD;
-      padding:    14px 48px;
-      margin-top: 0;
+      margin-top:  56px;
+      border-top:  1px solid #e8e8e8;
+      padding-top: 20px;
     }
 
     .footer-text {
-      color:     rgba(255, 255, 255, 0.75);
-      font-size: 10px;
+      font-size: 11px;
+      color:     #aaaaaa;
     }
   </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- ── HEADER ── -->
-  <div class="header">
-    <table style="width: 100%; border-collapse: collapse;">
-      <tbody>
-      <tr>
-        <td style="vertical-align: middle;">
-          <img class="header-logo" alt="Logo"
-               src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYxIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTYxIDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDAuNjU3MiAxOEgzMy40NTcyVjE1LjJIMzUuMjU3MlY2LjhIMzMuNDU3MlY0SDQwLjY1NzJWNi44SDM4Ljg1NzJWMTUuMkg0MC42NTcyVjE4Wk00OC4xNTU2IDEwLjFDNDcuNDQ4OSAxMC4xIDQ2LjY0ODkgMTAuMjMzMyA0NS43NTU2IDEwLjVWMThINDIuMjU1NlY3LjRINDUuMzU1Nkw0NS41NTU2IDguNEM0Ni4xODIzIDcuOTg2NjcgNDYuODIyMyA3LjY4NjY3IDQ3LjQ3NTYgNy41QzQ4LjE0MjMgNy4zIDQ4LjcwMjMgNy4yIDQ5LjE1NTYgNy4ySDUwLjA1NTZDNTAuOTYyMyA3LjIgNTEuNjg4OSA3LjQ3MzMzIDUyLjIzNTYgOC4wMkM1Mi43ODIzIDguNTY2NjcgNTMuMDU1NiA5LjI5MzMzIDUzLjA1NTYgMTAuMlYxOEg0OS41NTU2VjEwLjhDNDkuNTU1NiAxMC42IDQ5LjQ4ODkgMTAuNDMzMyA0OS4zNTU2IDEwLjNDNDkuMjIyMyAxMC4xNjY3IDQ5LjA1NTYgMTAuMSA0OC44NTU2IDEwLjFINDguMTU1NlpNNjEuOTUzMyA3LjRINjUuNjUzM0w2MS42NTMzIDE4SDU3LjY1MzNMNTMuNjUzMyA3LjRINTcuMzUzM0w1OS42NTMzIDE0LjZMNjEuOTUzMyA3LjRaTTc3LjA1OTUgMTVDNzcuMDU5NSAxNiA3Ni43NzI5IDE2Ljc4NjcgNzYuMTk5NSAxNy4zNkM3NS42Mzk1IDE3LjkyIDc0Ljg1OTUgMTguMiA3My44NTk1IDE4LjJINjkuMjU5NUM2OC4yNTk1IDE4LjIgNjcuNDcyOSAxNy45MiA2Ni44OTk1IDE3LjM2QzY2LjMzOTUgMTYuNzg2NyA2Ni4wNTk1IDE2IDY2LjA1OTUgMTVWMTAuNEM2Ni4wNTk1IDkuNCA2Ni4zMzk1IDguNjIgNjYuODk5NSA4LjA2QzY3LjQ3MjkgNy40ODY2NyA2OC4yNTk1IDcuMiA2OS4yNTk1IDcuMkg3My44NTk1Qzc0Ljg1OTUgNy4yIDc1LjYzOTUgNy40ODY2NyA3Ni4xOTk1IDguMDZDNzYuNzcyOSA4LjYyIDc3LjA1OTUgOS40IDc3LjA1OTUgMTAuNFYxNVpNNzMuNTU5NSAxMC43QzczLjU1OTUgMTAuMTY2NyA3My4yOTI5IDkuOSA3Mi43NTk1IDkuOUg3MC4zNTk1QzY5LjgyNjIgOS45IDY5LjU1OTUgMTAuMTY2NyA2OS41NTk1IDEwLjdWMTQuN0M2OS41NTk1IDE1LjIzMzMgNjkuODI2MiAxNS41IDcwLjM1OTUgMTUuNUg3Mi43NTk1QzczLjI5MjkgMTUuNSA3My41NTk1IDE1LjIzMzMgNzMuNTU5NSAxNC43VjEwLjdaTTgzLjI1NzIgNy44VjE4SDc5Ljc1NzJWMTAuNUg3OC4yNTcyVjcuOEg4My4yNTcyWk03OS43NTcyIDMuOEg4My4yNTcyVjYuNkg3OS43NTcyVjMuOFpNOTQuNjYzNCAxNy44QzkyLjE3MDEgMTguMDY2NyA4OS45NzAxIDE4LjIgODguMDYzNCAxOC4yQzg3LjE1NjggMTguMiA4Ni40MzAxIDE3LjkyNjcgODUuODgzNCAxNy4zOEM4NS4zMzY4IDE2LjgzMzMgODUuMDYzNCAxNi4xMDY3IDg1LjA2MzQgMTUuMlYxMC42Qzg1LjA2MzQgOS42IDg1LjM0MzQgOC44MiA4NS45MDM0IDguMjZDODYuNDc2OCA3LjY4NjY3IDg3LjI2MzQgNy40IDg4LjI2MzQgNy40SDk0LjY2MzRWMTAuMUg4OS4zNjM0Qzg4LjgzMDEgMTAuMSA4OC41NjM0IDEwLjM2NjcgODguNTYzNCAxMC45VjE0LjhDODguNTYzNCAxNSA4OC42MzAxIDE1LjE2NjcgODguNzYzNCAxNS4zQzg4Ljg5NjggMTUuNDMzMyA4OS4wNjM0IDE1LjUgODkuMjYzNCAxNS41QzkwLjQ2MzQgMTUuNSA5Mi4yNjM0IDE1LjQgOTQuNjYzNCAxNS4yVjE3LjhaTTEwMC4zNiA5LjdDOTkuODI2MiA5LjcgOTkuNTU5NSA5Ljk2NjY3IDk5LjU1OTUgMTAuNVYxMS42SDEwMi45NlYxMC41QzEwMi45NiA5Ljk2NjY3IDEwMi42OTMgOS43IDEwMi4xNiA5LjdIMTAwLjM2Wk0xMDYuMDYgMTcuOEMxMDMuNDg2IDE4LjA2NjcgMTAxLjE1MyAxOC4yIDk5LjA1OTUgMTguMkM5OC4xNTI5IDE4LjIgOTcuNDI2MiAxNy45MjY3IDk2Ljg3OTUgMTcuMzhDOTYuMzMyOSAxNi44MzMzIDk2LjA1OTUgMTYuMTA2NyA5Ni4wNTk1IDE1LjJWMTAuNEM5Ni4wNTk1IDkuNCA5Ni4zMzk1IDguNjIgOTYuODk5NSA4LjA2Qzk3LjQ3MjkgNy40ODY2NyA5OC4yNTk1IDcuMiA5OS4yNTk1IDcuMkgxMDMuMjZDMTA0LjI2IDcuMiAxMDUuMDQgNy40ODY2NyAxMDUuNiA4LjA2QzEwNi4xNzMgOC42MiAxMDYuNDYgOS40IDEwNi40NiAxMC40VjE0LjFIOTkuNTU5NVYxNC45Qzk5LjU1OTUgMTUuMSA5OS42MjYyIDE1LjI2NjcgOTkuNzU5NSAxNS40Qzk5Ljg5MjkgMTUuNTMzMyAxMDAuMDYgMTUuNiAxMDAuMjYgMTUuNkMxMDEuNTggMTUuNiAxMDMuNTEzIDE1LjUgMTA2LjA2IDE1LjNWMTcuOFpNMTA4LjAzMiAxNS4xQzExMS42ODUgMTUuMyAxMTQuMTU4IDE1LjQgMTE1LjQ1MiAxNS40QzExNS43NTggMTUuNCAxMTUuOTk4IDE1LjMxMzMgMTE2LjE3MiAxNS4xNEMxMTYuMzU4IDE0Ljk1MzMgMTE2LjQ1MiAxNC43MDY3IDExNi40NTIgMTQuNFYxMi42SDExMS44NTJDMTB4LjQ1MiAxMi42IDEwOS40MzIgMTIuMjg2NyAxMDguNzkyIDExLjY2QzEwOC4xNjUgMTEuMDIgMTA3Ljg1MiAxMCAxMDcuODUyIDguNlY4QzEwNy44NTIgNi42IDEwOC4xNjUgNS41ODY2NyAxMDguNzkyIDQuOTZDMTA5LjQzMiA0LjMyIDExMC40NTIgNCAxMTEuODUyIDRIMTE4Ljg3MlY2LjhIMTEyLjY1MkMxMTEuODUyIDYuOCAxMTEuNDUyIDcuMiAxMTEuNDUyIDhWOC40QzExMS40NTIgOS4yIDExMS44NTIgOS42IDExMi42NTIgOS42SDExNi4yNTJDMTE3LjU1OCA5LjYgMTE4LjUxOCA5LjkwNjY3IDExOS4xMzIgMTAuNTJDMTE5Ljc0NSAxMS4xMzMzIDEyMC4wNTIgMTIuMDkzMyAxMjAuMDUyIDEzLjRWMTQuNEMxMjAuMDUyIDE1LjcwNjcgMTE5Ljc0NSAxNi42NjY3IDExOS4xMzIgMTcuMjhDMTE4LjUxOCAxNy44OTMzIDExNy41NTggMTguMiAxMTYuMjUyIDE4LjJDMTE1LjU3MiAxOC4yIDExNC44NTIgMTguMTg2NyAxMTQuMDkyIDE4LjE2TDExMi4yNTIgMTguMDhDMTEwLjg5MiAxOC4wMTMzIDEwOS40ODUgMTcuOTIgMTA4LjAzMiAxNy44VjE1LjFaTTEyNC40NSAyMS42QzEyMy43NDMgMjEuNiAxMjIuODc3IDIxLjUzMzMgMTIxLjg1IDIxLjRWMTguOEgxMjMuNjVDMTI0LjE1NyAxOC44IDEyNC40ODMgMTguNjYgMTI0LjYzIDE4LjM4QzEyNC43OSAxOC4xIDEyNC43NjMgMTcuNzA2NyAxMjQuNTUgMTcuMkwxMjAuNDUgNy40SDEyNC4xNUwxMjYuNjUgMTQuMkwxMjguNzUgNy40SDEzMi40NUwxMjguNDUgMTguNEMxMjguMDYzIDE5LjQ1MzMgMTI3LjU2MyAyMC4yNDY3IDEyNi45NSAyMC43OEMxMjYuMzM3IDIxLjMyNjcgMTI1LjUwMyAyMS42IDEyNC40NSAyMS42Wk0xMzguOTU2IDEwLjFDMTM4LjI1IDEwLjEgMTM3LjQ1IDEwLjIzMzMgMTM2LjU1NiAxMC41VjE4SDEzMy4wNTZWNy40SDEzNi4xNTZMMTM2LjM1NiA4LjRDMTM2Ljk4MyA3Ljk4NjY3IDEzNy42MjMgNy42ODY2NyAxMzguMjc2IDcuNUMxMzguOTQzIDcuMyAxMzkuNTAzIDcuMiAxMzkuOTU2IDcuMkgxNDAuODU2QzE0MS43NjMgNy4yIDE0Mi40OSA3LjQ3MzMzIDE0My4wMzYgOC4wMkMxNDMuNTgzIDguNTY2NjcgMTQzLjg1NiA5LjI5MzMzIDE0My44NTYgMTAuMlYxOEgxNDAuMzU2VjEwLjhDMTQwLjM1NiAxMC42IDE0MC4yOSAxMC40MzMzIDE0MC4xNTYgMTAuM0MxNDAuMDIzIDEwLjE2NjcgMTM5Ljg1NiAxMC4xIDEzOS42NTYgMTAuMUgxMzguOTU2Wk0xNTUuMDU0IDE3LjhDMTUyLjU2MSAxOC4wNjY3IDE1MC4zNjEgMTguMiAxNDguNDU0IDE4LjJDMTQ3LjU0NyAxOC4yIDE0Ni44MjEgMTcuOTI2NyAxNDYuMjc0IDE3LjM4QzE0NS43MjcgMTYuODMzMyAxNDUuNDU0IDE2LjEwNjcgMTQ1LjQ1NCAxNS4yVjEwLjZDMTQ1LjQ1NCA5LjYgMTQ1LjczNCA4LjgyIDE0Ni4yOTQgOC4yNkMxNDYuODY3IDcuNjg2NjcgMTQ3LjY1NCA3LjQgMTQ4LjY1NCA3LjRIMTU1LjA1NFYxMC4xSDE0OS43NTRDMTQ5LjIyMSAxMC4xIDE0OC45NTQgMTAuMzY2NyAxNDguOTU0IDEwLjlWMTQuOEMxNDguOTU0IDE1IDE0OS4wMjEgMTUuMTY2NyAxNDkuMTU0IDE1LjNDMTQ5LjI4NyAxNS40MzMzIDE0OS40NTQgMTUuNSAxNDkuNjU0IDE1LjVDMTUwLjg1NCAxNS41IDE1Mi42NTQgMTUuNCAxNTUuMDU0IDE1LjJWMTcuOFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xNi43MDY1IDE0LjI2TDIwLjgxNiAxMS45MDNWNy4wNDI0M0wxNi41ODczIDQuNjU1MTJMMTIuNDE4MiA3LjAzNzgzVjExLjg0NEw4LjMwODU5IDE0LjIwMTFWNC43MTQwNUwxNi42NDY5IDBMMjQuOTI1NiA0LjczMTYzVjE0LjIwMTFMMjAuNzU2NSAxNi42MTdMMTYuNzA2NSAxNC4yNloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMi40NTY1IDEyLjEwNEwxNi42MTcgOS42ODc2NkwxNi41ODA0IDE5LjIyMzdMOC4yOTU5NyAyMy45NDhMMCAxOS4yMDQ1TDAuMDEwNzE5NyA5LjcxMTAzTDQuMTM1NDMgNy4zMzA5OUw4LjE2OTM1IDkuNjg3NjZMNC4wNzYgMTIuMDQ1VjE2Ljg3N0w4LjI5NTk3IDE5LjI5MjlMMTIuNDU2NSAxNi44NzdWMTIuMTA0WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cg=="/>
-        </td>
-        <td class="header-right">
-          <p class="header-invoice-label">Faktúra číslo</p>
-          <p class="header-invoice-number" th:text="${invoice.invoiceDetails.invoiceNumber}"></p>
-          <p class="header-date-label" style="margin-top: 10px;">Dátum vystavenia</p>
-          <p class="header-date-value" th:text="${invoice.invoiceDetails.issueDate}"></p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- HEADER -->
+  <table style="width: 100%; border-collapse: collapse;">
+    <tbody><tr>
+      <td style="vertical-align: top;">
+        <img class="header-logo" alt="Logo"
+             src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYxIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMTYxIDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNDAuNjU3MiAxOEgzMy40NTcyVjE1LjJIMzUuMjU3MlY2LjhIMzMuNDU3MlY0SDQwLjY1NzJWNi44SDM4Ljg1NzJWMTUuMkg0MC42NTcyVjE4Wk00OC4xNTU2IDEwLjFDNDcuNDQ4OSAxMC4xIDQ2LjY0ODkgMTAuMjMzMyA0NS43NTU2IDEwLjVWMThINDIuMjU1NlY3LjRINDUuMzU1Nkw0NS41NTU2IDguNEM0Ni4xODIzIDcuOTg2NjcgNDYuODIyMyA3LjY4NjY3IDQ3LjQ3NTYgNy41QzQ4LjE0MjMgNy4zIDQ4LjcwMjMgNy4yIDQ5LjE1NTYgNy4ySDUwLjA1NTZDNTAuOTYyMyA3LjIgNTEuNjg4OSA3LjQ3MzMzIDUyLjIzNTYgOC4wMkM1Mi43ODIzIDguNTY2NjcgNTMuMDU1NiA5LjI5MzMzIDUzLjA1NTYgMTAuMlYxOEg0OS41NTU2VjEwLjhDNDkuNTU1NiAxMC42IDQ5LjQ4ODkgMTAuNDMzMyA0OS4zNTU2IDEwLjNDNDkuMjIyMyAxMC4xNjY3IDQ5LjA1NTYgMTAuMSA0OC44NTU2IDEwLjFINDguMTU1NlpNNjEuOTUzMyA3LjRINjUuNjUzM0w2MS42NTMzIDE4SDU3LjY1MzNMNTMuNjUzMyA3LjRINTcuMzUzM0w1OS42NTMzIDE0LjZMNjEuOTUzMyA3LjRaTTc3LjA1OTUgMTVDNzcuMDU5NSAxNiA3Ni43NzI5IDE2Ljc4NjcgNzYuMTk5NSAxNy4zNkM3NS42Mzk1IDE3LjkyIDc0Ljg1OTUgMTguMiA3My44NTk1IDE4LjJINjkuMjU5NUM2OC4yNTk1IDE4LjIgNjcuNDcyOSAxNy45MiA2Ni44OTk1IDE3LjM2QzY2LjMzOTUgMTYuNzg2NyA2Ni4wNTk1IDE2IDY2LjA1OTUgMTVWMTAuNEM2Ni4wNTk1IDkuNCA2Ni4zMzk1IDguNjIgNjYuODk5NSA4LjA2QzY3LjQ3MjkgNy40ODY2NyA2OC4yNTk1IDcuMiA2OS4yNTk1IDcuMkg3My44NTk1Qzc0Ljg1OTUgNy4yIDc1LjYzOTUgNy40ODY2NyA3Ni4xOTk1IDguMDZDNzYuNzcyOSA4LjYyIDc3LjA1OTUgOS40IDc3LjA1OTUgMTAuNFYxNVpNNzMuNTU5NSAxMC43QzczLjU1OTUgMTAuMTY2NyA3My4yOTI5IDkuOSA3Mi43NTk1IDkuOUg3MC4zNTk1QzY5LjgyNjIgOS45IDY5LjU1OTUgMTAuMTY2NyA2OS41NTk1IDEwLjdWMTQuN0M2OS41NTk1IDE1LjIzMzMgNjkuODI2MiAxNS41IDcwLjM1OTUgMTUuNUg3Mi43NTk1QzczLjI5MjkgMTUuNSA3My41NTk1IDE1LjIzMzMgNzMuNTU5NSAxNC43VjEwLjdaTTgzLjI1NzIgNy44VjE4SDc5Ljc1NzJWMTAuNUg3OC4yNTcyVjcuOEg4My4yNTcyWk03OS43NTcyIDMuOEg4My4yNTcyVjYuNkg3OS43NTcyVjMuOFpNOTQuNjYzNCAxNy44QzkyLjE3MDEgMTguMDY2NyA4OS45NzAxIDE4LjIgODguMDYzNCAxOC4yQzg3LjE1NjggMTguMiA4Ni40MzAxIDE3LjkyNjcgODUuODgzNCAxNy4zOEM4NS4zMzY4IDE2LjgzMzMgODUuMDYzNCAxNi4xMDY3IDg1LjA2MzQgMTUuMlYxMC42Qzg1LjA2MzQgOS42IDg1LjM0MzQgOC44MiA4NS45MDM0IDguMjZDODYuNDc2OCA3LjY4NjY3IDg3LjI2MzQgNy40IDg4LjI2MzQgNy40SDk0LjY2MzRWMTAuMUg4OS4zNjM0Qzg4LjgzMDEgMTAuMSA4OC41NjM0IDEwLjM2NjcgODguNTYzNCAxMC45VjE0LjhDODguNTYzNCAxNSA4OC42MzAxIDE1LjE2NjcgODguNzYzNCAxNS4zQzg4Ljg5NjggMTUuNDMzMyA4OS4wNjM0IDE1LjUgODkuMjYzNCAxNS41QzkwLjQ2MzQgMTUuNSA5Mi4yNjM0IDE1LjQgOTQuNjYzNCAxNS4yVjE3LjhaTTEwMC4zNiA5LjdDOTkuODI2MiA5LjcgOTkuNTU5NSA5Ljk2NjY3IDk5LjU1OTUgMTAuNVYxMS42SDEwMi45NlYxMC41QzEwMi45NiA5Ljk2NjY3IDEwMi42OTMgOS43IDEwMi4xNiA5LjdIMTAwLjM2Wk0xMDYuMDYgMTcuOEMxMDMuNDg2IDE4LjA2NjcgMTAxLjE1MyAxOC4yIDk5LjA1OTUgMTguMkM5OC4xNTI5IDE4LjIgOTcuNDI2MiAxNy45MjY3IDk2Ljg3OTUgMTcuMzhDOTYuMzMyOSAxNi44MzMzIDk2LjA1OTUgMTYuMTA2NyA5Ni4wNTk1IDE1LjJWMTAuNEM5Ni4wNTk1IDkuNCA5Ni4zMzk1IDguNjIgOTYuODk5NSA4LjA2Qzk3LjQ3MjkgNy40ODY2NyA5OC4yNTk1IDcuMiA5OS4yNTk1IDcuMkgxMDMuMjZDMTA0LjI2IDcuMiAxMDUuMDQgNy40ODY2NyAxMDUuNiA4LjA2QzEwNi4xNzMgOC42MiAxMDYuNDYgOS40IDEwNi40NiAxMC40VjE0LjFIOTkuNTU5NVYxNC45Qzk5LjU1OTUgMTUuMSA5OS42MjYyIDE1LjI2NjcgOTkuNzU5NSAxNS40Qzk5Ljg5MjkgMTUuNTMzMyAxMDAuMDYgMTUuNiAxMDAuMjYgMTUuNkMxMDEuNTggMTUuNiAxMDMuNTEzIDE1LjUgMTA2LjA2IDE1LjNWMTcuOFpNMTA4LjAzMiAxNS4xQzExMS42ODUgMTUuMyAxMTQuMTU4IDE1LjQgMTE1LjQ1MiAxNS40QzExNS43NTggMTUuNCAxMTUuOTk4IDE1LjMxMzMgMTE2LjE3MiAxNS4xNEMxMTYuMzU4IDE0Ljk1MzMgMTE2LjQ1MiAxNC43MDY3IDExNi40NTIgMTQuNFYxMi42SDExMS44NTJDMTB4LjQ1MiAxMi42IDEwOS40MzIgMTIuMjg2NyAxMDguNzkyIDExLjY2QzEwOC4xNjUgMTEuMDIgMTA3Ljg1MiAxMCAxMDcuODUyIDguNlY4QzEwNy44NTIgNi42IDEwOC4xNjUgNS41ODY2NyAxMDguNzkyIDQuOTZDMTA5LjQzMiA0LjMyIDExMC40NTIgNCAxMTEuODUyIDRIMTE4Ljg3MlY2LjhIMTEyLjY1MkMxMTEuODUyIDYuOCAxMTEuNDUyIDcuMiAxMTEuNDUyIDhWOC40QzExMS40NTIgOS4yIDExMS44NTIgOS42IDExMi42NTIgOS42SDExNi4yNTJDMTE3LjU1OCA5LjYgMTE4LjUxOCA5LjkwNjY3IDExOS4xMzIgMTAuNTJDMTE5Ljc0NSAxMS4xMzMzIDEyMC4wNTIgMTIuMDkzMyAxMjAuMDUyIDEzLjRWMTQuNEMxMjAuMDUyIDE1LjcwNjcgMTE5Ljc0NSAxNi42NjY3IDExOS4xMzIgMTcuMjhDMTE4LjUxOCAxNy44OTMzIDExNy41NTggMTguMiAxMTYuMjUyIDE4LjJDMTE1LjU3MiAxOC4yIDExNC44NTIgMTguMTg2NyAxMTQuMDkyIDE4LjE2TDExMi4yNTIgMTguMDhDMTEwLjg5MiAxOC4wMTMzIDEwOS40ODUgMTcuOTIgMTA4LjAzMiAxNy44VjE1LjFaTTEyNC40NSAyMS42QzEyMy43NDMgMjEuNiAxMjIuODc3IDIxLjUzMzMgMTIxLjg1IDIxLjRWMTguOEgxMjMuNjVDMTI0LjE1NyAxOC44IDEyNC40ODMgMTguNjYgMTI0LjYzIDE4LjM4QzEyNC43OSAxOC4xIDEyNC43NjMgMTcuNzA2NyAxMjQuNTUgMTcuMkwxMjAuNDUgNy40SDEyNC4xNUwxMjYuNjUgMTQuMkwxMjguNzUgNy40SDEzMi40NUwxMjguNDUgMTguNEMxMjguMDYzIDE5LjQ1MzMgMTI3LjU2MyAyMC4yNDY3IDEyNi45NSAyMC43OEMxMjYuMzM3IDIxLjMyNjcgMTI1LjUwMyAyMS42IDEyNC40NSAyMS42Wk0xMzguOTU2IDEwLjFDMTM4LjI1IDEwLjEgMTM3LjQ1IDEwLjIzMzMgMTM2LjU1NiAxMC41VjE4SDEzMy4wNTZWNy40SDEzNi4xNTZMMTM2LjM1NiA4LjRDMTM2Ljk4MyA3Ljk4NjY3IDEzNy42MjMgNy42ODY2NyAxMzguMjc2IDcuNUMxMzguOTQzIDcuMyAxMzkuNTAzIDcuMiAxMzkuOTU2IDcuMkgxNDAuODU2QzE0MS43NjMgNy4yIDE0Mi40OSA3LjQ3MzMzIDE0My4wMzYgOC4wMkMxNDMuNTgzIDguNTY2NjcgMTQzLjg1NiA5LjI5MzMzIDE0My44NTYgMTAuMlYxOEgxNDAuMzU2VjEwLjhDMTQwLjM1NiAxMC42IDE0MC4yOSAxMC40MzMzIDE0MC4xNTYgMTAuM0MxNDAuMDIzIDEwLjE2NyAxMzkuODU2IDEwLjEgMTM5LjY1NiAxMC4xSDEzOC45NTZaTTE1NS4wNTQgMTcuOEMxNTIuNTYxIDE4LjA2NyAxNTAuMzYxIDE4LjIgMTQ4LjQ1NCAxOC4yQzE0Ny41NDcgMTguMiAxNDYuODIxIDE3LjkyNyAxNDYuMjc0IDE3LjM4QzE0NS43MjcgMTYuODMzIDE0NS40NTQgMTYuMTA3IDE0NS40NTQgMTUuMlYxMC42QzE0NS40NTQgOS42IDE0NS43MzQgOC44MiAxNDYuMjk0IDguMjZDMTQ2Ljg2NyA3LjY4NyAxNDcuNjU0IDcuNCAxNDguNjU0IDcuNEgxNTUuMDU0VjEwLjFIMTQ5Ljc1NEMxNDkuMjIxIDEwLjEgMTQ4Ljk1NCAxMC4zNjcgMTQ4Ljk1NCAxMC45VjE0LjhDMTQ4Ljk1NCAxNSAxNDkuMDIxIDE1LjE2NyAxNDkuMTU0IDE1LjNDMTQ5LjI4NyAxNS40MzMgMTQ5LjQ1NCAxNS41IDE0OS42NTQgMTUuNUMxNTAuODU0IDE1LjUgMTUyLjY1NCAxNS40IDE1NS4wNTQgMTUuMlYxNy44WiIgZmlsbD0iIzFhMWExYSIvPgo8cGF0aCBkPSJNMTYuNzA2NSAxNC4yNkwyMC44MTYgMTEuOTAzVjcuMDQyNDNMMTYuNTg3MyA0LjY1NTEyTDEyLjQxODIgNy4wMzc4M1YxMS44NDRMOC4zMDg1OSAxNC4yMDExVjQuNzE0MDVMMTYuNjQ2OSAwTDI0LjkyNTYgNC43MzE2M1YxNC4yMDExTDIwLjc1NjUgMTYuNjE3TDE2LjcwNjUgMTQuMjZaIiBmaWxsPSIjMDA2N0REIi8+CjxwYXRoIGQ9Ik0xMi40NTY1IDEyLjEwNEwxNi42MTcgOS42ODc2NkwxNi41ODA0IDE5LjIyMzdMOC4yOTU5NyAyMy45NDhMMCAxOS4yMDQ1TDAuMDEwNzE5NyA5LjcxMTAzTDQuMTM1NDMgNy4zMzA5OUw4LjE2OTM1IDkuNjg3NjZMNC4wNzYgMTIuMDQ1VjE2Ljg3N0w4LjI5NTk3IDE5LjI5MjlMMTIuNDU2NSAxNi44NzdWMTIuMTA0WiIgZmlsbD0iIzAwNjdERCIvPgo8L3N2Zz4K"/>
+        <p class="invoice-label">Faktúra</p>
+        <p class="invoice-number" th:text="${invoice.invoiceDetails.invoiceNumber}"></p>
+      </td>
+      <td style="text-align: right; vertical-align: bottom;">
+        <p class="header-meta-label">Dátum vystavenia</p>
+        <p class="header-meta-value" th:text="${invoice.invoiceDetails.issueDate}"></p>
+        <p class="header-meta-label">Dátum splatnosti</p>
+        <p class="header-meta-value" th:text="${invoice.invoiceDetails.dueDate}"></p>
+      </td>
+    </tr></tbody>
+  </table>
 
-  <!-- ── SUPPLIER / RECIPIENT ── -->
-  <div class="parties">
-    <table style="width: 100%; border-collapse: collapse;">
-      <tbody>
-      <tr>
-        <td style="width: 50%; vertical-align: top; padding-right: 32px;">
-          <p class="party-label">Dodávateľ</p>
-          <p class="party-name" th:text="${invoice.company.name}"></p>
-          <p class="party-detail"
-             th:text="${invoice.company.street + ' ' + invoice.company.streetNumber + ', ' + invoice.company.zip + ' ' + invoice.company.city}"></p>
-          <p class="party-detail" th:if="${invoice.company.registrationNumber != null}"
-             th:text="'IČO: ' + ${invoice.company.registrationNumber}"></p>
-          <p class="party-detail" th:if="${invoice.company.taxId != null}"
-             th:text="'DIČ: ' + ${invoice.company.taxId}"></p>
-          <p class="party-detail" th:if="${invoice.company.vatId != null}"
-             th:text="'IČ DPH: ' + ${invoice.company.vatId}"></p>
-        </td>
-        <td style="width: 50%; vertical-align: top; text-align: right; border-left: 2px solid #e8edf2; padding-left: 32px;">
-          <p class="party-label">Odoberateľ</p>
-          <p class="party-name" th:text="${invoice.partner.name}"></p>
-          <p class="party-detail"
-             th:text="${invoice.partner.street + ', ' + invoice.partner.zip + ' ' + invoice.partner.city}"></p>
-          <p class="party-detail" th:if="${invoice.partner.registrationNumber != null}"
-             th:text="'IČO: ' + ${invoice.partner.registrationNumber}"></p>
-          <p class="party-detail" th:if="${invoice.partner.taxId != null}"
-             th:text="'DIČ: ' + ${invoice.partner.taxId}"></p>
-          <p class="party-detail" th:if="${invoice.partner.vatId != null}"
-             th:text="'IČ DPH: ' + ${invoice.partner.vatId}"></p>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <hr class="divider"/>
 
-  <!-- ── ITEMS TABLE ── -->
-  <div class="items-section">
-    <table class="items-table">
-      <thead>
-      <tr>
-        <td>Produkt</td>
-        <td style="text-align: right;">Množstvo</td>
-        <td style="text-align: center;">MJ</td>
-        <td style="text-align: right;">Jedn. cena bez DPH</td>
-        <td style="text-align: center;">DPH %</td>
-        <td style="text-align: right;">Spolu bez DPH</td>
-        <td style="text-align: right;">DPH</td>
-        <td style="text-align: right;">Spolu s DPH</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="item : ${invoice.items}">
-        <td th:text="${item.name}"></td>
-        <td style="text-align: right;" th:text="${item.quantity}"></td>
-        <td style="text-align: center;" th:text="${item.unitType}"></td>
-        <td style="text-align: right;"
-            th:text="${#numbers.formatDecimal(item.unitPriceWithoutVat, 1, 2) + ' €'}"></td>
-        <td style="text-align: center;" th:text="${item.vatRate + '%'}"></td>
-        <td style="text-align: right;"
-            th:text="${#numbers.formatDecimal(item.totalItemPriceWithoutVat, 1, 2) + ' €'}"></td>
-        <td style="text-align: right;"
-            th:text="${#numbers.formatDecimal(item.totalItemPriceWithVat.subtract(item.totalItemPriceWithoutVat), 1, 2) + ' €'}"></td>
-        <td style="text-align: right;"
-            th:text="${#numbers.formatDecimal(item.totalItemPriceWithVat, 1, 2) + ' €'}"></td>
-      </tr>
+  <!-- PARTIES -->
+  <table style="width: 100%; border-collapse: collapse;">
+    <tbody><tr>
+      <td style="width: 50%; vertical-align: top; padding-right: 32px;">
+        <p class="party-label">Od</p>
+        <p class="party-name" th:text="${invoice.company.name}"></p>
+        <p class="party-detail" th:text="${invoice.company.street + ' ' + invoice.company.streetNumber}"></p>
+        <p class="party-detail" th:text="${invoice.company.zip + ' ' + invoice.company.city}"></p>
+        <p class="party-detail" th:if="${invoice.company.registrationNumber != null}" th:text="'IČO: ' + ${invoice.company.registrationNumber}"></p>
+        <p class="party-detail" th:if="${invoice.company.taxId != null}" th:text="'DIČ: ' + ${invoice.company.taxId}"></p>
+        <p class="party-detail" th:if="${invoice.company.vatId != null}" th:text="'IČ DPH: ' + ${invoice.company.vatId}"></p>
+      </td>
+      <td style="width: 50%; vertical-align: top; padding-left: 32px;">
+        <p class="party-label">Pre</p>
+        <p class="party-name" th:text="${invoice.partner.name}"></p>
+        <p class="party-detail" th:text="${invoice.partner.street}"></p>
+        <p class="party-detail" th:text="${invoice.partner.zip + ' ' + invoice.partner.city}"></p>
+        <p class="party-detail" th:if="${invoice.partner.registrationNumber != null}" th:text="'IČO: ' + ${invoice.partner.registrationNumber}"></p>
+        <p class="party-detail" th:if="${invoice.partner.taxId != null}" th:text="'DIČ: ' + ${invoice.partner.taxId}"></p>
+        <p class="party-detail" th:if="${invoice.partner.vatId != null}" th:text="'IČ DPH: ' + ${invoice.partner.vatId}"></p>
+      </td>
+    </tr></tbody>
+  </table>
 
-      <!-- Totals row -->
-      <tr>
-        <td colspan="8" style="padding-top: 24px; padding-bottom: 0;">
-          <table style="width: 100%; border-collapse: collapse;">
-            <tbody>
-            <tr>
-              <td style="width: 100%;"></td>
-              <td>
-                <table class="totals-table">
-                  <tbody>
-                  <tr>
-                    <td class="totals-label">Medzisúčet:</td>
-                    <td class="totals-value"
-                        th:text="${#numbers.formatDecimal(subtotal, 1, 2) + ' €'}"></td>
-                  </tr>
-                  <tr>
-                    <td class="totals-label totals-divider">Daň:</td>
-                    <td class="totals-value totals-divider"
-                        th:text="${#numbers.formatDecimal(tax, 1, 2) + ' €'}"></td>
-                  </tr>
-                  <tr>
-                    <td class="total-final-label">Celková suma:</td>
-                    <td class="total-final-value"
-                        th:text="${#numbers.formatDecimal(total, 1, 2) + ' €'}"></td>
-                  </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- ITEMS -->
+  <table class="items-table">
+    <thead>
+    <tr>
+      <td>Popis</td>
+      <td style="text-align: right;">Množ.</td>
+      <td style="text-align: center;">MJ</td>
+      <td style="text-align: right;">Cena / ks</td>
+      <td style="text-align: center;">DPH</td>
+      <td style="text-align: right;">Bez DPH</td>
+      <td style="text-align: right;">DPH €</td>
+      <td style="text-align: right;">Celkom</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${invoice.items}">
+      <td th:text="${item.name}"></td>
+      <td style="text-align: right;" th:text="${item.quantity}"></td>
+      <td style="text-align: center;" th:text="${item.unitType}"></td>
+      <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.unitPriceWithoutVat, 1, 2) + ' €'}"></td>
+      <td style="text-align: center;" th:text="${item.vatRate + ' %'}"></td>
+      <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.totalItemPriceWithoutVat, 1, 2) + ' €'}"></td>
+      <td style="text-align: right;" th:text="${item.totalItemPriceWithVat != null ? #numbers.formatDecimal(item.totalItemPriceWithVat.subtract(item.totalItemPriceWithoutVat), 1, 2) + ' €' : '0.00 €'}"></td>
+      <td style="text-align: right;" th:text="${#numbers.formatDecimal(item.totalItemPriceWithVat, 1, 2) + ' €'}"></td>
+    </tr>
+    </tbody>
+  </table>
 
-  <!-- ── PAYMENT DETAILS ── -->
-  <div class="payment-section">
-    <p class="payment-title">Platobné informácie</p>
-    <table style="border-collapse: collapse;">
-      <tbody>
-      <tr>
-        <td class="payment-row-label">Dátum dodania:</td>
-        <td class="payment-row-value" th:text="${invoice.invoiceDetails.taxDate}"></td>
-      </tr>
-      <tr>
-        <td class="payment-row-label" style="padding-top: 6px;">Dátum splatnosti:</td>
-        <td class="payment-row-value" style="padding-top: 6px;"
-            th:text="${invoice.invoiceDetails.dueDate}"></td>
-      </tr>
-      <tr>
-        <td class="payment-row-label" style="padding-top: 6px;">Variabilný symbol:</td>
-        <td class="payment-row-value" style="padding-top: 6px;"
-            th:text="${invoice.invoiceDetails.variableSymbol}"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- TOTALS -->
+  <table style="width: 100%; border-collapse: collapse;">
+    <tbody><tr>
+      <td style="width: 55%;"></td>
+      <td style="width: 45%;">
+        <table class="totals-table">
+          <tbody>
+          <tr>
+            <td class="t-label">Medzisúčet</td>
+            <td class="t-value" th:text="${#numbers.formatDecimal(subtotal, 1, 2) + ' €'}"></td>
+          </tr>
+          <tr>
+            <td class="t-label">Daň</td>
+            <td class="t-value" th:text="${#numbers.formatDecimal(tax, 1, 2) + ' €'}"></td>
+          </tr>
+          <tr>
+            <td class="t-label" style="padding-bottom: 10px;">Variabilný symbol</td>
+            <td class="t-value" style="padding-bottom: 10px;" th:text="${invoice.invoiceDetails.variableSymbol}"></td>
+          </tr>
+          <tr class="t-divider">
+            <td class="t-total-label">Celková suma</td>
+            <td class="t-total-value" th:text="${#numbers.formatDecimal(total, 1, 2) + ' €'}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr></tbody>
+  </table>
 
-  <!-- ── FOOTER ── -->
+  <!-- FOOTER -->
   <div class="footer">
     <table style="width: 100%; border-collapse: collapse;">
-      <tbody>
-      <tr>
+      <tbody><tr>
         <td class="footer-text" th:text="${invoice.company.name}"></td>
         <td class="footer-text" style="text-align: right;">Vygenerované cez InvoiceSync</td>
-      </tr>
-      </tbody>
+      </tr></tbody>
     </table>
   </div>
 

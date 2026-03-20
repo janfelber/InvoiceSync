@@ -68,6 +68,8 @@ public final class Api {
 
   public static final String INVOICE_DELETE = "/delete/{invoice-id}";
 
+  public static final String INVOICE_BULK_DOWNLOAD = "/bulk-download";
+
   // Company
   public static final String COMPANY = "/company";
 

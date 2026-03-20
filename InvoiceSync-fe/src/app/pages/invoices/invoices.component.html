@@ -286,6 +286,19 @@
           placeholder="Vyhľadávanie..."
           class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
       </div>
+
+      <!-- Bulk action buttons -->
+      <button
+        type="button"
+        [disabled]="selectedIds.size === 0"
+        (click)="downloadSelectedPdfs()"
+        class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+          <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+        </svg>
+        Stiahnuť PDF
+      </button>
     </div>
 
     <!-- Table -->
@@ -294,7 +307,10 @@
         <thead class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-[#2a2b30] border-b border-gray-200 dark:border-[#383852]">
           <tr class="divide-x divide-gray-200 dark:divide-[#383852]">
             <th class="w-10 px-4 py-3">
-              <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
+              <input type="checkbox"
+                     [checked]="allSelected"
+                     (change)="toggleSelectAll()"
+                     class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
             </th>
             <th class="px-4 py-3">Číslo faktúry</th>
             <th class="px-4 py-3">Variabilný symbol</th>
@@ -308,10 +324,14 @@
 
         <ng-container *ngIf="invoiceResponse.content.length > 0; else noData">
           <tbody class="divide-y divide-gray-100 dark:divide-[#383852]">
-            <tr *ngFor="let invoice of invoiceResponse.content"
-                class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]">
+            <tr *ngFor="let invoice of invoiceResponse.content; even as even"
+                class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]"
+                [ngClass]="selectedIds.has(invoice.id) ? 'bg-blue-50 dark:bg-[#1a1f2d]' : (even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]')">
               <td class="px-4 py-3">
-                <input type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
+                <input type="checkbox"
+                       [checked]="selectedIds.has(invoice.id)"
+                       (change)="onRowCheckboxChange(invoice.id)"
+                       class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
               </td>
               <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                 <a [routerLink]="['/web/invoices/', invoice.id]" class="text-blue-600 hover:underline">
