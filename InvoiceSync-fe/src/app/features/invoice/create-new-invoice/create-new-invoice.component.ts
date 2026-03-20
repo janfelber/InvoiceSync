@@ -277,6 +277,10 @@ export class CreateNewInvoice implements OnInit {
     this.items.splice(index, 1);
   }
 
+  onDateChange(field: 'issueDate' | 'dueDate' | 'taxDate', event: Event) {
+    this.invoice.invoiceDetails[field] = (event.target as HTMLInputElement).value;
+  }
+
   updateItemTotals(item: any) {
     const qty = item.quantity || 0;
     const price = item.unitPriceWithoutVat || 0;
