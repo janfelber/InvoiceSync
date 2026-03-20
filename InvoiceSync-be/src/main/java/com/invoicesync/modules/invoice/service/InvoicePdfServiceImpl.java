@@ -48,6 +48,10 @@ public class InvoicePdfServiceImpl implements InvoicePdfService {
     // 4. Convert HTML → PDF bytes
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
       ITextRenderer renderer = new ITextRenderer();
+      renderer.getFontResolver().addFont("fonts/LiberationSans-Regular.ttf",
+          com.lowagie.text.pdf.BaseFont.IDENTITY_H, com.lowagie.text.pdf.BaseFont.EMBEDDED);
+      renderer.getFontResolver().addFont("fonts/LiberationSans-Bold.ttf",
+          com.lowagie.text.pdf.BaseFont.IDENTITY_H, com.lowagie.text.pdf.BaseFont.EMBEDDED);
       renderer.setDocumentFromString(html);
       renderer.layout();
       renderer.createPDF(out);
