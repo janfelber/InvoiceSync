@@ -46,6 +46,9 @@ import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.core.utils.ParseUtils;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.ReceiptDocument;
@@ -79,6 +82,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private final UserReceiptCounterRepository userReceiptCounterRepository;
 
+  private final UserActivityService userActivityService;
+
   // private final CurrentUserService currentUserService;
 
   @Autowired
@@ -89,7 +94,8 @@ public class ReceiptServiceImpl implements ReceiptService {
       final ReceiptRepository receiptRepository,
       final ReceiptDocumentRepository documentRepository,
       final ReceiptDocumentRepository receiptDocumentRepository,
-      final UserReceiptCounterRepository userReceiptCounterRepository) {
+      final UserReceiptCounterRepository userReceiptCounterRepository,
+      final UserActivityService userActivityService) {
     this.ekasaClient = ekasaClient;
     this.receiptMapper = receiptMapper;
     this.fileStorageService = fileStorageService;
@@ -97,6 +103,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     this.documentRepository = documentRepository;
     this.receiptDocumentRepository = receiptDocumentRepository;
     this.userReceiptCounterRepository = userReceiptCounterRepository;
+    this.userActivityService = userActivityService;
   }
 
   @Override
@@ -241,6 +248,9 @@ public class ReceiptServiceImpl implements ReceiptService {
       receiptDocument.setDocumentName(document.getOriginalFilename());
     }
 
+    userActivityService.save(
+        UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_UPLOAD_RECEIPT,
+            "User added document to receipt" + receipt.getId()));
     documentRepository.save(receiptDocument);
   }
 
@@ -259,6 +269,10 @@ public class ReceiptServiceImpl implements ReceiptService {
     if (receiptDocument.getReceipt().getCreatedBy() != null && receiptDocument.getReceipt().getCreatedBy()
         .equals(connectedUser.getName())) {
       receiptDocumentRepository.deleteById(documentId);
+      userActivityService.save(
+          UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_RECEIPT,
+              "User deleted from receipt" + receiptDocument.getReceipt().getId() + "with name "
+                  + receiptDocument.getDocumentName()));
     } else {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this document.");
     }
@@ -287,6 +301,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     if (deleteReceipt.getCreatedBy() != null && deleteReceipt.getCreatedBy().equals(connectedUser.getName())) {
       receiptRepository.deleteById(receiptId);
+      userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DELETE_RECEIPT,
+          "User deleted receipt with id" + receiptId));
     } else {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this receipt.");
     }

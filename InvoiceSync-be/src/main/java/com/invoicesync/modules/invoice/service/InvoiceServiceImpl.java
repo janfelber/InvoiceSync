@@ -39,6 +39,9 @@ import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.modules.document.model.AddDocumentData;
@@ -90,6 +93,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final InvoicePdfService invoicePdfService;
 
+  private final UserActivityService userActivityService;
+
   @Value("${openai.api.key}")
   private String openAiApiKey;
 
@@ -100,7 +105,8 @@ public class InvoiceServiceImpl implements InvoiceService {
       final FileStorageService fileStorageService,
       @Qualifier("openAiWebClient") final WebClient openAiClient, final ObjectMapper objectMapper,
       final CompaniesRegistry subjectRegistry,
-      final InvoicePdfService invoicePdfService) {
+      final InvoicePdfService invoicePdfService,
+      final UserActivityService userActivityService) {
     this.invoiceRepository = invoiceRepository;
     this.limitGuardService = limitGuardService;
     this.companyRepository = companyRepository;
@@ -115,6 +121,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         .orElseThrow(() -> new IllegalArgumentException("Encoding for model not found"));
     this.invoiceMapper = invoiceMapper;
     this.objectMapper = objectMapper;
+    this.userActivityService = userActivityService;
   }
 
   @Override
@@ -213,6 +220,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         .orElseThrow(() -> new EntityNotFoundException("Company " + companyId + " not found"));
 
     final Invoice createdInvoice = invoiceMapper.toCreateInvoice(invoiceRequest, company);
+
+    userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.CREATED_INVOICE,
+        "User Created Invoice for Company" + company.getName()));
 
     invoiceRepository.save(createdInvoice);
 
@@ -327,6 +337,10 @@ public class InvoiceServiceImpl implements InvoiceService {
       invoiceDocument.setDocumentName(document.getOriginalFilename());
     }
 
+    userActivityService.save(
+        UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_UPLOAD_INVOICE,
+            "User added document to invoice" + invoice.getId()));
+
     invoiceDocumentRepository.save(invoiceDocument);
   }
 
@@ -352,6 +366,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     invoiceDocumentRepository.delete(invoiceDocument);
+    userActivityService.save(
+        UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_INVOICE,
+            "User deleted document from invoice" + invoiceDocument.getInvoice().getId() + " with name "
+                + invoiceDocument.getDocumentName()));
   }
 
   @Override
