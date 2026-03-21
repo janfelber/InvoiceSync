@@ -9,6 +9,7 @@ import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
+import {toast} from "ngx-sonner";
 import {ReceiptBulkChangeService} from "../../core/services/bulk/ReceiptBulkChangeService";
 
 @Component({
@@ -186,14 +187,19 @@ export class ReceiptsComponent implements OnInit {
   applyBulkAction(): void {
     if (!this.selectedAction) return;
     const ids = Array.from(this.selectedIds);
-    this.receiptBulkChangeService.executeBulkChange(this.selectedAction as any, ids)
+    const count = ids.length;
+    const action = this.selectedAction;
+    this.receiptBulkChangeService.executeBulkChange(action as any, ids)
       .then(() => {
         this.selectedIds.clear();
         this.goBack();
         this.onFetchAllReceipts();
+        if (action === 'DELETE') {
+          toast.success(`Deleted ${count} receipt${count !== 1 ? 's' : ''}`, { duration: 3000 });
+        }
       })
       .catch(error => {
-        console.error('Bulk change error:', error);
+        toast.error('Akcia zlyhala. Skúste znova.');
       });
   }
 
@@ -281,21 +287,6 @@ export class ReceiptsComponent implements OnInit {
     }).catch(error => {
       this.showErrorToast();
     });
-  }
-
-  showDeleteSuccessToast() {
-    this.toastr.success(
-      'Vymazanie prebehlo úspešne!',
-      '',
-      {
-        timeOut: 3000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-        closeButton: true,
-        positionClass: 'toast-top-right',
-        enableHtml: true,
-      }
-    );
   }
 
   showSuccessToast() {
