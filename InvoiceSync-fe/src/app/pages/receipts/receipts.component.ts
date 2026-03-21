@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {CommonModule, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {initDropdowns, initFlowbite} from 'flowbite'
 import {FormsModule} from '@angular/forms';
@@ -9,10 +9,10 @@ import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
-
 @Component({
   selector: 'app-receipts',
   imports: [
+    CommonModule,
     DatePipe,
     NgForOf,
     RouterLink,
@@ -29,6 +29,7 @@ export class ReceiptsComponent implements OnInit {
 
   importModalOpen = false;
   isUploading = false;
+  filterOpen = true;
 
   public receiptResponse: PageResponseReceiptResponse = {
     content: []
@@ -85,9 +86,7 @@ export class ReceiptsComponent implements OnInit {
     })
       .then(response => {
         this.receiptResponse = response.data;
-        console.log(this.receiptResponse = response.data)
         const receipts = response.data.content;
-
         this.lastImportDate = receipts?.length
           ? receipts.reduce(
             (latest: any, curr: any) =>
@@ -123,6 +122,10 @@ export class ReceiptsComponent implements OnInit {
     }
   }
 
+
+  toggleFilter(): void {
+    this.filterOpen = !this.filterOpen;
+  }
 
   onCompanyChange(company: any) {
     this.receiptService.findAllReceiptsByCompany({
@@ -274,5 +277,5 @@ export class ReceiptsComponent implements OnInit {
     return this.page >= ((this.receiptResponse.totalPages ?? 1) - 1);
   }
 
-  protected readonly Math = Math;
+  readonly Math = Math;
 }
