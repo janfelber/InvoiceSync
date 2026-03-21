@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bločky – Bulk Change Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; }
+    .fade-in { animation: fadeIn .18s ease-out; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(5px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-56 shrink-0 bg-[#1a1b1e] flex flex-col py-4 px-3 gap-1">
+    <div class="px-3 py-2 mb-3">
+      <span class="text-white font-bold text-lg tracking-tight">InvoiceSync</span>
+    </div>
+    <a class="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-gray-400 hover:bg-[#2a2b30] hover:text-white cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 12 2-2m0 0 7-7 7 7M5 10v10a1 1 0 0 0 1 1h3m10-11 2 2m-2-2v10a1 1 0 0 1-1 1h-3m-6 0a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1m-6 0h6"/></svg>
+      Domov
+    </a>
+    <a class="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-gray-400 hover:bg-[#2a2b30] hover:text-white cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/></svg>
+      Faktúry
+    </a>
+    <a class="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-white bg-[#2a2b30] cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6"/></svg>
+      Bločky
+    </a>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 overflow-y-auto bg-gray-50" id="mainScroll">
+
+    <!-- Topbar -->
+    <div class="h-12 bg-white border-b border-gray-200 flex items-center px-6 justify-between sticky top-0 z-10">
+      <nav id="breadcrumb" class="flex items-center gap-1 text-sm text-gray-500">
+        <span>Domov</span>
+        <svg class="w-3 h-3 mx-1" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 9 4-4-4-4"/></svg>
+        <span>Dokumenty</span>
+        <svg class="w-3 h-3 mx-1" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 9 4-4-4-4"/></svg>
+        <span class="text-gray-900 font-medium">Bločky</span>
+      </nav>
+      <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">JN</div>
+    </div>
+
+    <!-- ═══ VIEW 1: TABLE ═══ -->
+    <div id="viewTable" class="pt-6 px-6 pb-10 fade-in">
+      <h1 class="text-xl font-semibold text-gray-900 mb-6">Moje Bločky</h1>
+
+      <div class="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
+        <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-200">
+          <div class="flex-1 relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 20 20"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/></svg>
+            <input type="text" placeholder="Vyhľadávanie..." class="w-full h-9 rounded-md border border-gray-300 bg-white px-10 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <button id="bulkBtn" onclick="goToBulkView()" disabled
+            class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586Z"/></svg>
+            Hromadná zmena
+            <span id="bulkCountBadge" class="hidden px-1.5 py-0.5 rounded-full bg-blue-600 text-white text-xs font-bold leading-none"></span>
+          </button>
+          <button class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/></svg>
+            Importovať
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm text-left border-collapse">
+            <thead class="text-xs font-semibold uppercase tracking-wide text-gray-500 bg-gray-50 border-b border-gray-200">
+              <tr class="divide-x divide-gray-200">
+                <th class="w-10 px-4 py-3"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" class="w-4 h-4 rounded border-gray-300 accent-blue-600"></th>
+                <th class="px-4 py-3">Číslo bločku</th>
+                <th class="px-4 py-3">Dodávateľ</th>
+                <th class="px-4 py-3">Dátum importu</th>
+                <th class="px-4 py-3">Spoločnosť</th>
+                <th class="px-4 py-3">IČO</th>
+                <th class="px-4 py-3">Cena (€)</th>
+                <th class="w-12 px-4 py-3"></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW 2: BULK CHANGE ═══ -->
+    <div id="viewBulk" class="hidden pt-6 px-6 pb-10 fade-in">
+
+      <button onclick="goBack()" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors mb-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Späť na Bločky
+      </button>
+
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900">Hromadná zmena</h1>
+          <p class="text-sm text-gray-500 mt-0.5">Vyberte akciu pre <span id="bulkCountLabel" class="font-semibold text-gray-700"></span> vybrané záznamy</p>
+        </div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0Z" clip-rule="evenodd"/></svg>
+          <span id="bulkCountBadge2"></span> vybrané
+        </span>
+      </div>
+
+      <!-- Action card with dropdown + config -->
+      <div class="max-w-lg">
+        <div class="rounded-xl border border-gray-200 bg-white shadow-sm overflow-visible">
+
+          <!-- Dropdown row -->
+          <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100">
+            <label class="text-sm font-medium text-gray-700 shrink-0">Akcia</label>
+            <div class="relative flex-1" id="actionDropdownWrap">
+              <button onclick="toggleActionDropdown()" id="actionDropdownBtn"
+                class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 bg-white text-sm text-gray-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                <span id="actionDropdownLabel">Vyberte akciu...</span>
+                <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/></svg>
+              </button>
+
+              <div id="actionDropdownMenu" class="hidden absolute left-0 top-10 w-full rounded-lg border border-gray-200 bg-white shadow-xl z-50 fade-in">
+                <ul class="p-1 text-sm text-gray-700">
+                  <li>
+                    <button onclick="selectAction('status')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors text-left">
+                      <svg class="w-4 h-4 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                      Zmeniť status
+                    </button>
+                  </li>
+                  <li>
+                    <button onclick="selectAction('pdf')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors text-left">
+                      <svg class="w-4 h-4 text-gray-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/><path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/></svg>
+                      Stiahnuť PDF
+                    </button>
+                  </li>
+                </ul>
+                <div class="p-1 border-t border-gray-100">
+                  <button onclick="selectAction('delete')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-red-50 transition-colors text-left">
+                    <svg class="w-4 h-4 text-red-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/></svg>
+                    <span class="text-red-600">Zmazať</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Config: Status -->
+          <div id="configStatus" class="hidden px-5 py-4 border-b border-gray-100 fade-in">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Nový status</label>
+            <select class="h-9 w-full rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option>Spracované</option>
+              <option>Nespracované</option>
+            </select>
+          </div>
+
+          <!-- Config: Delete warning -->
+          <div id="configDelete" class="hidden px-5 py-4 border-b border-gray-100 fade-in">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-red-50 border border-red-200">
+              <svg class="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/></svg>
+              <p class="text-sm text-red-700">Permanentne zmazať <strong id="deleteCountLabel"></strong> záznamov. <span class="font-medium">Táto akcia je nevratná.</span></p>
+            </div>
+          </div>
+
+          <!-- Footer buttons -->
+          <div id="configFooter" class="hidden px-5 py-4 flex items-center gap-2 fade-in">
+            <button id="applyBtn" onclick="applyAction()" class="h-9 px-5 rounded-md text-white text-sm font-medium transition-colors"></button>
+            <button onclick="resetAction()" class="h-9 px-4 rounded-md border border-gray-300 text-sm text-gray-600 hover:bg-gray-50 transition-colors">Zrušiť</button>
+          </div>
+
+        </div>
+
+        <!-- Selected records preview -->
+        <div class="mt-6">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Vybrané záznamy</p>
+          <div id="selectedPreview" class="rounded-xl border border-gray-200 bg-white divide-y divide-gray-100 overflow-hidden shadow-sm"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="hidden fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-gray-900 text-white text-sm rounded-lg shadow-xl fade-in">
+  <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0Z" clip-rule="evenodd"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+const ROWS = [
+  { id:1, num:'#1042', supplier:'Kaufland s.r.o.',    date:'15.03.2025', company:'Moja s.r.o.', ico:'12345678', price:'€ 48,90' },
+  { id:2, num:'#1041', supplier:'Lidl Slovakia',      date:'14.03.2025', company:'Moja s.r.o.', ico:'12345678', price:'€ 23,15' },
+  { id:3, num:'#1040', supplier:'Tesco Stores SR',    date:'13.03.2025', company:'Beta a.s.',   ico:'87654321', price:'€ 112,40' },
+  { id:4, num:'#1039', supplier:'COOP Jednota',       date:'12.03.2025', company:'Beta a.s.',   ico:'87654321', price:'€ 9,80' },
+  { id:5, num:'#1038', supplier:'Billa s.r.o.',       date:'11.03.2025', company:'Moja s.r.o.', ico:'12345678', price:'€ 67,20' },
+  { id:6, num:'#1037', supplier:'Albert Slovensko',   date:'10.03.2025', company:'Beta a.s.',   ico:'87654321', price:'€ 31,55' },
+];
+
+let selected = new Set();
+let currentAction = null;
+
+function renderRows() {
+  document.getElementById('tableBody').innerHTML = ROWS.map((r, i) => {
+    const sel = selected.has(r.id);
+    const bg = sel ? 'bg-blue-50' : (i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50');
+    return `
+      <tr class="${bg} hover:bg-blue-50/60 transition-colors divide-x divide-gray-100 cursor-pointer" onclick="toggleRow(${r.id})">
+        <td class="px-4 py-3" onclick="event.stopPropagation();toggleRow(${r.id})">
+          <input type="checkbox" ${sel?'checked':''} class="w-4 h-4 rounded border-gray-300 accent-blue-600 pointer-events-none">
+        </td>
+        <td class="px-4 py-3 font-medium text-blue-600 whitespace-nowrap">${r.num}</td>
+        <td class="px-4 py-3 text-gray-600 whitespace-nowrap">${r.supplier}</td>
+        <td class="px-4 py-3 text-gray-600 whitespace-nowrap">${r.date}</td>
+        <td class="px-4 py-3 text-gray-600 whitespace-nowrap">${r.company}</td>
+        <td class="px-4 py-3 text-gray-600 whitespace-nowrap">${r.ico}</td>
+        <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">${r.price}</td>
+        <td class="px-4 py-3">
+          <button class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100" onclick="event.stopPropagation()">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0ZM12 10a2 2 0 11-4 0 2 2 0 014 0ZM16 12a2 2 0 100-4 2 2 0 000 4Z"/></svg>
+          </button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function toggleRow(id) {
+  selected.has(id) ? selected.delete(id) : selected.add(id);
+  updateBulkButton();
+  renderRows();
+}
+
+function toggleSelectAll() {
+  selected.size === ROWS.length ? selected.clear() : ROWS.forEach(r => selected.add(r.id));
+  updateBulkButton();
+  renderRows();
+}
+
+function updateBulkButton() {
+  const n = selected.size;
+  const btn = document.getElementById('bulkBtn');
+  const badge = document.getElementById('bulkCountBadge');
+  const sa = document.getElementById('selectAll');
+  sa.checked = n === ROWS.length;
+  sa.indeterminate = n > 0 && n < ROWS.length;
+  btn.disabled = n === 0;
+  badge.textContent = n;
+  n > 0 ? badge.classList.remove('hidden') : badge.classList.add('hidden');
+}
+
+function goToBulkView() {
+  const n = selected.size;
+  document.getElementById('bulkCountLabel').textContent = n;
+  document.getElementById('bulkCountBadge2').textContent = n;
+  document.getElementById('deleteCountLabel').textContent = n;
+
+  document.getElementById('selectedPreview').innerHTML = ROWS
+    .filter(r => selected.has(r.id))
+    .map(r => `
+      <div class="flex items-center gap-4 px-4 py-3 text-sm">
+        <span class="font-medium text-blue-600">${r.num}</span>
+        <span class="text-gray-600">${r.supplier}</span>
+        <span class="text-gray-400 text-xs">${r.date}</span>
+        <span class="ml-auto text-gray-700 font-medium">${r.price}</span>
+      </div>`).join('');
+
+  resetAction();
+
+  document.getElementById('viewTable').classList.add('hidden');
+  const vb = document.getElementById('viewBulk');
+  vb.classList.remove('hidden');
+  vb.classList.add('fade-in');
+  document.getElementById('mainScroll').scrollTop = 0;
+
+  document.getElementById('breadcrumb').innerHTML = `
+    <span class="cursor-pointer text-blue-600 hover:underline" onclick="goBack()">Bločky</span>
+    <svg class="w-3 h-3 mx-1" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 9 4-4-4-4"/></svg>
+    <span class="text-gray-900 font-medium">Hromadná zmena</span>`;
+}
+
+function goBack() {
+  document.getElementById('viewBulk').classList.add('hidden');
+  const vt = document.getElementById('viewTable');
+  vt.classList.remove('hidden');
+  vt.classList.add('fade-in');
+  document.getElementById('mainScroll').scrollTop = 0;
+  document.getElementById('breadcrumb').innerHTML = `
+    <span>Domov</span>
+    <svg class="w-3 h-3 mx-1" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 9 4-4-4-4"/></svg>
+    <span>Dokumenty</span>
+    <svg class="w-3 h-3 mx-1" fill="none" viewBox="0 0 6 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 9 4-4-4-4"/></svg>
+    <span class="text-gray-900 font-medium">Bločky</span>`;
+}
+
+function toggleActionDropdown() {
+  document.getElementById('actionDropdownMenu').classList.toggle('hidden');
+}
+
+function selectAction(action) {
+  document.getElementById('actionDropdownMenu').classList.add('hidden');
+  currentAction = action;
+
+  const labels = { status: 'Zmeniť status', pdf: 'Stiahnuť PDF', delete: 'Zmazať' };
+  document.getElementById('actionDropdownLabel').textContent = labels[action];
+  document.getElementById('actionDropdownLabel').classList.remove('text-gray-500');
+  document.getElementById('actionDropdownLabel').classList.add('text-gray-900');
+
+  // hide all config panels
+  ['configStatus', 'configDelete'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+
+  const n = selected.size;
+  const footer = document.getElementById('configFooter');
+  const applyBtn = document.getElementById('applyBtn');
+
+  if (action === 'status') {
+    document.getElementById('configStatus').classList.remove('hidden');
+    applyBtn.textContent = `Použiť na ${n} záznamov`;
+    applyBtn.className = 'h-9 px-5 rounded-md text-white text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700';
+    footer.classList.remove('hidden');
+  } else if (action === 'delete') {
+    document.getElementById('configDelete').classList.remove('hidden');
+    applyBtn.textContent = `Zmazať ${n} záznamov`;
+    applyBtn.className = 'h-9 px-5 rounded-md text-white text-sm font-medium transition-colors bg-red-600 hover:bg-red-700';
+    footer.classList.remove('hidden');
+  } else if (action === 'pdf') {
+    footer.classList.remove('hidden');
+    applyBtn.textContent = `Stiahnuť ${n} PDF`;
+    applyBtn.className = 'h-9 px-5 rounded-md text-white text-sm font-medium transition-colors bg-blue-600 hover:bg-blue-700';
+  }
+}
+
+function resetAction() {
+  currentAction = null;
+  ['configStatus', 'configDelete', 'configFooter'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+  document.getElementById('actionDropdownLabel').textContent = 'Vyberte akciu...';
+  document.getElementById('actionDropdownLabel').classList.add('text-gray-500');
+  document.getElementById('actionDropdownLabel').classList.remove('text-gray-900');
+}
+
+function applyAction() {
+  const msgs = { status: 'Status bol úspešne zmenený', pdf: 'PDF súbory sa sťahujú...', delete: 'Záznamy boli úspešne zmazané' };
+  showToast(msgs[currentAction] || 'Hotovo');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.remove('hidden');
+  t.classList.add('flex');
+  setTimeout(() => {
+    t.classList.add('hidden');
+    t.classList.remove('flex');
+    selected.clear();
+    updateBulkButton();
+    renderRows();
+    goBack();
+  }, 2000);
+}
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('actionDropdownWrap').contains(e.target))
+    document.getElementById('actionDropdownMenu').classList.add('hidden');
+});
+
+renderRows();
+</script>
+</body>
+</html>
