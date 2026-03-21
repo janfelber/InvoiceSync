@@ -9,6 +9,9 @@ import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
+import {toast} from "ngx-sonner";
+import {ReceiptBulkChangeService} from "../../core/services/bulk/ReceiptBulkChangeService";
+
 @Component({
   selector: 'app-receipts',
   imports: [
@@ -30,6 +33,11 @@ export class ReceiptsComponent implements OnInit {
   importModalOpen = false;
   isUploading = false;
   filterOpen = true;
+
+  selectedIds = new Set<number>();
+  isBulkView = false;
+  selectedAction: string | null = null;
+  bulkActionDropdownOpen = false;
 
   public receiptResponse: PageResponseReceiptResponse = {
     content: []
@@ -71,6 +79,7 @@ export class ReceiptsComponent implements OnInit {
     private companyService: CompanyService,
     private toastr: ToastrService,
     private router: Router,
+    private receiptBulkChangeService: ReceiptBulkChangeService,
   ) {
   }
 
@@ -125,6 +134,73 @@ export class ReceiptsComponent implements OnInit {
 
   toggleFilter(): void {
     this.filterOpen = !this.filterOpen;
+  }
+
+  onRowCheckboxChange(id: number): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+    this.selectedIds = new Set(this.selectedIds);
+  }
+
+  get allSelected(): boolean {
+    return this.receiptResponse.content.length > 0 &&
+      this.receiptResponse.content.every(r => this.selectedIds.has(r.id));
+  }
+
+  toggleSelectAll(): void {
+    if (this.allSelected) {
+      this.receiptResponse.content.forEach(r => this.selectedIds.delete(r.id));
+    } else {
+      this.receiptResponse.content.forEach(r => this.selectedIds.add(r.id));
+    }
+    this.selectedIds = new Set(this.selectedIds);
+  }
+
+  goToBulkView(): void {
+    this.selectedAction = null;
+    this.bulkActionDropdownOpen = false;
+    this.isBulkView = true;
+  }
+
+  goBack(): void {
+    this.isBulkView = false;
+    this.selectedAction = null;
+    this.bulkActionDropdownOpen = false;
+  }
+
+  get selectedReceipts() {
+    return this.receiptResponse.content.filter(r => this.selectedIds.has(r.id));
+  }
+
+  selectBulkAction(action: string): void {
+    this.selectedAction = action;
+    this.bulkActionDropdownOpen = false;
+  }
+
+  resetBulkAction(): void {
+    this.selectedAction = null;
+  }
+
+  applyBulkAction(): void {
+    if (!this.selectedAction) return;
+    const ids = Array.from(this.selectedIds);
+    const count = ids.length;
+    const action = this.selectedAction;
+    this.receiptBulkChangeService.executeBulkChange(action as any, ids)
+      .then(() => {
+        this.selectedIds.clear();
+        this.goBack();
+        this.onFetchAllReceipts();
+        if (action === 'DELETE') {
+          toast.success(`Deleted ${count} receipt${count !== 1 ? 's' : ''}`, { duration: 3000 });
+        }
+      })
+      .catch(error => {
+        toast.error('Akcia zlyhala. Skúste znova.');
+      });
   }
 
   onCompanyChange(company: any) {
@@ -211,21 +287,6 @@ export class ReceiptsComponent implements OnInit {
     }).catch(error => {
       this.showErrorToast();
     });
-  }
-
-  showDeleteSuccessToast() {
-    this.toastr.success(
-      'Vymazanie prebehlo úspešne!',
-      '',
-      {
-        timeOut: 3000,
-        progressBar: true,
-        progressAnimation: 'increasing',
-        closeButton: true,
-        positionClass: 'toast-top-right',
-        enableHtml: true,
-      }
-    );
   }
 
   showSuccessToast() {
