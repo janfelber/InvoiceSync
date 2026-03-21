@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.invoicesync.core.exception.DownloadDocumentException;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.repository.InvoiceRepository;
 
@@ -27,10 +30,14 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
 
   private final InvoiceService invoiceService;
 
+  private final UserActivityService userActivityService;
+
   public InvoiceBulkChangeServiceImpl(final InvoiceRepository invoiceRepository,
-      final InvoiceService invoiceService) {
+      final InvoiceService invoiceService,
+      final UserActivityService userActivityService) {
     this.invoiceRepository = invoiceRepository;
     this.invoiceService = invoiceService;
+    this.userActivityService = userActivityService;
   }
 
   @Override
@@ -60,6 +67,11 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
       }
 
       zip.finish();
+
+      userActivityService.save(
+          UserActivityRecord.forType(connectedUser.getName(), UserActivityType.BULK_INVOICE_DOWNLOAD,
+              "User Generated Invoices with ids" + invoiceIds));
+
       return baos.toByteArray();
     } catch (IOException e) {
       throw new DownloadDocumentException("Failed to create ZIP archive", e);
