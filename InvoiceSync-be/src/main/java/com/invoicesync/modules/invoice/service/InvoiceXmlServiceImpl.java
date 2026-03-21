@@ -25,6 +25,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.invoicesync.core.enums.LimitType;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.company.service.CompanyService;
 import com.invoicesync.modules.invoice.model.InvoiceRequestDTO;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
@@ -50,6 +53,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
   private final UserService userService;
 
   private final CompanyService companyService;
+
+  private final UserActivityService userActivityService;
 
   @Override
   public byte[] generatePohodaInvoiceXml(final InvoiceRequestDTO request) throws Exception {
@@ -119,6 +124,8 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
     transformer.transform(new DOMSource(doc), new StreamResult(outputStream));
 
     userService.incrementUsed(connectedUser, LimitType.RECEIPT_EXPORT);
+    userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.EXPORT_RECEIPT,
+        "User generated receipt for company " + request.myIdentity().getId() + " with number " + numberRequested));
 
     return outputStream.toByteArray();
   }
