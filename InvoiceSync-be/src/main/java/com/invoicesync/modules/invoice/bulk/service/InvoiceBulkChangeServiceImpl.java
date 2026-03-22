@@ -1,4 +1,4 @@
-package com.invoicesync.modules.invoice.service;
+package com.invoicesync.modules.invoice.bulk.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,16 +15,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.invoicesync.core.common.BulkActionRequest;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
 import com.invoicesync.modules.activity.service.UserActivityService;
+import com.invoicesync.modules.invoice.bulk.enums.InvoiceBulkAction;
 import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.repository.InvoiceRepository;
+import com.invoicesync.modules.invoice.service.InvoiceService;
+import com.invoicesync.modules.receipt.model.request.BulkDeleteRequest;
 
 @Service
 @Transactional
 public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
+
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   private final InvoiceRepository invoiceRepository;
 
@@ -38,6 +45,17 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
     this.invoiceRepository = invoiceRepository;
     this.invoiceService = invoiceService;
     this.userActivityService = userActivityService;
+  }
+
+  @Override
+  public void executeBulkChange(final InvoiceBulkAction action, final String bulkChangeRequest,
+      final Authentication connectedUser) {
+    BulkActionRequest request = action.deserialize(bulkChangeRequest, objectMapper);
+    switch (action) {
+      case DELETE -> deleteInvoices((BulkDeleteRequest) request, connectedUser);
+      default -> throw new IllegalArgumentException("Unsupported bulk action: " + action);
+    }
+
   }
 
   @Override
@@ -76,6 +94,10 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
     } catch (IOException e) {
       throw new DownloadDocumentException("Failed to create ZIP archive", e);
     }
+  }
+
+  private void deleteInvoices(final BulkDeleteRequest deleteRequest, final Authentication connectedUser) {
+    deleteRequest.ids().forEach(id -> invoiceService.deleteInvoice(id, connectedUser));
   }
 
 }
