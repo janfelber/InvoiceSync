@@ -24,10 +24,10 @@ import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
+import com.invoicesync.modules.invoice.bulk.service.InvoiceBulkChangeService;
 import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
-import com.invoicesync.modules.invoice.service.InvoiceBulkChangeService;
 import com.invoicesync.modules.invoice.service.InvoiceService;
 
 @RestController
@@ -136,17 +136,6 @@ public class InvoiceController {
       final Authentication connectedUser
   ) {
     invoiceService.deleteInvoice(invoiceId, connectedUser);
-  }
-
-  @PostMapping(Api.INVOICE_BULK_DOWNLOAD)
-  public ResponseEntity<byte[]> bulkDownloadInvoices(@RequestBody final List<Long> invoiceIds,
-      final Authentication connectedUser) {
-    final byte[] zip = invoiceBulkChangeService.bulkDownloadInvoices(invoiceIds, connectedUser);
-
-    return ResponseEntity.ok()
-        .contentType(MediaType.parseMediaType("application/zip"))
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"invoices.zip\"")
-        .body(zip);
   }
 
 }

@@ -1,5 +1,109 @@
 <main class="pt-13 px-4 mt-6 pb-10">
 
+  <!-- ══════════════════════════════════════════
+     BULK CHANGE VIEW
+══════════════════════════════════════════ -->
+
+  <div *ngIf="isBulkView">
+
+    <button (click)="goBack()" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      Späť na Faktúry
+    </button>
+
+    <div class="mb-6">
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Hromadné úpravy</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Vyberte akciu pre vybrané záznamy</p>
+    </div>
+
+    <div class="max-w-lg">
+
+      <!-- Action card -->
+      <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] shadow-sm overflow-visible">
+
+        <!-- Action dropdown row -->
+        <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
+          <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">Akcia</label>
+          <div class="relative flex-1">
+            <button (click)="bulkActionDropdownOpen = !bulkActionDropdownOpen" type="button"
+                    class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                    [ngClass]="selectedAction ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+              <span>
+                {{ selectedAction === 'DELETE' ? 'Zmazať záznamy' : selectedAction === 'COMPANY_REASSIGN' ? 'Change company' : 'Select action...' }}
+              </span>
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
+              </svg>
+            </button>
+
+            <div *ngIf="bulkActionDropdownOpen"
+                 class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
+              <ul class="p-1 text-sm text-gray-700 dark:text-gray-300">
+                <li>
+                  <a (click)="selectBulkAction('DELETE')"
+                     class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                    Zmazať
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Config: Delete warning -->
+        <div *ngIf="selectedAction === 'DELETE'"
+             class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
+          <div class="flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              <span class="font-semibold text-gray-700 dark:text-gray-300">Pozor</span> — táto akcia zmení <strong class="text-gray-700 dark:text-gray-300">{{ selectedIds.size }}</strong> bločkov.
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div *ngIf="selectedAction" class="px-5 py-4 flex items-center gap-2">
+          <button (click)="applyBulkAction()" type="button"
+                  [disabled]="!canConfirmBulk"
+                  class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            Potvrdiť
+          </button>
+          <button (click)="resetBulkAction()" type="button"
+                  class="h-9 px-4 rounded-md border border-gray-300 dark:border-[#383852] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors">
+            Zrušiť
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Selected records preview -->
+      <div class="mt-6">
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Vybrané záznamy</p>
+        <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] divide-y divide-gray-100 dark:divide-[#383852] overflow-hidden shadow-sm">
+          <div *ngFor="let invoice of selectedInvoices"
+               class="flex items-center gap-4 px-4 py-3 text-sm">
+            <span class="font-medium text-blue-600 dark:text-blue-400">#{{ invoice.invoiceDetails?.invoiceNumber }}</span>
+            <span class="text-gray-600 dark:text-gray-300">{{ invoice.partner?.name }}</span>
+            <span class="text-gray-400 dark:text-gray-500 text-xs">{{ invoice.createdAt | date:'dd.MM.yyyy' }}</span>
+            <span class="ml-auto font-medium text-gray-900 dark:text-white">
+              {{ invoice.invoiceDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     TABLE VIEW
+══════════════════════════════════════════ -->
+  <ng-container *ngIf="!isBulkView">
+
   <!-- Breadcrumb + page title -->
   <div class="mb-4">
     <nav class="flex mb-2" aria-label="Breadcrumb">
@@ -287,6 +391,15 @@
           class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
       </div>
 
+      <!-- Bulk change button -->
+      <button
+        type="button"
+        [disabled]="selectedIds.size === 0"
+        (click)="goToBulkView()"
+        class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+        Hromadné úpravy
+      </button>
+
       <!-- Bulk action buttons -->
       <button
         type="button"
@@ -410,6 +523,9 @@
     </div>
 
   </div>
+
+  </ng-container>
+
 
 </main>
 
