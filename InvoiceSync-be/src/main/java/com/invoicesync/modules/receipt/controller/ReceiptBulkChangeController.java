@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.invoicesync.core.Api;
 import com.invoicesync.modules.receipt.bulk.ReceiptBulkAction;
 import com.invoicesync.modules.receipt.bulk.ReceiptBulkChangeService;
-import com.invoicesync.modules.receipt.model.request.BulkRequest;
 
 @RestController
 @RequestMapping(Api.RECEIPT + "/bulk")
@@ -24,9 +23,9 @@ public class ReceiptBulkChangeController {
   }
 
   @PostMapping("/bulk-change/execute")
-  public ResponseEntity<?> executeBulkChange(@RequestParam ReceiptBulkAction action, @RequestBody BulkRequest request,
-      Authentication auth) {
-    receiptBulkChangeService.executeBulkChange(action, request.ids(), auth);
+  public ResponseEntity<?> executeBulkChange(@RequestParam ReceiptBulkAction action,
+      @RequestBody String bulkChangeRequest, Authentication auth) {
+    receiptBulkChangeService.executeBulkChange(action, bulkChangeRequest, auth);
     return ResponseEntity.noContent().build();
   }
 
