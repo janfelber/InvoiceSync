@@ -101,12 +101,4 @@ export class InvoiceService {
       {responseType: 'blob'}
     );
   }
-
-  bulkDownloadInvoices(invoiceIds: Set<number>): Promise<any> {
-    return this.apiService.instance.post(
-      `${this.baseUrl}${ApiPaths.invoice.BULK_DOWNLOAD}`,
-      Array.from(invoiceIds),
-      { responseType: 'blob' }
-    );
-  }
 }

@@ -10,6 +10,8 @@ import {InvoiceService} from "../../core/services/invoice.service";
 import {PageInvoiceResponse} from "./page-response-receipt-response";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
+import {toast} from "ngx-sonner";
+import {InvoiceBulkChangeService} from "../../core/services/bulk/invoice-bulk-change.service";
 
 @Component({
   selector: 'app-test',
@@ -26,6 +28,9 @@ import {PageResponseCompanyResponseDto} from "../../core/models/page-response-co
 export class Invoices implements OnInit, AfterViewInit {
 
   selectedIds = new Set<number>();
+  isBulkView = false;
+  selectedAction: string | null = null;
+  bulkActionDropdownOpen = false;
 
   uploadModalOpen = false;
   isUploading = false;
@@ -67,6 +72,7 @@ export class Invoices implements OnInit, AfterViewInit {
   constructor(
     private companyService: CompanyService,
     private invoiceService: InvoiceService,
+    private invoiceBulkChangeService: InvoiceBulkChangeService,
     private axiosService: AxiosService,
     private router: Router,
   ) {
@@ -275,7 +281,7 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   downloadSelectedPdfs() {
-    this.invoiceService.bulkDownloadInvoices(this.selectedIds)
+    this.invoiceBulkChangeService.bulkDownloadInvoices(this.selectedIds)
       .then((response) => {
         const blob = new Blob([response.data]);
         const url = window.URL.createObjectURL(blob);
@@ -287,6 +293,54 @@ export class Invoices implements OnInit, AfterViewInit {
       })
       .catch(error => {
         console.error('Download error:', error);
+      });
+  }
+
+  get canConfirmBulk(): boolean {
+    return this.selectedAction !== null;
+  }
+
+  get selectedInvoices() {
+    return this.invoiceResponse.content.filter(r => this.selectedIds.has(r.id));
+  }
+
+  selectBulkAction(action: string): void {
+    this.selectedAction = action;
+    this.bulkActionDropdownOpen = false;
+  }
+
+  resetBulkAction(): void {
+    this.selectedAction = null;
+  }
+
+  goBack(): void {
+    this.isBulkView = false;
+    this.selectedAction = null;
+    this.bulkActionDropdownOpen = false;
+  }
+
+  goToBulkView(): void {
+    this.selectedAction = null;
+    this.bulkActionDropdownOpen = false;
+    this.isBulkView = true;
+  }
+
+  applyBulkAction(): void {
+    if (!this.selectedAction) return;
+    const ids = Array.from(this.selectedIds);
+    const count = ids.length;
+    const action = this.selectedAction;
+    this.invoiceBulkChangeService.executeBulkChange(action as any, ids)
+      .then(() => {
+        this.selectedIds.clear();
+        this.goBack();
+        this.onFetchAllInvoices();
+        if (action === 'DELETE') {
+          toast.success(`Deleted ${count} invoices${count !== 1 ? 's' : ''}`, { duration: 3000 });
+        }
+      })
+      .catch(error => {
+        toast.error('Akcia zlyhala. Skúste znova.');
       });
   }
 
