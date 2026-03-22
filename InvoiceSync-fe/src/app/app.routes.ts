@@ -26,6 +26,8 @@ import {FeatureGuard} from "./core/services/feature.guard";
 import {ReceiptInspectComponent} from "./features/receipt/receipt-inspect/receipt-inspect.component";
 import {SubscriptionComponent} from "./pages/invoice-limiter/subscription.component";
 import {UserActivity} from "./user-activity/user-activity";
+import {IntegrationsComponent} from "./pages/integrations/integrations.component";
+import {GoogleIntegrationComponent} from "./pages/integrations/google/google-integration.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -69,7 +71,9 @@ export const routes: Routes = [
       {path: 'web/mobile-app', component: MobileAppComponent},
       {path: 'web/data-transfer', component: DataTransferTableComponent},
       {path: 'web/data-transfer/:id', component: DataTransferDetailComponent},
-      {path: 'web/settings', component: UserSettingsComponent}
+      {path: 'web/settings', component: UserSettingsComponent},
+      {path: 'web/integrations', component: IntegrationsComponent},
+      {path: 'web/integrations/google', component: GoogleIntegrationComponent}
     ]
   },
 
