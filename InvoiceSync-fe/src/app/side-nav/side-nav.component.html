@@ -212,15 +212,24 @@
           </a>
         </li>
         <li>
-          <!-- Integrácie – coming soon -->
-          <div class="flex items-center px-2 py-2 text-sm rounded-lg border-l-[3px] border-transparent text-gray-400 dark:text-gray-500 cursor-not-allowed">
-            <svg class="w-5 h-5 shrink-0" aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
-              <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
+          <a
+            #intRla="routerLinkActive"
+            routerLink="/web/integrations"
+            routerLinkActive
+            class="flex items-center px-2 py-2 text-sm rounded-md group transition-colors"
+            [ngClass]="intRla.isActive
+              ? 'bg-[#d8d8f0] dark:bg-[#3d3d5a] text-gray-900 dark:text-white font-medium'
+              : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-700 dark:hover:text-gray-300'"
+          >
+            <svg
+              class="w-5 h-5 shrink-0 transition-colors"
+              [ngClass]="intRla.isActive ? 'text-gray-700 dark:text-white' : 'text-gray-400 dark:text-gray-500'"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.828 10.172a4 4 0 0 0-5.656 0l-4 4a4 4 0 1 0 5.656 5.656l1.102-1.101m-.758-4.899a4 4 0 0 0 5.656 0l4-4a4 4 0 0 0-5.656-5.656l-1.1 1.1"/>
             </svg>
             <span class="ml-3">Integrácie</span>
-            <span class="ml-auto text-xs bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-1.5 py-0.5 rounded font-medium">Čoskoro</span>
-          </div>
+          </a>
         </li>
         <li>
           <a
