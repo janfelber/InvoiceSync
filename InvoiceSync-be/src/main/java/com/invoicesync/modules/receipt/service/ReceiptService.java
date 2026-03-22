@@ -83,6 +83,7 @@ public interface ReceiptService {
 
   void mergeReceiptItems(Long receiptId, MergeItemsRequest request, Authentication connectedUser);
 
+  void reassignReceipt(Long receiptId, Long newCompanyId, Authentication connectedUser);
   //
   // ReceiptDetailsDTO getReceiptById(Long id);
   //
