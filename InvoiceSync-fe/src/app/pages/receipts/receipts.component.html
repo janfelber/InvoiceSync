@@ -24,13 +24,13 @@
 
         <!-- Action dropdown row -->
         <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
-          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 shrink-0">Akcia</label>
+          <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">Akcia</label>
           <div class="relative flex-1">
             <button (click)="bulkActionDropdownOpen = !bulkActionDropdownOpen" type="button"
               class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               [ngClass]="selectedAction ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
               <span>
-                {{ selectedAction === 'DELETE' ? 'Zmazať záznamy' : 'Vyberte akciu...' }}
+                {{ selectedAction === 'DELETE' ? 'Zmazať záznamy' : selectedAction === 'COMPANY_REASSIGN' ? 'Change company' : 'Select action...' }}
               </span>
               <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
@@ -41,6 +41,12 @@
                  class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
               <ul class="p-1 text-sm text-gray-700 dark:text-gray-300">
                 <li>
+                  <a (click)="selectBulkAction('COMPANY_REASSIGN')"
+                     class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                    Change company
+                  </a>
+                </li>
+                <li>
                   <a (click)="selectBulkAction('DELETE')"
                      class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
                     Zmazať záznamy
@@ -48,6 +54,44 @@
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+
+        <!-- Config: Change company -->
+        <div *ngIf="selectedAction === 'COMPANY_REASSIGN'"
+             class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
+          <div class="flex items-center gap-4">
+            <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">Company</label>
+            <div class="relative flex-1">
+              <button (click)="bulkCompanyDropdownOpen = !bulkCompanyDropdownOpen" type="button"
+                class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                [ngClass]="bulkCompanyId ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+                <span>{{ bulkCompanyName ?? 'Select company...' }}</span>
+                <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
+                </svg>
+              </button>
+              <div *ngIf="bulkCompanyDropdownOpen"
+                   class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
+                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 max-h-48 overflow-y-auto">
+                  <li *ngFor="let company of companyResponse.content">
+                    <a (click)="selectBulkCompany(company)"
+                       class="flex px-3 py-2 rounded-md cursor-pointer transition-colors"
+                       [ngClass]="bulkCompanyId === company.id ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-[#383852]'">
+                      {{ company.name }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="bulkCompanyId" class="mt-3 flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              This action will move <strong class="text-gray-700 dark:text-gray-300">{{ selectedIds.size }}</strong> receipt{{ selectedIds.size !== 1 ? 's' : '' }} to <strong class="text-gray-700 dark:text-gray-300">{{ bulkCompanyName }}</strong>.
+            </p>
           </div>
         </div>
 
@@ -67,7 +111,8 @@
         <!-- Footer -->
         <div *ngIf="selectedAction" class="px-5 py-4 flex items-center gap-2">
           <button (click)="applyBulkAction()" type="button"
-            class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors">
+            [disabled]="!canConfirmBulk"
+            class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
             Potvrdiť
           </button>
           <button (click)="resetBulkAction()" type="button"
