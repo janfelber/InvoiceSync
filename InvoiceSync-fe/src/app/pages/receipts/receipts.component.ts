@@ -38,6 +38,9 @@ export class ReceiptsComponent implements OnInit {
   isBulkView = false;
   selectedAction: string | null = null;
   bulkActionDropdownOpen = false;
+  bulkCompanyDropdownOpen = false;
+  bulkCompanyId: number | null = null;
+  bulkCompanyName: string | null = null;
 
   public receiptResponse: PageResponseReceiptResponse = {
     content: []
@@ -182,6 +185,20 @@ export class ReceiptsComponent implements OnInit {
 
   resetBulkAction(): void {
     this.selectedAction = null;
+    this.bulkCompanyId = null;
+    this.bulkCompanyName = null;
+    this.bulkCompanyDropdownOpen = false;
+  }
+
+  selectBulkCompany(company: any): void {
+    this.bulkCompanyId = company.id;
+    this.bulkCompanyName = company.name;
+    this.bulkCompanyDropdownOpen = false;
+  }
+
+  get canConfirmBulk(): boolean {
+    if (this.selectedAction === 'COMPANY_REASSIGN') return this.bulkCompanyId !== null;
+    return this.selectedAction !== null;
   }
 
   applyBulkAction(): void {
@@ -189,13 +206,17 @@ export class ReceiptsComponent implements OnInit {
     const ids = Array.from(this.selectedIds);
     const count = ids.length;
     const action = this.selectedAction;
-    this.receiptBulkChangeService.executeBulkChange(action as any, ids)
+    const companyId = this.bulkCompanyId ?? undefined;
+    const companyName = this.bulkCompanyName;
+    this.receiptBulkChangeService.executeBulkChange(action as any, ids, companyId)
       .then(() => {
         this.selectedIds.clear();
         this.goBack();
         this.onFetchAllReceipts();
         if (action === 'DELETE') {
           toast.success(`Deleted ${count} receipt${count !== 1 ? 's' : ''}`, { duration: 3000 });
+        } else if (action === 'COMPANY_REASSIGN') {
+          toast.success(`Moved ${count} receipt${count !== 1 ? 's' : ''} to ${companyName}`, { duration: 3000 });
         }
       })
       .catch(error => {
