@@ -49,6 +49,8 @@ import com.invoicesync.core.utils.ParseUtils;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
 import com.invoicesync.modules.activity.service.UserActivityService;
+import com.invoicesync.modules.company.model.Company;
+import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.document.model.ReceiptDocument;
@@ -84,6 +86,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private final UserActivityService userActivityService;
 
+  private final CompanyRepository companyRepository;
+
   // private final CurrentUserService currentUserService;
 
   @Autowired
@@ -95,7 +99,7 @@ public class ReceiptServiceImpl implements ReceiptService {
       final ReceiptDocumentRepository documentRepository,
       final ReceiptDocumentRepository receiptDocumentRepository,
       final UserReceiptCounterRepository userReceiptCounterRepository,
-      final UserActivityService userActivityService) {
+      final UserActivityService userActivityService, final CompanyRepository companyRepository) {
     this.ekasaClient = ekasaClient;
     this.receiptMapper = receiptMapper;
     this.fileStorageService = fileStorageService;
@@ -104,6 +108,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     this.receiptDocumentRepository = receiptDocumentRepository;
     this.userReceiptCounterRepository = userReceiptCounterRepository;
     this.userActivityService = userActivityService;
+    this.companyRepository = companyRepository;
   }
 
   @Override
@@ -354,6 +359,26 @@ public class ReceiptServiceImpl implements ReceiptService {
     receipt.getItems().add(mergedItem);
 
     receiptRepository.save(receipt);
+  }
+
+  @Override
+  public void reassignReceipt(final Long receiptId, final Long newCompanyId, final Authentication connectedUser) {
+    final Receipt receiptToChange = receiptRepository.findById(receiptId)
+        .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
+
+    final Company newCompany = companyRepository.findById(newCompanyId)
+        .orElseThrow(() -> new EntityNotFoundException("Company not found"));
+
+    if (!receiptToChange.getCreatedBy().equals(connectedUser.getName())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to reassign this receipt.");
+    }
+
+    if (!newCompany.getCreatedBy().equals(connectedUser.getName())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to assign to this company.");
+    }
+
+    receiptToChange.setCompany(newCompany);
+    receiptRepository.save(receiptToChange);
   }
 
   // @Override
