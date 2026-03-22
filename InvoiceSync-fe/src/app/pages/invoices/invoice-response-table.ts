@@ -3,7 +3,7 @@ import {Partner} from "./partner";
 
 
 export interface InvoiceResponseTable {
-  id?: number;
+  id: number;
   createdAt?: any;
   invoiceDetails?: InvoiceDetails
   partner?: Partner;
