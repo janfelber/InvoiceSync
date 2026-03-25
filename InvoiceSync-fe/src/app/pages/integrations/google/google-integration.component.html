@@ -40,7 +40,9 @@
 
       <div class="flex-1 min-w-0">
         <p class="text-sm font-medium text-gray-900 dark:text-white">Gmail</p>
-        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Importovať bločky a faktúry z emailových príloh</p>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+          {{ gmailConnected && gmailEmail ? gmailEmail : 'Odosielať faktúry priamo z vášho Gmail účtu' }}
+        </p>
       </div>
 
       <div class="flex items-center gap-3 shrink-0">
