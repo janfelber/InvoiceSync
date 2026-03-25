@@ -94,5 +94,13 @@ export const ApiPaths = {
   mobile: {
     BASE: '/auth/mobile',
     QR_GENERATE: '/qr',
+  },
+  integrations: {
+    google: {
+      BASE: '/integrations/google',
+      URL: '/url',
+      STATUS: '/status',
+      DISCONNECT: '/disconnect',
+    }
   }
 };

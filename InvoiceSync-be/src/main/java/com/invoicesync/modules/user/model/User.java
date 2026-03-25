@@ -71,6 +71,18 @@ public class User {
   @Column(name = "code")
   private Set<Long> featureIds = new HashSet<>();
 
+  @Column(name = "google_access_token", length = 2048)
+  private String googleAccessToken;
+
+  @Column(name = "google_refresh_token", length = 512)
+  private String googleRefreshToken;
+
+  @Column(name = "google_email")
+  private String googleEmail;
+
+  @Column(name = "google_connected")
+  private boolean googleConnected = false;
+
   public User(final String fullName, final String username, final String password, final Role role) {
     this.fullName = fullName;
     this.username = username;
