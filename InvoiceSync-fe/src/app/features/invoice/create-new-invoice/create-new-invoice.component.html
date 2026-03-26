@@ -306,17 +306,38 @@
                            placeholder="Company s.r.o/ Name Surname"
                            [(ngModel)]="supplierDraft.name">
                   </div>
-                  <div class="space-y-2">
-                    <label for="supplierAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
-                      Address / Residence *
-                      <span class="text-xs text-slate-400">(auto-filled)</span>
-                    </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
-                           id="supplierAddress"
-                           disabled
-                           name="supplierAddress"
-                           placeholder="Street 123, 00000 City"
-                           [(ngModel)]="supplierDraft.address">
+                  <!-- Address / Residence -->
+                  <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
+                    <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-[#1a1b1e] border-b border-slate-200 dark:border-[#383852]">
+                      <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      <span class="text-sm font-medium dark:text-gray-300">Address / Residence *</span>
+                      <span class="ml-auto text-xs text-slate-400">(auto-filled)</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                             id="supplierStreet"
+                             disabled
+                             name="supplierStreet"
+                             placeholder="Ulica a číslo"
+                             [(ngModel)]="supplierDraft.street">
+                      <div class="grid grid-cols-2 gap-2">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="supplierCity"
+                               disabled
+                               name="supplierCity"
+                               placeholder="Mesto"
+                               [(ngModel)]="supplierDraft.city">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="supplierZip"
+                               disabled
+                               name="supplierZip"
+                               placeholder="PSČ"
+                               [(ngModel)]="supplierDraft.zip">
+                      </div>
+                    </div>
                   </div>
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
@@ -362,6 +383,7 @@
                 </div>
               </div>
 
+              <!-- TODO: IS-182 - Remove "By VAT ID" and "Manual" supplier tabs -->
               <div id="by-vat-supplier"
                    role="tabpanel"
                    aria-labelledby="by-vat-supplier-tab"
@@ -415,7 +437,7 @@
                     <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierAddress"
                            disabled
-                           name="supplierAddress" [(ngModel)]="supplierDraft.address"
+                           name="supplierAddress"
                            placeholder="Street 123, 00000 City">
                   </div>
                   <div class="grid grid-cols-2 gap-4">
@@ -459,6 +481,7 @@
                 </div>
               </div>
 
+              <!-- TODO: IS-182 - Remove "By VAT ID" and "Manual" supplier tabs -->
               <div id="manual-supplier"
                    role="tabpanel"
                    aria-labelledby="manual-supplier-tab"
@@ -479,7 +502,7 @@
                     </label>
                     <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
                            id="supplierAddress"
-                           name="supplierAddress" [(ngModel)]="supplierDraft.address"
+                           name="supplierAddress"
                            placeholder="Street 123, 00000 City">
                   </div>
                   <div class="grid grid-cols-2 gap-4">
@@ -604,16 +627,35 @@
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
-                  <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
-                      Address / Residence *
-                      <span class="text-xs text-slate-400">(auto-filled)</span>
-                    </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
-                           id="recipientAddress"
-                           disabled
-                           name="recipientAddress" [(ngModel)]="recipientDraft.address"
-                           placeholder="Street 123, 00000 City">
+                  <!-- Address / Residence -->
+                  <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
+                    <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-[#1a1b1e] border-b border-slate-200 dark:border-[#383852]">
+                      <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      <span class="text-sm font-medium dark:text-gray-300">Address / Residence *</span>
+                      <span class="ml-auto text-xs text-slate-400">(auto-filled)</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                             id="recipientStreet"
+                             disabled
+                             name="recipientStreet" [(ngModel)]="recipientDraft.street"
+                             placeholder="Ulica a číslo">
+                      <div class="grid grid-cols-2 gap-2">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientCity"
+                               disabled
+                               name="recipientCity" [(ngModel)]="recipientDraft.city"
+                               placeholder="Mesto">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientZip"
+                               disabled
+                               name="recipientZip" [(ngModel)]="recipientDraft.zip"
+                               placeholder="PSČ">
+                      </div>
+                    </div>
                   </div>
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
@@ -698,16 +740,35 @@
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
-                  <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
-                      Address / Residence *
-                      <span class="text-xs text-slate-400">(auto-filled)</span>
-                    </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
-                           id="recipientAddress"
-                           disabled
-                           name="recipientAddress" [(ngModel)]="recipientDraft.address"
-                           placeholder="Street 123, 00000 City">
+                  <!-- Address / Residence -->
+                  <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
+                    <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-[#1a1b1e] border-b border-slate-200 dark:border-[#383852]">
+                      <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      <span class="text-sm font-medium dark:text-gray-300">Address / Residence *</span>
+                      <span class="ml-auto text-xs text-slate-400">(auto-filled)</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                             id="recipientStreet"
+                             disabled
+                             name="recipientStreet" [(ngModel)]="recipientDraft.street"
+                             placeholder="Ulica a číslo">
+                      <div class="grid grid-cols-2 gap-2">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientCity"
+                               disabled
+                               name="recipientCity" [(ngModel)]="recipientDraft.city"
+                               placeholder="Mesto">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientZip"
+                               disabled
+                               name="recipientZip" [(ngModel)]="recipientDraft.zip"
+                               placeholder="PSČ">
+                      </div>
+                    </div>
                   </div>
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
@@ -764,14 +825,31 @@
                            name="recipientName" [(ngModel)]="recipientDraft.name"
                            placeholder="Company s.r.o/ Name Surname">
                   </div>
-                  <div class="space-y-2">
-                    <label for="recipientAddress" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">
-                      Address / Residence *
-                    </label>
-                    <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
-                           id="recipientAddress"
-                           name="recipientAddress" [(ngModel)]="recipientDraft.address"
-                           placeholder="Street 123, 00000 City">
+                  <!-- Address / Residence -->
+                  <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
+                    <div class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 dark:bg-[#1a1b1e] border-b border-slate-200 dark:border-[#383852]">
+                      <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      <span class="text-sm font-medium dark:text-gray-300">Address / Residence *</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                      <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                             id="recipientStreet"
+                             name="recipientStreet" [(ngModel)]="recipientDraft.street"
+                             placeholder="Ulica a číslo">
+                      <div class="grid grid-cols-2 gap-2">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientCity"
+                               name="recipientCity" [(ngModel)]="recipientDraft.city"
+                               placeholder="Mesto">
+                        <input class="flex h-9 w-full min-w-0 rounded-md border px-3 py-1 border-slate-200 dark:border-[#383852] dark:bg-[#1a1b1e] dark:text-white"
+                               id="recipientZip"
+                               name="recipientZip" [(ngModel)]="recipientDraft.zip"
+                               placeholder="PSČ">
+                      </div>
+                    </div>
                   </div>
                   <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-2">
@@ -972,7 +1050,10 @@
                         <p class="font-bold">Dodávateľ</p>
                         <p>{{ supplierDraft.name }}</p>
                         <p class="company-detail">
-                          {{ supplierDraft.address }}
+                          {{ supplierDraft.city }} {{ supplierDraft.street }}
+                        </p>
+                        <p class="company-detail">
+                          {{ supplierDraft.zip }} {{ supplierDraft.city }}
                         </p>
                         <p class="company-detail" *ngIf="supplierDraft.registrationNumber">
                           IČO: {{ supplierDraft.registrationNumber }}
@@ -989,7 +1070,8 @@
                       <div class="text-sm text-neutral-600 text-right">
                         <h3 class="font-bold">Odoberateľ:</h3>
                         <p>{{ recipientDraft.name }}</p>
-                        <p class="company-detail">{{ recipientDraft.address }}</p>
+                        <p class="company-detail">{{ recipientDraft.city }} {{ recipientDraft.street }}</p>
+                        <p class="company-detail">{{ recipientDraft.zip }} {{ recipientDraft.city }} </p>
                         <p class="company-detail" *ngIf="recipientDraft.registrationNumber">
                           IČO: {{ recipientDraft.registrationNumber }}</p>
                         <p class="company-detail" *ngIf="recipientDraft.taxId">
