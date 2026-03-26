@@ -9,7 +9,9 @@ import {InvoiceService} from "../../../core/services/invoice.service";
 
 interface SupplierDraft {
   name: string;
-  address: string;
+  city: string;
+  street: string;
+  zip: string;
   registrationNumber: string;
   taxId: string;
   vatId: string;
@@ -17,7 +19,9 @@ interface SupplierDraft {
 
 interface RecipientDraft {
   name: string;
-  address: string;
+  city: string;
+  street: string;
+  zip: string;
   registrationNumber: string;
   taxId: string;
   vatId: string;
@@ -50,7 +54,9 @@ export class CreateNewInvoice implements OnInit {
 
   supplierDraft: SupplierDraft = {
     name: '',
-    address: '',
+    city:'',
+    street: '',
+    zip: '',
     registrationNumber: '',
     taxId: '',
     vatId: ''
@@ -58,7 +64,9 @@ export class CreateNewInvoice implements OnInit {
 
   recipientDraft: RecipientDraft = {
     name: '',
-    address: '',
+    city:'',
+    street: '',
+    zip: '',
     registrationNumber: '',
     taxId: '',
     vatId: ''
@@ -123,7 +131,9 @@ export class CreateNewInvoice implements OnInit {
       partner: this.recipientDraft
         ? {
           name: this.recipientDraft.name ?? '',
-          street: this.recipientDraft.address ?? '',
+          city: this.recipientDraft.city ?? '',
+          street: this.recipientDraft.street ?? '',
+          zip: this.recipientDraft.zip ?? '',
           registrationNumber: this.recipientDraft.registrationNumber ?? '',
           taxId: this.recipientDraft.taxId ?? '',
           vatId: this.recipientDraft.vatId ?? ''
@@ -177,7 +187,9 @@ export class CreateNewInvoice implements OnInit {
 
       this.supplierDraft = {
         name: company.name,
-        address: company.address,
+        city: company.city,
+        street: company.street,
+        zip: company.zip,
         registrationNumber: company.registrationNumber,
         taxId: company.taxId,
         vatId: company.vatId
@@ -195,9 +207,13 @@ export class CreateNewInvoice implements OnInit {
     }).then(response => {
       const company = response.data;
 
+      console.log(company.street);
+
       this.recipientDraft = {
         name: company.name,
-        address: company.address,
+        city: company.city,
+        street: company.street,
+        zip: company.zip,
         registrationNumber: company.registrationNumber,
         taxId: company.taxId,
         vatId: company.vatId
@@ -220,7 +236,9 @@ export class CreateNewInvoice implements OnInit {
 
         this.supplierDraft = {
           name: company.name,
-          address: `${company.street}, ${company.zip} ${company.city}`,
+          city: company.city,
+          street: company.street,
+          zip: company.zip,
           registrationNumber: company.registrationNumber,
           taxId: company.taxId,
           vatId: company.vatId
@@ -239,7 +257,9 @@ export class CreateNewInvoice implements OnInit {
 
         this.recipientDraft = {
           name: company.name,
-          address: `${company.street}, ${company.zip} ${company.city}`,
+          city: company.city,
+          street: company.street,
+          zip: company.zip,
           registrationNumber: company.registrationNumber,
           taxId: company.taxId,
           vatId: company.vatId
