@@ -277,20 +277,13 @@
                 <div class="space-y-2 mb-4">
                   <label for="supplier" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Choose
                     Supplier</label>
-                  <select
-                    class="w-full border border-gray-300 dark:border-[#383852] rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    name="supplier"
-                    [disabled]="companyResponse.content!.length === 0"
-                    (change)="onCompanySelected($event.target!.value)"
-                  >
-                    <option value="" disabled selected>Vyberte dodávateľa</option>
-                    <option
-                      *ngFor="let company of companyResponse?.content"
-                      [value]="company.id"
-                    >
-                      {{ company.name }}
-                    </option>
-                  </select>
+                  <app-searchable-select
+                    [value]="selectedSupplierCompany"
+                    [options]="companyOptions"
+                    [disabled]="companyOptions.length === 0"
+                    placeholder="Vyberte dodávateľa"
+                    (valueChange)="selectedSupplierCompany = $event; onCompanySelected($event)">
+                  </app-searchable-select>
                 </div>
 
                 <div class="space-y-4 pt-2">
@@ -599,20 +592,13 @@
                 <div class="space-y-2 mb-4">
                   <label for="recipient" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">Choose
                     recipient</label>
-                  <select
-                    class="w-full border border-gray-300 dark:border-[#383852] rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    name="recipient"
-                    [disabled]="companyResponse.content!.length === 0"
-                    (change)="onRecipientSelected($event.target!.value)"
-                  >
-                    <option value="" disabled selected>Vyberte odoberatela</option>
-                    <option
-                      *ngFor="let company of companyResponse?.content"
-                      [value]="company.id"
-                    >
-                      {{ company.name }}
-                    </option>
-                  </select>
+                  <app-searchable-select
+                    [value]="selectedRecipientCompany"
+                    [options]="companyOptions"
+                    [disabled]="companyOptions.length === 0"
+                    placeholder="Vyberte odberateľa"
+                    (valueChange)="selectedRecipientCompany = $event; onRecipientSelected($event)">
+                  </app-searchable-select>
                 </div>
 
                 <div class="space-y-4 pt-2">
@@ -950,13 +936,11 @@
                   <div class="space-y-2">
                     <label for="itemPrice" class="flex items-center gap-2 text-sm leading-none font-medium dark:text-gray-300">VAT</label>
                     <div class="flex w-full h-9">
-                      <select
-                        class="block w-full min-w-17 bg-gray-50 dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] dark:text-white rounded-lg px-2 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        [(ngModel)]="item.vatRate" name="productTax" (ngModelChange)="updateItemTotals(item)">
-                        <option [ngValue]="19">19%</option>
-                        <option [ngValue]="23">23%</option>
-                        <option [ngValue]="25">25%</option>
-                      </select>
+                      <app-searchable-select
+                        [value]="item.vatRate"
+                        [options]="vatOptions"
+                        (valueChange)="item.vatRate = $event; updateItemTotals(item)">
+                      </app-searchable-select>
                     </div>
                   </div>
                 </div>

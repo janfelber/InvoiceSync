@@ -1,0 +1,62 @@
+<div class="relative">
+
+  <!-- Trigger -->
+  <button
+    type="button"
+    (click)="toggle()"
+    [disabled]="disabled"
+    [ngClass]="isOpen ? 'rounded-t-md border-b-0' : 'rounded-md'"
+    class="w-full h-9 px-3 flex items-center justify-between text-sm border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] text-slate-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
+    <span [ngClass]="selectedLabel ? '' : 'text-slate-400'">
+      {{ selectedLabel || placeholder }}
+    </span>
+    <svg class="w-4 h-4 text-slate-400 shrink-0 transition-transform duration-150"
+         [ngClass]="isOpen ? 'rotate-180' : ''"
+         fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <!-- Expanded panel — no gap, same border, connected -->
+  <div *ngIf="isOpen"
+       class="absolute z-50 w-full border border-t-0 border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] rounded-b-md shadow-lg">
+
+    <!-- Search input -->
+    <div class="px-2 pt-2 pb-1 border-b border-slate-100 dark:border-[#383852]">
+      <div class="relative">
+        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none"
+             fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          [(ngModel)]="searchQuery"
+          name="searchQuery"
+          type="text"
+          placeholder="Hľadať..."
+          class="w-full h-8 pl-8 pr-3 text-sm bg-slate-50 dark:bg-[#2a2b30] border border-slate-200 dark:border-[#383852] rounded text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500/40 focus:border-blue-500"
+          (click)="$event.stopPropagation()"/>
+      </div>
+    </div>
+
+    <!-- Options list -->
+    <ul class="max-h-52 overflow-y-auto py-1">
+      <li *ngIf="filteredOptions.length === 0"
+          class="px-3 py-2 text-sm text-slate-400 dark:text-slate-500">
+        Žiadne výsledky
+      </li>
+      <li *ngFor="let option of filteredOptions"
+          (click)="select(option)"
+          [ngClass]="option.value === selectedValue
+            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+            : 'text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#2a2b30]'"
+          class="flex items-center justify-between px-3 py-2 text-sm cursor-pointer select-none">
+        <span>{{ option.label }}</span>
+        <svg *ngIf="option.value === selectedValue"
+             class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </li>
+    </ul>
+  </div>
+
+</div>

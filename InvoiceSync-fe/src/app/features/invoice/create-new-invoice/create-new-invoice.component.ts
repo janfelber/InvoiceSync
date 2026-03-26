@@ -6,6 +6,7 @@ import {CompanyService} from "../../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../../core/models/page-response-company-response-dto";
 import {toast} from "ngx-sonner";
 import {InvoiceService} from "../../../core/services/invoice.service";
+import {SearchableSelectComponent, SelectOption} from "../../../shared/searchable-select/searchable-select.component";
 
 interface SupplierDraft {
   name: string;
@@ -35,6 +36,7 @@ interface RecipientDraft {
     NgForOf,
     NgIf,
     NgClass,
+    SearchableSelectComponent,
   ],
   templateUrl: './create-new-invoice.component.html',
   styleUrl: './create-new-invoice.component.css'
@@ -51,6 +53,21 @@ export class CreateNewInvoice implements OnInit {
   total = 0;
 
   selectedSupplierCompany: number = 0;
+  selectedRecipientCompany: number = 0;
+
+  readonly vatOptions: SelectOption[] = [
+    {label: '0%', value: 0},
+    {label: '19%', value: 19},
+    {label: '23%', value: 23},
+    {label: '25%', value: 25},
+  ];
+
+  get companyOptions(): SelectOption[] {
+    return this.companyResponse.content?.map(c => ({
+      label: c.name!,
+      value: c.id!
+    })) ?? [];
+  }
 
   supplierDraft: SupplierDraft = {
     name: '',
@@ -231,8 +248,6 @@ export class CreateNewInvoice implements OnInit {
     this.companyService.getCompanyById({companyId})
       .then(response => {
         const company = response.data;
-
-        this.selectedSupplierCompany = company.id;
 
         this.supplierDraft = {
           name: company.name,
