@@ -32,12 +32,12 @@
               </button>
             </div>
             <div class="space-y-1">
-              <p class="font-medium text-slate-900 dark:text-slate-100">{{ invoice.partner?.name }}</p>
-              <p class="text-sm text-slate-500 dark:text-slate-400">{{ invoice.partner?.street }}, {{ invoice.partner?.zip }} {{ invoice.partner?.city }}</p>
+              <p class="font-medium text-slate-900 dark:text-slate-100">{{ invoice.company?.name }}</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400">{{ invoice.company?.street }}, {{ invoice.company?.zip }} {{ invoice.company?.city }}</p>
               <div class="pt-1 space-y-0.5">
-                <p class="text-xs text-slate-400 dark:text-slate-500">IČO: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.vatId }}</span></p>
-                <p class="text-xs text-slate-400 dark:text-slate-500">DIČ: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.taxId }}</span></p>
-                <p class="text-xs text-slate-400 dark:text-slate-500">IČ DPH: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.registrationNumber }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">IČO: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.vatId }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">DIČ: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.taxId }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">IČ DPH: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.registrationNumber }}</span></p>
               </div>
             </div>
           </div>
@@ -56,12 +56,12 @@
               <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Odoberateľ</h3>
             </div>
             <div class="space-y-1">
-              <p class="font-medium text-slate-900 dark:text-slate-100">{{ invoice.company?.name }}</p>
-              <p class="text-sm text-slate-500 dark:text-slate-400">{{ invoice.company?.street }}, {{ invoice.company?.zip }} {{ invoice.company?.city }}</p>
+              <p class="font-medium text-slate-900 dark:text-slate-100">{{ invoice.partner?.name }}</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400">{{ invoice.partner?.street }}, {{ invoice.partner?.zip }} {{ invoice.partner?.city }}</p>
               <div class="pt-1 space-y-0.5">
-                <p class="text-xs text-slate-400 dark:text-slate-500">IČO: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.vatId }}</span></p>
-                <p class="text-xs text-slate-400 dark:text-slate-500">DIČ: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.taxId }}</span></p>
-                <p class="text-xs text-slate-400 dark:text-slate-500">IČ DPH: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.company?.registrationNumber }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">IČO: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.vatId }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">DIČ: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.taxId }}</span></p>
+                <p class="text-xs text-slate-400 dark:text-slate-500">IČ DPH: <span class="text-slate-600 dark:text-slate-300 font-medium">{{ invoice.partner?.registrationNumber }}</span></p>
               </div>
             </div>
           </div>
