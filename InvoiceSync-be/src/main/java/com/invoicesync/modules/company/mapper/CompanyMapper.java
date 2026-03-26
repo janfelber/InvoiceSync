@@ -44,7 +44,9 @@ public class CompanyMapper {
   public CompanyBillingDto toCompanyBilling(PartnerItem partner) {
     return new CompanyBillingDto(
         partner.getName(),
-        partner.getStreet() + ", " + partner.getCity() + " " + partner.getZip(),
+        partner.getCity(),
+        partner.getStreet(),
+        partner.getZip(),
         partner.getRegistrationNumber(),
         partner.getTaxId(),
         partner.getVatId()

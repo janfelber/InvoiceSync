@@ -7,7 +7,11 @@ public record CompanyBillingDto(
 
     String name,
 
-    String address,
+    String city,
+
+    String street,
+
+    String zip,
 
     String registrationNumber,
 
