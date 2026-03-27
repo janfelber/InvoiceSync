@@ -9,6 +9,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { AuthInterceptor } from './core/auth-interceptor';
 import { AuthService } from './core/auth/auth.service';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +21,7 @@ export const appConfig: ApplicationConfig = {
     BrowserAnimationsModule,
     provideAnimations(),
     provideToastr(),
+    provideTranslateService({ defaultLanguage: 'sk' }),
+    provideTranslateHttpLoader({ prefix: '/assets/i18n/', suffix: '.json' }),
   ]
 };
