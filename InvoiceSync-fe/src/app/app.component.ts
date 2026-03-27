@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {AuthService} from "./core/auth/auth.service";
 import { toast, NgxSonnerToaster } from 'ngx-sonner';
+import { LanguageService } from './core/services/language.service';
 
 interface SideNavToggle {
   screenWidth: number;
@@ -27,8 +28,9 @@ export class AppComponent  {
 
   protected readonly toast = toast;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private languageService: LanguageService) {
     this.authService.init().subscribe();
+    this.languageService.init();
   }
 
   isSideNavCollapsed = false;

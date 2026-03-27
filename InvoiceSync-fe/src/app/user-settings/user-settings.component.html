@@ -217,5 +217,25 @@
         </div>
       </section>
     </ng-template>
+
+    <!-- Language switcher -->
+    <section class="bg-white dark:bg-[#2a2b30] mx-3 mt-4 w-[896px] border border-gray-200 dark:border-[#383852] rounded-lg">
+      <div class="px-4 py-4 md:py-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+          <h3 class="font-semibold text-gray-900 dark:text-white">{{ 'SETTINGS.LANGUAGE_LABEL' | translate }}</h3>
+        </div>
+        <select
+          class="h-9 rounded-md border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/30 transition"
+          [value]="languageService.current"
+          (change)="switchLanguage($any($event.target).value)"
+        >
+          <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</option>
+        </select>
+      </div>
+    </section>
+
   </div>
 </main>
