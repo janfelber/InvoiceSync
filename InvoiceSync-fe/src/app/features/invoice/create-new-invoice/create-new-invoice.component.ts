@@ -179,28 +179,6 @@ export class CreateNewInvoice implements OnInit {
     throw new Error('Not implemented');
   }
 
-  findCompanyByRegistrationNumberSupplier(registrationNumber: string) {
-    this.companyService.findByRegistrationNumber({
-      registrationNumber: registrationNumber,
-    }).then(response => {
-      const company = response.data;
-
-      this.supplierDraft = {
-        name: company.name,
-        city: company.city,
-        street: company.street,
-        zip: company.zip,
-        registrationNumber: company.registrationNumber,
-        taxId: company.taxId,
-        vatId: company.vatId
-      };
-    }).catch(error => {
-      if (error.response?.status === 403) {
-        toast.info("Spoločnosť s týmto IČO nebola nájdená. Prosím, vyplňte údaje manuálne.");
-      }
-    })
-  }
-
   findCompanyByRegistrationNumberRecipient(registrationNumber: string) {
     this.companyService.findByRegistrationNumber({
       registrationNumber: registrationNumber,
