@@ -1,20 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {
-  DataTransferExcelInspectComponent
-} from "../pages/data-transfer-excel-inspect/data-transfer-excel-inspect.component";
-import {DataTransferMappingComponent} from "../pages/data-transfer-mapping/data-transfer-mapping.component";
 import {RouterLink} from "@angular/router";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {UserService} from "../core/services/user.service";
 import {UserInfoResponse} from "../pages/settings/user-info.response";
 import {initFlowbite} from "flowbite";
+import {TranslateModule} from "@ngx-translate/core";
+import {AppLanguage, LanguageService, SUPPORTED_LANGUAGES} from "../core/services/language.service";
 
 @Component({
   selector: 'app-user-settings',
   imports: [
     RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    TranslateModule,
   ],
   templateUrl: './user-settings.component.html',
   styleUrl: './user-settings.component.css'
@@ -22,11 +21,17 @@ import {initFlowbite} from "flowbite";
 export class UserSettingsComponent implements OnInit {
 
   public userInfo: UserInfoResponse | null = null;
-  public loadingUserInfo = false
+  public loadingUserInfo = false;
+
+  readonly languages = SUPPORTED_LANGUAGES;
 
   constructor(
-    private userService: UserService
-  ) {
+    private userService: UserService,
+    public languageService: LanguageService,
+  ) {}
+
+  switchLanguage(code: AppLanguage): void {
+    this.languageService.use(code);
   }
 
   ngOnInit(): void {
