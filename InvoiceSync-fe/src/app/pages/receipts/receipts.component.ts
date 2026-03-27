@@ -242,9 +242,7 @@ export class ReceiptsComponent implements OnInit {
 
     this.isUploading = true;
     try {
-      if (this.activeTab === 'single' && this.singleFile) {
-        await this.onUploadFiles([this.singleFile]);
-      } else if (this.activeTab === 'multiple' && this.multipleFiles.length > 0) {
+      if (this.multipleFiles.length > 0) {
         const files = this.multipleFiles.map(fileObj => fileObj.file);
         await this.onUploadFiles(files);
       } else {
