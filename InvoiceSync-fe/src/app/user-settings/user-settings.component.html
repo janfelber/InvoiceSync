@@ -207,13 +207,13 @@
                 <p class="text-sm font-medium text-slate-700 dark:text-slate-200">Language</p>
                 <p class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">App display language</p>
               </div>
-              <select
-                class="h-9 rounded-md border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition"
-                [value]="languageService.current"
-                (change)="switchLanguage($any($event.target).value)"
-              >
-                <option *ngFor="let lang of languages" [value]="lang.code">{{ lang.label }}</option>
-              </select>
+              <div class="w-36">
+                <app-simple-select
+                  [options]="languages"
+                  [value]="languageService.current"
+                  (valueChange)="switchLanguage($event)">
+                </app-simple-select>
+              </div>
             </div>
             <div class="flex items-center justify-between px-5 py-4">
               <div>
