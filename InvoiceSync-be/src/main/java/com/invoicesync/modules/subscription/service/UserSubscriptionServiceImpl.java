@@ -241,6 +241,10 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
     try {
       final String stripeCustomerId = subscription.getStripeCustomerId();
 
+      if (stripeCustomerId == null) {
+        return List.of();
+      }
+
       InvoiceListParams params = InvoiceListParams.builder().setCustomer(stripeCustomerId).setLimit(10L).build();
 
       final InvoiceCollection userInvoices = Invoice.list(params);
