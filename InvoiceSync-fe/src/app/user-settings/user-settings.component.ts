@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AppLanguage, LanguageService, SUPPORTED_LANGUAGES } from '../core/services/language.service';
 import { ThemeService } from '../core/services/theme.service';
 import { SubscriptionService } from '../core/services/subscription.service';
+import { SimpleSelectComponent, SelectOption } from '../shared/simple-select/simple-select.component';
 
 @Component({
   selector: 'app-user-settings',
@@ -20,6 +21,7 @@ import { SubscriptionService } from '../core/services/subscription.service';
     DatePipe,
     FormsModule,
     TranslateModule,
+    SimpleSelectComponent,
   ],
   templateUrl: './user-settings.component.html',
   styleUrl: './user-settings.component.css'
@@ -28,7 +30,7 @@ export class UserSettingsComponent implements OnInit {
 
   public userInfo: UserInfoResponse | null = null;
   public loadingUserInfo = false;
-  readonly languages = SUPPORTED_LANGUAGES;
+  readonly languages: SelectOption[] = SUPPORTED_LANGUAGES.map(l => ({ value: l.code, label: l.label }));
 
   userLimit = {
     invoiceCreateLimit: 0,
