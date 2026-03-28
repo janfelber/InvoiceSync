@@ -1,0 +1,39 @@
+<div class="relative">
+
+  <!-- Trigger -->
+  <button
+    type="button"
+    (click)="toggle()"
+    [disabled]="disabled"
+    [ngClass]="isOpen ? 'rounded-t-md border-b-0' : 'rounded-md'"
+    class="w-full h-9 px-3 flex items-center justify-between text-sm border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] text-slate-900 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none">
+    <span [ngClass]="selectedLabel ? '' : 'text-slate-400'">
+      {{ selectedLabel || placeholder }}
+    </span>
+    <svg class="w-4 h-4 text-slate-400 shrink-0 transition-transform duration-150"
+         [ngClass]="isOpen ? 'rotate-180' : ''"
+         fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <!-- Dropdown -->
+  <div *ngIf="isOpen"
+       class="absolute z-[9999] w-full border border-t-0 border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] rounded-b-md shadow-lg">
+    <ul class="max-h-52 overflow-y-auto py-1">
+      <li *ngFor="let option of options"
+          (mousedown)="$event.preventDefault(); select(option)"
+          [ngClass]="option.value === value
+            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+            : 'text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-[#2a2b30]'"
+          class="flex items-center justify-between px-3 py-2 text-sm cursor-pointer select-none">
+        <span>{{ option.label }}</span>
+        <svg *ngIf="option.value === value"
+             class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </li>
+    </ul>
+  </div>
+
+</div>
