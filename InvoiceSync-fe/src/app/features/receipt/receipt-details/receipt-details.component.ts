@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, OnInit, signal} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
@@ -57,11 +57,37 @@ export class ReceiptDetailsComponent implements OnInit {
   selectedItemForAccount: any = null;
   receipt: any = {};
   selectedAccountsPerItem: { [itemId: number]: Account } = {};
-  groupedAccounts: any[] = [];
+  groupedAccounts = signal<any[]>([]);
   receiptForm!: FormGroup;
 
   selectedItemName: string = '';
   mergedItemName = '';
+
+  searchQuery = signal('');
+  openGroups: { [key: string]: boolean } = {};
+
+  filteredGroupedAccounts = computed(() => {
+    const q = this.searchQuery().toLowerCase().trim();
+    if (!q) return this.groupedAccounts();
+    return this.groupedAccounts()
+      .map(group => ({
+        ...group,
+        categories: group.categories
+          .map((cat: any) => ({
+            ...cat,
+            accounts: cat.accounts.filter((acc: any) =>
+              acc.number?.toLowerCase().includes(q) ||
+              acc.name?.toLowerCase().includes(q)
+            )
+          }))
+          .filter((cat: any) => cat.accounts.length > 0)
+      }))
+      .filter(group => group.categories.length > 0);
+  });
+
+  toggleGroup(key: string): void {
+    this.openGroups[key] = !this.openGroups[key];
+  }
 
   currentMode: 'edit' | 'accounting' | 'merge' = 'edit';
   editingSupplier = false;
@@ -193,7 +219,7 @@ export class ReceiptDetailsComponent implements OnInit {
       companyId: this.companyId,
       type: type,
     });
-    this.groupedAccounts = response.data;
+    this.groupedAccounts.set(response.data);
     return response.data;
   }
 
@@ -297,6 +323,7 @@ export class ReceiptDetailsComponent implements OnInit {
     });
 
     this.closeDrawer();
+    this.searchQuery.set('');
     this.selectedItemForAccount = null;
   }
 
@@ -312,10 +339,10 @@ export class ReceiptDetailsComponent implements OnInit {
 
     this.onFetchAccounts().then(() => {
       if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
-        const matchingAccount = this.groupedAccounts
-          .flatMap(cls => cls.categories)
-          .flatMap(cat => cat.accounts)
-          .find(acc => acc.number === item.accountValue);
+        const matchingAccount = this.groupedAccounts()
+          .flatMap((cls: any) => cls.categories)
+          .flatMap((cat: any) => cat.accounts)
+          .find((acc: any) => acc.number === item.accountValue);
 
         if (matchingAccount) {
           this.selectedAccountsPerItem[item.id] = matchingAccount;
