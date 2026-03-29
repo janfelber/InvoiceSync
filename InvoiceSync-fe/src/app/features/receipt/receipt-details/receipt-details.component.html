@@ -612,107 +612,172 @@
           id="drawer-right-example"
           [class.translate-x-0]="drawerOpen"
           [class.translate-x-full]="!drawerOpen"
-          class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] p-4 overflow-hidden bg-white w-96 dark:bg-[#1a1b1e] transform transition-transform duration-300 ease-in-out translate-x-full flex flex-col"
+          class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] w-[420px] bg-[#1a1b1e] dark:bg-[#1a1b1e] border-l border-[#383852] transform transition-transform duration-300 ease-in-out translate-x-full flex flex-col"
           tabindex="-1"
           aria-labelledby="drawer-right-label"
         >
-          <h5
-            id="drawer-right-label"
-            class="inline-flex items-center mb-4 text-sm font-semibold text-gray-600 dark:text-slate-100"
-          >
-            <svg class="w-4 h-4 me-2.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-              />
-            </svg>
-            Vyberte účet
-          </h5>
 
-          <button
-            type="button"
-            (click)="closeDrawer()"
-            class="text-gray-400 hover:bg-gray-100 hover:text-gray-800 rounded-full w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center transition"
-          >
-            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
-            <span class="sr-only">Zavrieť</span>
-          </button>
-
-          <div class="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-            <div class="space-y-3">
-              <div *ngFor="let accClass of groupedAccounts">
-                <details class="border border-gray-200 dark:border-[#383852] dark:bg-[#2a2b30] rounded-lg text-sm">
-                  <summary
-                    class="cursor-pointer text-gray-800 dark:text-slate-100 px-3 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md transition"
-                  >
-                    {{ accClass.className }}
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </summary>
-
-                  <div class="px-3 pb-3 pt-2 bg-gray-50 dark:bg-[#2a2b30] space-y-3">
-                    <div *ngFor="let cat of accClass.categories">
-                      <div class="text-xs font-medium text-gray-600 dark:text-slate-100 mb-1">
-                        {{ cat.categoryName }}
-                      </div>
-                      <div class="space-y-1 pl-2">
-                        <label
-                          *ngFor="let acc of cat.accounts"
-                          class="flex items-center p-2 border border-gray-200 dark:border-[#383852] rounded-md cursor-pointer text-sm text-gray-700 dark:text-slate-100 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200 relative"
-                          [class.bg-blue-100]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                          [class.border-blue-400]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                        >
-                          <input
-                            type="radio"
-                            name="account-{{ selectedItemForAccount?.id }}"
-                            class="accent-blue-600 hidden"
-                            [value]="acc"
-                            [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                            [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
-                            (change)="onAccountChange(selectedItemForAccount, acc)"
-                          />
-                          {{ acc.number }} - {{ acc.name }}
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </details>
+          <!-- Header: item context + close -->
+          <div class="flex-shrink-0 px-5 pt-5 pb-4 border-b border-[#383852]">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-[10px] font-semibold tracking-widest uppercase text-slate-500 mb-1">Účtovanie položky</p>
+                <h5 id="drawer-right-label" class="text-base font-semibold text-white leading-snug">
+                  {{ selectedItemName || '—' }}
+                </h5>
               </div>
+              <button
+                type="button"
+                (click)="closeDrawer()"
+                class="text-slate-500 hover:text-white hover:bg-[#2a2b30] rounded-md w-8 h-8 flex items-center justify-center transition-colors shrink-0 mt-0.5"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- TODO IS-XXX: MD/D tab switcher — uncomment when backend supports double-entry accounting (md + d account per item)
+            <div class="flex bg-[#2a2b30] rounded-lg p-1 gap-1">
+              <button type="button" (click)="activeAccountSide = 'MD'"
+                [ngClass]="activeAccountSide === 'MD' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'"
+                class="flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all duration-150">
+                MD <span class="opacity-60 font-normal text-xs ml-1">Má Dať</span>
+              </button>
+              <button type="button" (click)="activeAccountSide = 'D'"
+                [ngClass]="activeAccountSide === 'D' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'"
+                class="flex-1 py-1.5 px-3 rounded-md text-sm font-medium transition-all duration-150">
+                D <span class="opacity-60 font-normal text-xs ml-1">Dal</span>
+              </button>
+            </div>
+            -->
+
+          </div>
+
+          <!-- Search -->
+          <div class="flex-shrink-0 px-4 py-3 border-b border-[#383852]">
+            <div class="relative">
+              <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="m21 21-4.35-4.35"/>
+              </svg>
+              <input
+                [value]="searchQuery()"
+                (input)="searchQuery.set($any($event.target).value)"
+                type="text"
+                placeholder="Hľadať účet (číslo alebo názov)…"
+                class="w-full h-8 pl-8 pr-3 text-sm bg-[#2a2b30] border border-[#383852] rounded-md text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40 focus:border-blue-500/60"
+              />
             </div>
           </div>
 
-          <div
-            *ngIf="selectedAccountsPerItem[selectedItemForAccount]"
-            class="mt-4 bg-green-50 border border-green-200 text-green-800 text-sm rounded-md p-3"
-          >
-            Pre produkt <strong>{{ selectedItemName }} </strong> bol vybraný účet:
-            <strong>
-              {{ selectedAccountsPerItem[selectedItemForAccount]?.number }}
-              – {{ selectedAccountsPerItem[selectedItemForAccount]?.name }}
-            </strong>
+          <!-- Account list -->
+          <div class="flex-1 overflow-y-auto py-2">
+
+            <div *ngIf="filteredGroupedAccounts().length === 0" class="py-10 text-center text-sm text-slate-500">
+              Žiadne účty nezodpovedajú hľadaniu.
+            </div>
+
+            <div *ngFor="let accClass of filteredGroupedAccounts()" class="mb-1">
+
+              <!-- Group header -->
+              <button
+                type="button"
+                (click)="toggleGroup(accClass.className)"
+                class="w-full flex items-center justify-between px-4 py-2 hover:bg-[#2a2b30] transition-colors group"
+              >
+                <span class="text-[11px] font-semibold text-slate-400 group-hover:text-slate-300 uppercase tracking-wider">
+                  {{ accClass.className }}
+                </span>
+                <svg
+                  class="w-3.5 h-3.5 text-slate-500 transition-transform duration-200"
+                  [ngClass]="(openGroups[accClass.className] || !!searchQuery().trim()) ? 'rotate-180' : ''"
+                  fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <!-- Group content -->
+              <div *ngIf="openGroups[accClass.className] || !!searchQuery().trim()">
+                <div *ngFor="let cat of accClass.categories" class="mb-2">
+
+                  <!-- Category label -->
+                  <div class="px-4 py-1">
+                    <span class="text-[10px] font-medium text-slate-600 uppercase tracking-wider">{{ cat.categoryName }}</span>
+                  </div>
+
+                  <!-- Account rows -->
+                  <div>
+                    <label
+                      *ngFor="let acc of cat.accounts"
+                      class="flex items-center gap-3 px-4 py-2 cursor-pointer transition-all duration-100 border-l-2"
+                      [ngClass]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id
+                        ? 'bg-blue-950/30 border-blue-500 text-white'
+                        : 'border-transparent hover:bg-[#2a2b30] text-slate-300 hover:text-white'"
+                    >
+                      <input
+                        type="radio"
+                        class="hidden"
+                        [name]="'account-' + selectedItemForAccount"
+                        [value]="acc"
+                        [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                        [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
+                        (change)="onAccountChange(selectedItemForAccount, acc)"
+                      />
+                      <span
+                        class="font-mono text-xs font-semibold px-1.5 py-0.5 rounded shrink-0"
+                        [ngClass]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id
+                          ? 'bg-blue-900/60 border border-blue-700 text-blue-300'
+                          : 'bg-[#2a2b30] border border-[#383852] text-slate-400'"
+                      >
+                        {{ acc.number }}
+                      </span>
+                      <span class="text-sm truncate flex-1">{{ acc.name }}</span>
+                      <svg
+                        *ngIf="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
+                        class="w-3.5 h-3.5 text-blue-400 shrink-0"
+                        fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </label>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
           </div>
 
-          <div class="mt-4 flex justify-between gap-2">
-            <button
-              (click)="assignAccountToItem()"
-              class="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm"
-            >
-              Použiť účet
-            </button>
-            <button
-              (click)="closeDrawer()"
-              class="flex-1 border border-gray-300 dark:border-[#383852] py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-slate-100 transition text-sm"
-            >
-              Zavrieť
-            </button>
+          <!-- Journal preview + actions -->
+          <div class="flex-shrink-0 border-t border-[#383852] px-4 pt-4 pb-5 space-y-3">
+
+            <!-- Selected account preview -->
+            <div *ngIf="selectedAccountsPerItem[selectedItemForAccount]"
+                 class="bg-[#2a2b30] border border-[#383852] rounded-lg p-3 flex items-center gap-3">
+              <span class="font-mono text-sm font-bold text-blue-400 bg-blue-900/40 border border-blue-800 px-2 py-0.5 rounded shrink-0">
+                {{ selectedAccountsPerItem[selectedItemForAccount]?.number }}
+              </span>
+              <span class="text-sm text-white truncate">{{ selectedAccountsPerItem[selectedItemForAccount]?.name }}</span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2">
+              <button
+                (click)="assignAccountToItem()"
+                [disabled]="!selectedAccountsPerItem[selectedItemForAccount]"
+                class="flex-1 h-9 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Zaúčtovať
+              </button>
+              <button
+                (click)="closeDrawer()"
+                class="flex-1 h-9 border border-[#383852] hover:bg-[#2a2b30] text-slate-300 hover:text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Zrušiť
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
