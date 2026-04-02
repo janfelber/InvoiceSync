@@ -11,6 +11,7 @@ import {ReceiptDetailResponse} from "../../../pages/receipts/receipt-detail-resp
 import {PostingAccountService} from "../../../core/services/posting-account.service";
 import {ReceiptType} from "../../../core/enums/receipt-type";
 import {toast} from "ngx-sonner";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 interface Account {
   id: number,
@@ -26,6 +27,7 @@ interface Account {
     FormsModule,
     CommonModule,
     MatDialogWindowComponent,
+    TranslateModule,
   ],
   templateUrl: './receipt-details.component.html',
   styleUrl: './receipt-details.component.css'
@@ -35,7 +37,8 @@ export class ReceiptDetailsComponent implements OnInit {
     private receiptService: ReceiptService,
     private postingAccountService: PostingAccountService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService,
   ) {
   }
 
@@ -264,7 +267,7 @@ export class ReceiptDetailsComponent implements OnInit {
 
   async exportReceiptXml() {
     if (this.receiptForm.invalid) {
-      toast.error('Formulár obsahuje chyby, oprav ich prosím.');
+      toast.error(this.translate.instant('RECEIPT_DETAIL.TOAST_FORM_ERRORS'));
       return;
     }
 
@@ -281,7 +284,7 @@ export class ReceiptDetailsComponent implements OnInit {
       const response = await this.receiptService.exportReceiptPohoda({receipt: receiptRequest});
 
       this.modalOpen = false;
-      toast.success("Bloček exportovaný úspešne");
+      toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_SUCCESS'));
 
       const blob = new Blob([response.data], {type: 'application/xml'});
 
@@ -299,11 +302,11 @@ export class ReceiptDetailsComponent implements OnInit {
 
     } catch (error: any) {
       if (error.response?.status === 429) {
-        toast.warning('Mesačný limit pre export bločkov vyčerpaný.');
+        toast.warning(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_LIMIT'));
       } else if (error.response?.status === 422) {
-        toast.warning('Číslovanie dokladov nie je nastavené. Nastavte ho v Nastaveniach firmy.');
+        toast.warning(this.translate.instant('RECEIPT_DETAIL.TOAST_NUMBERING_NOT_SET'));
       } else {
-        toast.error('Chyba pri exporte');
+        toast.error(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_ERROR'));
       }
     }
   }
@@ -394,7 +397,7 @@ export class ReceiptDetailsComponent implements OnInit {
       receipt: this.receiptRequest
     }).then(() => {
       this.modalOpen = false;
-      toast.success('Zmeny bločka uložené');
+      toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_SAVE_SUCCESS'));
       this.onFetchReceipt()
     });
   }
@@ -438,7 +441,7 @@ export class ReceiptDetailsComponent implements OnInit {
       this.mergeConfirmOpen = false;
       this.selectedForMerge.clear();
       this.onFetchReceipt();
-      toast.success('Položky boli úspešne zlúčené');
+      toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
     });
   }
 }
