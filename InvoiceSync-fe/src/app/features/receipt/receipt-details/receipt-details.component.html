@@ -21,7 +21,7 @@
         </svg>
       </div>
       <div>
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Receipt #{{ receiptResponse.orderNumber }}</h1>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{{ 'RECEIPT_DETAIL.RECEIPT_TITLE' | translate: { number: receiptResponse.orderNumber } }}</h1>
         <p class="text-sm text-slate-600 dark:text-white">
           {{ receiptResponse.receiptDetails?.date | date: "dd-MM-yyyy" }}
         </p>
@@ -49,19 +49,19 @@
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" x2="12" y1="15" y2="3"></line>
         </svg>
-        Export
+        {{ 'COMMON.EXPORT' | translate }}
       </button>
       <button
         (click)="updateReceipt()"
         class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
       >
-        Save Receipt
+        {{ 'RECEIPT_DETAIL.SAVE_RECEIPT' | translate }}
       </button>
     </div>
   </div>
 
   <div class="mt-6 flex items-center gap-3 px-4">
-    <span class="text-sm font-medium text-slate-700 dark:text-slate-300"> Mode </span>
+    <span class="text-sm font-medium text-slate-700 dark:text-slate-300"> {{ 'RECEIPT_DETAIL.MODE' | translate }} </span>
     <div class="inline-flex rounded-lg border border-slate-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] p-1">
       <button
         (click)="setMode('edit')"
@@ -89,7 +89,7 @@
             d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
           ></path>
         </svg>
-        Edit Mode
+        {{ 'RECEIPT_DETAIL.EDIT_MODE' | translate }}
       </button>
       <button
         (click)="setMode('accounting')"
@@ -118,7 +118,7 @@
           <path d="M16 13H8"></path>
           <path d="M16 17H8"></path>
         </svg>
-        Accounting Mode
+        {{ 'RECEIPT_DETAIL.ACCOUNTING_MODE' | translate }}
       </button>
       <button
         (click)="setMode('merge')"
@@ -148,18 +148,18 @@
           <rect x="14" y="14" width="8" height="8" rx="2"></rect>
           <rect x="2" y="2" width="8" height="8" rx="2"></rect>
         </svg>
-        Merge
+        {{ 'RECEIPT_DETAIL.MERGE_MODE' | translate }}
       </button>
     </div>
     <div class="flex-1">
       <p *ngIf="currentMode === 'edit'" class="text-sm text-slate-500 dark:text-slate-400">
-        Edit receipt details, items and partner information
+        {{ 'RECEIPT_DETAIL.EDIT_MODE_DESC' | translate }}
       </p>
       <p *ngIf="currentMode === 'accounting'" class="text-sm text-slate-500 dark:text-slate-400">
-        Assign posting accounts to items by clicking on a row
+        {{ 'RECEIPT_DETAIL.ACCOUNTING_MODE_DESC' | translate }}
       </p>
       <p *ngIf="currentMode === 'merge'" class="text-sm text-slate-500 dark:text-slate-400">
-        Select items with the same account to merge them into one line
+        {{ 'RECEIPT_DETAIL.MERGE_MODE_DESC' | translate }}
       </p>
     </div>
     <button
@@ -192,7 +192,7 @@
         <rect x="14" y="14" width="8" height="8" rx="2"></rect>
         <rect x="2" y="2" width="8" height="8" rx="2"></rect>
       </svg>
-      Merge {{ selectedForMerge.size }} {{ selectedForMerge.size === 1 ? "Item" : "Items" }}
+      {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
     </button>
   </div>
 
@@ -230,7 +230,7 @@
                   <path d="M10 14h4"></path>
                   <path d="M10 18h4"></path>
                 </svg>
-                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Supplier</h3>
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ 'INVOICE.SUPPLIER' | translate }}</h3>
                 <button
                   *ngIf="currentMode === 'edit'"
                   (click)="editingSupplier = !editingSupplier"
@@ -261,50 +261,50 @@
                   {{ receiptResponse.partner?.street }} , {{ receiptResponse.partner?.zip }}
                   {{ receiptResponse.partner?.city }}
                 </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">DIČ: {{ receiptResponse.partner?.taxId }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.IDENTIFICATION_NUMBER' | translate }}: {{ receiptResponse.partner?.taxId }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">
-                  IČ DPH: {{ receiptResponse.partner?.registrationNumber }}
+                  {{ 'INVOICE.VAT_NUMBER' | translate }}: {{ receiptResponse.partner?.registrationNumber }}
                 </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">IČO: {{ receiptResponse.partner?.vatId }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.REGISTRATION_NUMBER' | translate }}: {{ receiptResponse.partner?.vatId }}</p>
               </div>
 
               <div class="space-y-2" *ngIf="editingSupplier">
                 <input
                   class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm font-medium"
                   [(ngModel)]="receiptResponse.partner.name"
-                  placeholder="Názov"
+                  [placeholder]="'INVOICE.ITEM_NAME' | translate"
                 />
                 <input
                   class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                   [(ngModel)]="receiptResponse.partner.street"
-                  placeholder="Ulica"
+                  [placeholder]="'INVOICE.STREET' | translate"
                 />
                 <div class="flex gap-2">
                   <input
                     class="w-1/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                     [(ngModel)]="receiptResponse.partner.zip"
-                    placeholder="PSČ"
+                    [placeholder]="'INVOICE.ZIP' | translate"
                   />
                   <input
                     class="w-2/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                     [(ngModel)]="receiptResponse.partner.city"
-                    placeholder="Mesto"
+                    [placeholder]="'INVOICE.CITY' | translate"
                   />
                 </div>
                 <input
                   class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                   [(ngModel)]="receiptResponse.partner.taxId"
-                  placeholder="DIČ"
+                  [placeholder]="'INVOICE.IDENTIFICATION_NUMBER' | translate"
                 />
                 <input
                   class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                   [(ngModel)]="receiptResponse.partner.registrationNumber"
-                  placeholder="IČ DPH"
+                  [placeholder]="'INVOICE.VAT_NUMBER' | translate"
                 />
                 <input
                   class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
                   [(ngModel)]="receiptResponse.partner.vatId"
-                  placeholder="IČO"
+                  [placeholder]="'INVOICE.REGISTRATION_NUMBER' | translate"
                 />
               </div>
             </div>
@@ -333,7 +333,7 @@
                   <path d="M10 14h4"></path>
                   <path d="M10 18h4"></path>
                 </svg>
-                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Recipient</h3>
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ 'INVOICE.RECIPIENT' | translate }}</h3>
               </div>
 
               <div class="space-y-1">
@@ -342,11 +342,11 @@
                   {{ receiptResponse.company?.street }} , {{ receiptResponse.company?.zip }}
                   {{ receiptResponse.company?.city }}
                 </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">DIČ: {{ receiptResponse.company?.taxId }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.IDENTIFICATION_NUMBER' | translate }}: {{ receiptResponse.company?.taxId }}</p>
                 <p class="text-sm text-slate-600 dark:text-slate-400">
-                  IČ DPH: {{ receiptResponse.company?.registrationNumber }}
+                  {{ 'INVOICE.VAT_NUMBER' | translate }}: {{ receiptResponse.company?.registrationNumber }}
                 </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">IČO: {{ receiptResponse.company?.vatId }}</p>
+                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.REGISTRATION_NUMBER' | translate }}: {{ receiptResponse.company?.vatId }}</p>
               </div>
             </div>
           </div>
@@ -362,31 +362,31 @@
                     scope="col"
                     class="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
                   >
-                    Product
+                    {{ 'RECEIPT_DETAIL.PRODUCT' | translate }}
                   </th>
                   <th
                     scope="col"
                     class="px-4 py-3 text-center text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
                   >
-                    Qty
+                    {{ 'INVOICE.ITEM_QUANTITY' | translate }}
                   </th>
                   <th
                     scope="col"
                     class="px-4 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
                   >
-                    Unit price
+                    {{ 'RECEIPT_DETAIL.UNIT_PRICE' | translate }}
                   </th>
                   <th
                     scope="col"
                     class="px-4 py-3 text-center text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
                   >
-                    VAT %
+                    {{ 'RECEIPT_DETAIL.VAT_RATE' | translate }}
                   </th>
                   <th
                     scope="col"
                     class="px-4 py-3 text-right text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
                   >
-                    Total
+                    {{ 'INVOICE.ITEM_TOTAL' | translate }}
                   </th>
                   <th scope="col" class="px-4 py-3"></th>
                 </tr>
@@ -442,7 +442,7 @@
                       </p>
                     }
                     <p class="text-xs text-slate-500 dark:text-slate-300">
-                      Učet: <span class="text-green-500">{{ item.accountValue }}</span>
+                      {{ 'RECEIPT_DETAIL.ACCOUNT_LABEL' | translate }}: <span class="text-green-500">{{ item.accountValue }}</span>
                     </p>
                   </td>
 
@@ -580,26 +580,26 @@
                 <path d="M5 12h14"></path>
                 <path d="M12 5v14"></path>
               </svg>
-              Add Item
+              {{ 'RECEIPT_DETAIL.ADD_ITEM' | translate }}
             </button>
           </div>
         </div>
 
         <div class="bg-white dark:bg-[#1a1b1e] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
-          <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">Summary</h3>
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">{{ 'RECEIPT_DETAIL.SUMMARY' | translate }}</h3>
           <div class="space-y-2">
             <div class="flex justify-between text-sm">
-              <span class="text-slate-600 dark:text-slate-300">Subtotal (without VAT)</span>
+              <span class="text-slate-600 dark:text-slate-300">{{ 'RECEIPT_DETAIL.SUBTOTAL' | translate }}</span>
               <span class="font-medium text-slate-900 dark:text-slate-100"
                 >€{{ receiptResponse.receiptDetails?.totalPriceWithoutVat }}</span
               >
             </div>
             <div class="flex justify-between text-sm">
-              <span class="text-slate-600 dark:text-slate-300">Total VAT</span>
+              <span class="text-slate-600 dark:text-slate-300">{{ 'RECEIPT_DETAIL.TOTAL_VAT' | translate }}</span>
               <span class="font-medium text-slate-900 dark:text-slate-100">€{{ vatAmount | number: "1.2-2" }}</span>
             </div>
             <div class="pt-2 border-t border-slate-200 flex justify-between">
-              <span class="font-semibold text-slate-900 dark:text-slate-100">Total Amount</span>
+              <span class="font-semibold text-slate-900 dark:text-slate-100">{{ 'RECEIPT_DETAIL.TOTAL_AMOUNT' | translate }}</span>
               <span class="text-xl font-bold text-slate-900 dark:text-slate-100"
                 >€{{ receiptResponse.receiptDetails?.totalPriceWithVat }}</span
               >
@@ -621,7 +621,7 @@
           <div class="flex-shrink-0 px-5 pt-5 pb-4 border-b border-[#383852]">
             <div class="flex items-start justify-between mb-4">
               <div>
-                <p class="text-[10px] font-semibold tracking-widest uppercase text-slate-500 mb-1">Účtovanie položky</p>
+                <p class="text-[10px] font-semibold tracking-widest uppercase text-slate-500 mb-1">{{ 'RECEIPT_DETAIL.DRAWER_TITLE' | translate }}</p>
                 <h5 id="drawer-right-label" class="text-base font-semibold text-white leading-snug">
                   {{ selectedItemName || '—' }}
                 </h5>
@@ -664,7 +664,7 @@
                 [value]="searchQuery()"
                 (input)="searchQuery.set($any($event.target).value)"
                 type="text"
-                placeholder="Hľadať účet (číslo alebo názov)…"
+                [placeholder]="'RECEIPT_DETAIL.SEARCH_ACCOUNT' | translate"
                 class="w-full h-8 pl-8 pr-3 text-sm bg-[#2a2b30] border border-[#383852] rounded-md text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-500/40 focus:border-blue-500/60"
               />
             </div>
@@ -674,7 +674,7 @@
           <div class="flex-1 overflow-y-auto py-2">
 
             <div *ngIf="filteredGroupedAccounts().length === 0" class="py-10 text-center text-sm text-slate-500">
-              Žiadne účty nezodpovedajú hľadaniu.
+              {{ 'RECEIPT_DETAIL.NO_ACCOUNTS_FOUND' | translate }}
             </div>
 
             <div *ngFor="let accClass of filteredGroupedAccounts()" class="mb-1">
@@ -768,13 +768,13 @@
                 [disabled]="!selectedAccountsPerItem[selectedItemForAccount]"
                 class="flex-1 h-9 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
               >
-                Zaúčtovať
+                {{ 'RECEIPT_DETAIL.ASSIGN_ACCOUNT' | translate }}
               </button>
               <button
                 (click)="closeDrawer()"
                 class="flex-1 h-9 border border-[#383852] hover:bg-[#2a2b30] text-slate-300 hover:text-white text-sm font-medium rounded-lg transition-colors"
               >
-                Zrušiť
+                {{ 'COMMON.CANCEL' | translate }}
               </button>
             </div>
 
@@ -786,7 +786,7 @@
     <!-- Ľavá karta (658px) -->
     <div class="space-y-4">
       <div class="p-5 mb-4 bg-white dark:bg-[#1a1b1e] border border-slate-200 dark:border-[#383852] rounded-lg">
-        <h3 class="text-sm text-gray-600 dark:text-slate-300">Total Amount</h3>
+        <h3 class="text-sm text-gray-600 dark:text-slate-300">{{ 'RECEIPT_DETAIL.TOTAL_AMOUNT' | translate }}</h3>
         <div class="flex items-center justify-between border-gray-200">
           <p class="text-3xl font-bold text-gray-900 dark:text-slate-100 pb-4">
             €{{ receiptResponse.receiptDetails?.totalPriceWithVat }}
@@ -829,7 +829,7 @@
               />
             </svg>
             <p class="dark:text-slate-300">
-              <span class="font-medium">Dátum vystavenia:</span> {{ receiptResponse.receiptDetails?.datePayment }}
+              <span class="font-medium">{{ 'RECEIPT_DETAIL.ISSUE_DATE' | translate }}:</span> {{ receiptResponse.receiptDetails?.datePayment }}
             </p>
           </div>
           <div class="flex items-center space-x-2 text-sm text-gray-600">
@@ -854,8 +854,8 @@
               />
             </svg>
             <p class="dark:text-slate-300">
-              <span class="font-medium">Zaplatené </span>
-              {{ receiptResponse.receiptDetails?.paidByCard ? "Kartou" : "Hotovosťou" }}
+              <span class="font-medium">{{ 'RECEIPT_DETAIL.PAID' | translate }} </span>
+              {{ receiptResponse.receiptDetails?.paidByCard ? ('RECEIPT_DETAIL.PAID_BY_CARD_VALUE' | translate) : ('RECEIPT_DETAIL.PAID_BY_CASH' | translate) }}
             </p>
           </div>
         </div>
@@ -880,11 +880,11 @@
       </div>
 
       <div class="bg-white dark:bg-[#1a1b1e] rounded-lg border border-slate-200 dark:border-[#383852] p-5">
-        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">Payment Method</h3>
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">{{ 'RECEIPT_DETAIL.PAYMENT_METHOD' | translate }}</h3>
 
         <label class="flex items-center justify-between cursor-pointer">
           <span class="text-sm text-slate-700 dark:text-slate-100 font-medium">
-            Paid by Card
+            {{ 'RECEIPT_DETAIL.PAID_BY_CARD' | translate }}
 
             <div
               id="payment-type-tooltip"
@@ -913,7 +913,7 @@
       </div>
 
       <div class="bg-white dark:bg-[#1a1b1e] dark:border-[#383852] rounded-lg border border-slate-200 p-5">
-        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">Additional Information</h3>
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-300 mb-3">{{ 'RECEIPT_DETAIL.ADDITIONAL_INFO' | translate }}</h3>
         <div class="space-y-2"></div>
 
         <!--        <div class="bg-white rounded-lg border border-slate-200 p-5">-->
@@ -937,7 +937,7 @@
         <!--        </div>-->
 
         <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label>Členenie DPH</label>
+          <label>{{ 'RECEIPT_DETAIL.VAT_CLASSIFICATION' | translate }}</label>
           <input
             class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
             [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"
@@ -945,7 +945,7 @@
         </div>
 
         <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label class="text-sm">Členenie KV DPH</label>
+          <label class="text-sm">{{ 'RECEIPT_DETAIL.KV_VAT_CLASSIFICATION' | translate }}</label>
           <input
             class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
             [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"
@@ -953,7 +953,7 @@
         </div>
 
         <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label for="message">Poznámka k bločku</label>
+          <label for="message">{{ 'RECEIPT_DETAIL.RECEIPT_NOTE' | translate }}</label>
 
           <form>
             <div class="w-full border border-slate-200 rounded-lg dark:bg-[#1a1b1e] dark:border-[#383852]">
@@ -964,7 +964,7 @@
                   rows="8"
                   class="w-full px-0 text-sm text-gray-800 dark:text-slate-100 bg-white dark:bg-[#1a1b1e] border-0"
                   [(ngModel)]="receiptResponse.receiptDetails.description"
-                  placeholder="Poznámka"
+                  [placeholder]="'INVOICE.NOTE' | translate"
                 ></textarea>
               </div>
             </div>
@@ -1006,7 +1006,7 @@
             <rect x="14" y="14" width="8" height="8" rx="2"></rect>
             <rect x="2" y="2" width="8" height="8" rx="2"></rect>
           </svg>
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Confirm Merge</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ 'RECEIPT_DETAIL.CONFIRM_MERGE' | translate }}</h3>
         </div>
         <button
           (click)="mergeConfirmOpen = false"
@@ -1027,24 +1027,20 @@
       <!-- Body -->
       <div class="p-5">
         <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
-          The following
-          <span class="font-semibold text-slate-700 dark:text-slate-200">{{ selectedForMerge.size }} items</span> will
-          be merged into a single line. The first item's name and account will be used.
+          {{ 'RECEIPT_DETAIL.MERGE_DESCRIPTION' | translate: { count: selectedForMerge.size } }}
         </p>
 
         <!-- Merged item name input -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"> Merged item name </label>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{{ 'RECEIPT_DETAIL.MERGED_ITEM_NAME' | translate }}</label>
           <input
             type="text"
             [(ngModel)]="mergedItemName"
             class="w-full border border-slate-200 dark:border-[#383852] rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white bg-white dark:bg-[#2a2b30] focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter name for merged item"
+            [placeholder]="'RECEIPT_DETAIL.MERGED_ITEM_PLACEHOLDER' | translate"
           />
           <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
-            If left unchanged,
-            <span class="font-medium text-slate-500 dark:text-slate-400">{{ selectedItemsForMerge[0]?.name }}</span>
-            will be used.
+            {{ 'RECEIPT_DETAIL.MERGE_NAME_HINT' | translate: { name: selectedItemsForMerge[0]?.name } }}
           </p>
         </div>
 
@@ -1070,9 +1066,9 @@
             <path d="M12 17h.01"></path>
           </svg>
           <div>
-            <p class="text-sm font-medium text-amber-800 dark:text-amber-400">Mixed VAT rates detected</p>
+            <p class="text-sm font-medium text-amber-800 dark:text-amber-400">{{ 'RECEIPT_DETAIL.MIXED_VAT_WARNING' | translate }}</p>
             <p class="text-xs text-amber-700 dark:text-amber-500 mt-0.5">
-              Selected items have different VAT rates. Merging them may produce incorrect accounting results.
+              {{ 'RECEIPT_DETAIL.MIXED_VAT_DESC' | translate }}
             </p>
           </div>
         </div>
@@ -1084,27 +1080,27 @@
                 <th
                   class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
                 >
-                  Product
+                  {{ 'RECEIPT_DETAIL.PRODUCT' | translate }}
                 </th>
                 <th
                   class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
                 >
-                  Qty
+                  {{ 'INVOICE.ITEM_QUANTITY' | translate }}
                 </th>
                 <th
                   class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
                 >
-                  VAT %
+                  {{ 'RECEIPT_DETAIL.VAT_RATE' | translate }}
                 </th>
                 <th
                   class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
                 >
-                  Unit w/ VAT
+                  {{ 'RECEIPT_DETAIL.UNIT_WITH_VAT' | translate }}
                 </th>
                 <th
                   class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
                 >
-                  Total
+                  {{ 'INVOICE.ITEM_TOTAL' | translate }}
                 </th>
               </tr>
             </thead>
@@ -1126,7 +1122,7 @@
                       *ngIf="isFirst"
                       class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
                     >
-                      base
+                      {{ 'RECEIPT_DETAIL.BASE_BADGE' | translate }}
                     </span>
                   </div>
                   <span class="text-xs text-slate-400">{{ item.accountValue }}</span>
@@ -1157,7 +1153,7 @@
 
         <!-- Total row -->
         <div class="flex justify-end mt-3 pt-3 border-t border-slate-200 dark:border-[#383852]">
-          <span class="text-sm text-slate-500 dark:text-slate-400 mr-3">Combined total</span>
+          <span class="text-sm text-slate-500 dark:text-slate-400 mr-3">{{ 'RECEIPT_DETAIL.COMBINED_TOTAL' | translate }}</span>
           <span class="text-sm font-bold text-slate-900 dark:text-white">€{{ mergeTotal | number: "1.2-2" }}</span>
         </div>
       </div>
@@ -1168,7 +1164,7 @@
           (click)="mergeConfirmOpen = false"
           class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-transparent border border-slate-300 dark:border-[#383852] rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
         >
-          Cancel
+          {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button
           (click)="confirmMerge()"
@@ -1193,7 +1189,7 @@
             <rect x="14" y="14" width="8" height="8" rx="2"></rect>
             <rect x="2" y="2" width="8" height="8" rx="2"></rect>
           </svg>
-          Merge {{ selectedForMerge.size }} Items
+          {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
         </button>
       </div>
     </div>

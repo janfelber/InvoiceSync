@@ -4,6 +4,7 @@ import { InvoiceDocumentsComponent } from '../../invoice/invoice-documents/invoi
 import { InvoiceInspect } from '../../invoice/invoice-info/invoice-info.component';
 import { ReceiptDetailsComponent } from '../receipt-details/receipt-details.component';
 import { ReceiptDocumentsComponent } from '../receipt-documents/receipt-documents.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-receipt-inspect',
@@ -13,6 +14,7 @@ import { ReceiptDocumentsComponent } from '../receipt-documents/receipt-document
     InvoiceInspect,
     ReceiptDetailsComponent,
     ReceiptDocumentsComponent,
+    TranslateModule,
   ],
   templateUrl: './receipt-inspect.component.html',
   styleUrl: './receipt-inspect.component.css',
