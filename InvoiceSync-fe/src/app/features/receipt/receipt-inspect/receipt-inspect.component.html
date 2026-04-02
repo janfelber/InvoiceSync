@@ -11,7 +11,7 @@
                 <path
                   d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
               </svg>
-              Domov
+              {{ 'NAV.HOME' | translate }}
             </a>
           </li>
           <li>
@@ -22,7 +22,7 @@
                       d="m1 9 4-4-4-4"/>
               </svg>
               <a routerLink="/web/receipts"
-                 class="ms-1 text-sm font-medium text-gray-700 dark:text-white hover:text-blue-600 md:ms-2">Bločky</a>
+                 class="ms-1 text-sm font-medium text-gray-700 dark:text-white hover:text-blue-600 md:ms-2">{{ 'RECEIPT.TITLE' | translate }}</a>
             </div>
           </li>
           <li aria-current="page">
@@ -32,7 +32,7 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                       d="m1 9 4-4-4-4"/>
               </svg>
-              <span class="ms-1 text-sm font-medium text-gray-500 dark:text-white md:ms-2">Bloček</span>
+              <span class="ms-1 text-sm font-medium text-gray-500 dark:text-white md:ms-2">{{ 'RECEIPT.RECEIPT_NUMBER' | translate }}</span>
             </div>
           </li>
         </ol>
@@ -45,7 +45,7 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M5 12h14M5 12l4-4m-4 4 4 4"/>
           </svg>
-          <h1 class="text-lg font-semibold dark:text-white">Späť na bločky</h1>
+          <h1 class="text-lg font-semibold dark:text-white">{{ 'RECEIPT.BACK' | translate }}</h1>
         </a>
       </div>
     </div>
@@ -56,14 +56,14 @@
         <li class="me-2 mx-1" role="presentation">
           <button class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500 dark:!text-white"
                   id="invoice-tab" data-tabs-target="#invoice" type="button" role="tab" aria-controls="profile"
-                  aria-selected="false">Bloček
+                  aria-selected="false">{{ 'RECEIPT.TITLE' | translate }}
           </button>
         </li>
         <li class="me-2" role="presentation">
           <button
             class="inline-block p-1 px-3 border-b-2 rounded-t-lg !text-black hover:!border-blue-500 dark:!text-white"
             id="documents-tab" data-tabs-target="#documents" type="button" role="tab" aria-controls="dashboard"
-            aria-selected="false">Dokumenty
+            aria-selected="false">{{ 'NAV.DOCUMENTS' | translate }}
           </button>
         </li>
       </ul>
