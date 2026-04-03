@@ -1,16 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
-import {initDropdowns, initFlowbite} from 'flowbite'
+import {initFlowbite} from 'flowbite'
 import {FormsModule} from '@angular/forms';
 import {ReceiptService} from "../../core/services/receipt.service";
 import {PageResponseReceiptResponse} from "./page-response-receipt-response";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
-import {MatDialogWindowComponent} from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 import {toast} from "ngx-sonner";
 import {ReceiptBulkChangeService} from "../../core/services/bulk/ReceiptBulkChangeService";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {SafeHtmlPipe} from "../../shared/pipes/safe-html.pipe";
+import {SimpleSelectComponent, SelectOption} from "../../shared/simple-select/simple-select.component";
 
 @Component({
   selector: 'app-receipts',
@@ -22,8 +24,10 @@ import {ReceiptBulkChangeService} from "../../core/services/bulk/ReceiptBulkChan
     NgIf,
     FormsModule,
     CurrencyPipe,
-    MatDialogWindowComponent,
-    NgClass
+    TranslateModule,
+    SafeHtmlPipe,
+    NgClass,
+    SimpleSelectComponent
   ],
   templateUrl: './receipts.component.html',
   styleUrl: './receipts.component.css'
@@ -49,7 +53,6 @@ export class ReceiptsComponent implements OnInit {
     content: []
   };
 
-  public selectedCompanyName: string = 'Spoločnosť';
   public selectedCompanyId: any;
   public modalCompanyId: any = null;
   public lastImportDate?: string;
@@ -83,7 +86,13 @@ export class ReceiptsComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private receiptBulkChangeService: ReceiptBulkChangeService,
-  ) {
+    private translate: TranslateService,
+  ) {}
+
+  getBulkActionLabel(): string {
+    if (this.selectedAction === 'DELETE') return this.translate.instant('COMMON.DELETE');
+    if (this.selectedAction === 'COMPANY_REASSIGN') return this.translate.instant('BULK.COMPANY_REASSIGN');
+    return this.translate.instant('BULK.SELECT_ACTION');
   }
 
   ngOnInit(): void {
@@ -124,14 +133,29 @@ export class ReceiptsComponent implements OnInit {
     await this.receiptService.saveReceipt({ files, companyId: this.modalCompanyId });
   }
 
+  get companyOptions(): SelectOption[] {
+    return [
+      { value: 0, label: this.translate.instant('COMMON.ALL_COMPANIES') },
+      ...this.companyResponse.content.map(c => ({ value: c.id ?? 0, label: c.name ?? '' }))
+    ];
+  }
+
+  get companyOptionsNoAll(): SelectOption[] {
+    return this.companyResponse.content.map(c => ({ value: c.id ?? 0, label: c.name ?? '' }));
+  }
+
   onSelectCompany(company: any) {
-    this.selectedCompanyName = company.name;
     this.selectedCompanyId = company.id;
     if (company.id === 0) {
       this.onFetchCompanies();
     } else {
       this.onCompanyChange(company);
     }
+  }
+
+  onCompanyFilterChange(id: number): void {
+    const company = id === 0 ? { id: 0, name: '' } : this.companyResponse.content.find(c => c.id === id);
+    if (company) this.onSelectCompany(company);
   }
 
 
