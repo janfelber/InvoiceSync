@@ -9,12 +9,12 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg>
-      Späť na Bločky
+      {{ 'RECEIPT.BACK' | translate }}
     </button>
 
     <div class="mb-6">
-      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Hromadné úpravy</h1>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Vyberte akciu pre vybrané záznamy</p>
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">{{ 'BULK.TITLE' | translate }}</h1>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ 'BULK.CHOOSE_ACTION_CHOOSE_ITEMS' | translate }}</p>
     </div>
 
     <div class="max-w-lg">
@@ -24,13 +24,13 @@
 
         <!-- Action dropdown row -->
         <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
-          <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">Akcia</label>
+          <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'BULK.ACTION' | translate }}</label>
           <div class="relative flex-1">
             <button (click)="bulkActionDropdownOpen = !bulkActionDropdownOpen" type="button"
               class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               [ngClass]="selectedAction ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
               <span>
-                {{ selectedAction === 'DELETE' ? 'Zmazať záznamy' : selectedAction === 'COMPANY_REASSIGN' ? 'Change company' : 'Select action...' }}
+                {{ getBulkActionLabel() }}
               </span>
               <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
@@ -43,13 +43,13 @@
                 <li>
                   <a (click)="selectBulkAction('COMPANY_REASSIGN')"
                      class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
-                    Change company
+                    {{ 'BULK.COMPANY_REASSIGN' | translate }}
                   </a>
                 </li>
                 <li>
                   <a (click)="selectBulkAction('DELETE')"
                      class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
-                    Zmazať záznamy
+                    {{ 'COMMON.DELETE' | translate }}
                   </a>
                 </li>
               </ul>
@@ -61,12 +61,12 @@
         <div *ngIf="selectedAction === 'COMPANY_REASSIGN'"
              class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
           <div class="flex items-center gap-4">
-            <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">Company</label>
+            <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'COMMON.COMPANY' | translate }}</label>
             <div class="relative flex-1">
               <button (click)="bulkCompanyDropdownOpen = !bulkCompanyDropdownOpen" type="button"
                 class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                 [ngClass]="bulkCompanyId ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
-                <span>{{ bulkCompanyName ?? 'Select company...' }}</span>
+                <span>{{ bulkCompanyName ?? ('BULK.SELECT_COMPANY' | translate) }}</span>
                 <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
                 </svg>
@@ -90,7 +90,7 @@
               <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
             </svg>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-              This action will move <strong class="text-gray-700 dark:text-gray-300">{{ selectedIds.size }}</strong> receipt{{ selectedIds.size !== 1 ? 's' : '' }} to <strong class="text-gray-700 dark:text-gray-300">{{ bulkCompanyName }}</strong>.
+              <span [innerHTML]="'BULK.MOVE_RECEIPTS' | translate: { count: selectedIds.size, company: bulkCompanyName } | safeHtml"></span>
             </p>
           </div>
         </div>
@@ -103,7 +103,7 @@
               <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
             </svg>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-              <span class="font-semibold text-gray-700 dark:text-gray-300">Pozor</span> — táto akcia zmení <strong class="text-gray-700 dark:text-gray-300">{{ selectedIds.size }}</strong> bločkov.
+              <span [innerHTML]="'BULK.DELETE_RECEIPTS' | translate: { count: selectedIds.size, company: bulkCompanyName } | safeHtml"></span>
             </p>
           </div>
         </div>
@@ -113,11 +113,11 @@
           <button (click)="applyBulkAction()" type="button"
             [disabled]="!canConfirmBulk"
             class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            Potvrdiť
+            {{ 'COMMON.CONFIRM' | translate }}
           </button>
           <button (click)="resetBulkAction()" type="button"
             class="h-9 px-4 rounded-md border border-gray-300 dark:border-[#383852] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors">
-            Zrušiť
+            {{ 'COMMON.CANCEL' | translate }}
           </button>
         </div>
 
@@ -125,7 +125,7 @@
 
       <!-- Selected records preview -->
       <div class="mt-6">
-        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Vybrané záznamy</p>
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-wide mb-2">{{ 'BULK.SELECTED_ITEMS' | translate}}</p>
         <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] divide-y divide-gray-100 dark:divide-[#383852] overflow-hidden shadow-sm">
           <div *ngFor="let receipt of selectedReceipts"
                class="flex items-center gap-4 px-4 py-3 text-sm">
@@ -156,7 +156,7 @@
             <svg class="w-3 h-3 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
               <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
             </svg>
-            Domov
+            {{ 'NAV.HOME' | translate }}
           </a>
         </li>
         <li>
@@ -164,7 +164,7 @@
             <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">Dokumenty</span>
+            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.DOCUMENTS' | translate }}</span>
           </div>
         </li>
         <li aria-current="page">
@@ -172,21 +172,21 @@
             <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">Bločky</span>
+            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.RECEIPTS' | translate }}</span>
           </div>
         </li>
       </ol>
     </nav>
-    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Moje Bločky</h1>
+    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">{{ 'NAV.RECEIPTS' | translate }}</h1>
   </div>
 
   <!-- Filter panel -->
   <div class="-mx-4 mb-4 px-8 py-4 bg-gray-50 dark:bg-[#2a2b30] border-y border-gray-200 dark:border-[#383852]">
     <div class="flex items-center justify-between mb-3">
-      <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Filter</span>
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ 'COMMON.FILTER' | translate }}</span>
       <button (click)="toggleFilter()" type="button"
               class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
-        {{ filterOpen ? 'Skryť' : 'Zobraziť' }}
+        {{ (filterOpen ? 'COMMON.HIDE' : 'COMMON.SHOW') | translate }}
       </button>
     </div>
 
@@ -198,43 +198,14 @@
 
           <!-- Company Filter -->
           <div class="flex items-center gap-3">
-            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">Spoločnosť</label>
-            <div class="relative flex-1">
-              <button
-                id="dropdownFilterButton"
-                data-dropdown-toggle="filterDropdown"
-                type="button"
-                class="flex items-center justify-between gap-2 w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] px-3 text-sm text-gray-900 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 overflow-hidden">
-                <span class="truncate max-w-full block">{{ selectedCompanyName }}</span>
-                <svg class="w-2.5 h-2.5 text-gray-500 dark:text-gray-400 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
-                </svg>
-              </button>
-              <div id="filterDropdown"
-                   class="z-10 hidden absolute left-0 top-9 w-full rounded-md border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
-                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 font-medium">
-                  <li>
-                    <a (click)="onSelectCompany({ id: 0, name: 'Všetky spoločnosti' })"
-                       class="flex w-full items-center justify-between rounded-md px-3 py-2 cursor-pointer transition"
-                       [ngClass]="{
-                         'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold': selectedCompanyId === 0,
-                         'hover:bg-gray-100 dark:hover:bg-[#383852]': selectedCompanyId !== 0
-                       }">
-                      Všetky spoločnosti
-                    </a>
-                  </li>
-                  <li *ngFor="let company of companyResponse.content">
-                    <a (click)="onSelectCompany(company)"
-                       class="flex w-full items-center justify-between rounded-md px-3 py-2 transition cursor-pointer"
-                       [ngClass]="{
-                         'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold': company.id === selectedCompanyId,
-                         'hover:bg-gray-100 dark:hover:bg-[#383852]': company.id !== selectedCompanyId
-                       }">
-                      <span class="truncate">{{ company.name }}</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
+            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">{{ 'COMMON.COMPANY' | translate }}</label>
+            <div class="flex-1">
+              <app-simple-select
+                [placeholder]="'COMMON.PICK_COMPANY' | translate"
+                [options]="companyOptions"
+                [value]="selectedCompanyId"
+                (valueChange)="onCompanyFilterChange($event)">
+              </app-simple-select>
             </div>
           </div>
 
@@ -245,11 +216,11 @@
       <div class="mt-4 flex items-center gap-2">
         <button type="button"
                 class="h-8 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-          Filtrovať
+          {{ 'COMMON.FILTER' | translate }}
         </button>
         <button type="button"
                 class="h-8 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-          Resetovať
+          {{ 'COMMON.RESET' | translate }}
         </button>
       </div>
     </div>
@@ -261,9 +232,7 @@
     <!-- Heading panel: record count + pagination + import -->
     <div class="flex items-center gap-3 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
       <span class="text-sm text-gray-500 dark:text-gray-400 shrink-0">
-        Zobrazuje
-        <span class="font-semibold text-gray-700 dark:text-gray-200">{{ (page * size) + 1 }}</span>–<span class="font-semibold text-gray-700 dark:text-gray-200">{{ Math.min((page + 1) * size, receiptResponse?.totalElements) }}</span>
-        z <span class="font-semibold text-gray-700 dark:text-gray-200">{{ receiptResponse.totalElements }}</span>
+        {{ 'TABLE.SHOWING_OF_RECORDS' | translate: { from: (page * size) + 1, to: Math.min((page + 1) * size, receiptResponse?.totalElements), total:receiptResponse.totalElements } }}
       </span>
 
       <!-- Pagination -->
@@ -312,7 +281,7 @@
           type="text"
           [(ngModel)]="searchText"
           name="search"
-          placeholder="Vyhľadávanie..."
+          [placeholder]="'COMMON.SEARCH' | translate"
           class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
       </div>
 
@@ -322,7 +291,7 @@
         [disabled]="selectedIds.size === 0"
         (click)="goToBulkView()"
         class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-        Hromadné úpravy
+        {{ 'BULK.TITLE' | translate }}
       </button>
 
       <!-- Import button -->
@@ -334,7 +303,7 @@
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/>
         </svg>
-        Importovať bloček
+        {{ 'RECEIPT.IMPORT' | translate }}
       </button>
     </div>
 
@@ -349,13 +318,13 @@
                      (change)="toggleSelectAll()"
                      class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
             </th>
-            <th class="px-4 py-3">Číslo bločku</th>
-            <th class="px-4 py-3">Dodávateľ</th>
-            <th class="px-4 py-3">Dátum importu</th>
-            <th class="px-4 py-3">Spoločnosť</th>
-            <th class="px-4 py-3">IČO</th>
-            <th class="px-4 py-3">DIČ</th>
-            <th class="px-4 py-3">Cena (€)</th>
+            <th class="px-4 py-3">{{ 'RECEIPT.RECEIPT_NUMBER' | translate }}</th>
+            <th class="px-4 py-3">{{ 'INVOICE.SUPPLIER' | translate }}</th>
+            <th class="px-4 py-3">{{ 'RECEIPT.IMPORT_DATE' | translate }}</th>
+            <th class="px-4 py-3">{{ 'COMMON.COMPANY' | translate }}</th>
+            <th class="px-4 py-3">{{ 'INVOICE.REGISTRATION_NUMBER' | translate }}</th>
+            <th class="px-4 py-3">{{ 'INVOICE.IDENTIFICATION_NUMBER' | translate }}</th>
+            <th class="px-4 py-3">{{ 'RECEIPT.PRICE' | translate }}</th>
             <th class="w-12 px-4 py-3"></th>
           </tr>
         </thead>
@@ -402,7 +371,7 @@
                           <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
                           <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
                         </svg>
-                        Upraviť
+                        {{ 'COMMON.EDIT' | translate }}
                       </a>
                     </li>
                   </ul>
@@ -411,7 +380,7 @@
                       <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
                       </svg>
-                      <span class="text-red-600 dark:text-red-400">Zmazať</span>
+                      <span class="text-red-600 dark:text-red-400">{{ 'COMMON.DELETE' | translate }}</span>
                     </a>
                   </div>
                 </div>
@@ -428,7 +397,7 @@
                   <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/>
                   </svg>
-                  <span class="text-sm">Nenašli sa žiadne bločky pre zadané kritériá.</span>
+                  <span class="text-sm">{{ 'RECEIPT.NO_RESULTS' | translate }}</span>
                 </div>
               </td>
             </tr>
@@ -454,8 +423,8 @@
       <!-- Modal header -->
       <div class="flex items-start justify-between p-4 md:p-5 rounded-t">
         <div class="flex flex-col gap-1">
-          <h2 class="text-lg font-semibold leading-none text-gray-900 dark:text-white">Importovať bločky</h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400">Nahrajte obrázky účteniek na spracovanie</p>
+          <h2 class="text-lg font-semibold leading-none text-gray-900 dark:text-white">{{ 'RECEIPT.IMPORT_MODAL_TITLE' | translate }}</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ 'RECEIPT.IMPORT_MODAL_SUBTITLE' | translate }}</p>
         </div>
         <button type="button"
                 class="ml-4 inline-flex h-8 w-8 items-center justify-center rounded-lg text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-[#383852] dark:hover:text-white"
@@ -470,14 +439,13 @@
       <div class="px-4 pb-4 md:px-5 md:pb-5 space-y-4">
         <!-- Company selector -->
         <div>
-          <label for="modalCompanySelect" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Vyberte firmu</label>
-          <select id="modalCompanySelect"
-                  [(ngModel)]="modalCompanyId"
-                  name="modalCompany"
-                  class="block w-full p-2.5 text-sm bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] text-gray-900 dark:text-white rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            <option [ngValue]="null" disabled selected>-- Vyberte firmu --</option>
-            <option *ngFor="let company of companyResponse?.content" [ngValue]="company.id">{{ company.name }}</option>
-          </select>
+          <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'RECEIPT.SELECT_COMPANY_LABEL' | translate }}</label>
+          <app-simple-select
+            [options]="companyOptionsNoAll"
+            [value]="modalCompanyId"
+            [placeholder]="'COMMON.PICK_COMPANY' | translate"
+            (valueChange)="modalCompanyId = $event">
+          </app-simple-select>
         </div>
 
         <!-- File upload -->
@@ -492,8 +460,8 @@
               <svg class="w-8 h-8 text-gray-400 dark:text-gray-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
               </svg>
-              <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Vyberte alebo pretiahnite obrázky</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Podporované: .jpg, .png, .jpeg</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ 'RECEIPT.DROP_FILES' | translate }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'RECEIPT.SUPPORTED_FORMATS' | translate }}</p>
             </div>
             <input id="multi-upload" type="file" accept=".jpg,.png,.jpeg" multiple class="hidden"
                    (change)="onMultipleFilesSelected($event)" [disabled]="!modalCompanyId"/>
@@ -505,12 +473,12 @@
       <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 dark:border-[#383852] rounded-b gap-2">
         <button data-modal-hide="import-modal" type="button"
                 class="h-9 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none transition-colors">
-          Zrušiť
+          {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button (click)="onSubmit()" type="button"
                 [disabled]="isUploading"
                 class="h-9 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50">
-          {{ isUploading ? 'Spracováva sa...' : 'Importovať' }}
+          {{ (isUploading ? 'RECEIPT.UPLOADING' : 'RECEIPT.IMPORT') | translate }}
         </button>
       </div>
 
