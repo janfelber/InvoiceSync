@@ -3,9 +3,9 @@
   <!-- ══════════════════════════════════════════
        BULK CHANGE VIEW
   ══════════════════════════════════════════ -->
-  <div *ngIf="isBulkView()">
-
-    <button (click)="goBack()" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2">
+  @if (isBulkView()) {
+    <button (click)="goBack()"
+            class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
       </svg>
@@ -20,297 +20,349 @@
     <div class="max-w-lg">
 
       <!-- Action card -->
-      <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] shadow-sm overflow-visible">
+      <div
+        class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] shadow-sm overflow-visible">
 
         <!-- Action dropdown row -->
         <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
-          <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'BULK.ACTION' | translate }}</label>
+          <label
+            class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'BULK.ACTION' | translate }}</label>
           <div class="relative flex-1">
-            <button (click)="isBulkActionDropdownOpen.set(!isBulkCompanyDropdownOpen())" type="button"
-              class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-              [ngClass]="selectedAction() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+            <button (click)="toggleBulkActionDropdown()" type="button"
+                    class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                    [ngClass]="selectedAction() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
               <span>
                 {{ getBulkActionLabel() }}
               </span>
               <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="m1 1 4 4 4-4"/>
               </svg>
             </button>
 
-            <div *ngIf="isBulkActionDropdownOpen()"
-                 class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
-              <ul class="p-1 text-sm text-gray-700 dark:text-gray-300">
-                <li>
-                  <a (click)="selectBulkAction('COMPANY_REASSIGN')"
-                     class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
-                    {{ 'BULK.COMPANY_REASSIGN' | translate }}
-                  </a>
-                </li>
-                <li>
-                  <a (click)="selectBulkAction('DELETE')"
-                     class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
-                    {{ 'COMMON.DELETE' | translate }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Config: Change company -->
-        <div *ngIf="selectedAction() === 'COMPANY_REASSIGN'"
-             class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
-          <div class="flex items-center gap-4">
-            <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'COMMON.COMPANY' | translate }}</label>
-            <div class="relative flex-1">
-              <button (click)="isBulkCompanyDropdownOpen.set(!isBulkCompanyDropdownOpen())" type="button"
-                class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                [ngClass]="bulkCompanyId() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
-                <span>{{ bulkCompanyName() ?? ('BULK.SELECT_COMPANY' | translate) }}</span>
-                <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
-                </svg>
-              </button>
-              <div *ngIf="isBulkCompanyDropdownOpen()"
-                   class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
-                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 max-h-48 overflow-y-auto">
-                  <li *ngFor="let company of companyResponse.content">
-                    <a (click)="selectBulkCompany(company)"
-                       class="flex px-3 py-2 rounded-md cursor-pointer transition-colors"
-                       [ngClass]="bulkCompanyId() === company.id ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-[#383852]'">
-                      {{ company.name }}
+            @if (isBulkActionDropdownOpen()) {
+              <div
+                class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
+                <ul class="p-1 text-sm text-gray-700 dark:text-gray-300">
+                  <li>
+                    <a (click)="selectBulkAction('COMPANY_REASSIGN')"
+                       class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                      {{ 'BULK.COMPANY_REASSIGN' | translate }}
+                    </a>
+                  </li>
+                  <li>
+                    <a (click)="selectBulkAction('DELETE')"
+                       class="flex px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                      {{ 'COMMON.DELETE' | translate }}
                     </a>
                   </li>
                 </ul>
               </div>
-            </div>
-          </div>
-          <div *ngIf="bulkCompanyId()" class="mt-3 flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
-            </svg>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              <span [innerHTML]="'BULK.MOVE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
-            </p>
+            }
           </div>
         </div>
+
+        <!-- Config: Change company -->
+        @if (selectedAction() === 'COMPANY_REASSIGN') {
+          <div class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
+            <div class="flex items-center gap-4">
+              <label
+                class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'COMMON.COMPANY' | translate }}</label>
+              <div class="relative flex-1">
+                <button (click)="toggleBulkCompanyDropdown()" type="button"
+                        class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                        [ngClass]="bulkCompanyId() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+                  <span>{{ bulkCompanyName() ?? ('BULK.SELECT_COMPANY' | translate) }}</span>
+                  <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="m1 1 4 4 4-4"/>
+                  </svg>
+                </button>
+                @if (isBulkCompanyDropdownOpen()) {
+                  <div
+                    class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
+                    <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 max-h-48 overflow-y-auto">
+                      @for (company of companyResponse.content; track company.id) {
+                        <li>
+                          <a (click)="selectBulkCompany(company)"
+                             class="flex px-3 py-2 rounded-md cursor-pointer transition-colors"
+                             [ngClass]="bulkCompanyId() === company.id ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-[#383852]'">
+                            {{ company.name }}
+                          </a>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+            </div>
+            @if (bulkCompanyId()) {
+              <div
+                class="mt-3 flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z"
+                        clip-rule="evenodd"/>
+                </svg>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  <span
+                    [innerHTML]="'BULK.MOVE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
+                </p>
+              </div>
+            }
+          </div>
+        }
 
         <!-- Config: Delete warning -->
-        <div *ngIf="selectedAction() === 'DELETE'"
-             class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
-          <div class="flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
-            </svg>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
-              <span [innerHTML]="'BULK.DELETE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
-            </p>
+        @if (selectedAction() === 'DELETE') {
+          <div class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
+            <div
+              class="flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                      d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+                      clip-rule="evenodd"/>
+              </svg>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                <span
+                  [innerHTML]="'BULK.DELETE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
+              </p>
+            </div>
           </div>
-        </div>
+        }
 
         <!-- Footer -->
-        <div *ngIf="selectedAction()" class="px-5 py-4 flex items-center gap-2">
-          <button (click)="applyBulkAction()" type="button"
-            [disabled]="!canConfirmBulk"
-            class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-            {{ 'COMMON.CONFIRM' | translate }}
-          </button>
-          <button (click)="resetBulkAction()" type="button"
-            class="h-9 px-4 rounded-md border border-gray-300 dark:border-[#383852] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors">
-            {{ 'COMMON.CANCEL' | translate }}
-          </button>
-        </div>
+        @if (selectedAction()) {
+          <div class="px-5 py-4 flex items-center gap-2">
+            <button (click)="applyBulkAction()" type="button"
+                    [disabled]="!canConfirmBulk"
+                    class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              {{ 'COMMON.CONFIRM' | translate }}
+            </button>
+            <button (click)="resetBulkAction()" type="button"
+                    class="h-9 px-4 rounded-md border border-gray-300 dark:border-[#383852] text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors">
+              {{ 'COMMON.CANCEL' | translate }}
+            </button>
+          </div>
+        }
 
       </div>
 
       <!-- Selected records preview -->
       <div class="mt-6">
-        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-wide mb-2">{{ 'BULK.SELECTED_ITEMS' | translate}}</p>
-        <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] divide-y divide-gray-100 dark:divide-[#383852] overflow-hidden shadow-sm">
-          <div *ngFor="let receipt of selectedReceipts"
-               class="flex items-center gap-4 px-4 py-3 text-sm">
-            <span class="font-medium text-blue-600 dark:text-blue-400">#{{ receipt.orderNumber }}</span>
-            <span class="text-gray-600 dark:text-gray-300">{{ receipt.partner?.name }}</span>
-            <span class="text-gray-400 dark:text-gray-500 text-xs">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</span>
-            <span class="ml-auto font-medium text-gray-900 dark:text-white">
+        <p
+          class="text-xs font-semibold text-gray-400 dark:text-gray-500 tracking-wide mb-2">{{ 'BULK.SELECTED_ITEMS' | translate }}</p>
+        <div
+          class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] divide-y divide-gray-100 dark:divide-[#383852] overflow-hidden shadow-sm">
+          @for (receipt of selectedReceipts; track receipt.id) {
+            <div class="flex items-center gap-4 px-4 py-3 text-sm">
+              <span class="font-medium text-blue-600 dark:text-blue-400">#{{ receipt.orderNumber }}</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ receipt.partner?.name }}</span>
+              <span class="text-gray-400 dark:text-gray-500 text-xs">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</span>
+              <span class="ml-auto font-medium text-gray-900 dark:text-white">
               {{ receipt.receiptDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
             </span>
-          </div>
+            </div>
+          }
         </div>
       </div>
 
     </div>
-  </div>
+  }
 
   <!-- ══════════════════════════════════════════
        TABLE VIEW
   ══════════════════════════════════════════ -->
-  <ng-container *ngIf="!isBulkView()">
+  @if (!isBulkView()) {
 
-  <!-- Breadcrumb + page title -->
-  <div class="mb-4">
-    <nav class="flex mb-2" aria-label="Breadcrumb">
-      <ol class="inline-flex items-center space-x-1 rtl:space-x-reverse">
-        <li class="inline-flex items-center">
-          <a routerLink="/home" class="inline-flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
-            <svg class="w-3 h-3 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-            </svg>
-            {{ 'NAV.HOME' | translate }}
-          </a>
-        </li>
-        <li>
-          <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.DOCUMENTS' | translate }}</span>
-          </div>
-        </li>
-        <li aria-current="page">
-          <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.RECEIPTS' | translate }}</span>
-          </div>
-        </li>
-      </ol>
-    </nav>
-    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">{{ 'NAV.RECEIPTS' | translate }}</h1>
-  </div>
-
-  <!-- Filter panel -->
-  <div class="-mx-4 mb-4 px-8 py-4 bg-gray-50 dark:bg-[#2a2b30] border-y border-gray-200 dark:border-[#383852]">
-    <div class="flex items-center justify-between mb-3">
-      <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ 'COMMON.FILTER' | translate }}</span>
-      <button (click)="toggleFilter()" type="button"
-              class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
-        {{ (isFilterOpen() ? 'COMMON.HIDE' : 'COMMON.SHOW') | translate }}
-      </button>
+    <!-- Breadcrumb + page title -->
+    <div class="mb-4">
+      <nav class="flex mb-2" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 rtl:space-x-reverse">
+          <li class="inline-flex items-center">
+            <a routerLink="/home"
+               class="inline-flex items-center text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+              <svg class="w-3 h-3 me-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
+              </svg>
+              {{ 'NAV.HOME' | translate }}
+            </a>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.DOCUMENTS' | translate }}</span>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                   viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ms-1 text-sm text-gray-500 dark:text-gray-400">{{ 'NAV.RECEIPTS' | translate }}</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="text-xl font-semibold text-gray-900 dark:text-white">{{ 'NAV.RECEIPTS' | translate }}</h1>
     </div>
 
-    <div *ngIf="isFilterOpen()">
-      <div class="flex">
+    <!-- Filter panel -->
+    <div class="-mx-4 mb-4 px-8 py-4 bg-gray-50 dark:bg-[#2a2b30] border-y border-gray-200 dark:border-[#383852]">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ 'COMMON.FILTER' | translate }}</span>
+        <button (click)="isFilterOpen.update(v => !v)" type="button"
+                class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
+          {{ (isFilterOpen() ? 'COMMON.HIDE' : 'COMMON.SHOW') | translate }}
+        </button>
+      </div>
 
-        <!-- Left column -->
-        <div class="flex-1 flex flex-col gap-3 pr-10">
+      @if (isFilterOpen()) {
+        <div class="flex">
 
-          <!-- Company Filter -->
-          <div class="flex items-center gap-3">
-            <label class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">{{ 'COMMON.COMPANY' | translate }}</label>
-            <div class="flex-1">
-              <app-simple-select
-                [placeholder]="'COMMON.PICK_COMPANY' | translate"
-                [options]="companyOptions"
-                [value]="selectedCompanyId()"
-                (valueChange)="onCompanyFilterChange($event)">
-              </app-simple-select>
+          <!-- Left column -->
+          <div class="flex-1 flex flex-col gap-3 pr-10">
+
+            <!-- Company Filter -->
+            <div class="flex items-center gap-3">
+              <label
+                class="w-36 shrink-0 text-sm text-gray-600 dark:text-gray-400">{{ 'COMMON.COMPANY' | translate }}</label>
+              <div class="flex-1">
+                <app-simple-select
+                  [placeholder]="'COMMON.PICK_COMPANY' | translate"
+                  [options]="companyOptions"
+                  [value]="selectedCompanyId()"
+                  (valueChange)="onCompanyFilterChange($event)">
+                </app-simple-select>
+              </div>
             </div>
+
           </div>
 
         </div>
 
-      </div>
-
-      <div class="mt-4 flex items-center gap-2">
-        <button type="button"
-                class="h-8 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-          {{ 'COMMON.FILTER' | translate }}
-        </button>
-        <button type="button"
-                class="h-8 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-          {{ 'COMMON.RESET' | translate }}
-        </button>
-      </div>
+        <div class="mt-4 flex items-center gap-2">
+          <button type="button"
+                  class="h-8 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+            {{ 'COMMON.FILTER' | translate }}
+          </button>
+          <button type="button"
+                  class="h-8 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+            {{ 'COMMON.RESET' | translate }}
+          </button>
+        </div>
+      }
     </div>
-  </div>
 
-  <!-- Card -->
-  <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] overflow-hidden">
+    <!-- Card -->
+    <div class="rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] overflow-hidden">
 
-    <!-- Heading panel: record count + pagination + import -->
-    <div class="flex items-center gap-3 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+      <!-- Heading panel: record count + pagination + import -->
+      <div
+        class="flex items-center gap-3 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
       <span class="text-sm text-gray-500 dark:text-gray-400 shrink-0">
-        {{ 'TABLE.SHOWING_OF_RECORDS' | translate: { from: (page * size) + 1, to: Math.min((page + 1) * size, totalElements()), total:totalElements() } }}
+        {{
+          'TABLE.SHOWING_OF_RECORDS' | translate: {
+            from: (page * size) + 1,
+            to: Math.min((page + 1) * size, totalElements()),
+            total: totalElements()
+          }
+        }}
       </span>
 
-      <!-- Pagination -->
-      <nav class="flex items-center" aria-label="Pagination">
-        <ul class="flex items-center -space-x-px h-7 text-sm">
-          <li>
-            <button
-              (click)="goToPreviousPage()"
-              [disabled]="page === 0"
-              class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-s-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
-              <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-              </svg>
-            </button>
-          </li>
-          <li *ngFor="let _ of [].constructor(totalPages()); let pageIndex = index">
-            <a (click)="goToPage(pageIndex)"
-               [class.active]="page == pageIndex"
-               class="flex items-center justify-center px-3 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] hover:bg-gray-100 dark:hover:bg-[#2a2b30] cursor-pointer transition-colors">
-              {{ pageIndex + 1 }}
-            </a>
-          </li>
-          <li>
-            <button
-              (click)="goToNextPage()"
-              [disabled]="IsLastPage"
-              class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-e-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
-              <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-              </svg>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
-    <!-- Actions bar: search + import -->
-    <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852]">
-
-      <!-- Search -->
-      <div class="flex-1 relative">
-        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-        </svg>
-        <input
-          type="text"
-          [ngModel]="searchText()" (ngModelChange)="searchText.set($event)"
-          name="search"
-          [placeholder]="'COMMON.SEARCH' | translate"
-          class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+        <!-- Pagination -->
+        <nav class="flex items-center" aria-label="Pagination">
+          <ul class="flex items-center -space-x-px h-7 text-sm">
+            <li>
+              <button
+                (click)="goToPreviousPage()"
+                [disabled]="page === 0"
+                class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-s-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
+                <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 1 1 5l4 4"/>
+                </svg>
+              </button>
+            </li>
+            @for (_ of [].constructor(totalPages()); track $index) {
+              <li>
+                <a (click)="goToPage($index)"
+                   [class.active]="page == $index"
+                   class="flex items-center justify-center px-3 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] hover:bg-gray-100 dark:hover:bg-[#2a2b30] cursor-pointer transition-colors">
+                  {{ $index + 1 }}
+                </a>
+              </li>
+            }
+            <li>
+              <button
+                (click)="goToNextPage()"
+                [disabled]="IsLastPage"
+                class="flex items-center justify-center px-2.5 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] rounded-e-md hover:bg-gray-100 dark:hover:bg-[#2a2b30] disabled:opacity-40 disabled:pointer-events-none transition-colors">
+                <svg class="w-2.5 h-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 9 4-4-4-4"/>
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
 
-      <!-- Bulk change button -->
-      <button
-        type="button"
-        [disabled]="selectedIds().length === 0"
-        (click)="goToBulkView()"
-        class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
-        {{ 'BULK.TITLE' | translate }}
-      </button>
+      <!-- Actions bar: search + import -->
+      <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852]">
 
-      <!-- Import button -->
-      <button
-        data-modal-target="import-modal"
-        data-modal-toggle="import-modal"
-        type="button"
-        class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
-        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/>
-        </svg>
-        {{ 'RECEIPT.IMPORT' | translate }}
-      </button>
-    </div>
+        <!-- Search -->
+        <div class="flex-1 relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+               fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <input
+            type="text"
+            [ngModel]="searchText()" (ngModelChange)="searchText.set($event)"
+            name="search"
+            [placeholder]="'COMMON.SEARCH' | translate"
+            class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+        </div>
 
-    <!-- Table -->
-    <div class="overflow-x-auto">
-      <table class="min-w-full text-sm text-left border-collapse">
-        <thead class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-[#2a2b30] border-b border-gray-200 dark:border-[#383852]">
+        <!-- Bulk change button -->
+        <button
+          type="button"
+          [disabled]="selectedIds().length === 0"
+          (click)="goToBulkView()"
+          class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          {{ 'BULK.TITLE' | translate }}
+        </button>
+
+        <!-- Import button -->
+        <button
+          data-modal-target="import-modal"
+          data-modal-toggle="import-modal"
+          type="button"
+          class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md bg-blue-600 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"/>
+          </svg>
+          {{ 'RECEIPT.IMPORT' | translate }}
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm text-left border-collapse">
+          <thead
+            class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-[#2a2b30] border-b border-gray-200 dark:border-[#383852]">
           <tr class="divide-x divide-gray-200 dark:divide-[#383852]">
             <th class="w-10 px-4 py-3">
               <input type="checkbox"
@@ -327,94 +379,108 @@
             <th class="px-4 py-3">{{ 'RECEIPT.PRICE' | translate }}</th>
             <th class="w-12 px-4 py-3"></th>
           </tr>
-        </thead>
+          </thead>
 
-        <div *ngIf="loading()" class="flex items-center justify-center py-20 text-gray-600">
-          Loading…
-        </div>
-
-        <ng-container *ngIf="!loading()">
-          <tbody class="divide-y divide-gray-100 dark:divide-[#383852]">
-          <ng-container *ngIf="filtered().length > 0; else noData">
-          <tr *ngFor="let receipt of  filtered(); even as even"
-                class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]"
-                [ngClass]="selectedIds().includes(receipt.id) ? 'bg-blue-50 dark:bg-[#1a1f2d]' : (even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]')">
-              <td class="px-4 py-3">
-                <input type="checkbox"
-                       [checked]="selectedIds().includes(receipt.id)"
-                       (change)="onRowCheckboxChange(receipt.id)"
-                       class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
-              </td>
-              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">
-                  #{{ receipt.orderNumber }}
-                </a>
-              </td>
-              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.name }}</td>
-              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
-              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.companyName }}</td>
-              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.registrationNumber }}</td>
-              <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.taxId }}</td>
-              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                {{ receipt.receiptDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
-              </td>
-              <td class="px-4 py-3">
-                <button [id]="'dropdown-button-' + receipt.id"
-                        [attr.data-dropdown-toggle]="'dropdown-' + receipt.id"
-                        class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors focus:outline-none"
-                        type="button">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
-                  </svg>
-                </button>
-                <div [id]="'dropdown-' + receipt.id"
-                     class="hidden z-10 w-40 rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
-                  <ul class="p-1 text-sm text-gray-700 dark:text-gray-300" [attr.aria-labelledby]="'dropdown-button-' + receipt.id">
-                    <li>
-                      <a (click)="editReceipt(receipt.id)" class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
-                        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                          <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
-                          <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
-                        </svg>
-                        {{ 'COMMON.EDIT' | translate }}
-                      </a>
-                    </li>
-                  </ul>
-                  <div class="p-1 border-t border-gray-100 dark:border-[#383852]">
-                    <a (click)="deleteReceipt(receipt.id)" class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
-                      <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
-                      </svg>
-                      <span class="text-red-600 dark:text-red-400">{{ 'COMMON.DELETE' | translate }}</span>
+          @if (loading()) {
+            <tbody>
+              <tr>
+                <td colspan="9" class="flex items-center justify-center py-20 text-gray-600">
+                  {{ 'COMMON.LOADING' | translate }}
+                </td>
+              </tr>
+            </tbody>
+          } @else {
+            <tbody class="divide-y divide-gray-100 dark:divide-[#383852]">
+              @for (receipt of filtered(); track receipt.id; let even = $even) {
+                <tr
+                  class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]"
+                  [ngClass]="selectedIds().includes(receipt.id) ? 'bg-blue-50 dark:bg-[#1a1f2d]' : (even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]')">
+                  <td class="px-4 py-3">
+                    <input type="checkbox"
+                           [checked]="selectedIds().includes(receipt.id)"
+                           (change)="onRowCheckboxChange(receipt.id)"
+                           class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
+                  </td>
+                  <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    <a [routerLink]="['/web/receipts', receipt.id]" class="text-blue-600 hover:underline">
+                      #{{ receipt.orderNumber }}
                     </a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </ng-container>
-          </tbody>
-        </ng-container>
+                  </td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.name }}</td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.createdAt | date:'dd.MM.yyyy' }}</td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.companyName }}</td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.registrationNumber }}</td>
+                  <td class="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ receipt.partner?.taxId }}</td>
+                  <td class="px-4 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                    {{ receipt.receiptDetails?.totalPriceWithVat | currency:'EUR':'symbol':'1.2-2' }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <button [id]="'dropdown-button-' + receipt.id"
+                            [attr.data-dropdown-toggle]="'dropdown-' + receipt.id"
+                            class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors focus:outline-none"
+                            type="button">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"/>
+                      </svg>
+                    </button>
+                    <div [id]="'dropdown-' + receipt.id"
+                         class="hidden z-10 w-40 rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-lg">
+                      <ul class="p-1 text-sm text-gray-700 dark:text-gray-300"
+                          [attr.aria-labelledby]="'dropdown-button-' + receipt.id">
+                        <li>
+                          <a (click)="editReceipt(receipt.id)"
+                             class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#383852] transition-colors">
+                            <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                 viewBox="0 0 24 24">
+                              <path fill-rule="evenodd"
+                                    d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z"
+                                    clip-rule="evenodd"/>
+                              <path fill-rule="evenodd"
+                                    d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z"
+                                    clip-rule="evenodd"/>
+                            </svg>
+                            {{ 'COMMON.EDIT' | translate }}
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="p-1 border-t border-gray-100 dark:border-[#383852]">
+                        <a (click)="deleteReceipt(receipt.id)"
+                           class="flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors">
+                          <svg class="w-4 h-4 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                               viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                  d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                  clip-rule="evenodd"/>
+                          </svg>
+                          <span class="text-red-600 dark:text-red-400">{{ 'COMMON.DELETE' | translate }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="9" class="px-4 py-16 text-center">
+                    <div class="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-500">
+                      <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                              d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/>
+                      </svg>
+                      <span class="text-sm">{{ 'RECEIPT.NO_RESULTS' | translate }}</span>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          }
+        </table>
+      </div>
 
-        <ng-template #noData>
-          <tbody>
-            <tr>
-              <td colspan="9" class="px-4 py-16 text-center">
-                <div class="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-500">
-                  <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/>
-                  </svg>
-                  <span class="text-sm">{{ 'RECEIPT.NO_RESULTS' | translate }}</span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </ng-template>
-      </table>
     </div>
 
-  </div>
-
-  </ng-container>
+  }
 
 </main>
 
@@ -429,14 +495,16 @@
       <!-- Modal header -->
       <div class="flex items-start justify-between p-4 md:p-5 rounded-t">
         <div class="flex flex-col gap-1">
-          <h2 class="text-lg font-semibold leading-none text-gray-900 dark:text-white">{{ 'RECEIPT.IMPORT_MODAL_TITLE' | translate }}</h2>
+          <h2
+            class="text-lg font-semibold leading-none text-gray-900 dark:text-white">{{ 'RECEIPT.IMPORT_MODAL_TITLE' | translate }}</h2>
           <p class="text-sm text-gray-500 dark:text-gray-400">{{ 'RECEIPT.IMPORT_MODAL_SUBTITLE' | translate }}</p>
         </div>
         <button type="button"
                 class="ml-4 inline-flex h-8 w-8 items-center justify-center rounded-lg text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-[#383852] dark:hover:text-white"
                 data-modal-hide="import-modal">
           <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
           </svg>
         </button>
       </div>
@@ -445,7 +513,8 @@
       <div class="px-4 pb-4 md:px-5 md:pb-5 space-y-4">
         <!-- Company selector -->
         <div>
-          <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'RECEIPT.SELECT_COMPANY_LABEL' | translate }}</label>
+          <label
+            class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'RECEIPT.SELECT_COMPANY_LABEL' | translate }}</label>
           <app-simple-select
             [options]="companyOptionsNoAll"
             [value]="modalCompanyId()"
@@ -463,8 +532,11 @@
                  [class.hover:bg-gray-50]="modalCompanyId()"
                  [class.dark:hover:bg-gray-800]="modalCompanyId()">
             <div class="flex flex-col items-center pt-5 pb-6">
-              <svg class="w-8 h-8 text-gray-400 dark:text-gray-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
+              <svg class="w-8 h-8 text-gray-400 dark:text-gray-500 mb-3" xmlns="http://www.w3.org/2000/svg"
+                   fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd"
+                      d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
+                      clip-rule="evenodd"/>
               </svg>
               <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">{{ 'RECEIPT.DROP_FILES' | translate }}</p>
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'RECEIPT.SUPPORTED_FORMATS' | translate }}</p>
@@ -476,7 +548,8 @@
       </div>
 
       <!-- Modal footer -->
-      <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 dark:border-[#383852] rounded-b gap-2">
+      <div
+        class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 dark:border-[#383852] rounded-b gap-2">
         <button data-modal-hide="import-modal" type="button"
                 class="h-9 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-[#383852] rounded-md hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none transition-colors">
           {{ 'COMMON.CANCEL' | translate }}
