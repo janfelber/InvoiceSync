@@ -142,6 +142,13 @@
     "SELECT_COMPANY_PLACEHOLDER": "-- Vyberte firmu --",
     "SUPPORTED_FORMATS": "Podporované: .jpg, .png, .jpeg",
     "TITLE": "Bločky",
+    "TOAST_DELETE_ERROR": "Vymazanie účtenky zlyhalo.",
+    "TOAST_DELETE_SUCCESS": "Účtenka bola úspešne vymazaná.",
+    "TOAST_IMPORT_ERROR": "Import zlyhal. Skúste znova.",
+    "TOAST_IMPORT_SUCCESS": "Import prebehol úspešne.",
+    "TOAST_BULK_DELETE": "Vymazané {{ count }} účteniek.",
+    "TOAST_BULK_REASSIGN": "Presunuté {{ count }} účteniek do {{ company }}.",
+    "TOAST_BULK_ERROR": "Akcia zlyhala. Skúste znova.",
     "UPLOADING": "Spracováva sa..."
   },
   "RECEIPT_DETAIL": {
