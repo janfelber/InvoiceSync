@@ -1,5 +1,5 @@
 import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {CommonModule, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {CommonModule, CurrencyPipe, DatePipe, NgClass} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {FormsModule} from '@angular/forms';
 import {ReceiptDTO, ReceiptService} from "../../core/services/receipt.service";
@@ -16,9 +16,7 @@ import {SimpleSelectComponent, SelectOption} from "../../shared/simple-select/si
   imports: [
     CommonModule,
     DatePipe,
-    NgForOf,
     RouterLink,
-    NgIf,
     FormsModule,
     CurrencyPipe,
     TranslateModule,
@@ -201,8 +199,12 @@ export class ReceiptsComponent implements OnInit {
     this.modalCompanyId.set(null);
   }
 
-  toggleFilter(): void {
-    this.isFilterOpen.update(current => !current);
+  toggleBulkActionDropdown(): void {
+    this.isBulkActionDropdownOpen.update(v => !v);
+  }
+
+  toggleBulkCompanyDropdown(): void {
+    this.isBulkCompanyDropdownOpen.update(v => !v);
   }
 
   onRowCheckboxChange(id: number): void {
