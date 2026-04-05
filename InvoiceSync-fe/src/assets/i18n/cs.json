@@ -142,6 +142,13 @@
     "SELECT_COMPANY_PLACEHOLDER": "-- Vyberte firmu --",
     "SUPPORTED_FORMATS": "Podporované: .jpg, .png, .jpeg",
     "TITLE": "Účtenky",
+    "TOAST_DELETE_ERROR": "Smazání účtenky selhalo.",
+    "TOAST_DELETE_SUCCESS": "Účtenka byla úspěšně smazána.",
+    "TOAST_IMPORT_ERROR": "Import selhal. Zkuste znovu.",
+    "TOAST_IMPORT_SUCCESS": "Import proběhl úspěšně.",
+    "TOAST_BULK_DELETE": "Smazáno {{ count }} účtenek.",
+    "TOAST_BULK_REASSIGN": "Přesunuto {{ count }} účtenek do {{ company }}.",
+    "TOAST_BULK_ERROR": "Akce selhala. Zkuste znovu.",
     "UPLOADING": "Zpracovává se..."
   },
   "RECEIPT_DETAIL": {

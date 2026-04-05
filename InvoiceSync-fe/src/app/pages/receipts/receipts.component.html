@@ -3,7 +3,7 @@
   <!-- ══════════════════════════════════════════
        BULK CHANGE VIEW
   ══════════════════════════════════════════ -->
-  <div *ngIf="isBulkView">
+  <div *ngIf="isBulkView()">
 
     <button (click)="goBack()" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mb-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,9 +26,9 @@
         <div class="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
           <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'BULK.ACTION' | translate }}</label>
           <div class="relative flex-1">
-            <button (click)="bulkActionDropdownOpen = !bulkActionDropdownOpen" type="button"
+            <button (click)="isBulkActionDropdownOpen.set(!isBulkCompanyDropdownOpen())" type="button"
               class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-              [ngClass]="selectedAction ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+              [ngClass]="selectedAction() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
               <span>
                 {{ getBulkActionLabel() }}
               </span>
@@ -37,7 +37,7 @@
               </svg>
             </button>
 
-            <div *ngIf="bulkActionDropdownOpen"
+            <div *ngIf="isBulkActionDropdownOpen()"
                  class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
               <ul class="p-1 text-sm text-gray-700 dark:text-gray-300">
                 <li>
@@ -58,26 +58,26 @@
         </div>
 
         <!-- Config: Change company -->
-        <div *ngIf="selectedAction === 'COMPANY_REASSIGN'"
+        <div *ngIf="selectedAction() === 'COMPANY_REASSIGN'"
              class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
           <div class="flex items-center gap-4">
             <label class="w-36 shrink-0 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'COMMON.COMPANY' | translate }}</label>
             <div class="relative flex-1">
-              <button (click)="bulkCompanyDropdownOpen = !bulkCompanyDropdownOpen" type="button"
+              <button (click)="isBulkCompanyDropdownOpen.set(!isBulkCompanyDropdownOpen())" type="button"
                 class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm hover:bg-gray-50 dark:hover:bg-[#383852] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                [ngClass]="bulkCompanyId ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
-                <span>{{ bulkCompanyName ?? ('BULK.SELECT_COMPANY' | translate) }}</span>
+                [ngClass]="bulkCompanyId() ? 'text-gray-900 dark:text-white' : 'text-gray-400'">
+                <span>{{ bulkCompanyName() ?? ('BULK.SELECT_COMPANY' | translate) }}</span>
                 <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" viewBox="0 0 10 6">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m1 1 4 4 4-4"/>
                 </svg>
               </button>
-              <div *ngIf="bulkCompanyDropdownOpen"
+              <div *ngIf="isBulkCompanyDropdownOpen()"
                    class="absolute left-0 top-10 w-full rounded-lg border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#2a2b30] shadow-xl z-50">
                 <ul class="p-1 text-sm text-gray-700 dark:text-gray-300 max-h-48 overflow-y-auto">
                   <li *ngFor="let company of companyResponse.content">
                     <a (click)="selectBulkCompany(company)"
                        class="flex px-3 py-2 rounded-md cursor-pointer transition-colors"
-                       [ngClass]="bulkCompanyId === company.id ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-[#383852]'">
+                       [ngClass]="bulkCompanyId() === company.id ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 font-semibold' : 'hover:bg-gray-100 dark:hover:bg-[#383852]'">
                       {{ company.name }}
                     </a>
                   </li>
@@ -85,31 +85,31 @@
               </div>
             </div>
           </div>
-          <div *ngIf="bulkCompanyId" class="mt-3 flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
+          <div *ngIf="bulkCompanyId()" class="mt-3 flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7-4a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM9 9a.75.75 0 0 0 0 1.5h.253a.25.25 0 0 1 .244.304l-.459 2.066A1.75 1.75 0 0 0 10.747 15H11a.75.75 0 0 0 0-1.5h-.253a.25.25 0 0 1-.244-.304l.459-2.066A1.75 1.75 0 0 0 9.253 9H9Z" clip-rule="evenodd"/>
             </svg>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-              <span [innerHTML]="'BULK.MOVE_RECEIPTS' | translate: { count: selectedIds.size, company: bulkCompanyName } | safeHtml"></span>
+              <span [innerHTML]="'BULK.MOVE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
             </p>
           </div>
         </div>
 
         <!-- Config: Delete warning -->
-        <div *ngIf="selectedAction === 'DELETE'"
+        <div *ngIf="selectedAction() === 'DELETE'"
              class="px-5 py-4 border-b border-gray-100 dark:border-[#383852]">
           <div class="flex items-start gap-2.5 px-3 py-2.5 rounded-md border border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
             </svg>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-              <span [innerHTML]="'BULK.DELETE_RECEIPTS' | translate: { count: selectedIds.size, company: bulkCompanyName } | safeHtml"></span>
+              <span [innerHTML]="'BULK.DELETE_RECEIPTS' | translate: { count: selectedIds().length, company: bulkCompanyName() } | safeHtml"></span>
             </p>
           </div>
         </div>
 
         <!-- Footer -->
-        <div *ngIf="selectedAction" class="px-5 py-4 flex items-center gap-2">
+        <div *ngIf="selectedAction()" class="px-5 py-4 flex items-center gap-2">
           <button (click)="applyBulkAction()" type="button"
             [disabled]="!canConfirmBulk"
             class="h-9 px-5 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
@@ -145,7 +145,7 @@
   <!-- ══════════════════════════════════════════
        TABLE VIEW
   ══════════════════════════════════════════ -->
-  <ng-container *ngIf="!isBulkView">
+  <ng-container *ngIf="!isBulkView()">
 
   <!-- Breadcrumb + page title -->
   <div class="mb-4">
@@ -186,11 +186,11 @@
       <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">{{ 'COMMON.FILTER' | translate }}</span>
       <button (click)="toggleFilter()" type="button"
               class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none">
-        {{ (filterOpen ? 'COMMON.HIDE' : 'COMMON.SHOW') | translate }}
+        {{ (isFilterOpen() ? 'COMMON.HIDE' : 'COMMON.SHOW') | translate }}
       </button>
     </div>
 
-    <div *ngIf="filterOpen">
+    <div *ngIf="isFilterOpen()">
       <div class="flex">
 
         <!-- Left column -->
@@ -203,7 +203,7 @@
               <app-simple-select
                 [placeholder]="'COMMON.PICK_COMPANY' | translate"
                 [options]="companyOptions"
-                [value]="selectedCompanyId"
+                [value]="selectedCompanyId()"
                 (valueChange)="onCompanyFilterChange($event)">
               </app-simple-select>
             </div>
@@ -232,7 +232,7 @@
     <!-- Heading panel: record count + pagination + import -->
     <div class="flex items-center gap-3 px-4 py-2.5 border-b border-gray-200 dark:border-[#383852] bg-gray-50 dark:bg-[#2a2b30]">
       <span class="text-sm text-gray-500 dark:text-gray-400 shrink-0">
-        {{ 'TABLE.SHOWING_OF_RECORDS' | translate: { from: (page * size) + 1, to: Math.min((page + 1) * size, receiptResponse?.totalElements), total:receiptResponse.totalElements } }}
+        {{ 'TABLE.SHOWING_OF_RECORDS' | translate: { from: (page * size) + 1, to: Math.min((page + 1) * size, totalElements()), total:totalElements() } }}
       </span>
 
       <!-- Pagination -->
@@ -248,7 +248,7 @@
               </svg>
             </button>
           </li>
-          <li *ngFor="let _ of [].constructor(receiptResponse.totalPages); let pageIndex = index">
+          <li *ngFor="let _ of [].constructor(totalPages()); let pageIndex = index">
             <a (click)="goToPage(pageIndex)"
                [class.active]="page == pageIndex"
                class="flex items-center justify-center px-3 h-7 text-gray-500 dark:text-gray-400 bg-white dark:bg-[#1a1b1e] border border-gray-300 dark:border-[#383852] hover:bg-gray-100 dark:hover:bg-[#2a2b30] cursor-pointer transition-colors">
@@ -279,7 +279,7 @@
         </svg>
         <input
           type="text"
-          [(ngModel)]="searchText"
+          [ngModel]="searchText()" (ngModelChange)="searchText.set($event)"
           name="search"
           [placeholder]="'COMMON.SEARCH' | translate"
           class="w-full h-9 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] px-10 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
@@ -288,7 +288,7 @@
       <!-- Bulk change button -->
       <button
         type="button"
-        [disabled]="selectedIds.size === 0"
+        [disabled]="selectedIds().length === 0"
         (click)="goToBulkView()"
         class="inline-flex items-center gap-1.5 h-9 px-3 rounded-md border border-gray-300 dark:border-[#383852] bg-white dark:bg-[#2a2b30] text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#383852] transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
         {{ 'BULK.TITLE' | translate }}
@@ -329,14 +329,19 @@
           </tr>
         </thead>
 
-        <ng-container *ngIf="receiptResponse.content.length > 0; else noData">
+        <div *ngIf="loading()" class="flex items-center justify-center py-20 text-gray-600">
+          Loading…
+        </div>
+
+        <ng-container *ngIf="!loading()">
           <tbody class="divide-y divide-gray-100 dark:divide-[#383852]">
-            <tr *ngFor="let receipt of receiptResponse.content; even as even"
+          <ng-container *ngIf="filtered().length > 0; else noData">
+          <tr *ngFor="let receipt of  filtered(); even as even"
                 class="hover:bg-gray-50 dark:hover:bg-[#2a2b30] transition-colors duration-100 divide-x divide-gray-100 dark:divide-[#383852]"
-                [ngClass]="selectedIds.has(receipt.id) ? 'bg-blue-50 dark:bg-[#1a1f2d]' : (even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]')">
+                [ngClass]="selectedIds().includes(receipt.id) ? 'bg-blue-50 dark:bg-[#1a1f2d]' : (even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]')">
               <td class="px-4 py-3">
                 <input type="checkbox"
-                       [checked]="selectedIds.has(receipt.id)"
+                       [checked]="selectedIds().includes(receipt.id)"
                        (change)="onRowCheckboxChange(receipt.id)"
                        class="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500">
               </td>
@@ -386,6 +391,7 @@
                 </div>
               </td>
             </tr>
+          </ng-container>
           </tbody>
         </ng-container>
 
@@ -442,20 +448,20 @@
           <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'RECEIPT.SELECT_COMPANY_LABEL' | translate }}</label>
           <app-simple-select
             [options]="companyOptionsNoAll"
-            [value]="modalCompanyId"
+            [value]="modalCompanyId()"
             [placeholder]="'COMMON.PICK_COMPANY' | translate"
-            (valueChange)="modalCompanyId = $event">
+            (valueChange)="modalCompanyId.set($event)">
           </app-simple-select>
         </div>
 
         <!-- File upload -->
-        <div [class.opacity-50]="!modalCompanyId">
+        <div [class.opacity-50]="!modalCompanyId()">
           <label for="multi-upload"
                  class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 dark:border-[#383852] rounded-lg"
-                 [class.cursor-not-allowed]="!modalCompanyId"
-                 [class.cursor-pointer]="modalCompanyId"
-                 [class.hover:bg-gray-50]="modalCompanyId"
-                 [class.dark:hover:bg-gray-800]="modalCompanyId">
+                 [class.cursor-not-allowed]="!modalCompanyId()"
+                 [class.cursor-pointer]="modalCompanyId()"
+                 [class.hover:bg-gray-50]="modalCompanyId()"
+                 [class.dark:hover:bg-gray-800]="modalCompanyId()">
             <div class="flex flex-col items-center pt-5 pb-6">
               <svg class="w-8 h-8 text-gray-400 dark:text-gray-500 mb-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
@@ -464,7 +470,7 @@
               <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'RECEIPT.SUPPORTED_FORMATS' | translate }}</p>
             </div>
             <input id="multi-upload" type="file" accept=".jpg,.png,.jpeg" multiple class="hidden"
-                   (change)="onMultipleFilesSelected($event)" [disabled]="!modalCompanyId"/>
+                   (change)="onMultipleFilesSelected($event)" [disabled]="!modalCompanyId()"/>
           </label>
         </div>
       </div>
@@ -476,9 +482,9 @@
           {{ 'COMMON.CANCEL' | translate }}
         </button>
         <button (click)="onSubmit()" type="button"
-                [disabled]="isUploading"
+                [disabled]="isUploading()"
                 class="h-9 px-4 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50">
-          {{ (isUploading ? 'RECEIPT.UPLOADING' : 'RECEIPT.IMPORT') | translate }}
+          {{ (isUploading() ? 'RECEIPT.UPLOADING' : 'RECEIPT.IMPORT') | translate }}
         </button>
       </div>
 

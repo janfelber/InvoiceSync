@@ -152,6 +152,13 @@
     "SELECT_COMPANY_PLACEHOLDER": "-- Select company --",
     "SUPPORTED_FORMATS": "Supported: .jpg, .png, .jpeg",
     "TITLE": "Receipts",
+    "TOAST_DELETE_ERROR": "Failed to delete receipt.",
+    "TOAST_DELETE_SUCCESS": "Receipt deleted successfully.",
+    "TOAST_IMPORT_ERROR": "Import failed. Please try again.",
+    "TOAST_IMPORT_SUCCESS": "Import completed successfully.",
+    "TOAST_BULK_DELETE": "Deleted {{ count }} receipt(s).",
+    "TOAST_BULK_REASSIGN": "Moved {{ count }} receipt(s) to {{ company }}.",
+    "TOAST_BULK_ERROR": "Action failed. Please try again.",
     "UPLOADING": "Processing..."
   },
   "RECEIPT_DETAIL": {
