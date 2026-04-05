@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {CommonModule, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {initFlowbite} from 'flowbite'
 import {FormsModule} from '@angular/forms';
-import {ReceiptService} from "../../core/services/receipt.service";
+import {ReceiptDTO, ReceiptService} from "../../core/services/receipt.service";
 import {PageResponseReceiptResponse} from "./page-response-receipt-response";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
@@ -33,18 +33,30 @@ import {SimpleSelectComponent, SelectOption} from "../../shared/simple-select/si
   styleUrl: './receipts.component.css'
 })
 export class ReceiptsComponent implements OnInit {
+  private readonly receiptService = inject(ReceiptService)
 
-  importModalOpen = false;
-  isUploading = false;
-  filterOpen = true;
+  receipts = signal<ReceiptDTO[]>([]);
+  totalPages = signal(0);
+  totalElements = signal(0);
 
-  selectedIds = new Set<number>();
-  isBulkView = false;
-  selectedAction: string | null = null;
-  bulkActionDropdownOpen = false;
-  bulkCompanyDropdownOpen = false;
-  bulkCompanyId: number | null = null;
-  bulkCompanyName: string | null = null;
+  loading = signal(true);
+  isUploading = signal(false);
+  isModalOpen = signal(false);
+  isFilterOpen = signal(true);
+  isBulkView= signal(false);
+  isBulkActionDropdownOpen= signal(false);
+  isBulkCompanyDropdownOpen= signal(false);
+  searchQuery  = signal('');
+
+  // TODO: implement server-side filtering — pass search params to findAllReceiptByUser() and reload
+  filtered = computed(() => {
+    return this.receipts();
+  })
+
+  selectedIds = signal<number[]>([]);
+  selectedAction = signal<string | null>(null);
+  bulkCompanyId = signal<number | null>(null);
+  bulkCompanyName = signal<string | null>(null);
 
   public receiptResponse: PageResponseReceiptResponse = {
     content: []
@@ -53,14 +65,14 @@ export class ReceiptsComponent implements OnInit {
     content: []
   };
 
-  public selectedCompanyId: any;
-  public modalCompanyId: any = null;
-  public lastImportDate?: string;
-  public searchText: string = '';
+  selectedCompanyId = signal<number | null>(null);
+  modalCompanyId = signal<number | null>(null);
+  searchText = signal('');
 
   public page: number = 0;
   public size: number = 10;
 
+  public lastImportDate?: string;
   activeTabValue: 'single' | 'multiple' = 'single';
   singleFile: File | null = null;
   multipleFiles: { file: File; preview: string }[] = [];
@@ -69,10 +81,10 @@ export class ReceiptsComponent implements OnInit {
     this.activeTabValue = tab;
     if (tab === 'single') {
       this.multipleFiles = [];
-      this.selectedCompanyId = null
+      this.selectedCompanyId.set(null)
     } else {
       this.singleFile = null;
-      this.selectedCompanyId = null
+      this.selectedCompanyId.set(null)
     }
   }
 
@@ -81,7 +93,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   constructor(
-    private receiptService: ReceiptService,
+    private receiptServiceLegacy: ReceiptService,
     private companyService: CompanyService,
     private toastr: ToastrService,
     private router: Router,
@@ -90,8 +102,8 @@ export class ReceiptsComponent implements OnInit {
   ) {}
 
   getBulkActionLabel(): string {
-    if (this.selectedAction === 'DELETE') return this.translate.instant('COMMON.DELETE');
-    if (this.selectedAction === 'COMPANY_REASSIGN') return this.translate.instant('BULK.COMPANY_REASSIGN');
+    if (this.selectedAction() === 'DELETE') return this.translate.instant('COMMON.DELETE');
+    if (this.selectedAction() === 'COMPANY_REASSIGN') return this.translate.instant('BULK.COMPANY_REASSIGN');
     return this.translate.instant('BULK.SELECT_ACTION');
   }
 
@@ -101,7 +113,22 @@ export class ReceiptsComponent implements OnInit {
   }
 
   onFetchAllReceipts(): void {
-    this.receiptService.findAllReceiptsByUser({
+    this.loading.set(true);
+    this.receiptService.findAllReceiptsByUser(this.page, this.size).subscribe({
+      next: page => {
+        this.page = page.number;
+        this.size = page.size;
+        this.receipts.set(page.content);
+        this.totalPages.set(page.totalPages);
+        this.totalElements.set(page.totalElements);
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
+  }
+
+  onFetchAllReceiptsLegacy(): void {
+    this.receiptServiceLegacy.findAllReceiptsByUserLegacy({
       page: this.page,
       size: this.size
     })
@@ -121,6 +148,7 @@ export class ReceiptsComponent implements OnInit {
       });
   }
 
+  // TODO refactor this call when company service will be migrated to use HttpClient
   onFetchCompanies() {
     this.companyService.findAllCompaniesByUser().then(response => {
       this.companyResponse = response.data;
@@ -130,7 +158,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   async onUploadFiles(files: File[]): Promise<void> {
-    await this.receiptService.saveReceipt({ files, companyId: this.modalCompanyId });
+    await this.receiptService.saveReceiptLegacy({ files, companyId: this.modalCompanyId()! });
   }
 
   get companyOptions(): SelectOption[] {
@@ -145,7 +173,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   onSelectCompany(company: any) {
-    this.selectedCompanyId = company.id;
+    this.selectedCompanyId.set(company.id);
     if (company.id === 0) {
       this.onFetchCompanies();
     } else {
@@ -160,128 +188,121 @@ export class ReceiptsComponent implements OnInit {
 
 
   toggleFilter(): void {
-    this.filterOpen = !this.filterOpen;
+    this.isFilterOpen.update(current => !current);
   }
 
   onRowCheckboxChange(id: number): void {
-    if (this.selectedIds.has(id)) {
-      this.selectedIds.delete(id);
-    } else {
-      this.selectedIds.add(id);
-    }
-    this.selectedIds = new Set(this.selectedIds);
+    this.selectedIds.update(ids =>
+      ids.includes(id) ? ids.filter(i => i !== id) : [...ids, id]
+    );
   }
 
   get allSelected(): boolean {
-    return this.receiptResponse.content.length > 0 &&
-      this.receiptResponse.content.every(r => this.selectedIds.has(r.id));
+    return this.receipts().length > 0 &&
+      this.receipts().every(receipt => this.selectedIds().includes(receipt.id));
   }
 
   toggleSelectAll(): void {
     if (this.allSelected) {
-      this.receiptResponse.content.forEach(r => this.selectedIds.delete(r.id));
+      this.selectedIds.set([]);
     } else {
-      this.receiptResponse.content.forEach(r => this.selectedIds.add(r.id));
+      this.selectedIds.set(this.receipts().map(r => r.id));
     }
-    this.selectedIds = new Set(this.selectedIds);
   }
 
   goToBulkView(): void {
-    this.selectedAction = null;
-    this.bulkActionDropdownOpen = false;
-    this.isBulkView = true;
+    this.selectedAction.set(null);
+    this.isBulkActionDropdownOpen.set(false);
+    this.isBulkView.set(true);
   }
 
   goBack(): void {
-    this.isBulkView = false;
-    this.selectedAction = null;
-    this.bulkActionDropdownOpen = false;
+    this.isBulkView.set(false);
+    this.selectedAction.set(null);
+    this.isBulkActionDropdownOpen.set(false);
   }
 
   get selectedReceipts() {
-    return this.receiptResponse.content.filter(r => this.selectedIds.has(r.id));
+    return this.receipts().filter(receipt => this.selectedIds().includes(receipt.id));
   }
 
   selectBulkAction(action: string): void {
-    this.selectedAction = action;
-    this.bulkActionDropdownOpen = false;
+    this.selectedAction.set(action);
+    this.isBulkActionDropdownOpen.set(false);
   }
 
   resetBulkAction(): void {
-    this.selectedAction = null;
-    this.bulkCompanyId = null;
-    this.bulkCompanyName = null;
-    this.bulkCompanyDropdownOpen = false;
+    this.selectedAction.set(null);
+    this.bulkCompanyId.set(null);
+    this.bulkCompanyName.set(null);
+    this.isBulkCompanyDropdownOpen.set(false);
   }
 
   selectBulkCompany(company: any): void {
-    this.bulkCompanyId = company.id;
-    this.bulkCompanyName = company.name;
-    this.bulkCompanyDropdownOpen = false;
+    this.bulkCompanyId.set(company.id);
+    this.bulkCompanyName.set(company.name);
+    this.isBulkCompanyDropdownOpen.set(false);
   }
 
   get canConfirmBulk(): boolean {
-    if (this.selectedAction === 'COMPANY_REASSIGN') return this.bulkCompanyId !== null;
-    return this.selectedAction !== null;
+    if (this.selectedAction() === 'COMPANY_REASSIGN') return this.bulkCompanyId() !== null;
+    return this.selectedAction() !== null;
   }
 
   applyBulkAction(): void {
-    if (!this.selectedAction) return;
-    const ids = Array.from(this.selectedIds);
+    if (!this.selectedAction()) return;
+    const ids = this.selectedIds();
     const count = ids.length;
-    const action = this.selectedAction;
-    const companyId = this.bulkCompanyId ?? undefined;
-    const companyName = this.bulkCompanyName;
+    const action = this.selectedAction()!;
+    const companyId = this.bulkCompanyId() ?? undefined;
+    const companyName = this.bulkCompanyName();
     this.receiptBulkChangeService.executeBulkChange(action as any, ids, companyId)
-      .then(() => {
-        this.selectedIds.clear();
-        this.goBack();
-        this.onFetchAllReceipts();
-        if (action === 'DELETE') {
-          toast.success(`Deleted ${count} receipt${count !== 1 ? 's' : ''}`, { duration: 3000 });
-        } else if (action === 'COMPANY_REASSIGN') {
-          toast.success(`Moved ${count} receipt${count !== 1 ? 's' : ''} to ${companyName}`, { duration: 3000 });
-        }
-      })
-      .catch(error => {
-        toast.error('Akcia zlyhala. Skúste znova.');
+      .subscribe({
+        next: () => {
+          this.selectedIds.set([]);
+          this.goBack();
+          this.onFetchAllReceipts();
+          this.selectedIds.set([]);
+          if (action === 'DELETE') {
+            toast.success(this.translate.instant('RECEIPT.TOAST_BULK_DELETE', { count }), { duration: 3000 });
+          } else if (action === 'COMPANY_REASSIGN') {
+            toast.success(this.translate.instant('RECEIPT.TOAST_BULK_REASSIGN', { count, company: companyName }), { duration: 3000 });
+          }
+        },
+        error: () => toast.error(this.translate.instant('RECEIPT.TOAST_BULK_ERROR'), { duration: 3000 }),
       });
   }
 
   onCompanyChange(company: any) {
-    this.receiptService.findAllReceiptsByCompany({
-        page: this.page,
-        size: this.size,
-        companyId: company.id
-      }
-    ).then(response => {
-      this.receiptResponse = response.data;
-    }).catch(error => {
-      console.error(error);
+    this.receiptService.findAllReceiptsByCompany(
+      this.page, this.size, company.id
+    ).subscribe({
+      next: page => {
+        this.receipts.set(page.content);
+        this.totalPages.set(page.totalPages);
+        this.totalElements.set(page.totalElements);
+      },
+      error: () => toast.error('Akcia zlyhala. Skúste znova.'),
     });
   }
 
-  async onSubmit(): Promise<void> {
-    if (!this.modalCompanyId) return;
+  onSubmit(): void {
+    if (!this.modalCompanyId()) return;
 
-    this.isUploading = true;
-    try {
-      if (this.multipleFiles.length > 0) {
-        const files = this.multipleFiles.map(fileObj => fileObj.file);
-        await this.onUploadFiles(files);
-      } else {
-        alert("Prosím vyberte aspoň jeden obrázok.");
-        return;
-      }
-
-      this.showSuccessToast();
-      this.closeImportModal();
-      this.onFetchAllReceipts()
-    } catch (err) {
-      this.showErrorToast?.();
-    } finally {
-      this.isUploading = false;
-    }
+    this.isUploading.set(true);
+    const files = this.multipleFiles.map(f => f.file);
+    this.receiptService.save(files, this.modalCompanyId()!).subscribe({
+      next: () => {
+        this.closeImportModal();
+        this.onFetchAllReceipts();
+        this.isUploading.set(false);
+        toast.success(this.translate.instant('RECEIPT.TOAST_IMPORT_SUCCESS'), { duration: 3000 });
+      },
+      error: () => {
+        this.isUploading.set(false);
+        toast.error(this.translate.instant('RECEIPT.TOAST_IMPORT_ERROR'), { duration: 3000 });
+      },
+    });
   }
 
   onSingleFileSelected(event: Event) {
@@ -311,13 +332,13 @@ export class ReceiptsComponent implements OnInit {
   }
 
   openImportModal() {
-    this.importModalOpen = true;
+    this.isModalOpen.set(true);
   }
 
   closeImportModal() {
-    this.importModalOpen = false;
+    this.isModalOpen.set(false);
     this.resetAll();
-    this.modalCompanyId = null;
+    this.modalCompanyId.set(null);
   }
 
   editReceipt(id: number) {
@@ -325,11 +346,13 @@ export class ReceiptsComponent implements OnInit {
   }
 
   deleteReceipt(id: number) {
-    this.receiptService.deleteReceipt(id).then(response => {
-      this.onFetchAllReceipts();
-    }).catch(error => {
-      this.showErrorToast();
-    });
+    this.receiptService.deleteReceipt(id).subscribe({
+      next: () => {
+        this.onFetchAllReceipts();
+        toast.success(this.translate.instant('RECEIPT.TOAST_DELETE_SUCCESS'), { duration: 3000 });
+      },
+      error: () => toast.error(this.translate.instant('RECEIPT.TOAST_DELETE_ERROR'), { duration: 3000 }),
+    })
   }
 
   showSuccessToast() {
@@ -378,7 +401,7 @@ export class ReceiptsComponent implements OnInit {
   }
 
   get IsLastPage(): boolean {
-    return this.page >= ((this.receiptResponse.totalPages ?? 1) - 1);
+    return this.page >= ((this.totalPages() ?? 1) - 1);
   }
 
   readonly Math = Math;
