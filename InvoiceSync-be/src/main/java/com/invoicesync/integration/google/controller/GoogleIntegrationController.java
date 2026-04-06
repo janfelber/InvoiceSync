@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.invoicesync.core.Api;
 import com.invoicesync.core.audit.CustomUserDetails;
+import com.invoicesync.integration.dto.GoogleStatusDTO;
 import com.invoicesync.integration.google.service.GoogleIntegrationService;
 import com.invoicesync.modules.user.model.User;
 
 @RestController
-@RequestMapping("/integrations/google")
+@RequestMapping(Api.GOOGLE_INTEGRATION)
 public class GoogleIntegrationController {
 
   @Value("${app.frontend.url}")
@@ -32,14 +34,14 @@ public class GoogleIntegrationController {
     this.googleIntegrationService = googleIntegrationService;
   }
 
-  @GetMapping("/url")
+  @GetMapping(Api.GOOGLE_INTEGRATION_URL)
   public ResponseEntity<?> getAuthUrl(Authentication authentication) {
     CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     User user = userDetails.getUser();
     return ResponseEntity.ok(Map.of("url", googleIntegrationService.getAuthUrl(user.getId())));
   }
 
-  @GetMapping("/callback")
+  @GetMapping(Api.GOOGLE_INTEGRATION_CALLBACK)
   public void callback(@RequestParam String code, @RequestParam String state, HttpServletResponse response)
       throws IOException {
     UUID userId = UUID.fromString(state);
@@ -47,22 +49,15 @@ public class GoogleIntegrationController {
     response.sendRedirect(frontendUrl + "/web/integrations?google=connected");
   }
 
-  @DeleteMapping("/disconnect")
-  public ResponseEntity<?> disconnect(Authentication authentication) {
-    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    User user = userDetails.getUser();
-    googleIntegrationService.disconnect(user.getId());
+  @DeleteMapping(Api.GOOGLE_INTEGRATION_DISCONNECT)
+  public ResponseEntity<?> disconnect(Authentication connectedUser) {
+    googleIntegrationService.disconnect(connectedUser);
     return ResponseEntity.ok(Map.of("status", "disconnected"));
   }
 
-  @GetMapping("/status")
-  public ResponseEntity<?> status(Authentication authentication) {
-    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-    User user = userDetails.getUser();
-    return ResponseEntity.ok(Map.of(
-        "connected", user.isGoogleConnected(),
-        "email", user.getGoogleEmail() != null ? user.getGoogleEmail() : ""
-    ));
+  @GetMapping(Api.GOOGLE_INTEGRATION_STATUS)
+  public ResponseEntity<GoogleStatusDTO> status(Authentication authentication) {
+    return ResponseEntity.ok(googleIntegrationService.getGoogleStatus(authentication));
   }
 
 }
