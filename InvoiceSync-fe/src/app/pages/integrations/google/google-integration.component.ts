@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, ActivatedRoute } from '@angular/router';
-import { GoogleIntegrationService } from '../../../core/services/google-integration.service';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {GoogleIntegrationService} from '../../../core/services/google-integration.service';
 
 @Component({
   selector: 'app-google-integration',
@@ -9,53 +9,57 @@ import { GoogleIntegrationService } from '../../../core/services/google-integrat
   templateUrl: './google-integration.component.html',
 })
 export class GoogleIntegrationComponent implements OnInit {
-  gmailConnected = false;
-  gmailEmail = '';
-  driveConnected = false;
-  loading = true;
 
-  constructor(
-    private googleService: GoogleIntegrationService,
-    private route: ActivatedRoute
-  ) {}
+  // ── Services ────────────────────────────────────────────────────────────────
+  private readonly googleService = inject(GoogleIntegrationService);
 
-  ngOnInit() {
+  // ── State signals ────────────────────────────────────────────────────────────
+  gmailConnected = signal(false);
+  gmailEmail = signal('');
+  driveConnected = signal(false);
+  loading = signal(true);
+
+  connectedCount = computed(() =>
+    [this.gmailConnected(), this.driveConnected()].filter(Boolean).length
+  );
+
+  // ── Lifecycle hooks ──────────────────────────────────────────────────────────
+  ngOnInit(): void {
     this.loadStatus();
   }
 
-  private loadStatus() {
-    this.loading = true;
-    this.googleService.getStatus().then(status => {
-      this.gmailConnected = status.connected;
-      this.gmailEmail = status.email;
-      this.loading = false;
-    }).catch(() => {
-      this.loading = false;
-    });
-  }
-
-  connectGmail() {
-    this.googleService.getAuthUrl().then(res => {
+  // ── Public methods ───────────────────────────────────────────────────────────
+  connectGmail(): void {
+    this.googleService.getAuthUrl().subscribe(res => {
       window.location.href = res.url;
     });
   }
 
-  disconnectGmail() {
-    this.googleService.disconnect().then(() => {
-      this.gmailConnected = false;
-      this.gmailEmail = '';
+  disconnectGmail(): void {
+    this.googleService.disconnect().subscribe(() => {
+      this.gmailConnected.set(false);
+      this.gmailEmail.set('');
     });
   }
 
-  connectDrive() {
+  connectDrive(): void {
     // TODO: Google Drive OAuth
   }
 
-  disconnectDrive() {
-    this.driveConnected = false;
+  disconnectDrive(): void {
+    this.driveConnected.set(false);
   }
 
-  get connectedCount(): number {
-    return [this.gmailConnected, this.driveConnected].filter(Boolean).length;
+  // ── Private methods ──────────────────────────────────────────────────────────
+  private loadStatus(): void {
+    this.loading.set(true);
+    this.googleService.getStatus().subscribe({
+      next: status => {
+        this.gmailConnected.set(status.connected);
+        this.gmailEmail.set(status.email);
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
   }
 }

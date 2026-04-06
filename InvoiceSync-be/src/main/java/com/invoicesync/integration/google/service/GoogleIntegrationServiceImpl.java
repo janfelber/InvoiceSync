@@ -16,6 +16,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeToken
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.invoicesync.core.audit.CustomUserDetails;
+import com.invoicesync.integration.dto.GoogleStatusDTO;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.service.InvoicePdfService;
 import com.invoicesync.modules.invoice.service.InvoiceService;
@@ -96,9 +98,8 @@ public class GoogleIntegrationServiceImpl implements GoogleIntegrationService {
   }
 
   @Override
-  public void disconnect(UUID userId) {
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("User not found"));
+  public void disconnect(Authentication connectedUser) {
+    User user = ((CustomUserDetails) connectedUser.getPrincipal()).getUser();
 
     user.setGoogleAccessToken(null);
     user.setGoogleRefreshToken(null);
@@ -145,6 +146,12 @@ public class GoogleIntegrationServiceImpl implements GoogleIntegrationService {
         }
       }
     }
+  }
+
+  @Override
+  public GoogleStatusDTO getGoogleStatus(final Authentication connectedUser) {
+    User user = ((CustomUserDetails) connectedUser.getPrincipal()).getUser();
+    return new GoogleStatusDTO(user.isGoogleConnected(), user.getGoogleEmail() != null ? user.getGoogleEmail() : "");
   }
 
   private void sendGmail(String accessToken, String to, String subject, String bodyText, byte[] pdfBytes,
