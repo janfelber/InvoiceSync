@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.Api;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
+import com.invoicesync.integration.google.service.GoogleIntegrationService;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
 import com.invoicesync.modules.invoice.bulk.service.InvoiceBulkChangeService;
@@ -38,12 +39,16 @@ public class InvoiceController {
 
   private final InvoiceBulkChangeService invoiceBulkChangeService;
 
+  private final GoogleIntegrationService googleIntegrationService;
+
   @Autowired
   public InvoiceController(
       final InvoiceService invoiceService,
-      final InvoiceBulkChangeService invoiceBulkChangeService) {
+      final InvoiceBulkChangeService invoiceBulkChangeService,
+      final GoogleIntegrationService googleIntegrationService) {
     this.invoiceService = invoiceService;
     this.invoiceBulkChangeService = invoiceBulkChangeService;
+    this.googleIntegrationService = googleIntegrationService;
   }
 
   @GetMapping(Api.GET_BY_USER)
@@ -136,6 +141,14 @@ public class InvoiceController {
       final Authentication connectedUser
   ) {
     invoiceService.deleteInvoice(invoiceId, connectedUser);
+  }
+
+  @PostMapping(Api.INVOICE_SEND_EMAIL)
+  public ResponseEntity<Void> sendInvoiceEmails(
+      @RequestBody final List<Long> invoiceIds,
+      final Authentication connectedUser) throws Exception {
+    googleIntegrationService.sendInvoiceEmails(invoiceIds, connectedUser);
+    return ResponseEntity.ok().build();
   }
 
 }
