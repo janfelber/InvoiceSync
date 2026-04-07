@@ -33,6 +33,6 @@ public class CompanyResponseDto {
 
   private String cardReceiptNumber;
 
-  private String email;
+  private String recipientEmail;
 
 }

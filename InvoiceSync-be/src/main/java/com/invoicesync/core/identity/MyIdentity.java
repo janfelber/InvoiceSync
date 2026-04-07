@@ -31,6 +31,6 @@ public class MyIdentity {
 
   private String vatId;
 
-  private String email;
+  private String recipientEmail;
 
 }

@@ -36,6 +36,31 @@
   </div>
 
 
+  <div class="bg-white border border-gray-200 rounded-lg w-[600px] shadow-sm mt-4">
+
+    <!-- Header sekcie -->
+    <div>
+      <div class="p-4">
+        <h2 class="text-lg font-semibold text-gray-800">Odosielanie faktúr</h2>
+        <p class="text-sm text-gray-500">Email príjemcu pre odosielanie vygenerovaných faktúr.</p>
+      </div>
+      <div class="border-b border-gray-200"></div>
+    </div>
+
+    <!-- Form fields -->
+    <div class="space-y-4 p-4">
+      <div class="flex items-center">
+        <label for="companyEmail" class="w-48 text-sm font-medium text-gray-700">Email príjemcu</label>
+        <input
+          [(ngModel)]="company.recipientEmail"
+          id="companyEmail" name="companyEmail" type="email"
+          placeholder="napr. info@firma.sk"
+          class="w-80 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+    </div>
+
+  </div>
+
   <div class="mt-4">
     <button type="button"
             (click)="onSave()"

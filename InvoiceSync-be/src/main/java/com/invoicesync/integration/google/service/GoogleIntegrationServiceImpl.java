@@ -122,7 +122,7 @@ public class GoogleIntegrationServiceImpl implements GoogleIntegrationService {
 
     for (Long invoiceId : invoiceIds) {
       InvoiceResponse invoice = invoiceService.findById(invoiceId);
-      String emailTo = invoice.getCompany().getEmail();
+      String emailTo = invoice.getCompany().getRecipientEmail();
 
       System.out.println("Email to: " + emailTo);
 

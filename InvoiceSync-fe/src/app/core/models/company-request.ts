@@ -14,4 +14,5 @@ export interface CompanyRequest {
   zip: string;
   cardReceiptNumber?: string;
   cashReceiptNumber?: string;
+  recipientEmail?: string;
 }
