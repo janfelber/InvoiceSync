@@ -22,13 +22,14 @@
     <div>
       <h1 class="text-xl font-semibold text-gray-900 dark:text-white">Google</h1>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-        {{ connectedCount > 0 ? connectedCount + ' z 2 prepojených' : 'Neprepojené' }}
+        {{ connectedCount() > 0 ? connectedCount() + ' z 2 prepojených' : 'Neprepojené' }}
       </p>
     </div>
   </div>
 
   <!-- Services list -->
-  <div class="max-w-xl flex flex-col divide-y divide-gray-100 dark:divide-[#383852] rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] overflow-hidden">
+  <div class="max-w-xl flex flex-col divide-y divide-gray-100 dark:divide-[#383852] rounded-xl border border-gray-200 dark:border-[#383852] bg-white dark:bg-[#1a1b1e] overflow-hidden"
+       [class.animate-pulse]="loading()" [class.pointer-events-none]="loading()">
 
     <!-- Gmail -->
     <div class="flex items-center gap-4 px-5 py-4">
@@ -40,25 +41,39 @@
 
       <div class="flex-1 min-w-0">
         <p class="text-sm font-medium text-gray-900 dark:text-white">Gmail</p>
-        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Importovať bločky a faktúry z emailových príloh</p>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+          @if (loading()) {
+            <span class="inline-block w-40 h-3 bg-gray-200 dark:bg-[#383852] rounded"></span>
+          } @else {
+            {{ gmailConnected() && gmailEmail() ? gmailEmail() : 'Odosielať faktúry priamo z vášho Gmail účtu' }}
+          }
+        </p>
       </div>
 
       <div class="flex items-center gap-3 shrink-0">
         <span class="flex items-center gap-1.5 text-xs"
-              [ngClass]="gmailConnected ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'">
+              [ngClass]="gmailConnected() ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'">
           <span class="w-1.5 h-1.5 rounded-full"
-                [ngClass]="gmailConnected ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'">
+                [ngClass]="gmailConnected() ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'">
           </span>
-          {{ gmailConnected ? 'Prepojené' : 'Neprepojené' }}
+          @if (loading()) {
+            <span class="inline-block w-16 h-3 bg-gray-200 dark:bg-[#383852] rounded"></span>
+          } @else {
+            {{ gmailConnected() ? 'Prepojené' : 'Neprepojené' }}
+          }
         </span>
-        <button type="button"
-          (click)="gmailConnected ? disconnectGmail() : connectGmail()"
-          class="h-7 px-3 rounded-md text-xs font-medium transition-colors"
-          [ngClass]="gmailConnected
-            ? 'border border-gray-300 dark:border-[#383852] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#2a2b30]'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'">
-          {{ gmailConnected ? 'Odpojiť' : 'Prepojiť' }}
-        </button>
+        @if (loading()) {
+          <span class="inline-block w-16 h-7 bg-gray-200 dark:bg-[#383852] rounded-md"></span>
+        } @else {
+          <button type="button"
+            (click)="gmailConnected() ? disconnectGmail() : connectGmail()"
+            class="h-7 px-3 rounded-md text-xs font-medium transition-colors"
+            [ngClass]="gmailConnected()
+              ? 'border border-gray-300 dark:border-[#383852] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#2a2b30]'
+              : 'bg-blue-600 hover:bg-blue-700 text-white'">
+            {{ gmailConnected() ? 'Odpojiť' : 'Prepojiť' }}
+          </button>
+        }
       </div>
     </div>
 
@@ -82,19 +97,20 @@
 
       <div class="flex items-center gap-3 shrink-0">
         <span class="flex items-center gap-1.5 text-xs"
-              [ngClass]="driveConnected ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'">
+              [ngClass]="driveConnected() ? 'text-green-600 dark:text-green-400' : 'text-gray-400 dark:text-gray-500'">
           <span class="w-1.5 h-1.5 rounded-full"
-                [ngClass]="driveConnected ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'">
+                [ngClass]="driveConnected() ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'">
           </span>
-          {{ driveConnected ? 'Prepojené' : 'Neprepojené' }}
+          {{ driveConnected() ? 'Prepojené' : 'Neprepojené' }}
         </span>
         <button type="button"
-          (click)="driveConnected ? disconnectDrive() : connectDrive()"
+          (click)="driveConnected() ? disconnectDrive() : connectDrive()"
+          [disabled]="loading()"
           class="h-7 px-3 rounded-md text-xs font-medium transition-colors"
-          [ngClass]="driveConnected
+          [ngClass]="driveConnected()
             ? 'border border-gray-300 dark:border-[#383852] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#2a2b30]'
             : 'bg-blue-600 hover:bg-blue-700 text-white'">
-          {{ driveConnected ? 'Odpojiť' : 'Prepojiť' }}
+          {{ driveConnected() ? 'Odpojiť' : 'Prepojiť' }}
         </button>
       </div>
     </div>

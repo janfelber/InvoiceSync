@@ -1,10 +1,11 @@
 package com.invoicesync.modules.company.model;
 
-import com.invoicesync.core.common.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+
+import com.invoicesync.core.common.BaseEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,8 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * Represents a company entity with identification and address details.
- *  A company is the core accounting unit in the system. All accounting operations
- *  (such as invoices and receipts) are linked to a specific company
+ * A company is the core accounting unit in the system. All accounting operations
+ * (such as invoices and receipts) are linked to a specific company
  */
 @Getter
 @Setter
@@ -80,6 +81,13 @@ public class Company extends BaseEntity {
 
   @Column(name = "card_receipt_number")
   private String cardReceiptNumber;
+
+  /**
+   * Email address of the business partner associated with the company.
+   * This email is used for sending invoices and other communications.
+   */
+  @Column(name = "recipient_email")
+  private String recipientEmail;
 
   // @ManyToOne
   // @JoinColumn(name = "\"user_id\"")

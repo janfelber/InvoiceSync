@@ -174,6 +174,7 @@ public class InvoiceMapper {
             .registrationNumber(invoice.getCompany().getRegistrationNumber())
             .taxId(invoice.getCompany().getTaxId())
             .vatId(invoice.getCompany().getVatId())
+            .recipientEmail(invoice.getCompany().getRecipientEmail())
             .build())
         .build();
   }
