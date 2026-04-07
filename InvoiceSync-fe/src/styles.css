@@ -4,6 +4,24 @@
 @source "../node_modules/flowbite";
 @source "../node_modules/flowbite-datepicker";
 
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.15s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.18s ease-out;
+}
+
 @keyframes pulse-error {
   0%   { background-color: #fefce8; } /* yellow-50 */
   50%  { background-color: #fde047; } /* yellow-300 */

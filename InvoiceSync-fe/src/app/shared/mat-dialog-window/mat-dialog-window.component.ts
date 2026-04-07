@@ -1,13 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-modal',
   standalone: true,
   templateUrl: './mat-dialog-window.component.html',
-  imports: [
-    NgIf
-  ],
+  imports: [],
 })
 export class MatDialogWindowComponent {
   @Input() show = false;

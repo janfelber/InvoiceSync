@@ -8,6 +8,7 @@ import {PostingAccountRequest} from "../../../core/models/PostingAccountRequest"
 import {PageResponsePostingAccount} from "../../../pages/home/page-response-posting-account";
 import { initTooltips } from 'flowbite';
 import {ToastrService} from "ngx-toastr";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-company-internal-documents-accounts',
@@ -17,7 +18,8 @@ import {ToastrService} from "ngx-toastr";
     NgForOf,
     NgIf,
     ReactiveFormsModule,
-    NgClass
+    NgClass,
+    TranslateModule
   ],
   templateUrl: './company-internal-documents-accounts.component.html',
   styleUrl: './company-internal-documents-accounts.component.css'
