@@ -5,6 +5,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {PostingAccountRequest} from "../../../core/models/PostingAccountRequest";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-company-cash-documents-accounts',
@@ -13,7 +14,8 @@ import {PostingAccountRequest} from "../../../core/models/PostingAccountRequest"
     NgIf,
     FormsModule,
     MatDialogWindowComponent,
-    NgClass
+    NgClass,
+    TranslateModule
   ],
   templateUrl: './company-cash-documents-accounts.component.html'
 })

@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
 import {CompanyService} from "../../../core/services/company.service";
-import {StatsService} from "../../../core/services/stats.service";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-company-settings',
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   templateUrl: './company-settings.component.html',
   styleUrl: './company-settings.component.css'
