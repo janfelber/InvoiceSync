@@ -196,6 +196,16 @@
     "VAT_CLASSIFICATION": "Členění DPH",
     "VAT_RATE": "DPH %"
   },
+  "HOME": {
+    "SUBTITLE": "Spravujte své společnosti",
+    "ADD_COMPANY": "Přidat společnost",
+    "BY_ICO": "Podle IČO",
+    "ICO_PLACEHOLDER": "např. 12345678",
+    "STREET_NUMBER": "Číslo",
+    "NO_COMPANIES": "Zatím žádné společnosti",
+    "NO_COMPANIES_DESC": "Přidejte první společnost a začněte.",
+    "COL_NAME": "Název společnosti"
+  },
   "ACCOUNTS": {
     "INTERNAL_TITLE": "Interní doklady",
     "INTERNAL_SUBTITLE": "Účtová osnova pro interní doklady",
