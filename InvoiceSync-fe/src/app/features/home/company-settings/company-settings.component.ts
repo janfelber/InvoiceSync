@@ -30,7 +30,8 @@ export class CompanySettingsComponent implements OnInit {
   onSave() {
     const payload = {
       cashReceiptNumber: this.company.cashReceiptNumber,
-      cardReceiptNumber: this.company.cardReceiptNumber
+      cardReceiptNumber: this.company.cardReceiptNumber,
+      recipientEmail: this.company.recipientEmail,
     };
 
     this.companyService.updateCompany({

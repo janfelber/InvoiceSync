@@ -113,6 +113,9 @@ public class CompanyServiceImpl implements CompanyService {
     if (request.cardReceiptNumber() != null) {
       oldCompany.setCardReceiptNumber(request.cardReceiptNumber());
     }
+    if (request.recipientEmail() != null) {
+      oldCompany.setRecipientEmail(request.recipientEmail());
+    }
     return companyRepository.save(oldCompany);
   }
 

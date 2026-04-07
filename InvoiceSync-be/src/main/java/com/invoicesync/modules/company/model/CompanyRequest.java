@@ -33,7 +33,10 @@ public record CompanyRequest(
     String vatId,
 
     String cashReceiptNumber,
-    String cardReceiptNumber
+
+    String cardReceiptNumber,
+
+    String recipientEmail
 ) {
 
 }
