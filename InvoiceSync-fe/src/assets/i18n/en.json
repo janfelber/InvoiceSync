@@ -206,6 +206,16 @@
     "VAT_CLASSIFICATION": "VAT Classification",
     "VAT_RATE": "VAT %"
   },
+  "HOME": {
+    "SUBTITLE": "Manage your companies",
+    "ADD_COMPANY": "Add company",
+    "BY_ICO": "By registration no.",
+    "ICO_PLACEHOLDER": "e.g. 12345678",
+    "STREET_NUMBER": "Number",
+    "NO_COMPANIES": "No companies yet",
+    "NO_COMPANIES_DESC": "Add your first company to get started.",
+    "COL_NAME": "Company name"
+  },
   "ACCOUNTS": {
     "INTERNAL_TITLE": "Internal Documents",
     "INTERNAL_SUBTITLE": "Chart of accounts for internal documents",
