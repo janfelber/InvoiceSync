@@ -38,6 +38,7 @@ public class CompanyMapper {
         .vatId(company.getVatId())
         .cashReceiptNumber(company.getCashReceiptNumber())
         .cardReceiptNumber(company.getCardReceiptNumber())
+        .recipientEmail(company.getRecipientEmail())
         .build();
   }
 

@@ -70,6 +70,8 @@ public final class Api {
 
   public static final String INVOICE_BULK_DOWNLOAD = "/bulk-download";
 
+  public static final String INVOICE_SEND_EMAIL = "/send-email";
+
   // Company
   public static final String COMPANY = "/company";
 
@@ -158,6 +160,17 @@ public final class Api {
   public static final String EMAIL_SUBSCRIBE = "/email-subscribe";
 
   public static final String EMAIL_SUBSCRIBE_SUBSCRIBE = "/subscribe";
+
+  // Google Integration
+  public static final String GOOGLE_INTEGRATION = "/integrations/google";
+
+  public static final String GOOGLE_INTEGRATION_URL = "/url";
+
+  public static final String GOOGLE_INTEGRATION_CALLBACK = "/callback";
+
+  public static final String GOOGLE_INTEGRATION_DISCONNECT = "/disconnect";
+
+  public static final String GOOGLE_INTEGRATION_STATUS = "/status";
 
   // Feature
   public static final String FEATURE = "/feature";

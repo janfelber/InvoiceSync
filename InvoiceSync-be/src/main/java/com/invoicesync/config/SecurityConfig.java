@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
   private final UserDetailsService userDetailsService;
+
   private final JwtAuthenticationFilter jwtAuthFilter;
 
   @Bean
@@ -39,7 +40,7 @@ public class SecurityConfig {
     final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
     provider.setUserDetailsService(userDetailsService);
     provider.setPasswordEncoder(passwordEncoder());
-  return provider;
+    return provider;
   }
 
   @Bean
@@ -50,10 +51,10 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
     http
-        .csrf(csrf ->csrf.disable())
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
             req -> req
-                .requestMatchers("/auth/**", "/stripe/webhook").permitAll()
+                .requestMatchers("/auth/**", "/stripe/webhook", "/integrations/google/callback").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         )
