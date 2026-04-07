@@ -1,14 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {Component, OnInit} from '@angular/core';
+import {NgForOf, NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import { MatDialogWindowComponent } from "../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 import {Router, RouterLink} from "@angular/router";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
-import {initFlowbite} from 'flowbite'
 import {CompanyRequest} from "../../core/models/company-request";
-import {ApiService} from "../../core/auth/api";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-home',
@@ -20,8 +19,8 @@ import {ApiService} from "../../core/auth/api";
     MatDialogWindowComponent,
     RouterLink,
     ReactiveFormsModule,
-    NgClass,
     NgIf,
+    TranslateModule,
   ]
 })
 export class HomeComponent implements OnInit{
@@ -30,13 +29,13 @@ export class HomeComponent implements OnInit{
     private fb: FormBuilder,
     private router: Router,
     private companyService: CompanyService,
-    private apiService: ApiService,
     private toastr: ToastrService) {
   }
 
-  @ViewChild('successToast') successToast!: ElementRef;
   companyForm!: FormGroup;
   modalOpen = false;
+  filterOpen = false;
+  filterCity = '';
   registrationNumber: string = '';
 
   companyResponse: PageResponseCompanyResponseDto = {
@@ -48,7 +47,6 @@ export class HomeComponent implements OnInit{
   page: number = 0;
   size: number = 10;
 
-  headers = ['Názov spoločnosti', 'Mesto', 'IČO', 'IČ DPH'];
   activeTabValue: 'by_registration' | 'manual' = 'by_registration';
 
   set activeTab(tab: 'by_registration' | 'manual') {
@@ -59,9 +57,15 @@ export class HomeComponent implements OnInit{
     return this.activeTabValue;
   }
 
+  getInitials(name: string): string {
+    if (!name) return '';
+    const words = name.trim().split(' ');
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
   ngOnInit(): void {
     this.onFetchAllCompanies();
-    initFlowbite();
     this.initForm();
   }
 
@@ -142,6 +146,17 @@ export class HomeComponent implements OnInit{
       .catch(error => {
         console.error('Error while fetching companies', error);
       });
+  }
+
+  applyFilter() {
+    this.page = 0;
+    this.onFetchAllCompanies();
+  }
+
+  resetFilter() {
+    this.filterCity = '';
+    this.page = 0;
+    this.onFetchAllCompanies();
   }
 
   openModal() {
