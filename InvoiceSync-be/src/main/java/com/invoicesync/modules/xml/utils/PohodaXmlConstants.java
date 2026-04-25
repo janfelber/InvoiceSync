@@ -168,5 +168,12 @@ public final class PohodaXmlConstants {
 
     public static final String DISCOUNT_PERCENTAGE = "int:discountPercentage";
 
+    public static final String VARIABLE_SYMBOL = "int:symVar";
+
+    public static final String DATE_ACCOUNTING = "int:dateAccounting";
+
+    public static final String DATE_KV_VAT = "int:dateKVDPH";
+
   }
+
 }
