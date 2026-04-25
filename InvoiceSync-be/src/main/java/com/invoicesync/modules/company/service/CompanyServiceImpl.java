@@ -1,5 +1,6 @@
 package com.invoicesync.modules.company.service;
 
+import static com.invoicesync.core.enums.PaymentType.CARD;
 import static com.invoicesync.modules.company.dto.specification.CompanySpecification.withUserId;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.NumberConfigType;
+import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.accountingdocument.AccountDocumentNumberService;
 import com.invoicesync.modules.company.mapper.CompanyMapper;
 import com.invoicesync.modules.company.model.Company;
@@ -130,29 +132,19 @@ public class CompanyServiceImpl implements CompanyService {
 
   @Override
   @Transactional
-  public String getReceiptNumber(final Long companyId, final boolean paidByCard, final Authentication connectedUser) {
-    final Company company = companyRepository.findById(companyId).orElse(null);
+  public String allocateReceiptNumber(final Company company, final PaymentType paymentType,
+      final Authentication connectedUser) {
 
-    final NumberConfigType configType = paidByCard
+    final NumberConfigType configType = paymentType == CARD
         ? NumberConfigType.RECEIPT_CARD
         : NumberConfigType.RECEIPT_CASH;
 
-    final String currentDocumentNumber = paidByCard
-        ? company.getCardReceiptNumber()
-        : company.getCashReceiptNumber();
-
+    final String currentReceiptNumber = company.getReceiptNumber(paymentType);
     accountDocumentNumberService.checkNumberConfiguration(company, configType);
 
-    final String next = accountDocumentNumberService.incrementDocumentNumber(currentDocumentNumber);
-
-    if (paidByCard) {
-      company.setCardReceiptNumber(next);
-    } else {
-      company.setCashReceiptNumber(next);
-    }
-
+    company.setReceiptNumber(paymentType, accountDocumentNumberService.incrementDocumentNumber(currentReceiptNumber));
     companyRepository.save(company);
-    return currentDocumentNumber;
+    return currentReceiptNumber;
   }
 
   @Override

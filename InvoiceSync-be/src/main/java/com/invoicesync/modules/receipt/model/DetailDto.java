@@ -1,5 +1,7 @@
 package com.invoicesync.modules.receipt.model;
 
+import com.invoicesync.core.enums.PaymentType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,7 @@ public class DetailDto {
 
   private String accountValue;
 
-  private boolean isPaidByCard;
+  private PaymentType paymentType;
 
   private String classificationVAT;
 

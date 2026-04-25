@@ -174,21 +174,21 @@ public class ReceiptServiceImpl implements ReceiptService {
     final List<ReceiptItemRequest> items = request.items();
 
     receipt.setDate(request.date());
-    receipt.setDatePayment(request.datePayment());
-    receipt.setDateTax(request.dateTax());
-    receipt.setAccounting(request.accounting());
-    receipt.setPaidByCard(request.isPaidByCard());
-    receipt.setClassificationVAT(request.classificationVAT());
-    receipt.setClassificationKVVAT(request.classificationKVVAT());
+    receipt.setPaymentDate(request.datePayment());
+    receipt.setTaxDate(request.dateTax());
+    receipt.setAccountValue(request.accounting());
+    receipt.setPaymentType(request.paymentType());
+    receipt.setVatClassification(request.classificationVAT());
+    receipt.setKvVatClassification(request.classificationKVVAT());
     receipt.setDescription(request.description());
 
-    receipt.setPartnerName(request.partnerName());
-    receipt.setPartnerCity(request.partnerCity());
-    receipt.setPartnerStreet(request.partnerStreet());
-    receipt.setPartnerZip(request.partnerZip());
-    receipt.setPartnerRegistrationNumber(request.partnerRegistrationNumber());
-    receipt.setPartnerTaxId(request.partnerTaxId());
-    receipt.setPartnerVatId(request.partnerVatId());
+    receipt.setSupplierName(request.partnerName());
+    receipt.setSupplierCity(request.partnerCity());
+    receipt.setSupplierStreet(request.partnerStreet());
+    receipt.setSupplierZip(request.partnerZip());
+    receipt.setSupplierRegistrationNumber(request.partnerRegistrationNumber());
+    receipt.setSupplierTaxId(request.partnerTaxId());
+    receipt.setSupplierVatId(request.partnerVatId());
 
     final Map<Long, ReceiptItem> existingItemsMap = receipt.getItems().stream()
         .collect(Collectors.toMap(ReceiptItem::getId, item -> item));

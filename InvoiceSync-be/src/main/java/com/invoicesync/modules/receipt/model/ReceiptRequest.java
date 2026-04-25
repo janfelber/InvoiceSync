@@ -6,12 +6,15 @@ import java.util.List;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import com.invoicesync.core.enums.PaymentType;
+
+//TODO rename partner fields to supplier
 public record ReceiptRequest(
     Long id,
 
     String receiptNumber,
 
-    boolean isPaidByCard,
+    PaymentType paymentType,
 
     @NotNull(message = "100")
     @NotEmpty(message = "100")
