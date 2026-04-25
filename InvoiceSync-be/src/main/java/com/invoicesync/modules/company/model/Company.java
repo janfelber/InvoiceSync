@@ -1,10 +1,13 @@
 package com.invoicesync.modules.company.model;
 
+import static com.invoicesync.core.enums.PaymentType.CARD;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 import com.invoicesync.core.common.BaseEntity;
+import com.invoicesync.core.enums.PaymentType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -92,5 +95,17 @@ public class Company extends BaseEntity {
   // @ManyToOne
   // @JoinColumn(name = "\"user_id\"")
   // private UserDemo user;
+
+  public String getReceiptNumber(final PaymentType paymentType) {
+    return paymentType == CARD ? cardReceiptNumber : cashReceiptNumber;
+  }
+
+  public void setReceiptNumber(final PaymentType paymentType, final String number) {
+    if (paymentType == CARD) {
+      cardReceiptNumber = number;
+    } else {
+      cashReceiptNumber = number;
+    }
+  }
 
 }

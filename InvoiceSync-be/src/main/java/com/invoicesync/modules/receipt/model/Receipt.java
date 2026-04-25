@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 
 import com.invoicesync.core.common.BaseEntity;
 import com.invoicesync.core.enums.InvoiceStatus;
+import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.document.model.ReceiptDocument;
 
@@ -47,7 +48,7 @@ public class Receipt extends BaseEntity {
    * Static or duplicate numbers are not allowed.
    * Each company can configure how receipt numbering works
    */
-  @Column(name = "cash_receipt_number")
+  @Column(name = "receipt_number")
   private String receiptNumber;
 
   /**
@@ -91,55 +92,55 @@ public class Receipt extends BaseEntity {
    * Date of payment.
    */
   @Column(name = "date_payment")
-  private String datePayment;
+  private String paymentDate;
 
   /**
    * Date relevant for tax purposes.
    */
   @Column(name = "date_tax")
-  private String dateTax;
+  private String taxDate;
 
   /**
    * Business partner's name.
    */
   @Column(name = "partner_name")
-  private String partnerName;
+  private String supplierName;
 
   /**
    * Business partner's city.
    */
   @Column(name = "partner_city")
-  private String partnerCity;
+  private String supplierCity;
 
   /**
    * Business partner's street.
    */
   @Column(name = "partner_street")
-  private String partnerStreet;
+  private String supplierStreet;
 
   /**
    * Business partner's postal code.
    */
   @Column(name = "partner_zip")
-  private String partnerZip;
+  private String supplierZip;
 
   /**
    * Business partner's registration number (IČO).
    */
   @Column(name = "partner_registration_number")
-  private String partnerRegistrationNumber;
+  private String supplierRegistrationNumber;
 
   /**
    * Business partner's tax identification number (DIČ).
    */
   @Column(name = "partner_tax_id")
-  private String partnerTaxId;
+  private String supplierTaxId;
 
   /**
    * Business partner's VAT identification number (IČ DPH).
    */
   @Column(name = "partner_vat_id")
-  private String partnerVatId;
+  private String supplierVatId;
 
   /**
    * Date of import.
@@ -163,19 +164,19 @@ public class Receipt extends BaseEntity {
    *
    */
   @Column(name = "accounting")
-  private String accounting;
+  private String accountValue;
 
   /**
    *
    */
   @Column(name = "classification_vat")
-  private String classificationVAT;
+  private String vatClassification;
 
   /**
    *
    */
   @Column(name = "classification_kv_vat")
-  private String classificationKVVAT;
+  private String kvVatClassification;
 
   /**
    * Description or note about the receipt.
@@ -186,8 +187,9 @@ public class Receipt extends BaseEntity {
   /**
    * Indicates if the receipt was paid by credit card.
    */
-  @Column(name = "is_paid_by_card")
-  private boolean isPaidByCard;
+  @Column(name = "payment_type")
+  @Enumerated(EnumType.STRING)
+  private PaymentType paymentType;
 
   /**
    * Processing status of the invoice within the accounting workflow.
