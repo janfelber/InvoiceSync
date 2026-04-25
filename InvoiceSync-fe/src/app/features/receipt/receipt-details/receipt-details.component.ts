@@ -156,6 +156,7 @@ export class ReceiptDetailsComponent implements OnInit {
   };
 
   receiptRequest: ReceiptRequest = {
+    paymentType: 'CASH',
     items: this.items,
   };
 
@@ -215,7 +216,7 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   async onFetchAccounts() {
-    const paidByCard = !!this.receiptResponse.receiptDetails?.paidByCard;
+    const paidByCard = !!this.receiptResponse.receiptDetails?.paymentType;
     const type = paidByCard ? ReceiptType.INTERNAL : ReceiptType.CASH;
 
     const response = await this.postingAccountService.findAvailableAccounts({
@@ -266,27 +267,13 @@ export class ReceiptDetailsComponent implements OnInit {
   }
 
   async exportReceiptXml() {
-    if (this.receiptForm.invalid) {
-      toast.error(this.translate.instant('RECEIPT_DETAIL.TOAST_FORM_ERRORS'));
-      return;
-    }
-
-    const formValue = this.receiptForm.value;
-
-    const receiptRequest = {
-      receiptDetails: formValue.receiptDetails,
-      partner: formValue.partner,
-      myIdentity: formValue.myIdentity,
-      items: formValue.items,
-    };
-
     try {
-      const response = await this.receiptService.exportReceiptPohoda({receipt: receiptRequest});
+      const response = await this.receiptService.exportReceiptPohoda(this.receiptId);
 
       this.modalOpen = false;
       toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_SUCCESS'));
 
-      const blob = new Blob([response.data], {type: 'application/xml'});
+      const blob = new Blob([response.data], {type: 'application/octet-stream'});
 
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -375,7 +362,7 @@ export class ReceiptDetailsComponent implements OnInit {
       date: this.receiptResponse.receiptDetails?.date,
       dateTax: this.receiptResponse.receiptDetails?.dateTax,
       accounting: this.receiptResponse.receiptDetails?.accountValue,
-      isPaidByCard: this.receiptResponse.receiptDetails?.paidByCard,
+      paymentType: this.receiptResponse.receiptDetails?.paymentType ?? 'CASH',
       classificationVAT: this.receiptResponse.receiptDetails?.classificationVAT,
       classificationKVVAT: this.receiptResponse.receiptDetails?.classificationKVVAT,
       description: this.receiptResponse.receiptDetails?.description,
@@ -443,5 +430,11 @@ export class ReceiptDetailsComponent implements OnInit {
       this.onFetchReceipt();
       toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
     });
+  }
+
+  togglePaymentType() {
+    const details = this.receiptResponse.receiptDetails;
+    if (!details) return;
+    details.paymentType = details.paymentType === 'CARD' ? 'CASH' : 'CARD';
   }
 }

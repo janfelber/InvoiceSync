@@ -19,7 +19,7 @@ export const ApiPaths = {
     DOCUMENTS: (receiptId: number) => `/${receiptId}/documents`,
     ADD_DOCUMENT_TO_RECEIPT: (receiptId: number) => `/upload/document/${receiptId}`,
     DELETE_DOCUMENT_FROM_RECEIPT: (documentId: number) => `/delete/document/${documentId}`,
-    POHODA_RECEIPT_EXPORT: '/export/receipt',
+    POHODA_RECEIPT_EXPORT: (receiptId: number) => `/export/${receiptId}`,
     DELETE: (receiptId: number) => `/${receiptId}`,
     MERGE_RECEIPT_ITEMS: (receiptId: number) => `/${receiptId}/items/merge`,
   },

@@ -94,9 +94,10 @@ export class ReceiptService {
     );
   }
 
-  exportReceiptPohoda(params: {receipt: ReceiptRequest}): Promise<any> {
-    return this.apiService.instance.post(`${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT}`, params.receipt,
-    )
+  exportReceiptPohoda(receiptId: number): Promise<any> {
+    return this.apiService.instance.get(`${this.baseUrl}${ApiPaths.receipt.POHODA_RECEIPT_EXPORT(receiptId)}`, {
+      responseType: 'blob'
+    })
   }
 
   deleteReceipt(receiptId: number): Promise<any> {
