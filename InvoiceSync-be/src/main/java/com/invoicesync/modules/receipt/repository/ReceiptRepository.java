@@ -1,5 +1,7 @@
 package com.invoicesync.modules.receipt.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -8,6 +10,8 @@ import com.invoicesync.modules.receipt.model.Receipt;
 
 @Repository
 public interface ReceiptRepository extends JpaRepository<Receipt, Long>, JpaSpecificationExecutor<Receipt> {
+
+  Optional<Receipt> findByIdAndCompany_CreatedBy(Long receiptId, String userId);
 
   // List<Receipt> findByUserId(Long id);
   //

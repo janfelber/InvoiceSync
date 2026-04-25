@@ -3,6 +3,7 @@ package com.invoicesync.modules.company.service;
 import org.springframework.security.core.Authentication;
 
 import com.invoicesync.core.common.PageResponse;
+import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
@@ -65,6 +66,6 @@ public interface CompanyService {
    */
   Company deleteCompany(Long companyId);
 
-  String getReceiptNumber(Long companyId, boolean paidByCard, Authentication connectedUser);
+  String allocateReceiptNumber(Company company, PaymentType paymentType, Authentication connectedUser);
 
 }

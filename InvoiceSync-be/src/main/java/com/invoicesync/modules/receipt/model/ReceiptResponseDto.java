@@ -24,6 +24,7 @@ public class ReceiptResponseDto {
 
   private DetailDto receiptDetails;
 
+  //TODO rename this to supplier
   private PartnerDto partner;
 
   private List<ReceiptItemDto> items;
