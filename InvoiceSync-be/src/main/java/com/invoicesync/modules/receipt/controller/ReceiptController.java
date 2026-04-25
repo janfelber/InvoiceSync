@@ -72,7 +72,7 @@ public class ReceiptController {
     final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptId, connectedUser);
 
     final HttpHeaders headers = new HttpHeaders();
-    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
+    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt_" + receiptId + ".xml");
     headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
 
     return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
