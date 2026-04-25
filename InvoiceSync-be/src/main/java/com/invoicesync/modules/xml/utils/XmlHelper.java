@@ -168,40 +168,40 @@ public class XmlHelper {
   }
 
   // Pohoda XML uses "partner" to refer to the supplier
-  public void updateCashReceiptPartner(final Document doc, final Receipt receipt) {
-    replaceTextContent(doc, COMPANY, receipt.getSupplierName(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, CITY, receipt.getSupplierCity(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, STREET, receipt.getSupplierStreet(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, ZIP, receipt.getSupplierZip(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, REGISTRATION_NUMBER, receipt.getSupplierRegistrationNumber(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, TAX_ID, receipt.getSupplierTaxId(), ReceiptCash.PARTNER);
-    replaceTextContent(doc, VAT_ID, receipt.getSupplierVatId(), ReceiptCash.PARTNER);
+  public void updateCashReceiptPartner(final Document template, final Receipt receipt) {
+    replaceTextContent(template, COMPANY, receipt.getSupplierName(), ReceiptCash.PARTNER);
+    replaceTextContent(template, CITY, receipt.getSupplierCity(), ReceiptCash.PARTNER);
+    replaceTextContent(template, STREET, receipt.getSupplierStreet(), ReceiptCash.PARTNER);
+    replaceTextContent(template, ZIP, receipt.getSupplierZip(), ReceiptCash.PARTNER);
+    replaceTextContent(template, REGISTRATION_NUMBER, receipt.getSupplierRegistrationNumber(), ReceiptCash.PARTNER);
+    replaceTextContent(template, TAX_ID, receipt.getSupplierTaxId(), ReceiptCash.PARTNER);
+    replaceTextContent(template, VAT_ID, receipt.getSupplierVatId(), ReceiptCash.PARTNER);
   }
 
   // Pohoda XML uses "my identity" to refer to the recipient
-  public void updateCardReceiptPartner(final Document doc, final Receipt receipt) {
-    replaceTextContent(doc, COMPANY, receipt.getSupplierName(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, CITY, receipt.getSupplierCity(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, STREET, receipt.getSupplierStreet(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, ZIP, receipt.getSupplierZip(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, REGISTRATION_NUMBER, receipt.getSupplierRegistrationNumber(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, TAX_ID, receipt.getSupplierTaxId(), ReceiptCard.PARTNER);
-    replaceTextContent(doc, VAT_ID, receipt.getSupplierVatId(), ReceiptCard.PARTNER);
+  public void updateCardReceiptPartner(final Document template, final Receipt receipt) {
+    replaceTextContent(template, COMPANY, receipt.getSupplierName(), ReceiptCard.PARTNER);
+    replaceTextContent(template, CITY, receipt.getSupplierCity(), ReceiptCard.PARTNER);
+    replaceTextContent(template, STREET, receipt.getSupplierStreet(), ReceiptCard.PARTNER);
+    replaceTextContent(template, ZIP, receipt.getSupplierZip(), ReceiptCard.PARTNER);
+    replaceTextContent(template, REGISTRATION_NUMBER, receipt.getSupplierRegistrationNumber(), ReceiptCard.PARTNER);
+    replaceTextContent(template, TAX_ID, receipt.getSupplierTaxId(), ReceiptCard.PARTNER);
+    replaceTextContent(template, VAT_ID, receipt.getSupplierVatId(), ReceiptCard.PARTNER);
   }
 
-  public void updateCashReceiptItems(final Document doc, final List<ReceiptItem> items) {
-    final Element receiptItemsParent = (Element) doc.getElementsByTagName(ReceiptCash.DETAIL)
+  public void updateCashReceiptItems(final Document template, final List<ReceiptItem> items) {
+    final Element receiptItemsParent = (Element) template.getElementsByTagName(ReceiptCash.DETAIL)
         .item(0);
     for (final ReceiptItem item : items) {
-      final Element receiptItem = doc.createElement(ReceiptCash.ITEM);
+      final Element receiptItem = template.createElement(ReceiptCash.ITEM);
 
-      createElementAndAppend(doc, receiptItem, ReceiptCash.TEXT, item.getName());
-      createElementAndAppend(doc, receiptItem, ReceiptCash.QUANTITY,
+      createElementAndAppend(template, receiptItem, ReceiptCash.TEXT, item.getName());
+      createElementAndAppend(template, receiptItem, ReceiptCash.QUANTITY,
           String.valueOf(item.getQuantity()));
-      createElementAndAppend(doc, receiptItem, ReceiptCash.COEFFICIENT, "1");
-      createElementAndAppend(doc, receiptItem, ReceiptCash.PAY_VAT, "false");
-      createElementAndAppend(doc, receiptItem, ReceiptCash.RATE_VAT, "high");
-      createElementAndAppend(doc, receiptItem, ReceiptCash.DISCOUNT_PERCENTAGE, "0");
+      createElementAndAppend(template, receiptItem, ReceiptCash.COEFFICIENT, "1");
+      createElementAndAppend(template, receiptItem, ReceiptCash.PAY_VAT, "false");
+      createElementAndAppend(template, receiptItem, ReceiptCash.RATE_VAT, "high");
+      createElementAndAppend(template, receiptItem, ReceiptCash.DISCOUNT_PERCENTAGE, "0");
 
       final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());
 
@@ -211,15 +211,15 @@ public class XmlHelper {
       final BigDecimal vatAmount = priceWithoutVAT.multiply(vatRate)
           .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
-      final Element homeCurrency = doc.createElement(ReceiptCash.HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
-      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getTotalItemPriceWithVat()));
+      final Element homeCurrency = template.createElement(ReceiptCash.HOME_CURRENCY);
+      createElementAndAppend(template, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(template, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(template, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
+      createElementAndAppend(template, homeCurrency, PRICE_SUM, String.valueOf(item.getTotalItemPriceWithVat()));
       receiptItem.appendChild(homeCurrency);
 
-      final Element accounting = doc.createElement(ReceiptCash.ACCOUNTING);
-      createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
+      final Element accounting = template.createElement(ReceiptCash.ACCOUNTING);
+      createElementAndAppend(template, accounting, ACCOUNT_VALUE, item.getAccountValue());
       receiptItem.appendChild(accounting);
 
       // Append the receiptItem to the parent node
@@ -227,19 +227,19 @@ public class XmlHelper {
     }
   }
 
-  public void updateCardReceiptItems(final Document doc, final List<ReceiptItem> items) {
-    final Element receiptItemsParent = (Element) doc.getElementsByTagName(ReceiptCard.DETAIL)
+  public void updateCardReceiptItems(final Document template, final List<ReceiptItem> items) {
+    final Element receiptItemsParent = (Element) template.getElementsByTagName(ReceiptCard.DETAIL)
         .item(0);
     for (final ReceiptItem item : items) {
-      final Element receiptItem = doc.createElement(ReceiptCard.ITEM);
+      final Element receiptItem = template.createElement(ReceiptCard.ITEM);
 
-      createElementAndAppend(doc, receiptItem, ReceiptCard.TEXT, item.getName());
-      createElementAndAppend(doc, receiptItem, ReceiptCard.QUANTITY,
+      createElementAndAppend(template, receiptItem, ReceiptCard.TEXT, item.getName());
+      createElementAndAppend(template, receiptItem, ReceiptCard.QUANTITY,
           String.valueOf(item.getQuantity()));
-      createElementAndAppend(doc, receiptItem, ReceiptCard.COEFFICIENT, "1");
-      createElementAndAppend(doc, receiptItem, ReceiptCard.PAY_VAT, "false");
-      createElementAndAppend(doc, receiptItem, ReceiptCard.RATE_VAT, "high");
-      createElementAndAppend(doc, receiptItem, ReceiptCard.DISCOUNT_PERCENTAGE, "0");
+      createElementAndAppend(template, receiptItem, ReceiptCard.COEFFICIENT, "1");
+      createElementAndAppend(template, receiptItem, ReceiptCard.PAY_VAT, "false");
+      createElementAndAppend(template, receiptItem, ReceiptCard.RATE_VAT, "high");
+      createElementAndAppend(template, receiptItem, ReceiptCard.DISCOUNT_PERCENTAGE, "0");
 
       final BigDecimal vatRate = BigDecimal.valueOf(item.getVatRate());
 
@@ -250,15 +250,15 @@ public class XmlHelper {
           .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 
       //TODO it seems to be duplicate to the updateCashReceiptItems
-      final Element homeCurrency = doc.createElement(ReceiptCard.HOME_CURRENCY);
-      createElementAndAppend(doc, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
-      createElementAndAppend(doc, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
-      createElementAndAppend(doc, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
-      createElementAndAppend(doc, homeCurrency, PRICE_SUM, String.valueOf(item.getUnitPriceWithVat()));
+      final Element homeCurrency = template.createElement(ReceiptCard.HOME_CURRENCY);
+      createElementAndAppend(template, homeCurrency, UNIT_PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(template, homeCurrency, PRICE, String.valueOf(item.getUnitPriceWithoutVat()));
+      createElementAndAppend(template, homeCurrency, PRICE_VAT, String.valueOf(vatAmount));
+      createElementAndAppend(template, homeCurrency, PRICE_SUM, String.valueOf(item.getUnitPriceWithVat()));
       receiptItem.appendChild(homeCurrency);
 
-      final Element accounting = doc.createElement(ReceiptCard.ACCOUNTING);
-      createElementAndAppend(doc, accounting, ACCOUNT_VALUE, item.getAccountValue());
+      final Element accounting = template.createElement(ReceiptCard.ACCOUNTING);
+      createElementAndAppend(template, accounting, ACCOUNT_VALUE, item.getAccountValue());
       receiptItem.appendChild(accounting);
 
       // Append the receiptItem to the parent node
@@ -266,20 +266,20 @@ public class XmlHelper {
     }
   }
 
-  private void createElementAndAppend(final Document doc, final Element parent, final String tagName,
+  private void createElementAndAppend(final Document template, final Element parent, final String tagName,
       final String value) {
     if (value != null) {
-      final Element element = doc.createElement(tagName);
-      element.appendChild(doc.createTextNode(value));
+      final Element element = template.createElement(tagName);
+      element.appendChild(template.createTextNode(value));
       parent.appendChild(element);
     }
   }
 
-  private void replaceTextContent(final Document doc, final String tagName, final String newValue,
+  private void replaceTextContent(final Document template, final String tagName, final String newValue,
       final String parentTagName) {
     final NodeList nodeList;
     if (parentTagName != null && !parentTagName.isEmpty()) {
-      final NodeList parentNodeList = doc.getElementsByTagName(parentTagName);
+      final NodeList parentNodeList = template.getElementsByTagName(parentTagName);
       if (parentNodeList.getLength() > 0) {
         final Node parentNode = parentNodeList.item(0);
         nodeList = ((Element) parentNode).getElementsByTagName(tagName);
@@ -287,7 +287,7 @@ public class XmlHelper {
         return;
       }
     } else {
-      nodeList = doc.getElementsByTagName(tagName);
+      nodeList = template.getElementsByTagName(tagName);
     }
 
     if (nodeList.getLength() > 0) {
