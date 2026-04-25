@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.receipt.model.ReceiptItemRequest;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
 
@@ -59,7 +60,7 @@ public final class ParseUtils {
     return new ReceiptRequest(
         null,
         null,
-        false,
+        PaymentType.CASH,
         companyId,
         parseDateOnly(receiptNode.path("createDate").asText()),     // date
         parseDateOnly(receiptNode.path("issueDate").asText()),      // datePayment
