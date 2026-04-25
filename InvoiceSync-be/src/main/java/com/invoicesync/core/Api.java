@@ -47,7 +47,7 @@ public final class Api {
 
   public static final String RECEIPT_EXPORT_POHODA = "/export/pohoda";
 
-  public static final String RECEIPT_EXPORT_RECEIPT = "/export/receipt";
+  public static final String RECEIPT_EXPORT_RECEIPT = "/export/{receiptId}";
 
   // Invoice
   public static final String INVOICE = "/invoice";

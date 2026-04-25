@@ -32,7 +32,6 @@ import com.invoicesync.modules.receipt.model.MergeItemsRequest;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
-import com.invoicesync.modules.receipt.model.ReceiptRequestDTO;
 import com.invoicesync.modules.receipt.model.ReceiptResponseDto;
 import com.invoicesync.modules.receipt.service.ReceiptService;
 
@@ -67,13 +66,13 @@ public class ReceiptController {
     }
   }
 
-  @PostMapping(Api.RECEIPT_EXPORT_RECEIPT)
-  public ResponseEntity<byte[]> createReceipt(@RequestBody final ReceiptRequestDTO receiptRequestDTO,
+  @GetMapping(Api.RECEIPT_EXPORT_RECEIPT)
+  public ResponseEntity<byte[]> createReceipt(@PathVariable Long receiptId,
       final Authentication connectedUser) {
-    final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptRequestDTO, connectedUser);
+    final byte[] xmlData = pohodaXmlService.generateReceiptXml(receiptId, connectedUser);
 
     final HttpHeaders headers = new HttpHeaders();
-    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoice.xml");
+    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=receipt_" + receiptId + ".xml");
     headers.add(HttpHeaders.CONTENT_TYPE, "application/xml; charset=UTF-8");
 
     return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
