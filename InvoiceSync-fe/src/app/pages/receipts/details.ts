@@ -1,8 +1,10 @@
 
+export type PaymentType = 'CASH' | 'CARD';
+
 
 export interface Details {
   accountValue: string,
-  paidByCard?: boolean,
+  paymentType: PaymentType,
   classificationKVVAT?: string,
   classificationVAT?: string,
   date?: string;

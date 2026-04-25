@@ -855,7 +855,7 @@
             </svg>
             <p class="dark:text-slate-300">
               <span class="font-medium">{{ 'RECEIPT_DETAIL.PAID' | translate }} </span>
-              {{ receiptResponse.receiptDetails?.paidByCard ? ('RECEIPT_DETAIL.PAID_BY_CARD_VALUE' | translate) : ('RECEIPT_DETAIL.PAID_BY_CASH' | translate) }}
+              {{ receiptResponse.receiptDetails?.paymentType === 'CARD' ? ('RECEIPT_DETAIL.PAID_BY_CARD_VALUE' | translate) : ('RECEIPT_DETAIL.PAID_BY_CASH' | translate) }}
             </p>
           </div>
         </div>
@@ -902,9 +902,9 @@
             *ngIf="receiptResponse.receiptDetails"
             type="checkbox"
             class="sr-only peer"
-            [(ngModel)]="receiptResponse.receiptDetails.paidByCard"
-            [checked]="receiptResponse.receiptDetails.paidByCard"
-            name="isPaidByCard"
+            [checked]="receiptResponse.receiptDetails.paymentType === 'CARD'"
+            (change)="togglePaymentType()"
+            name="paymentType"
           />
           <div
             class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"

@@ -1,9 +1,10 @@
 import {ReceiptItem} from "./receipt-item";
+import {PaymentType} from "../../pages/receipts/details";
 
 export interface ReceiptRequest {
   date?:String;
   receiptNumber?: String;
-  isPaidByCard?:boolean;
+  paymentType:PaymentType;
   datePayment?:String;
   dateTax?:String;
   partnerName?:String;
