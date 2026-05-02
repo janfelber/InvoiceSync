@@ -1,6 +1,7 @@
 package com.invoicesync.modules.auth.security;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -57,7 +59,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     if (ApiKeyUtil.isApiKey(jwt)) {
       User user = mobileAuthService.validateApiKey(jwt);
       if (user != null) {
-        CustomUserDetails userDetails = new CustomUserDetails(user, null);
+        List<SimpleGrantedAuthority> authorities = user.getRole() != null
+            ? List.of(new SimpleGrantedAuthority(user.getRole().name()))
+            : List.of();
+        CustomUserDetails userDetails = new CustomUserDetails(user, authorities);
         UsernamePasswordAuthenticationToken auth =
             new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities()
