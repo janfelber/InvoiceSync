@@ -91,55 +91,55 @@ public class Receipt extends BaseEntity {
   /**
    * Date of payment.
    */
-  @Column(name = "date_payment")
+  @Column(name = "payment_date")
   private String paymentDate;
 
   /**
    * Date relevant for tax purposes.
    */
-  @Column(name = "date_tax")
+  @Column(name = "tax_date")
   private String taxDate;
 
   /**
    * Business partner's name.
    */
-  @Column(name = "partner_name")
+  @Column(name = "supplier_name")
   private String supplierName;
 
   /**
    * Business partner's city.
    */
-  @Column(name = "partner_city")
+  @Column(name = "supplier_city")
   private String supplierCity;
 
   /**
    * Business partner's street.
    */
-  @Column(name = "partner_street")
+  @Column(name = "supplier_street")
   private String supplierStreet;
 
   /**
    * Business partner's postal code.
    */
-  @Column(name = "partner_zip")
+  @Column(name = "supplier_zip")
   private String supplierZip;
 
   /**
    * Business partner's registration number (IČO).
    */
-  @Column(name = "partner_registration_number")
+  @Column(name = "supplier_registration_number")
   private String supplierRegistrationNumber;
 
   /**
    * Business partner's tax identification number (DIČ).
    */
-  @Column(name = "partner_tax_id")
+  @Column(name = "supplier_tax_id")
   private String supplierTaxId;
 
   /**
    * Business partner's VAT identification number (IČ DPH).
    */
-  @Column(name = "partner_vat_id")
+  @Column(name = "supplier_vat_id")
   private String supplierVatId;
 
   /**
@@ -163,19 +163,19 @@ public class Receipt extends BaseEntity {
   /**
    *
    */
-  @Column(name = "accounting")
+  @Column(name = "account_value")
   private String accountValue;
 
   /**
    *
    */
-  @Column(name = "classification_vat")
+  @Column(name = "vat_classification")
   private String vatClassification;
 
   /**
    *
    */
-  @Column(name = "classification_kv_vat")
+  @Column(name = "kv_vat_classification")
   private String kvVatClassification;
 
   /**
