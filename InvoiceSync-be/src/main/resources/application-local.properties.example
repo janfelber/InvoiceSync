@@ -1,0 +1,39 @@
+# ===============================
+# Database / JPA / Hibernate
+# ===============================
+spring.datasource.url=jdbc:postgresql://localhost:5432/invoicesync_db
+spring.datasource.username=invoicesync_db_user
+spring.datasource.password=invoicesync_db_password
+# ===============================
+# Security / JWT
+# ===============================
+security.jwt.secret-key=your_jwt_secret_here
+# ===============================
+# OpenAI API
+# ===============================
+openai.api.key=your_openai_api_key_here
+# ===============================
+# Stripe
+# ===============================
+stripe.scret.api.key=your_stripe_secret_key_here
+stripe.webhook.secret=your_stripe_webhook_secret_here
+stripe.price.free=price_xxx
+stripe.price.essentials=price_xxx
+stripe.price.pro=price_xxx
+stripe.price.enterprise=price_xxx
+# ===============================
+# Google OAuth
+# ===============================
+google.client-id=your_google_client_id_here
+google.client-secret=your_google_client_secret_here
+google.redirect-uri=http://localhost:8080/integrations/google/callback
+# ===============================
+# Frontend
+# ===============================
+app.frontend.url=https://localhost:4200
+# ===============================
+# SSL (local only)
+# ===============================
+server.ssl.key-store=classpath:ssl/localhost.p12
+server.ssl.key-store-password=changeit
+server.ssl.key-store-type=PKCS12
