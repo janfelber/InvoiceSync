@@ -13,7 +13,6 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           class="lucide lucide-receipt h-5 w-5 text-white"
-          data-fg-jey11="9.6:9.14012:/src/app/components/ReceiptPage.tsx:118:19:3064:42:e:Receipt::::::RG5"
         >
           <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path>
           <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
@@ -43,7 +42,6 @@
           stroke-linecap="round"
           stroke-linejoin="round"
           class="lucide lucide-download mr-2"
-          data-fg-jey19="9.6:9.14012:/src/app/components/ReceiptPage.tsx:129:17:3625:39:e:Download::::::B55F"
         >
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <polyline points="7 10 12 15 17 10"></polyline>
@@ -152,48 +150,53 @@
       </button>
     </div>
     <div class="flex-1">
-      <p *ngIf="currentMode === 'edit'" class="text-sm text-slate-500 dark:text-slate-400">
-        {{ 'RECEIPT_DETAIL.EDIT_MODE_DESC' | translate }}
-      </p>
-      <p *ngIf="currentMode === 'accounting'" class="text-sm text-slate-500 dark:text-slate-400">
-        {{ 'RECEIPT_DETAIL.ACCOUNTING_MODE_DESC' | translate }}
-      </p>
-      <p *ngIf="currentMode === 'merge'" class="text-sm text-slate-500 dark:text-slate-400">
-        {{ 'RECEIPT_DETAIL.MERGE_MODE_DESC' | translate }}
-      </p>
+      @if (currentMode === 'edit') {
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          {{ 'RECEIPT_DETAIL.EDIT_MODE_DESC' | translate }}
+        </p>
+      } @else if (currentMode === 'accounting') {
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          {{ 'RECEIPT_DETAIL.ACCOUNTING_MODE_DESC' | translate }}
+        </p>
+      } @else if (currentMode === 'merge') {
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          {{ 'RECEIPT_DETAIL.MERGE_MODE_DESC' | translate }}
+        </p>
+      }
     </div>
-    <button
-      *ngIf="currentMode === 'merge' && selectedForMerge.size >= 1"
-      (click)="mergeItems()"
-      [disabled]="selectedForMerge.size < 2"
-      class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-      [ngClass]="
-        selectedForMerge.size >= 2
-          ? 'bg-green-600 text-white hover:bg-green-700'
-          : 'bg-slate-200 text-slate-400 dark:bg-slate-700 dark:text-slate-500 cursor-not-allowed'
-      "
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-combine mr-2"
+    @if (currentMode === 'merge' && selectedForMerge.size >= 1) {
+      <button
+        (click)="mergeItems()"
+        [disabled]="selectedForMerge.size < 2"
+        class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+        [ngClass]="
+          selectedForMerge.size >= 2
+            ? 'bg-green-600 text-white hover:bg-green-700'
+            : 'bg-slate-200 text-slate-400 dark:bg-slate-700 dark:text-slate-500 cursor-not-allowed'
+        "
       >
-        <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
-        <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-        <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-        <path d="m7 21 3-3-3-3"></path>
-        <rect x="14" y="14" width="8" height="8" rx="2"></rect>
-        <rect x="2" y="2" width="8" height="8" rx="2"></rect>
-      </svg>
-      {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-combine mr-2"
+        >
+          <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
+          <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+          <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+          <path d="m7 21 3-3-3-3"></path>
+          <rect x="14" y="14" width="8" height="8" rx="2"></rect>
+          <rect x="2" y="2" width="8" height="8" rx="2"></rect>
+        </svg>
+        {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
+      </button>
+    }
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
@@ -220,7 +223,6 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   class="lucide lucide-building2 lucide-building-2 text-blue-600"
-                  data-fg-jey31="9.6:9.14012:/src/app/components/ReceiptPage.tsx:147:21:4415:49:e:Building2::::::JU7"
                 >
                   <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
                   <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
@@ -231,82 +233,85 @@
                   <path d="M10 18h4"></path>
                 </svg>
                 <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">{{ 'INVOICE.SUPPLIER' | translate }}</h3>
-                <button
-                  *ngIf="currentMode === 'edit'"
-                  (click)="editingSupplier = !editingSupplier"
-                  class="ml-auto text-slate-400 hover:text-blue-600 transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                @if (currentMode === 'edit') {
+                  <button
+                    (click)="editingSupplier = !editingSupplier"
+                    class="ml-auto text-slate-400 hover:text-blue-600 transition-colors"
                   >
-                    <path d="M12 20h9"></path>
-                    <path
-                      d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
-                    ></path>
-                  </svg>
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M12 20h9"></path>
+                      <path
+                        d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"
+                      ></path>
+                    </svg>
+                  </button>
+                }
               </div>
 
-              <div class="space-y-1" *ngIf="!editingSupplier">
-                <p class="font-medium text-slate-900 dark:text-slate-100">{{ receiptResponse.partner?.name }}</p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                  {{ receiptResponse.partner?.street }} , {{ receiptResponse.partner?.zip }}
-                  {{ receiptResponse.partner?.city }}
-                </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.IDENTIFICATION_NUMBER' | translate }}: {{ receiptResponse.partner?.taxId }}</p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">
-                  {{ 'INVOICE.VAT_NUMBER' | translate }}: {{ receiptResponse.partner?.registrationNumber }}
-                </p>
-                <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.REGISTRATION_NUMBER' | translate }}: {{ receiptResponse.partner?.vatId }}</p>
-              </div>
-
-              <div class="space-y-2" *ngIf="editingSupplier">
-                <input
-                  class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm font-medium"
-                  [(ngModel)]="receiptResponse.partner.name"
-                  [placeholder]="'INVOICE.ITEM_NAME' | translate"
-                />
-                <input
-                  class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                  [(ngModel)]="receiptResponse.partner.street"
-                  [placeholder]="'INVOICE.STREET' | translate"
-                />
-                <div class="flex gap-2">
+              @if (!editingSupplier) {
+                <div class="space-y-1">
+                  <p class="font-medium text-slate-900 dark:text-slate-100">{{ receiptResponse.partner?.name }}</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">
+                    {{ receiptResponse.partner?.street }} , {{ receiptResponse.partner?.zip }}
+                    {{ receiptResponse.partner?.city }}
+                  </p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.IDENTIFICATION_NUMBER' | translate }}: {{ receiptResponse.partner?.taxId }}</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">
+                    {{ 'INVOICE.VAT_NUMBER' | translate }}: {{ receiptResponse.partner?.registrationNumber }}
+                  </p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400">{{ 'INVOICE.REGISTRATION_NUMBER' | translate }}: {{ receiptResponse.partner?.vatId }}</p>
+                </div>
+              } @else {
+                <div class="space-y-2">
                   <input
-                    class="w-1/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                    [(ngModel)]="receiptResponse.partner.zip"
-                    [placeholder]="'INVOICE.ZIP' | translate"
+                    class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm font-medium"
+                    [(ngModel)]="receiptResponse.partner.name"
+                    [placeholder]="'INVOICE.ITEM_NAME' | translate"
                   />
                   <input
-                    class="w-2/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                    [(ngModel)]="receiptResponse.partner.city"
-                    [placeholder]="'INVOICE.CITY' | translate"
+                    class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                    [(ngModel)]="receiptResponse.partner.street"
+                    [placeholder]="'INVOICE.STREET' | translate"
+                  />
+                  <div class="flex gap-2">
+                    <input
+                      class="w-1/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                      [(ngModel)]="receiptResponse.partner.zip"
+                      [placeholder]="'INVOICE.ZIP' | translate"
+                    />
+                    <input
+                      class="w-2/3 border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                      [(ngModel)]="receiptResponse.partner.city"
+                      [placeholder]="'INVOICE.CITY' | translate"
+                    />
+                  </div>
+                  <input
+                    class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                    [(ngModel)]="receiptResponse.partner.taxId"
+                    [placeholder]="'INVOICE.IDENTIFICATION_NUMBER' | translate"
+                  />
+                  <input
+                    class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                    [(ngModel)]="receiptResponse.partner.registrationNumber"
+                    [placeholder]="'INVOICE.VAT_NUMBER' | translate"
+                  />
+                  <input
+                    class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
+                    [(ngModel)]="receiptResponse.partner.vatId"
+                    [placeholder]="'INVOICE.REGISTRATION_NUMBER' | translate"
                   />
                 </div>
-                <input
-                  class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                  [(ngModel)]="receiptResponse.partner.taxId"
-                  [placeholder]="'INVOICE.IDENTIFICATION_NUMBER' | translate"
-                />
-                <input
-                  class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                  [(ngModel)]="receiptResponse.partner.registrationNumber"
-                  [placeholder]="'INVOICE.VAT_NUMBER' | translate"
-                />
-                <input
-                  class="w-full border border-slate-200 dark:border-[#383852] dark:bg-[#2a2b30] dark:text-slate-100 rounded-md px-2 py-1 text-sm"
-                  [(ngModel)]="receiptResponse.partner.vatId"
-                  [placeholder]="'INVOICE.REGISTRATION_NUMBER' | translate"
-                />
-              </div>
+              }
             </div>
 
             <!-- Recipient -->
@@ -323,7 +328,6 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   class="lucide lucide-building2 lucide-building-2 text-blue-600"
-                  data-fg-jey47="9.6:9.14012:/src/app/components/ReceiptPage.tsx:161:21:5214:49:e:Building2::::::JU7"
                 >
                   <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
                   <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
@@ -357,7 +361,9 @@
             <table class="min-w-full divide-y divide-slate-200">
               <thead class="bg-slate-50 dark:bg-[#2a2b30] dark:border-[#383852]">
                 <tr>
-                  <th *ngIf="currentMode === 'merge'" scope="col" class="px-4 py-3 w-10"></th>
+                  @if (currentMode === 'merge') {
+                    <th scope="col" class="px-4 py-3 w-10"></th>
+                  }
                   <th
                     scope="col"
                     class="px-4 py-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-100 uppercase tracking-wider"
@@ -393,170 +399,173 @@
               </thead>
 
               <tbody class="bg-white divide-y divide-slate-100">
-                <tr
-                  *ngFor="let item of receiptResponse.items; even as even"
-                  [ngClass]="even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
-                  class="dark:hover:bg-gray-700 dark:border-[#383852] transition-colors"
-                  [class.cursor-pointer]="currentMode === 'accounting' || currentMode === 'merge'"
-                  (click)="
-                    currentMode === 'accounting'
-                      ? openDrawer(item)
-                      : currentMode === 'merge'
-                        ? toggleMergeSelection(item.id)
-                        : null
-                  "
-                >
-                  <td *ngIf="currentMode === 'merge'" class="px-4 py-3 w-10">
-                    <input
-                      type="checkbox"
-                      [checked]="isSelectedForMerge(item.id)"
-                      class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-                      (click)="$event.stopPropagation(); toggleMergeSelection(item.id)"
-                    />
-                  </td>
-
-                  <!-- Name -->
-                  <td
-                    class="px-4 py-3"
-                    [class.group]="currentMode === 'edit'"
-                    (click)="startEditingCell($event, 'name-' + item.id)"
+                @for (item of receiptResponse.items; track item.id) {
+                  <tr
+                    [ngClass]="$even ? 'bg-white dark:bg-[#1a1b1e]' : 'bg-white dark:bg-[#2a2b30]'"
+                    class="dark:hover:bg-gray-700 dark:border-[#383852] transition-colors"
+                    [class.cursor-pointer]="currentMode === 'accounting' || currentMode === 'merge'"
+                    (click)="
+                      currentMode === 'accounting'
+                        ? openDrawer(item)
+                        : currentMode === 'merge'
+                          ? toggleMergeSelection(item.id)
+                          : null
+                    "
                   >
-                    @if (currentMode === "edit" && editingCell === "name-" + item.id) {
-                      <input
-                        class="w-full border border-blue-500 rounded px-2 py-0.5 text-sm font-medium dark:bg-[#2a2b30] dark:text-white focus:outline-none"
-                        [(ngModel)]="item.name"
-                        (blur)="editingCell = null"
-                        (keydown.enter)="editingCell = null"
-                        autofocus
-                      />
-                    } @else {
-                      <p
-                        class="text-sm font-medium text-slate-900 dark:text-white"
-                        [ngClass]="
-                          currentMode === 'edit'
-                            ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
-                            : ''
-                        "
-                      >
-                        {{ item.name }}
-                      </p>
-                    }
-                    <p class="text-xs text-slate-500 dark:text-slate-300">
-                      {{ 'RECEIPT_DETAIL.ACCOUNT_LABEL' | translate }}: <span class="text-green-500">{{ item.accountValue }}</span>
-                    </p>
-                  </td>
-
-                  <!-- Quantity -->
-                  <td
-                    class="px-4 py-3 text-center"
-                    [class.group]="currentMode === 'edit'"
-                    (click)="startEditingCell($event, 'qty-' + item.id)"
-                  >
-                    @if (currentMode === "edit" && editingCell === "qty-" + item.id) {
-                      <input
-                        type="number"
-                        class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center dark:bg-[#2a2b30] dark:text-white focus:outline-none"
-                        [(ngModel)]="item.quantity"
-                        (blur)="editingCell = null"
-                        (keydown.enter)="editingCell = null"
-                        autofocus
-                      />
-                    } @else {
-                      <span
-                        class="text-sm text-slate-900 dark:text-slate-100"
-                        [ngClass]="
-                          currentMode === 'edit'
-                            ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
-                            : ''
-                        "
-                      >
-                        {{ item.quantity }}
-                      </span>
-                    }
-                  </td>
-
-                  <!-- Unit Price -->
-                  <td
-                    class="px-4 py-3 text-right"
-                    [class.group]="currentMode === 'edit'"
-                    (click)="startEditingCell($event, 'price-' + item.id)"
-                  >
-                    @if (currentMode === "edit" && editingCell === "price-" + item.id) {
-                      <input
-                        type="number"
-                        step="0.01"
-                        class="w-20 border border-blue-500 rounded px-2 py-0.5 text-sm text-right dark:bg-[#2a2b30] dark:text-white focus:outline-none"
-                        [(ngModel)]="item.unitPriceWithVat"
-                        (blur)="editingCell = null"
-                        (keydown.enter)="editingCell = null"
-                        autofocus
-                      />
-                    } @else {
-                      <span
-                        class="text-sm text-slate-900 dark:text-slate-100"
-                        [ngClass]="
-                          currentMode === 'edit'
-                            ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
-                            : ''
-                        "
-                      >
-                        €{{ item.unitPriceWithVat | number: "1.2-2" }}
-                      </span>
-                    }
-                  </td>
-
-                  <!-- VAT Rate -->
-                  <td
-                    class="px-4 py-3 text-center"
-                    [class.group]="currentMode === 'edit'"
-                    (click)="startEditingCell($event, 'vat-' + item.id)"
-                  >
-                    @if (currentMode === "edit" && editingCell === "vat-" + item.id) {
-                      <input
-                        type="number"
-                        class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center dark:bg-[#2a2b30] dark:text-white focus:outline-none"
-                        [(ngModel)]="item.vatRate"
-                        (blur)="editingCell = null"
-                        (keydown.enter)="editingCell = null"
-                        autofocus
-                      />
-                    } @else {
-                      <span
-                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700"
-                        [ngClass]="currentMode === 'edit' ? 'group-hover:bg-blue-100 cursor-pointer' : ''"
-                      >
-                        {{ item.vatRate }}%
-                      </span>
-                    }
-                  </td>
-
-                  <!-- Total (read-only) -->
-                  <td class="px-4 py-3 text-right text-sm font-medium text-slate-900 dark:text-slate-100">
-                    €{{ item.totalItemPriceWithVat }}
-                  </td>
-
-                  <td class="px-4 py-3 text-right">
-                    <button class="text-gray-400" (click)="$event.stopPropagation()">
-                      <svg
-                        class="text-slate-400 hover:text-red-600 p-1 rounded transition-colors"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                    @if (currentMode === 'merge') {
+                      <td class="px-4 py-3 w-10">
+                        <input
+                          type="checkbox"
+                          [checked]="isSelectedForMerge(item.id)"
+                          class="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                          (click)="$event.stopPropagation(); toggleMergeSelection(item.id)"
                         />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
+                      </td>
+                    }
+
+                    <!-- Name -->
+                    <td
+                      class="px-4 py-3"
+                      [class.group]="currentMode === 'edit'"
+                      (click)="startEditingCell($event, 'name-' + item.id)"
+                    >
+                      @if (currentMode === "edit" && editingCell === "name-" + item.id) {
+                        <input
+                          class="w-full border border-blue-500 rounded px-2 py-0.5 text-sm font-medium dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                          [(ngModel)]="item.name"
+                          (blur)="editingCell = null"
+                          (keydown.enter)="editingCell = null"
+                          autofocus
+                        />
+                      } @else {
+                        <p
+                          class="text-sm font-medium text-slate-900 dark:text-white"
+                          [ngClass]="
+                            currentMode === 'edit'
+                              ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
+                              : ''
+                          "
+                        >
+                          {{ item.name }}
+                        </p>
+                      }
+                      <p class="text-xs text-slate-500 dark:text-slate-300">
+                        {{ 'RECEIPT_DETAIL.ACCOUNT_LABEL' | translate }}: <span class="text-green-500">{{ item.accountValue }}</span>
+                      </p>
+                    </td>
+
+                    <!-- Quantity -->
+                    <td
+                      class="px-4 py-3 text-center"
+                      [class.group]="currentMode === 'edit'"
+                      (click)="startEditingCell($event, 'qty-' + item.id)"
+                    >
+                      @if (currentMode === "edit" && editingCell === "qty-" + item.id) {
+                        <input
+                          type="number"
+                          class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                          [(ngModel)]="item.quantity"
+                          (blur)="editingCell = null"
+                          (keydown.enter)="editingCell = null"
+                          autofocus
+                        />
+                      } @else {
+                        <span
+                          class="text-sm text-slate-900 dark:text-slate-100"
+                          [ngClass]="
+                            currentMode === 'edit'
+                              ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
+                              : ''
+                          "
+                        >
+                          {{ item.quantity }}
+                        </span>
+                      }
+                    </td>
+
+                    <!-- Unit Price -->
+                    <td
+                      class="px-4 py-3 text-right"
+                      [class.group]="currentMode === 'edit'"
+                      (click)="startEditingCell($event, 'price-' + item.id)"
+                    >
+                      @if (currentMode === "edit" && editingCell === "price-" + item.id) {
+                        <input
+                          type="number"
+                          step="0.01"
+                          class="w-20 border border-blue-500 rounded px-2 py-0.5 text-sm text-right dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                          [(ngModel)]="item.unitPriceWithVat"
+                          (blur)="editingCell = null"
+                          (keydown.enter)="editingCell = null"
+                          autofocus
+                        />
+                      } @else {
+                        <span
+                          class="text-sm text-slate-900 dark:text-slate-100"
+                          [ngClass]="
+                            currentMode === 'edit'
+                              ? 'group-hover:text-blue-600 dark:group-hover:text-blue-400 cursor-pointer'
+                              : ''
+                          "
+                        >
+                          €{{ item.unitPriceWithVat | number: "1.2-2" }}
+                        </span>
+                      }
+                    </td>
+
+                    <!-- VAT Rate -->
+                    <td
+                      class="px-4 py-3 text-center"
+                      [class.group]="currentMode === 'edit'"
+                      (click)="startEditingCell($event, 'vat-' + item.id)"
+                    >
+                      @if (currentMode === "edit" && editingCell === "vat-" + item.id) {
+                        <input
+                          type="number"
+                          class="w-16 border border-blue-500 rounded px-2 py-0.5 text-sm text-center dark:bg-[#2a2b30] dark:text-white focus:outline-none"
+                          [(ngModel)]="item.vatRate"
+                          (blur)="editingCell = null"
+                          (keydown.enter)="editingCell = null"
+                          autofocus
+                        />
+                      } @else {
+                        <span
+                          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700"
+                          [ngClass]="currentMode === 'edit' ? 'group-hover:bg-blue-100 cursor-pointer' : ''"
+                        >
+                          {{ item.vatRate }}%
+                        </span>
+                      }
+                    </td>
+
+                    <!-- Total (read-only) -->
+                    <td class="px-4 py-3 text-right text-sm font-medium text-slate-900 dark:text-slate-100">
+                      €{{ item.totalItemPriceWithVat }}
+                    </td>
+
+                    <td class="px-4 py-3 text-right">
+                      <button class="text-gray-400" (click)="$event.stopPropagation()">
+                        <svg
+                          class="text-slate-400 hover:text-red-600 p-1 rounded transition-colors"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>
@@ -575,7 +584,6 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 class="lucide lucide-plus mr-1"
-                data-fg-jey104="9.6:9.14012:/src/app/components/ReceiptPage.tsx:241:19:9517:35:e:Plus::::::MOt"
               >
                 <path d="M5 12h14"></path>
                 <path d="M12 5v14"></path>
@@ -610,8 +618,8 @@
         <!-- Drawer -->
         <div
           id="drawer-right-example"
-          [class.translate-x-0]="drawerOpen"
-          [class.translate-x-full]="!drawerOpen"
+          [class.translate-x-0]="drawerOpen()"
+          [class.translate-x-full]="!drawerOpen()"
           class="fixed top-16 right-0 z-40 h-[calc(100vh-4rem)] w-[420px] bg-[#1a1b1e] dark:bg-[#1a1b1e] border-l border-[#383852] transform transition-transform duration-300 ease-in-out translate-x-full flex flex-col"
           tabindex="-1"
           aria-labelledby="drawer-right-label"
@@ -673,99 +681,107 @@
           <!-- Account list -->
           <div class="flex-1 overflow-y-auto py-2">
 
-            <div *ngIf="filteredGroupedAccounts().length === 0" class="py-10 text-center text-sm text-slate-500">
-              {{ 'RECEIPT_DETAIL.NO_ACCOUNTS_FOUND' | translate }}
-            </div>
-
-            <div *ngFor="let accClass of filteredGroupedAccounts()" class="mb-1">
-
-              <!-- Group header -->
-              <button
-                type="button"
-                (click)="toggleGroup(accClass.className)"
-                class="w-full flex items-center justify-between px-4 py-2 hover:bg-[#2a2b30] transition-colors group"
-              >
-                <span class="text-[11px] font-semibold text-slate-400 group-hover:text-slate-300 uppercase tracking-wider">
-                  {{ accClass.className }}
-                </span>
-                <svg
-                  class="w-3.5 h-3.5 text-slate-500 transition-transform duration-200"
-                  [ngClass]="(openGroups[accClass.className] || !!searchQuery().trim()) ? 'rotate-180' : ''"
-                  fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </button>
-
-              <!-- Group content -->
-              <div *ngIf="openGroups[accClass.className] || !!searchQuery().trim()">
-                <div *ngFor="let cat of accClass.categories" class="mb-2">
-
-                  <!-- Category label -->
-                  <div class="px-4 py-1">
-                    <span class="text-[10px] font-medium text-slate-600 uppercase tracking-wider">{{ cat.categoryName }}</span>
-                  </div>
-
-                  <!-- Account rows -->
-                  <div>
-                    <label
-                      *ngFor="let acc of cat.accounts"
-                      class="flex items-center gap-3 px-4 py-2 cursor-pointer transition-all duration-100 border-l-2"
-                      [ngClass]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id
-                        ? 'bg-blue-950/30 border-blue-500 text-white'
-                        : 'border-transparent hover:bg-[#2a2b30] text-slate-300 hover:text-white'"
-                    >
-                      <input
-                        type="radio"
-                        class="hidden"
-                        [name]="'account-' + selectedItemForAccount"
-                        [value]="acc"
-                        [checked]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                        [(ngModel)]="selectedAccountsPerItem[selectedItemForAccount]"
-                        (change)="onAccountChange(selectedItemForAccount, acc)"
-                      />
-                      <span
-                        class="font-mono text-xs font-semibold px-1.5 py-0.5 rounded shrink-0"
-                        [ngClass]="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id
-                          ? 'bg-blue-900/60 border border-blue-700 text-blue-300'
-                          : 'bg-[#2a2b30] border border-[#383852] text-slate-400'"
-                      >
-                        {{ acc.number }}
-                      </span>
-                      <span class="text-sm truncate flex-1">{{ acc.name }}</span>
-                      <svg
-                        *ngIf="selectedAccountsPerItem[selectedItemForAccount]?.id === acc.id"
-                        class="w-3.5 h-3.5 text-blue-400 shrink-0"
-                        fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </label>
-                  </div>
-
-                </div>
+            @if (filteredGroupedAccounts().length === 0) {
+              <div class="py-10 text-center text-sm text-slate-500">
+                {{ 'RECEIPT_DETAIL.NO_ACCOUNTS_FOUND' | translate }}
               </div>
+            }
 
-            </div>
+            @for (accClass of filteredGroupedAccounts(); track accClass.className) {
+              <div class="mb-1">
+
+                <!-- Group header -->
+                <button
+                  type="button"
+                  (click)="toggleGroup(accClass.className)"
+                  class="w-full flex items-center justify-between px-4 py-2 hover:bg-[#2a2b30] transition-colors group"
+                >
+                  <span class="text-[11px] font-semibold text-slate-400 group-hover:text-slate-300 uppercase tracking-wider">
+                    {{ accClass.className }}
+                  </span>
+                  <svg
+                    class="w-3.5 h-3.5 text-slate-500 transition-transform duration-200"
+                    [ngClass]="(openGroups[accClass.className] || !!searchQuery().trim()) ? 'rotate-180' : ''"
+                    fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+
+                <!-- Group content -->
+                @if (openGroups[accClass.className] || !!searchQuery().trim()) {
+                  @for (cat of accClass.categories; track cat.categoryName) {
+                    <div class="mb-2">
+
+                      <!-- Category label -->
+                      <div class="px-4 py-1">
+                        <span class="text-[10px] font-medium text-slate-600 uppercase tracking-wider">{{ cat.categoryName }}</span>
+                      </div>
+
+                      <!-- Account rows -->
+                      <div>
+                        @for (acc of cat.accounts; track acc.id) {
+                          <label
+                            class="flex items-center gap-3 px-4 py-2 cursor-pointer transition-all duration-100 border-l-2"
+                            [ngClass]="selectedAccountsPerItem()[selectedItemForAccount()!]?.id === acc.id
+                              ? 'bg-blue-950/30 border-blue-500 text-white'
+                              : 'border-transparent hover:bg-[#2a2b30] text-slate-300 hover:text-white'"
+                          >
+                            <input
+                              type="radio"
+                              class="hidden"
+                              [name]="'account-' + selectedItemForAccount()"
+                              [value]="acc"
+                              [checked]="selectedAccountsPerItem()[selectedItemForAccount()!]?.id === acc.id"
+                              (change)="onAccountChange(selectedItemForAccount()!, acc)"
+                            />
+                            <span
+                              class="font-mono text-xs font-semibold px-1.5 py-0.5 rounded shrink-0"
+                              [ngClass]="selectedAccountsPerItem()[selectedItemForAccount()!]?.id === acc.id
+                                ? 'bg-blue-900/60 border border-blue-700 text-blue-300'
+                                : 'bg-[#2a2b30] border border-[#383852] text-slate-400'"
+                            >
+                              {{ acc.number }}
+                            </span>
+                            <span class="text-sm truncate flex-1">{{ acc.name }}</span>
+                            @if (selectedAccountsPerItem()[selectedItemForAccount()!]?.id === acc.id) {
+                              <svg
+                                class="w-3.5 h-3.5 text-blue-400 shrink-0"
+                                fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"
+                              >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                              </svg>
+                            }
+                          </label>
+                        }
+                      </div>
+
+                    </div>
+                  }
+                }
+
+              </div>
+            }
           </div>
 
           <!-- Journal preview + actions -->
           <div class="flex-shrink-0 border-t border-[#383852] px-4 pt-4 pb-5 space-y-3">
 
             <!-- Selected account preview -->
-            <div *ngIf="selectedAccountsPerItem[selectedItemForAccount]"
-                 class="bg-[#2a2b30] border border-[#383852] rounded-lg p-3 flex items-center gap-3">
-              <span class="font-mono text-sm font-bold text-blue-400 bg-blue-900/40 border border-blue-800 px-2 py-0.5 rounded shrink-0">
-                {{ selectedAccountsPerItem[selectedItemForAccount]?.number }}
-              </span>
-              <span class="text-sm text-white truncate">{{ selectedAccountsPerItem[selectedItemForAccount]?.name }}</span>
-            </div>
+            @if (selectedAccountsPerItem()[selectedItemForAccount()!]) {
+              <div class="bg-[#2a2b30] border border-[#383852] rounded-lg p-3 flex items-center gap-3">
+                <span class="font-mono text-sm font-bold text-blue-400 bg-blue-900/40 border border-blue-800 px-2 py-0.5 rounded shrink-0">
+                  {{ selectedAccountsPerItem()[selectedItemForAccount()!]?.number }}
+                </span>
+                <span class="text-sm text-white truncate">{{ selectedAccountsPerItem()[selectedItemForAccount()!]?.name }}</span>
+              </div>
+            }
 
             <!-- Buttons -->
             <div class="flex gap-2">
               <button
                 (click)="assignAccountToItem()"
-                [disabled]="!selectedAccountsPerItem[selectedItemForAccount]"
+                [disabled]="!selectedAccountsPerItem()[selectedItemForAccount()!]"
                 class="flex-1 h-9 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
               >
                 {{ 'RECEIPT_DETAIL.ASSIGN_ACCOUNT' | translate }}
@@ -898,14 +914,15 @@
             </div>
           </span>
 
-          <input
-            *ngIf="receiptResponse.receiptDetails"
-            type="checkbox"
-            class="sr-only peer"
-            [(ngModel)]="receiptResponse.receiptDetails.paidByCard"
-            [checked]="receiptResponse.receiptDetails.paidByCard"
-            name="isPaidByCard"
-          />
+          @if (receiptResponse.receiptDetails) {
+            <input
+              type="checkbox"
+              class="sr-only peer"
+              [(ngModel)]="receiptResponse.receiptDetails.paidByCard"
+              [checked]="receiptResponse.receiptDetails.paidByCard"
+              name="isPaidByCard"
+            />
+          }
           <div
             class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
           ></div>
@@ -936,386 +953,394 @@
         <!--          </div>-->
         <!--        </div>-->
 
-        <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label>{{ 'RECEIPT_DETAIL.VAT_CLASSIFICATION' | translate }}</label>
-          <input
-            class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
-            [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"
-          />
-        </div>
+        @if (receiptResponse.receiptDetails) {
+          <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2">
+            <label>{{ 'RECEIPT_DETAIL.VAT_CLASSIFICATION' | translate }}</label>
+            <input
+              class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
+              [(ngModel)]="receiptResponse.receiptDetails.classificationVAT"
+            />
+          </div>
 
-        <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label class="text-sm">{{ 'RECEIPT_DETAIL.KV_VAT_CLASSIFICATION' | translate }}</label>
-          <input
-            class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
-            [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"
-          />
-        </div>
+          <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2">
+            <label class="text-sm">{{ 'RECEIPT_DETAIL.KV_VAT_CLASSIFICATION' | translate }}</label>
+            <input
+              class="w-full border border-slate-200 rounded-md p-2 bg-[#f9fafb] dark:bg-[#1a1b1e] dark:border-[#383852]"
+              [(ngModel)]="receiptResponse.receiptDetails.classificationKVVAT"
+            />
+          </div>
 
-        <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2" *ngIf="receiptResponse.receiptDetails">
-          <label for="message">{{ 'RECEIPT_DETAIL.RECEIPT_NOTE' | translate }}</label>
+          <div class="w-full text-sm text-slate-700 dark:text-slate-100 py-2">
+            <label for="message">{{ 'RECEIPT_DETAIL.RECEIPT_NOTE' | translate }}</label>
 
-          <form>
-            <div class="w-full border border-slate-200 rounded-lg dark:bg-[#1a1b1e] dark:border-[#383852]">
-              <div class="px-4 py-2 bg-white dark:bg-[#1a1b1e] rounded-lg">
-                <textarea
-                  id="message"
-                  name="description"
-                  rows="8"
-                  class="w-full px-0 text-sm text-gray-800 dark:text-slate-100 bg-white dark:bg-[#1a1b1e] border-0"
-                  [(ngModel)]="receiptResponse.receiptDetails.description"
-                  [placeholder]="'INVOICE.NOTE' | translate"
-                ></textarea>
+            <form>
+              <div class="w-full border border-slate-200 rounded-lg dark:bg-[#1a1b1e] dark:border-[#383852]">
+                <div class="px-4 py-2 bg-white dark:bg-[#1a1b1e] rounded-lg">
+                  <textarea
+                    id="message"
+                    name="description"
+                    rows="8"
+                    class="w-full px-0 text-sm text-gray-800 dark:text-slate-100 bg-white dark:bg-[#1a1b1e] border-0"
+                    [(ngModel)]="receiptResponse.receiptDetails.description"
+                    [placeholder]="'INVOICE.NOTE' | translate"
+                  ></textarea>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        }
       </div>
     </div>
   </div>
 
   <!-- Merge Confirmation Modal -->
-  <div
-    *ngIf="mergeConfirmOpen"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-    (click)="mergeConfirmOpen = false"
-  >
+  @if (mergeConfirmOpen()) {
     <div
-      class="relative bg-white dark:bg-[#1a1b1e] rounded-lg shadow-lg w-full max-w-2xl mx-4"
-      (click)="$event.stopPropagation()"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      (click)="mergeConfirmOpen.set(false)"
     >
-      <!-- Header -->
-      <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-[#383852]">
-        <div class="flex items-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-blue-600"
-          >
-            <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
-            <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-            <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-            <path d="m7 21 3-3-3-3"></path>
-            <rect x="14" y="14" width="8" height="8" rx="2"></rect>
-            <rect x="2" y="2" width="8" height="8" rx="2"></rect>
-          </svg>
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ 'RECEIPT_DETAIL.CONFIRM_MERGE' | translate }}</h3>
-        </div>
-        <button
-          (click)="mergeConfirmOpen = false"
-          class="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-lg w-8 h-8 inline-flex justify-center items-center transition-colors"
-        >
-          <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path
+      <div
+        class="relative bg-white dark:bg-[#1a1b1e] rounded-lg shadow-lg w-full max-w-2xl mx-4"
+        (click)="$event.stopPropagation()"
+      >
+        <!-- Header -->
+        <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-[#383852]">
+          <div class="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
               stroke="currentColor"
+              stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Body -->
-      <div class="p-5">
-        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
-          {{ 'RECEIPT_DETAIL.MERGE_DESCRIPTION' | translate: { count: selectedForMerge.size } }}
-        </p>
-
-        <!-- Merged item name input -->
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{{ 'RECEIPT_DETAIL.MERGED_ITEM_NAME' | translate }}</label>
-          <input
-            type="text"
-            [(ngModel)]="mergedItemName"
-            class="w-full border border-slate-200 dark:border-[#383852] rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white bg-white dark:bg-[#2a2b30] focus:outline-none focus:ring-2 focus:ring-blue-500"
-            [placeholder]="'RECEIPT_DETAIL.MERGED_ITEM_PLACEHOLDER' | translate"
-          />
-          <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
-            {{ 'RECEIPT_DETAIL.MERGE_NAME_HINT' | translate: { name: selectedItemsForMerge[0]?.name } }}
-          </p>
+              class="text-blue-600"
+            >
+              <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
+              <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+              <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+              <path d="m7 21 3-3-3-3"></path>
+              <rect x="14" y="14" width="8" height="8" rx="2"></rect>
+              <rect x="2" y="2" width="8" height="8" rx="2"></rect>
+            </svg>
+            <h3 class="text-lg font-semibold text-slate-900 dark:text-white">{{ 'RECEIPT_DETAIL.CONFIRM_MERGE' | translate }}</h3>
+          </div>
+          <button
+            (click)="mergeConfirmOpen.set(false)"
+            class="text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white rounded-lg w-8 h-8 inline-flex justify-center items-center transition-colors"
+          >
+            <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+          </button>
         </div>
 
-        <!-- Mixed VAT warning -->
-        <div
-          *ngIf="hasMixedVatRates"
-          class="flex items-start gap-3 p-3 mb-4 rounded-lg bg-amber-50 border border-amber-200 dark:bg-amber-900/10 dark:border-amber-500/30"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-amber-500 mt-0.5 shrink-0"
-          >
-            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-            <path d="M12 9v4"></path>
-            <path d="M12 17h.01"></path>
-          </svg>
-          <div>
-            <p class="text-sm font-medium text-amber-800 dark:text-amber-400">{{ 'RECEIPT_DETAIL.MIXED_VAT_WARNING' | translate }}</p>
-            <p class="text-xs text-amber-700 dark:text-amber-500 mt-0.5">
-              {{ 'RECEIPT_DETAIL.MIXED_VAT_DESC' | translate }}
+        <!-- Body -->
+        <div class="p-5">
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            {{ 'RECEIPT_DETAIL.MERGE_DESCRIPTION' | translate: { count: selectedForMerge.size } }}
+          </p>
+
+          <!-- Merged item name input -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{{ 'RECEIPT_DETAIL.MERGED_ITEM_NAME' | translate }}</label>
+            <input
+              type="text"
+              [(ngModel)]="mergedItemName"
+              class="w-full border border-slate-200 dark:border-[#383852] rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white bg-white dark:bg-[#2a2b30] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [placeholder]="'RECEIPT_DETAIL.MERGED_ITEM_PLACEHOLDER' | translate"
+            />
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+              {{ 'RECEIPT_DETAIL.MERGE_NAME_HINT' | translate: { name: selectedItemsForMerge[0]?.name } }}
             </p>
+          </div>
+
+          <!-- Mixed VAT warning -->
+          @if (hasMixedVatRates) {
+            <div
+              class="flex items-start gap-3 p-3 mb-4 rounded-lg bg-amber-50 border border-amber-200 dark:bg-amber-900/10 dark:border-amber-500/30"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-amber-500 mt-0.5 shrink-0"
+              >
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
+              <div>
+                <p class="text-sm font-medium text-amber-800 dark:text-amber-400">{{ 'RECEIPT_DETAIL.MIXED_VAT_WARNING' | translate }}</p>
+                <p class="text-xs text-amber-700 dark:text-amber-500 mt-0.5">
+                  {{ 'RECEIPT_DETAIL.MIXED_VAT_DESC' | translate }}
+                </p>
+              </div>
+            </div>
+          }
+
+          <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 dark:bg-[#2a2b30]">
+                <tr>
+                  <th
+                    class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
+                  >
+                    {{ 'RECEIPT_DETAIL.PRODUCT' | translate }}
+                  </th>
+                  <th
+                    class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
+                  >
+                    {{ 'INVOICE.ITEM_QUANTITY' | translate }}
+                  </th>
+                  <th
+                    class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
+                  >
+                    {{ 'RECEIPT_DETAIL.VAT_RATE' | translate }}
+                  </th>
+                  <th
+                    class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
+                  >
+                    {{ 'RECEIPT_DETAIL.UNIT_WITH_VAT' | translate }}
+                  </th>
+                  <th
+                    class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
+                  >
+                    {{ 'INVOICE.ITEM_TOTAL' | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-[#383852]">
+                @for (item of selectedItemsForMerge; track item.id) {
+                  <tr
+                    [ngClass]="
+                      item.vatRate !== dominantVatRate
+                        ? 'bg-amber-50 dark:bg-amber-900/10'
+                        : $first
+                          ? 'bg-blue-50 dark:bg-blue-900/10'
+                          : 'bg-white dark:bg-[#1a1b1e]'
+                    "
+                  >
+                    <td class="px-4 py-3">
+                      <div class="flex items-center gap-2">
+                        <span class="font-medium text-slate-900 dark:text-white">{{ item.name }}</span>
+                        @if ($first) {
+                          <span
+                            class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                          >
+                            {{ 'RECEIPT_DETAIL.BASE_BADGE' | translate }}
+                          </span>
+                        }
+                      </div>
+                      <span class="text-xs text-slate-400">{{ item.accountValue }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-center text-slate-700 dark:text-slate-300">{{ item.quantity }}</td>
+                    <td class="px-4 py-3 text-center">
+                      <span
+                        class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                        [ngClass]="
+                          item.vatRate !== dominantVatRate
+                            ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                            : 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
+                        "
+                      >
+                        {{ item.vatRate }}%
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-right text-slate-700 dark:text-slate-300">
+                      €{{ item.unitPriceWithVat | number: "1.2-2" }}
+                    </td>
+                    <td class="px-4 py-3 text-right font-medium text-slate-900 dark:text-white">
+                      €{{ item.totalItemPriceWithVat | number: "1.2-2" }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Total row -->
+          <div class="flex justify-end mt-3 pt-3 border-t border-slate-200 dark:border-[#383852]">
+            <span class="text-sm text-slate-500 dark:text-slate-400 mr-3">{{ 'RECEIPT_DETAIL.COMBINED_TOTAL' | translate }}</span>
+            <span class="text-sm font-bold text-slate-900 dark:text-white">€{{ mergeTotal | number: "1.2-2" }}</span>
           </div>
         </div>
 
-        <div class="rounded-lg border border-slate-200 dark:border-[#383852] overflow-hidden">
-          <table class="w-full text-sm">
-            <thead class="bg-slate-50 dark:bg-[#2a2b30]">
-              <tr>
-                <th
-                  class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
-                >
-                  {{ 'RECEIPT_DETAIL.PRODUCT' | translate }}
-                </th>
-                <th
-                  class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
-                >
-                  {{ 'INVOICE.ITEM_QUANTITY' | translate }}
-                </th>
-                <th
-                  class="px-4 py-2.5 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
-                >
-                  {{ 'RECEIPT_DETAIL.VAT_RATE' | translate }}
-                </th>
-                <th
-                  class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
-                >
-                  {{ 'RECEIPT_DETAIL.UNIT_WITH_VAT' | translate }}
-                </th>
-                <th
-                  class="px-4 py-2.5 text-right text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider"
-                >
-                  {{ 'INVOICE.ITEM_TOTAL' | translate }}
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-[#383852]">
-              <tr
-                *ngFor="let item of selectedItemsForMerge; first as isFirst"
-                [ngClass]="
-                  item.vatRate !== dominantVatRate
-                    ? 'bg-amber-50 dark:bg-amber-900/10'
-                    : isFirst
-                      ? 'bg-blue-50 dark:bg-blue-900/10'
-                      : 'bg-white dark:bg-[#1a1b1e]'
-                "
-              >
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2">
-                    <span class="font-medium text-slate-900 dark:text-white">{{ item.name }}</span>
-                    <span
-                      *ngIf="isFirst"
-                      class="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                    >
-                      {{ 'RECEIPT_DETAIL.BASE_BADGE' | translate }}
-                    </span>
-                  </div>
-                  <span class="text-xs text-slate-400">{{ item.accountValue }}</span>
-                </td>
-                <td class="px-4 py-3 text-center text-slate-700 dark:text-slate-300">{{ item.quantity }}</td>
-                <td class="px-4 py-3 text-center">
-                  <span
-                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-                    [ngClass]="
-                      item.vatRate !== dominantVatRate
-                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                        : 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
-                    "
-                  >
-                    {{ item.vatRate }}%
-                  </span>
-                </td>
-                <td class="px-4 py-3 text-right text-slate-700 dark:text-slate-300">
-                  €{{ item.unitPriceWithVat | number: "1.2-2" }}
-                </td>
-                <td class="px-4 py-3 text-right font-medium text-slate-900 dark:text-white">
-                  €{{ item.totalItemPriceWithVat | number: "1.2-2" }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Total row -->
-        <div class="flex justify-end mt-3 pt-3 border-t border-slate-200 dark:border-[#383852]">
-          <span class="text-sm text-slate-500 dark:text-slate-400 mr-3">{{ 'RECEIPT_DETAIL.COMBINED_TOTAL' | translate }}</span>
-          <span class="text-sm font-bold text-slate-900 dark:text-white">€{{ mergeTotal | number: "1.2-2" }}</span>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="flex justify-end gap-2 px-5 py-4 border-t border-slate-200 dark:border-[#383852]">
-        <button
-          (click)="mergeConfirmOpen = false"
-          class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-transparent border border-slate-300 dark:border-[#383852] rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-        >
-          {{ 'COMMON.CANCEL' | translate }}
-        </button>
-        <button
-          (click)="confirmMerge()"
-          class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="mr-1.5"
+        <!-- Footer -->
+        <div class="flex justify-end gap-2 px-5 py-4 border-t border-slate-200 dark:border-[#383852]">
+          <button
+            (click)="mergeConfirmOpen.set(false)"
+            class="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-transparent border border-slate-300 dark:border-[#383852] rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
-            <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
-            <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-            <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
-            <path d="m7 21 3-3-3-3"></path>
-            <rect x="14" y="14" width="8" height="8" rx="2"></rect>
-            <rect x="2" y="2" width="8" height="8" rx="2"></rect>
-          </svg>
-          {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
-        </button>
+            {{ 'COMMON.CANCEL' | translate }}
+          </button>
+          <button
+            (click)="confirmMerge()"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mr-1.5"
+            >
+              <path d="M10 18H5a3 3 0 0 1-3-3v-1"></path>
+              <path d="M14 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+              <path d="M20 2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2"></path>
+              <path d="m7 21 3-3-3-3"></path>
+              <rect x="14" y="14" width="8" height="8" rx="2"></rect>
+              <rect x="2" y="2" width="8" height="8" rx="2"></rect>
+            </svg>
+            {{ 'RECEIPT_DETAIL.MERGE_ITEMS' | translate: { count: selectedForMerge.size } }}
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  }
 
-  <app-modal [show]="modalOpen" (closeModal)="closeModal()" title="Údaje o dodávateľovi">
-    <form #partnerForm="ngForm" *ngIf="receiptResponse.receiptDetails">
-      <div class="grid gap-4 mb-6 grid-cols-2">
-        <div class="col-span-2">
-          <label for="companyName" class="block text-sm font-medium text-gray-900">Názov dodávateľa</label>
-          <input
-            id="companyName"
-            name="companyName"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj názov firmy"
-            [(ngModel)]="receiptResponse.partner.name"
-          />
-        </div>
+  <app-modal [show]="modalOpen()" (closeModal)="closeModal()" title="Údaje o dodávateľovi">
+    @if (receiptResponse.receiptDetails) {
+      <form #partnerForm="ngForm">
+        <div class="grid gap-4 mb-6 grid-cols-2">
+          <div class="col-span-2">
+            <label for="companyName" class="block text-sm font-medium text-gray-900">Názov dodávateľa</label>
+            <input
+              id="companyName"
+              name="companyName"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj názov firmy"
+              [(ngModel)]="receiptResponse.partner.name"
+            />
+          </div>
 
-        <div>
-          <label for="city" class="block text-sm font-medium text-gray-900">Mesto</label>
-          <input
-            id="city"
-            name="city"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj mesto"
-            [(ngModel)]="receiptResponse.partner.city"
-          />
-        </div>
+          <div>
+            <label for="city" class="block text-sm font-medium text-gray-900">Mesto</label>
+            <input
+              id="city"
+              name="city"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj mesto"
+              [(ngModel)]="receiptResponse.partner.city"
+            />
+          </div>
 
-        <div>
-          <label for="zip" class="block text-sm font-medium text-gray-900">PSČ</label>
-          <input
-            id="zip"
-            name="zip"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj PSČ"
-            [(ngModel)]="receiptResponse.partner.zip"
-          />
-        </div>
+          <div>
+            <label for="zip" class="block text-sm font-medium text-gray-900">PSČ</label>
+            <input
+              id="zip"
+              name="zip"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj PSČ"
+              [(ngModel)]="receiptResponse.partner.zip"
+            />
+          </div>
 
-        <div>
-          <label for="street" class="block text-sm font-medium text-gray-900">Ulica</label>
-          <input
-            id="street"
-            name="street"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj ulicu"
-            [(ngModel)]="receiptResponse.partner.street"
-          />
-        </div>
+          <div>
+            <label for="street" class="block text-sm font-medium text-gray-900">Ulica</label>
+            <input
+              id="street"
+              name="street"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj ulicu"
+              [(ngModel)]="receiptResponse.partner.street"
+            />
+          </div>
 
-        <div class="col-span-1">
-          <label for="streetNumber" class="block text-sm font-medium text-gray-900">Číslo</label>
-          <input
-            id="streetNumber"
-            name="streetNumber"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="123"
-            [(ngModel)]="receiptResponse.partner.street"
-          />
-        </div>
+          <div class="col-span-1">
+            <label for="streetNumber" class="block text-sm font-medium text-gray-900">Číslo</label>
+            <input
+              id="streetNumber"
+              name="streetNumber"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="123"
+              [(ngModel)]="receiptResponse.partner.street"
+            />
+          </div>
 
-        <div>
-          <label for="vatId" class="block text-sm font-medium text-gray-900">IČ DPH</label>
-          <input
-            id="vatId"
-            name="vatId"
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj IČ DPH"
-            [(ngModel)]="receiptResponse.partner.registrationNumber"
-          />
-        </div>
+          <div>
+            <label for="vatId" class="block text-sm font-medium text-gray-900">IČ DPH</label>
+            <input
+              id="vatId"
+              name="vatId"
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj IČ DPH"
+              [(ngModel)]="receiptResponse.partner.registrationNumber"
+            />
+          </div>
 
-        <div>
-          <label for="taxId" class="block text-sm font-medium text-gray-900">DIČ</label>
-          <input
-            id="taxId"
-            name="taxId"
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj DIČ"
-            [(ngModel)]="receiptResponse.partner.taxId"
-          />
-        </div>
+          <div>
+            <label for="taxId" class="block text-sm font-medium text-gray-900">DIČ</label>
+            <input
+              id="taxId"
+              name="taxId"
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj DIČ"
+              [(ngModel)]="receiptResponse.partner.taxId"
+            />
+          </div>
 
-        <div class="col-span-2">
-          <label for="registrationNumber" class="block text-sm font-medium text-gray-900">IČO</label>
-          <input
-            id="registrationNumber"
-            name="registrationNumber"
-            required
-            class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
-            placeholder="Zadaj IČO"
-            [(ngModel)]="receiptResponse.partner.vatId"
-          />
+          <div class="col-span-2">
+            <label for="registrationNumber" class="block text-sm font-medium text-gray-900">IČO</label>
+            <input
+              id="registrationNumber"
+              name="registrationNumber"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-lg p-2.5"
+              placeholder="Zadaj IČO"
+              [(ngModel)]="receiptResponse.partner.vatId"
+            />
+          </div>
         </div>
-      </div>
-      <hr class="h-px my-4 bg-gray-200 border-0" />
-      <button
-        type="submit"
-        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        (click)="updateReceipt()"
-      >
-        <svg
-          class="me-1 -ms-2 w-5 h-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          viewBox="0 0 24 24"
+        <hr class="h-px my-4 bg-gray-200 border-0" />
+        <button
+          type="submit"
+          class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+          (click)="updateReceipt()"
         >
-          <path
-            fill-rule="evenodd"
-            d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
-            clip-rule="evenodd"
-          />
-          <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd" />
-        </svg>
-        Uložiť
-      </button>
-    </form>
+          <svg
+            class="me-1 -ms-2 w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm3 11a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6H8v-6Zm1-7V5h6v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z"
+              clip-rule="evenodd"
+            />
+            <path fill-rule="evenodd" d="M14 17h-4v-2h4v2Z" clip-rule="evenodd" />
+          </svg>
+          Uložiť
+        </button>
+      </form>
+    }
   </app-modal>
 </main>

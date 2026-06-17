@@ -1,10 +1,10 @@
-import {Component, computed, OnInit, signal} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {DatePipe, DecimalPipe, NgClass} from "@angular/common";
+import {toSignal} from "@angular/core/rxjs-interop";
 import {FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
 import {ReceiptRequest} from "../../../core/models/receipt-request";
-import {CommonModule} from '@angular/common';
-import {initFlowbite} from 'flowbite'
+import {initFlowbite} from 'flowbite';
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ReceiptService} from "../../../core/services/receipt.service";
 import {ReceiptDetailResponse} from "../../../pages/receipts/receipt-detail-response";
@@ -14,18 +14,19 @@ import {toast} from "ngx-sonner";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 interface Account {
-  id: number,
-  number: string,
-  name: string
+  id: number;
+  number: string;
+  name: string;
 }
 
 @Component({
   selector: 'app-receipt-details',
   imports: [
-    NgForOf,
     ReactiveFormsModule,
     FormsModule,
-    CommonModule,
+    NgClass,
+    DatePipe,
+    DecimalPipe,
     MatDialogWindowComponent,
     TranslateModule,
   ],
@@ -33,41 +34,23 @@ interface Account {
   styleUrl: './receipt-details.component.css'
 })
 export class ReceiptDetailsComponent implements OnInit {
-  constructor(
-    private receiptService: ReceiptService,
-    private postingAccountService: PostingAccountService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private translate: TranslateService,
-  ) {
-  }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.receiptId = params.get('id') || '';
-    });
-    initFlowbite();
-    this.initForm();
-    this.onFetchReceipt();
-  }
+  // ── Services ────────────────────────────────────────────────────────────────
+  private readonly receiptService = inject(ReceiptService);
+  private readonly postingAccountService = inject(PostingAccountService);
+  private readonly fb = inject(FormBuilder);
+  private readonly translate = inject(TranslateService);
 
-  modalOpen = false;
-  mergeConfirmOpen = false;
-  drawerOpen = false;
+  // ── Route ────────────────────────────────────────────────────────────────────
+  private readonly paramMap = toSignal(inject(ActivatedRoute).paramMap);
+  readonly receiptId = computed(() => Number(this.paramMap()?.get('id') ?? 0));
 
-  receiptId: any = null;
-  companyId: any = null;
-  selectedItemForAccount: any = null;
-  receipt: any = {};
-  selectedAccountsPerItem: { [itemId: number]: Account } = {};
+  // ── State signals ────────────────────────────────────────────────────────────
   groupedAccounts = signal<any[]>([]);
-  receiptForm!: FormGroup;
-
-  selectedItemName: string = '';
-  mergedItemName = '';
-
   searchQuery = signal('');
-  openGroups: { [key: string]: boolean } = {};
+  modalOpen = signal(false);
+  mergeConfirmOpen = signal(false);
+  drawerOpen = signal(false);
 
   filteredGroupedAccounts = computed(() => {
     const q = this.searchQuery().toLowerCase().trim();
@@ -88,47 +71,22 @@ export class ReceiptDetailsComponent implements OnInit {
       .filter(group => group.categories.length > 0);
   });
 
-  toggleGroup(key: string): void {
-    this.openGroups[key] = !this.openGroups[key];
-  }
+  // ── Plain properties ─────────────────────────────────────────────────────────
+
+  companyId: number | null = null;
+  selectedItemForAccount = signal<number | null>(null);
+  selectedAccountsPerItem = signal<{ [itemId: number]: Account }>({});
+  receiptForm!: FormGroup;
+
+  selectedItemName = '';
+  mergedItemName = '';
+
+  openGroups: { [key: string]: boolean } = {};
 
   currentMode: 'edit' | 'accounting' | 'merge' = 'edit';
   editingSupplier = false;
   editingCell: string | null = null;
-
-  startEditingCell(event: Event, cellKey: string): void {
-    if (this.currentMode !== 'edit') return;
-    event.stopPropagation();
-    this.editingCell = cellKey;
-  }
   selectedForMerge = new Set<number>();
-
-  setMode(mode: 'edit' | 'accounting' | 'merge'): void {
-    if (mode !== 'merge') {
-      this.selectedForMerge.clear();
-    }
-    this.currentMode = mode;
-  }
-
-  toggleMergeSelection(itemId: number | undefined): void {
-    if (itemId == null) return;
-    if (this.selectedForMerge.has(itemId)) {
-      this.selectedForMerge.delete(itemId);
-    } else {
-      this.selectedForMerge.add(itemId);
-    }
-  }
-
-  isSelectedForMerge(itemId: number | undefined): boolean {
-    if (itemId == null) return false;
-    return this.selectedForMerge.has(itemId);
-  }
-
-  get vatAmount(): number {
-    const withVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithVat ?? 0);
-    const withoutVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithoutVat ?? 0);
-    return withVat - withoutVat;
-  }
 
   items: {
     accountText?: string;
@@ -141,8 +99,6 @@ export class ReceiptDetailsComponent implements OnInit {
     id?: number;
   }[] = [];
 
-
-  partner: any = {};
   receiptResponse: ReceiptDetailResponse = {
     partner: {
       city: '',
@@ -159,8 +115,48 @@ export class ReceiptDetailsComponent implements OnInit {
     items: this.items,
   };
 
+  // ── Getters ──────────────────────────────────────────────────────────────────
+  get vatAmount(): number {
+    const withVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithVat ?? 0);
+    const withoutVat = Number(this.receiptResponse?.receiptDetails?.totalPriceWithoutVat ?? 0);
+    return withVat - withoutVat;
+  }
 
-    private initForm(): void {
+  get selectedItemsForMerge(): any[] {
+    return (this.receiptResponse.items || []).filter((item: any) => this.selectedForMerge.has(item.id));
+  }
+
+  get mergeTotal(): number {
+    return this.selectedItemsForMerge.reduce((sum, item) => sum + (item.totalItemPriceWithVat || 0), 0);
+  }
+
+  get hasMixedVatRates(): boolean {
+    const rates = new Set(this.selectedItemsForMerge.map(item => item.vatRate));
+    return rates.size > 1;
+  }
+
+  get dominantVatRate(): number {
+    const counts = new Map<number, number>();
+    for (const item of this.selectedItemsForMerge) {
+      counts.set(item.vatRate, (counts.get(item.vatRate) ?? 0) + 1);
+    }
+    let dominant = this.selectedItemsForMerge[0]?.vatRate;
+    let max = 0;
+    for (const [rate, count] of counts) {
+      if (count > max) { max = count; dominant = rate; }
+    }
+    return dominant;
+  }
+
+  // ── Lifecycle ────────────────────────────────────────────────────────────────
+  ngOnInit(): void {
+    initFlowbite();
+    this.initForm();
+    this.onFetchReceipt();
+  }
+
+  // ── Private methods ──────────────────────────────────────────────────────────
+  private initForm(): void {
     this.receiptForm = this.fb.group({
       receiptDetails: this.fb.group({
         numberRequested: [''],
@@ -198,7 +194,7 @@ export class ReceiptDetailsComponent implements OnInit {
     });
   }
 
-  createItem(itemData: any): FormGroup {
+  private createItem(itemData: any): FormGroup {
     return this.fb.group({
       id: [itemData.id],
       accountText: [itemData.accountText],
@@ -214,65 +210,53 @@ export class ReceiptDetailsComponent implements OnInit {
     });
   }
 
-  async onFetchAccounts() {
+  // ── Public methods ───────────────────────────────────────────────────────────
+  async onFetchReceipt(): Promise<void> {
+    try {
+      const response = await this.receiptService.getReceiptById({receiptId: this.receiptId()});
+      this.receiptResponse = response.data;
+      this.items = this.receiptResponse.items || [];
+      this.companyId = this.receiptResponse.company?.id ?? null;
+
+      if (this.receiptResponse.company) {
+        this.receiptForm.get('myIdentity')?.patchValue(this.receiptResponse.company);
+      }
+      if (this.receiptResponse.receiptDetails) {
+        this.receiptForm.get('receiptDetails')?.patchValue(this.receiptResponse.receiptDetails);
+      }
+      if (this.receiptResponse.partner) {
+        this.receiptForm.get('partner')?.patchValue(this.receiptResponse.partner);
+      }
+
+      const itemsFA = this.receiptForm.get('items') as FormArray;
+      itemsFA.clear();
+      this.receiptResponse.items?.forEach((item: any) => {
+        itemsFA.push(this.createItem(item));
+      });
+    } catch (error) {
+      console.error('Chyba pri načítaní bločku:', error);
+    }
+  }
+
+  async onFetchAccounts(): Promise<any> {
     const paidByCard = !!this.receiptResponse.receiptDetails?.paidByCard;
     const type = paidByCard ? ReceiptType.INTERNAL : ReceiptType.CASH;
 
     const response = await this.postingAccountService.findAvailableAccounts({
-      companyId: this.companyId,
+      companyId: this.companyId!,
       type: type,
     });
     this.groupedAccounts.set(response.data);
     return response.data;
   }
 
-  onFetchReceipt() {
-    this.receiptService.getReceiptById({receiptId: this.receiptId})
-      .then(response => {
-        this.receiptResponse = response.data;
-
-        console.log(this.receiptResponse);
-
-        this.items = this.receiptResponse.items || [];
-        this.companyId = this.receiptResponse.company?.id ?? null;
-
-        if (this.receiptResponse.company) {
-          this.receiptForm.get('myIdentity')?.patchValue(this.receiptResponse.company);
-        }
-
-        if (this.receiptResponse.receiptDetails) {
-          this.receiptForm.get('receiptDetails')?.patchValue(this.receiptResponse.receiptDetails);
-        }
-
-        if (this.receiptResponse.partner) {
-          this.receiptForm.get('partner')?.patchValue(this.receiptResponse.partner);
-        }
-
-        const itemsFA = this.receiptForm.get('items') as FormArray;
-        itemsFA.clear();  // vymaž existujúce ak sú
-        this.receiptResponse.items?.forEach((item: any) => {
-          itemsFA.push(this.createItem(item));
-        });
-
-        // Tu vypíš formu:
-        console.log('Celá forma:', this.receiptForm.value);
-        console.log('myIdentity:', this.receiptForm.get('myIdentity')?.value);
-        console.log('receiptDetails:', this.receiptForm.get('receiptDetails')?.value);
-        console.log('partner:', this.receiptForm.get('partner')?.value);
-      })
-      .catch(error => {
-        console.error('Chyba pri načítaní bločku:', error);
-      });
-  }
-
-  async exportReceiptXml() {
+  async exportReceiptXml(): Promise<void> {
     if (this.receiptForm.invalid) {
       toast.error(this.translate.instant('RECEIPT_DETAIL.TOAST_FORM_ERRORS'));
       return;
     }
 
     const formValue = this.receiptForm.value;
-
     const receiptRequest = {
       receiptDetails: formValue.receiptDetails,
       partner: formValue.partner,
@@ -283,23 +267,18 @@ export class ReceiptDetailsComponent implements OnInit {
     try {
       const response = await this.receiptService.exportReceiptPohoda({receipt: receiptRequest});
 
-      this.modalOpen = false;
+      this.modalOpen.set(false);
       toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_SUCCESS'));
 
       const blob = new Blob([response.data], {type: 'application/xml'});
-
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-
       a.download = `receipt_${this.receiptResponse.company?.name}.xml`;
-
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-
       window.URL.revokeObjectURL(url);
-
     } catch (error: any) {
       if (error.response?.status === 429) {
         toast.warning(this.translate.instant('RECEIPT_DETAIL.TOAST_EXPORT_LIMIT'));
@@ -311,64 +290,7 @@ export class ReceiptDetailsComponent implements OnInit {
     }
   }
 
-  assignAccountToItem(): void {
-    const selectedAccount = this.selectedAccountsPerItem[this.selectedItemForAccount];
-    if (!selectedAccount) {
-      console.warn('Žiadny účet nie je vybraný pre item:', this.selectedItemForAccount);
-      return;
-    }
-
-    this.items.forEach(item => {
-      if (item.id === this.selectedItemForAccount) {
-        item.accountValue = selectedAccount.number;
-        console.log('Priradený účet', item.accountValue, 'pre item', item.id);
-      }
-    });
-
-    this.closeDrawer();
-    this.searchQuery.set('');
-    this.selectedItemForAccount = null;
-  }
-
-  onAccountChange(itemId: number, account: Account) {
-    this.selectedAccountsPerItem[itemId] = account;
-    console.log('Zvolený účet:', account.id, 'pre item:', itemId);
-  }
-
-  openDrawer(item: any): void {
-    this.selectedItemForAccount = item.id;
-    this.selectedItemName = item.name;
-    this.drawerOpen = true;
-
-    this.onFetchAccounts().then(() => {
-      if (!this.selectedAccountsPerItem[item.id] && item.accountValue) {
-        const matchingAccount = this.groupedAccounts()
-          .flatMap((cls: any) => cls.categories)
-          .flatMap((cat: any) => cat.accounts)
-          .find((acc: any) => acc.number === item.accountValue);
-
-        if (matchingAccount) {
-          this.selectedAccountsPerItem[item.id] = matchingAccount;
-        }
-      }
-    });
-  }
-
-  closeDrawer() {
-    this.drawerOpen = false;
-  }
-
-
-  openModal() {
-    this.modalOpen = true;
-  }
-
-  closeModal() {
-    this.modalOpen = false;
-  }
-
-  async updateReceipt() {
-
+  async updateReceipt(): Promise<void> {
     this.receiptRequest = {
       datePayment: this.receiptResponse?.receiptDetails?.datePayment,
       receiptNumber: this.receiptResponse?.receiptNumber,
@@ -390,58 +312,111 @@ export class ReceiptDetailsComponent implements OnInit {
         ...item,
         description: item.name
       }))
-    }
+    };
 
-    this.receiptService.updateReceipt({
-      receiptId: this.receiptId,
+    await this.receiptService.updateReceipt({
+      receiptId: this.receiptId(),
       receipt: this.receiptRequest
-    }).then(() => {
-      this.modalOpen = false;
-      toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_SAVE_SUCCESS'));
-      this.onFetchReceipt()
     });
+    this.modalOpen.set(false);
+    toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_SAVE_SUCCESS'));
+    this.onFetchReceipt();
   }
 
-  get selectedItemsForMerge(): any[] {
-    return (this.receiptResponse.items || []).filter((item: any) => this.selectedForMerge.has(item.id));
+  async confirmMerge(): Promise<void> {
+    await this.receiptService.mergeReceiptItems(
+      this.receiptId(),
+      {itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName}
+    );
+    this.mergeConfirmOpen.set(false);
+    this.selectedForMerge.clear();
+    this.onFetchReceipt();
+    toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
   }
 
-  get mergeTotal(): number {
-    return this.selectedItemsForMerge.reduce((sum, item) => sum + (item.totalItemPriceWithVat || 0), 0);
-  }
-
-  get hasMixedVatRates(): boolean {
-    const rates = new Set(this.selectedItemsForMerge.map(item => item.vatRate));
-    return rates.size > 1;
-  }
-
-  get dominantVatRate(): number {
-    const counts = new Map<number, number>();
-    for (const item of this.selectedItemsForMerge) {
-      counts.set(item.vatRate, (counts.get(item.vatRate) ?? 0) + 1);
+  setMode(mode: 'edit' | 'accounting' | 'merge'): void {
+    if (mode !== 'merge') {
+      this.selectedForMerge.clear();
     }
-    let dominant = this.selectedItemsForMerge[0]?.vatRate;
-    let max = 0;
-    for (const [rate, count] of counts) {
-      if (count > max) { max = count; dominant = rate; }
+    this.currentMode = mode;
+  }
+
+  toggleMergeSelection(itemId: number | undefined): void {
+    if (itemId == null) return;
+    if (this.selectedForMerge.has(itemId)) {
+      this.selectedForMerge.delete(itemId);
+    } else {
+      this.selectedForMerge.add(itemId);
     }
-    return dominant;
+  }
+
+  isSelectedForMerge(itemId: number | undefined): boolean {
+    if (itemId == null) return false;
+    return this.selectedForMerge.has(itemId);
   }
 
   mergeItems(): void {
     this.mergedItemName = this.selectedItemsForMerge[0]?.name ?? '';
-    this.mergeConfirmOpen = true;
+    this.mergeConfirmOpen.set(true);
   }
 
-  async confirmMerge(): Promise<void> {
-    this.receiptService.mergeReceiptItems(
-      this.receiptId,
-      { itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName }
-    ).then(() => {
-      this.mergeConfirmOpen = false;
-      this.selectedForMerge.clear();
-      this.onFetchReceipt();
-      toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
+  toggleGroup(key: string): void {
+    this.openGroups[key] = !this.openGroups[key];
+  }
+
+  startEditingCell(event: Event, cellKey: string): void {
+    if (this.currentMode !== 'edit') return;
+    event.stopPropagation();
+    this.editingCell = cellKey;
+  }
+
+  assignAccountToItem(): void {
+    const selectedAccount = this.selectedAccountsPerItem()[this.selectedItemForAccount()!];
+    if (!selectedAccount) return;
+
+    this.items.forEach(item => {
+      if (item.id === this.selectedItemForAccount()) {
+        item.accountValue = selectedAccount.number;
+      }
     });
+
+    this.closeDrawer();
+    this.searchQuery.set('');
+    this.selectedItemForAccount.set(null);
+  }
+
+  onAccountChange(itemId: number, account: Account): void {
+    this.selectedAccountsPerItem.update(map => ({ ...map, [itemId]: account }));
+  }
+
+  openDrawer(item: any): void {
+    this.selectedItemForAccount.set(item.id);
+    this.selectedItemName = item.name;
+    this.drawerOpen.set(true);
+
+    this.onFetchAccounts().then(() => {
+      if (!this.selectedAccountsPerItem()[item.id] && item.accountValue) {
+        const matchingAccount = this.groupedAccounts()
+          .flatMap((cls: any) => cls.categories)
+          .flatMap((cat: any) => cat.accounts)
+          .find((acc: any) => acc.number === item.accountValue);
+
+        if (matchingAccount) {
+          this.selectedAccountsPerItem.update(map => ({ ...map, [item.id]: matchingAccount }));
+        }
+      }
+    });
+  }
+
+  closeDrawer(): void {
+    this.drawerOpen.set(false);
+  }
+
+  openModal(): void {
+    this.modalOpen.set(true);
+  }
+
+  closeModal(): void {
+    this.modalOpen.set(false);
   }
 }
