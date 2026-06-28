@@ -5,6 +5,7 @@ import {AddDocumentData} from "../models/add-document-data";
 import {Observable} from "rxjs";
 import {HttpEvent} from "@angular/common/http";
 import {ApiService} from "../auth/api";
+import {MergeItemsRequest} from "../models/merge-items-request";
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,13 @@ export class InvoiceService {
     return this.apiService.instance.get(
       `${this.baseUrl}${ApiPaths.invoice.GENERATE_PDF(invoiceId)}`,
       {responseType: 'blob'}
+    );
+  }
+
+  mergeInvoiceItems(invoiceId: number, request: MergeItemsRequest): Promise<any> {
+    return this.apiService.instance.post(
+      `${this.baseUrl}${ApiPaths.invoice.MERGE_INVOICE_ITEMS(invoiceId)}`,
+      request
     );
   }
 }
