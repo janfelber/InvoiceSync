@@ -51,8 +51,6 @@ export class InvoiceDocumentsComponent implements OnInit {
     this.invoiceService.getInvoiceDocumentsById({ invoiceId: this.invoiceId })
       .then(documents => {
         this.documents = documents.data;
-
-        console.log(this.documents);
       })
   }
 
