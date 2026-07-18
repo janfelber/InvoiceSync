@@ -1,4 +1,4 @@
 export interface MonetaryAmountDto {
-    priceWithoutVAT: number;
-    priceWithVAT: number;
+  priceWithoutVAT: number;
+  priceWithVAT: number;
 }

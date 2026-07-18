@@ -117,16 +117,16 @@ export class InvoiceInspect implements OnInit {
     this.mergeConfirmOpen = true;
   }
 
-  // async confirmMerge(): Promise<void> {
-  //   await this.invoiceService.mergeInvoiceItems(
-  //     this.invoiceId,
-  //     { itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName }
-  //   );
-  //   this.mergeConfirmOpen = false;
-  //   this.selectedForMerge.clear();
-  //   this.onFetchInvoice();
-  //   toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
-  // }
+  async confirmMerge(): Promise<void> {
+    await this.invoiceService.mergeInvoiceItems(
+      this.invoiceId,
+      { itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName }
+    );
+    this.mergeConfirmOpen = false;
+    this.selectedForMerge.clear();
+    this.onFetchInvoice();
+    toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
+  }
 
   isSelectedForMerge(itemId: number | undefined): boolean {
     if (itemId == null) return false;
