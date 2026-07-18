@@ -3,12 +3,10 @@ package com.invoicesync.modules.invoice.mapper;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.core.enums.InvoiceStatus;
-import com.invoicesync.core.identity.MyIdentity;
 import com.invoicesync.core.identity.PartnerDto;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
@@ -20,7 +18,10 @@ import com.invoicesync.modules.invoice.model.InvoiceItem;
 import com.invoicesync.modules.invoice.model.InvoiceRequest;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
-import com.invoicesync.modules.receipt.model.ReceiptItemDto;
+import com.invoicesync.shared.AccountingAssignment;
+import com.invoicesync.shared.AccountingLineItem;
+import com.invoicesync.shared.MonetaryAmount;
+import com.invoicesync.shared.OrganizationDto;
 
 @Service
 public class InvoiceMapper {
@@ -73,6 +74,8 @@ public class InvoiceMapper {
         .status(InvoiceStatus.UNPROCESSED)
         .invoiceType(request.invoiceDetails().invoiceType().toString())
         .company(company)
+        .totalPriceWithoutVat(request.invoiceDetails().priceWithoutVAT())
+        .totalPriceWithVat(request.invoiceDetails().priceWithVAT())
         .build();
 
     final List<InvoiceItem> items = request.items().stream()
@@ -125,21 +128,9 @@ public class InvoiceMapper {
   }
 
   public InvoiceResponse toInvoiceResponse(final Invoice invoice) {
-    final List<ReceiptItemDto> items = invoice.getItems().stream()
-        .map(item -> ReceiptItemDto.builder()
-            .id(item.getId())
-            .accountText(item.getAccountText())
-            .name(item.getName())
-            .quantity(item.getQuantity())
-            .unitType(item.getUnitType())
-            .unitPriceWithoutVat(item.getUnitPriceWithoutVat())
-            .unitPriceWithVat(item.getUnitPriceWithVat())
-            .vatRate(item.getVatRate())
-            .totalItemPriceWithoutVat(item.getTotalItemPriceWithoutVat())
-            .totalItemPriceWithVat(item.getTotalItemPriceWithVat())
-            .accountValue(item.getAccountValue())
-            .build())
-        .collect(Collectors.toList());
+    final List<AccountingLineItem> items = invoice.getItems().stream()
+        .map(this::toAccountingLineItem)
+        .toList();
 
     return InvoiceResponse.builder()
         .id(invoice.getId())
@@ -154,27 +145,31 @@ public class InvoiceMapper {
             .status(String.valueOf(invoice.getStatus()))
             .invoiceType(invoice.getInvoiceType())
             .build())
-        .partner(PartnerDto.builder()
+        .totalAmount(MonetaryAmount.builder()
+            .priceWithVAT(invoice.getTotalPriceWithVat())
+            .priceWithoutVAT(invoice.getTotalPriceWithoutVat())
+            .build())
+        .supplier(OrganizationDto.builder()
             .name(invoice.getPartnerName())
             .city(invoice.getPartnerCity())
             .street(invoice.getPartnerStreet())
-            .zip(invoice.getPartnerZip())
+            .postalCode(invoice.getPartnerZip())
             .registrationNumber(invoice.getPartnerRegistrationNumber())
             .taxId(invoice.getPartnerTaxId())
             .vatId(invoice.getPartnerVatId())
             .build())
         .items(items)
-        .company(MyIdentity.builder()
+        .targetCompany(OrganizationDto.builder()
             .id(invoice.getCompany().getId())
             .name(invoice.getCompany().getName())
             .city(invoice.getCompany().getCity())
             .street(invoice.getCompany().getStreet())
             .streetNumber(invoice.getCompany().getStreetNumber())
-            .zip(invoice.getCompany().getZip())
+            .postalCode(invoice.getCompany().getZip())
             .registrationNumber(invoice.getCompany().getRegistrationNumber())
             .taxId(invoice.getCompany().getTaxId())
             .vatId(invoice.getCompany().getVatId())
-            .recipientEmail(invoice.getCompany().getRecipientEmail())
+            .targetCompanyEmail(invoice.getCompany().getRecipientEmail())
             .build())
         .build();
   }
@@ -186,6 +181,28 @@ public class InvoiceMapper {
         .fileName(invoiceDocument.getFilename())
         .createdAt(invoiceDocument.getCreatedDate())
         .note(invoiceDocument.getNote())
+        .build();
+  }
+
+  private AccountingLineItem toAccountingLineItem(final InvoiceItem item) {
+    return AccountingLineItem.builder()
+        .id(item.getId())
+        .name(item.getName())
+        .quantity(item.getQuantity())
+        .unit(item.getUnitType())
+        .vatRate(item.getVatRate())
+        .unitPrice(MonetaryAmount.builder()
+            .priceWithoutVAT(item.getUnitPriceWithoutVat())
+            .priceWithVAT(item.getUnitPriceWithVat())
+            .build())
+        .totalPrice(MonetaryAmount.builder()
+            .priceWithoutVAT(item.getTotalItemPriceWithoutVat())
+            .priceWithVAT(item.getTotalItemPriceWithVat())
+            .build())
+        .accounting(AccountingAssignment.builder()
+            .accountValue(item.getAccountValue())
+            .accountText(item.getAccountText())
+            .build())
         .build();
   }
 

@@ -86,7 +86,7 @@
       <div class="hidden" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
 
         <!-- Invoice identity -->
-        <div class="flex items-center justify-between gap-3 px-4 pt-5 pb-2" *ngIf="invoice.invoiceDetails">
+        <div class="flex items-center justify-between gap-3 px-4 pt-5 pb-2" *ngIf="invoice?.invoiceDetails">
           <div class="flex items-center gap-3">
             <div class="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -99,13 +99,13 @@
             </div>
             <div>
               <div class="flex items-center gap-2 flex-wrap">
-                <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ invoice.invoiceDetails?.invoiceNumber }}</h1>
+                <h1 class="text-xl font-bold text-slate-900 dark:text-white">{{ invoice?.invoiceDetails?.invoiceNumber }}</h1>
                 <span *ngIf="statusLabel" class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset" [ngClass]="statusClasses">
                   {{ statusLabel }}
                 </span>
               </div>
               <p class="text-sm text-slate-500 dark:text-slate-400">
-                VS: <span class="font-medium text-slate-700 dark:text-slate-300">{{ invoice.invoiceDetails?.variableSymbol ?? '—' }}</span>
+                VS: <span class="font-medium text-slate-700 dark:text-slate-300">{{ invoice?.invoiceDetails?.variableSymbol ?? '—' }}</span>
               </p>
             </div>
           </div>

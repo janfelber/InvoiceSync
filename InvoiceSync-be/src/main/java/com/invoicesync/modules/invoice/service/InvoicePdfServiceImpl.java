@@ -10,7 +10,8 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
-import com.invoicesync.modules.receipt.model.ReceiptItemDto;
+import com.invoicesync.shared.AccountingLineItem;
+import com.invoicesync.shared.MonetaryAmount;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,12 +25,16 @@ public class InvoicePdfServiceImpl implements InvoicePdfService {
   public byte[] generateInvoicePdf(final InvoiceResponse invoiceId) {
     // 1. Calculate totals
     BigDecimal subtotal = invoiceId.getItems().stream()
-        .map(ReceiptItemDto::getTotalItemPriceWithoutVat)
+        .map(AccountingLineItem::totalPrice)
+        .filter(Objects::nonNull)
+        .map(MonetaryAmount::priceWithoutVAT)
         .filter(Objects::nonNull)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     BigDecimal total = invoiceId.getItems().stream()
-        .map(ReceiptItemDto::getTotalItemPriceWithVat)
+        .map(AccountingLineItem::totalPrice)
+        .filter(Objects::nonNull)
+        .map(MonetaryAmount::priceWithVAT)
         .filter(Objects::nonNull)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
 

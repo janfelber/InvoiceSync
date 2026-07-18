@@ -63,7 +63,7 @@ export class InvoiceInspect implements OnInit {
   }
 
   invoiceId: any = null;
-  public invoice: InvoiceDetailResponse = {};
+  public invoice: InvoiceDetailResponse | null = null;
   mergeConfirmOpen = false;
 
   ngOnInit(): void {
@@ -87,12 +87,12 @@ export class InvoiceInspect implements OnInit {
     this.currentMode = mode;
   }
 
-  get selectedItemsForMerge(): any[] {
-    return (this.invoice.items || []).filter((item: any) => this.selectedForMerge.has(item.id));
+  get selectedItemsForMerge() {
+    return (this.invoice?.items || []).filter((item) => this.selectedForMerge.has(item.id));
   }
 
   get mergeTotal(): number {
-    return this.selectedItemsForMerge.reduce((sum, item) => sum + (item.totalItemPriceWithVat || 0), 0);
+    return this.selectedItemsForMerge.reduce((sum, item) => sum + (item.totalPrice.priceWithVAT || 0), 0);
   }
 
   get hasMixedVatRates(): boolean {
@@ -142,26 +142,16 @@ export class InvoiceInspect implements OnInit {
     }
   }
 
-  get totalWithoutVat(): number {
-    return (this.invoice.items || []).reduce((sum, item) =>
-      sum + (item.quantity || 0) * (item.unitPriceWithoutVat || 0), 0);
-  }
-
   get totalVat(): number {
-    return (this.invoice.items || []).reduce((sum, item) =>
-      sum + (item.quantity || 0) * (item.unitPriceWithoutVat || 0) * ((item.vatRate || 0) / 100), 0);
-  }
-
-  get totalWithVat(): number {
-    return (this.invoice.items || []).reduce((sum, item) =>
-      sum + (item.totalItemPriceWithVat || 0), 0);
+    return (this.invoice?.items || []).reduce((sum, item) =>
+      sum + (item.quantity || 0) * (item.unitPrice.priceWithoutVAT || 0) * ((item.vatRate || 0) / 100), 0);
   }
 
   get vatBreakdown(): { rate: number; base: number; vat: number }[] {
     const map = new Map<number, { base: number; vat: number }>();
-    for (const item of this.invoice.items || []) {
+    for (const item of this.invoice?.items || []) {
       const rate = item.vatRate || 0;
-      const base = (item.quantity || 0) * (item.unitPriceWithoutVat || 0);
+      const base = (item.quantity || 0) * (item.unitPrice.priceWithoutVAT || 0);
       const vat = base * (rate / 100);
       const existing = map.get(rate) ?? { base: 0, vat: 0 };
       map.set(rate, { base: existing.base + base, vat: existing.vat + vat });
@@ -172,17 +162,17 @@ export class InvoiceInspect implements OnInit {
   }
 
   get statusLabel(): string {
-    switch (this.invoice.invoiceDetails?.status?.toUpperCase()) {
+    switch (this.invoice?.invoiceDetails.status?.toUpperCase()) {
       case 'PAID': return 'Uhradená';
       case 'UNPAID': return 'Neuhradená';
       case 'OVERDUE': return 'Po splatnosti';
       case 'CANCELLED': return 'Stornovaná';
-      default: return this.invoice.invoiceDetails?.status ?? '—';
+      default: return this.invoice?.invoiceDetails.status ?? '—';
     }
   }
 
   get statusClasses(): string {
-    switch (this.invoice.invoiceDetails?.status?.toUpperCase()) {
+    switch (this.invoice?.invoiceDetails.status?.toUpperCase()) {
       case 'PAID': return 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/20 dark:text-green-400';
       case 'UNPAID': return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20 dark:bg-yellow-900/20 dark:text-yellow-400';
       case 'OVERDUE': return 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/20 dark:text-red-400';
@@ -195,7 +185,7 @@ export class InvoiceInspect implements OnInit {
   }
 
   async onFetchAccounts() {
-    const companyId = this.invoice.company?.id;
+    const companyId = this.invoice?.targetCompany.id;
     if (!companyId) return;
     const response = await this.postingAccountService.findAvailableAccounts({
       companyId,
@@ -235,7 +225,7 @@ export class InvoiceInspect implements OnInit {
   assignAccountToItem(): void {
     const selectedAccount = this.selectedAccountsPerItem[this.selectedItemForAccount];
     if (!selectedAccount) return;
-    const items = this.invoice.items || [];
+    const items = this.invoice?.items || [];
     items.forEach((item: any) => {
       if (item.id === this.selectedItemForAccount) {
         item.accountValue = selectedAccount.number;

@@ -1,5 +1,6 @@
 package com.invoicesync.modules.invoice.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,5 +147,17 @@ public class Invoice extends BaseEntity {
    */
   @Column(name = "invoice_type")
   private String invoiceType;
+
+  /**
+   * Total price of the invoice, excluding VAT.
+   */
+  @Column(name = "total_price_without_vat")
+  private BigDecimal totalPriceWithoutVat;
+
+  /**
+   * Total price of the invoice, including VAT.
+   */
+  @Column(name = "total_price_with_vat")
+  private BigDecimal totalPriceWithVat;
 
 }
