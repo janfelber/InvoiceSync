@@ -1,5 +1,7 @@
 package com.invoicesync.modules.invoice.model;
 
+import java.math.BigDecimal;
+
 import com.invoicesync.core.enums.InvoiceType;
 
 public record InvoiceRequestDetailsDTO(
@@ -27,7 +29,11 @@ public record InvoiceRequestDetailsDTO(
 
     String status,
 
-    InvoiceType invoiceType
+    InvoiceType invoiceType,
+
+    BigDecimal priceWithoutVAT,
+
+    BigDecimal priceWithVAT
 ) {
 
 }

@@ -38,7 +38,7 @@ export class InvoiceDisplay implements OnInit{
   ) {}
 
   invoiceId: any = null;
-  public invoice: InvoiceDetailResponse = {};
+  public invoice: InvoiceDetailResponse | null = null;
 
   ngOnInit(): void {
     initFlowbite();
@@ -50,17 +50,17 @@ export class InvoiceDisplay implements OnInit{
   }
 
   get statusLabel(): string {
-    switch (this.invoice.invoiceDetails?.status?.toUpperCase()) {
+    switch (this.invoice?.invoiceDetails?.status?.toUpperCase()) {
       case 'PAID': return 'Uhradená';
       case 'UNPAID': return 'Neuhradená';
       case 'OVERDUE': return 'Po splatnosti';
       case 'CANCELLED': return 'Stornovaná';
-      default: return this.invoice.invoiceDetails?.status ?? '';
+      default: return this.invoice?.invoiceDetails?.status ?? '';
     }
   }
 
   get statusClasses(): string {
-    switch (this.invoice.invoiceDetails?.status?.toUpperCase()) {
+    switch (this.invoice?.invoiceDetails?.status?.toUpperCase()) {
       case 'PAID': return 'bg-green-50 text-green-700 ring-green-600/20 dark:bg-green-900/20 dark:text-green-400';
       case 'UNPAID': return 'bg-yellow-50 text-yellow-700 ring-yellow-600/20 dark:bg-yellow-900/20 dark:text-yellow-400';
       case 'OVERDUE': return 'bg-red-50 text-red-700 ring-red-600/20 dark:bg-red-900/20 dark:text-red-400';
