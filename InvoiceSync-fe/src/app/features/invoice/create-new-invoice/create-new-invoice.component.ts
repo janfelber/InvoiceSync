@@ -128,17 +128,15 @@ export class CreateNewInvoice implements OnInit {
     return {
       ...this.invoice,
 
-      partner: this.recipientDraft
-        ? {
-          name: this.recipientDraft.name ?? '',
-          city: this.recipientDraft.city ?? '',
-          street: this.recipientDraft.street ?? '',
-          zip: this.recipientDraft.zip ?? '',
-          registrationNumber: this.recipientDraft.registrationNumber ?? '',
-          taxId: this.recipientDraft.taxId ?? '',
-          vatId: this.recipientDraft.vatId ?? ''
-        }
-        : null,
+      partner: {
+        name: this.recipientDraft.name ?? '',
+        city: this.recipientDraft.city ?? '',
+        street: this.recipientDraft.street ?? '',
+        zip: this.recipientDraft.zip ?? '',
+        registrationNumber: this.recipientDraft.registrationNumber ?? '',
+        taxId: this.recipientDraft.taxId ?? '',
+        vatId: this.recipientDraft.vatId ?? ''
+      },
 
       items: [...this.items],
 
@@ -166,10 +164,9 @@ export class CreateNewInvoice implements OnInit {
 
   createInvoice() {
     const payload = this.buildInvoice();
-    console.log(this.selectedSupplierCompany);
     this.invoiceService.createInvoice(
       payload, this.selectedSupplierCompany
-    ).then(response => {
+    ).subscribe(response => {
       toast.success("Faktúra úspešne vytvorená");
     })
   }

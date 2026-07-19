@@ -37,16 +37,28 @@ export class InvoiceDisplay implements OnInit{
     private invoiceService: InvoiceService,
   ) {}
 
-  invoiceId: any = null;
+  invoiceId!: number
   public invoice: InvoiceDetailResponse | null = null;
 
   ngOnInit(): void {
     initFlowbite();
-    this.route.paramMap.subscribe(params => {
-      this.invoiceId = params.get('id') || '';
-      this.invoiceService.getInvoiceById({ invoiceId: this.invoiceId })
-        .then(res => this.invoice = res.data);
-    });
+    const invoiceId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!Number.isInteger(invoiceId)) {
+      console.error('Invalid invoice ID');
+      return;
+    }
+
+    this.invoiceId = invoiceId;
+    this.invoiceService.getInvoiceById(this.invoiceId)
+      .subscribe({
+        next: invoice => {
+          this.invoice = invoice;
+        },
+        error: error => {
+          console.error('Invoice loading failed:', error);
+        }
+      });
   }
 
   get statusLabel(): string {

@@ -62,21 +62,26 @@ export class InvoiceInspect implements OnInit {
   ) {
   }
 
-  invoiceId: any = null;
+  invoiceId!: number;
   public invoice: InvoiceDetailResponse | null = null;
   mergeConfirmOpen = false;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.invoiceId = params.get('id') || '';
-    });
+    const invoiceId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!Number.isInteger(invoiceId)) {
+      console.error('Invalid invoice ID');
+      return;
+    }
+
+    this.invoiceId = invoiceId;
     this.onFetchInvoice();
   }
 
-  onFetchInvoice() {
-    this.invoiceService.getInvoiceById({ invoiceId: this.invoiceId })
-      .then(invoice => {
-        this.invoice = invoice.data;
+  onFetchInvoice(): void {
+    this.invoiceService.getInvoiceById(this.invoiceId)
+      .subscribe(invoice => {
+        this.invoice = invoice;
       });
   }
 
@@ -117,16 +122,28 @@ export class InvoiceInspect implements OnInit {
     this.mergeConfirmOpen = true;
   }
 
-  async confirmMerge(): Promise<void> {
-    await this.invoiceService.mergeInvoiceItems(
-      this.invoiceId,
-      { itemIds: Array.from(this.selectedForMerge), description: this.mergedItemName }
-    );
-    this.mergeConfirmOpen = false;
-    this.selectedForMerge.clear();
-    this.onFetchInvoice();
-    toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
-  }
+  // TODO Fix merge items bug: the backend Invoice API path does not exist.
+  // confirmMerge(): void {
+  //   this.invoiceService.mergeInvoiceItems(
+  //     this.invoiceId,
+  //     {
+  //       itemIds: [...this.selectedForMerge],
+  //       description: this.mergedItemName
+  //     }
+  //   )
+  //     .subscribe({
+  //       next: () => {
+  //         this.mergeConfirmOpen = false;
+  //         this.selectedForMerge.clear();
+  //         this.onFetchInvoice();
+  //         toast.success(this.translate.instant('RECEIPT_DETAIL.TOAST_MERGE_SUCCESS'));
+  //       },
+  //       error: error => {
+  //         console.error('Invoice item merge failed:', error);
+  //         toast.error('Položky faktúry sa nepodarilo zlúčiť.');
+  //       }
+  //     });
+  // }
 
   isSelectedForMerge(itemId: number | undefined): boolean {
     if (itemId == null) return false;

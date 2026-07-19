@@ -6,6 +6,9 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatDialogWindowComponent} from "../../../shared/mat-dialog-window/mat-dialog-window.component";
 import {ToastrService} from "ngx-toastr";
 import {initFlowbite} from "flowbite";
+import {finalize} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
+import {InvoiceDocumentResponse} from "../../../core/models/invoice-document-response";
 
 @Component({
   selector: 'invoice-documents',
@@ -29,8 +32,8 @@ export class InvoiceDocumentsComponent implements OnInit {
     private toastr: ToastrService,
   ) { }
 
-  invoiceId: any = null;
-  public documents: any[] = [];
+  invoiceId!: number;
+  public documents: InvoiceDocumentResponse[] = [];
 
   addDocumentModalOpen = false;
   isUploading = false;
@@ -40,78 +43,89 @@ export class InvoiceDocumentsComponent implements OnInit {
   public note: string = '';
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.invoiceId = params.get('id') || '';
-    });
+    const invoiceId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!Number.isInteger(invoiceId)) {
+      console.error('Invalid invoice ID');
+      return;
+    }
+
+    this.invoiceId = invoiceId;
     initFlowbite();
     this.onFetchDocuments();
   }
 
-  onFetchDocuments() {
-    this.invoiceService.getInvoiceDocumentsById({ invoiceId: this.invoiceId })
-      .then(documents => {
-        this.documents = documents.data;
+  onFetchDocuments(): void {
+    this.invoiceService.getInvoiceDocumentsById(this.invoiceId)
+      .subscribe(documents => {
+        this.documents = documents;
       })
   }
 
-  async uploadDocument() {
+  uploadDocument(): void {
     if (!this.selectedFile) return;
 
     this.isUploading = true;
-    try {
-      const r = await this.invoiceService.addDocumentToInvoice({
+
+    this.invoiceService.addDocumentToInvoice({
         invoiceId: this.invoiceId,
         file: this.selectedFile,
         additionalDocumentData: {
           documentName:this.documentName,
           note:this.note
         }
+      })
+      .pipe(
+        finalize(() => {
+          this.isUploading = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.closeAddDocumentModal();
+          this.onFetchDocuments();
+        },
+        error: error => {
+          console.error('Document upload failed:', error);
+        }
       });
-      this.closeAddDocumentModal();
-      this.onFetchDocuments();
-      console.log(r);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.isUploading = false;
-    }
   }
 
-  async deleteDocumentFromInvoice(documentId: number) {
+  deleteDocumentFromInvoice(documentId: number): void {
+    this.invoiceService.deleteDocumentFromInvoice(documentId)
+      .subscribe({
+        next: () => {
+          this.onFetchDocuments(); // refresh až po úspechu
+          this.toastr.success('Dokument bol úspešne odstránený.', '', {
+            timeOut: 3000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            closeButton: true,
+            positionClass: 'toast-top-right',
+          });
+        },
+        error: (error: HttpErrorResponse) => {
+          if (error.status === 409) {
+            this.toastr.warning('Je nám ľúto, tento dokument nemožno vymazať, pretože je zdrojom údajov pre faktúru.', '', {
+              timeOut: 6000,
+              progressBar: true,
+              progressAnimation: 'increasing',
+              closeButton: true,
+              positionClass: 'toast-top-right',
+            });
+            return;
+          }
 
-    try {
-      await this.invoiceService.deleteDocumentFromInvoice({
-        documentId: documentId
-      }).then(() => {
-        this.onFetchDocuments(); // refresh až po úspechu
-        this.toastr.success('Dokument bol úspešne odstránený.', '', {
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
+          console.error('Chyba pri mazaní:', error);
+          this.toastr.error('Chyba pri mazaní, skúste neskôr alebo kontaktuje podporu', '', {
+            timeOut: 3000,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            closeButton: true,
+            positionClass: 'toast-top-right',
+          });
+        }
       });
-    } catch (error: any) {
-      if (error.response?.status === 409) {
-        this.toastr.warning('Je nám ľúto, tento dokument nemožno vymazať, pretože je zdrojom údajov pre faktúru.', '', {
-          timeOut: 6000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
-      } else {
-        console.error('Chyba pri mazaní:', error);
-        this.toastr.error('Chyba pri mazaní, skúste neskôr alebo kontaktuje podporu', '', {
-          timeOut: 3000,
-          progressBar: true,
-          progressAnimation: 'increasing',
-          closeButton: true,
-          positionClass: 'toast-top-right',
-        });
-      }
-    }
   }
 
   onFileSelected(event: Event) {

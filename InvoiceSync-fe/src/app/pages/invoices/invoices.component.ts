@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {AxiosService} from "../../core/axios.service";
 import {DatePipe} from "@angular/common";
 import {FormsModule} from '@angular/forms';
@@ -7,11 +7,13 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {initDropdowns, initFlowbite} from "flowbite";
 import {InvoiceService} from "../../core/services/invoice.service";
-import {PageInvoiceResponse} from "./page-response-receipt-response";
 import {CompanyService} from "../../core/services/company.service";
 import {PageResponseCompanyResponseDto} from "../../core/models/page-response-company-response-dto";
 import {toast} from "ngx-sonner";
 import {InvoiceBulkChangeService} from "../../core/services/bulk/invoice-bulk-change.service";
+import {createEmptyPage, PageResponse} from "../../core/models/page-response";
+import {InvoiceResponseTable} from "./invoice-response-table";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-test',
@@ -25,7 +27,10 @@ import {InvoiceBulkChangeService} from "../../core/services/bulk/invoice-bulk-ch
   templateUrl: './invoices.component.html',
   styleUrl: './invoices.component.css'
 })
-export class Invoices implements OnInit, AfterViewInit {
+export class Invoices implements OnInit {
+
+  public invoiceResponse: PageResponse<InvoiceResponseTable> =
+    createEmptyPage<InvoiceResponseTable>(10);
 
   selectedIds = new Set<number>();
   isBulkView = false;
@@ -36,6 +41,8 @@ export class Invoices implements OnInit, AfterViewInit {
   isUploading = false;
   importFinished = false;
   filterOpen = true;
+  public loading = false;
+  public error: string | null = null;
 
   selectedFile: File | null = null;
 
@@ -57,10 +64,6 @@ export class Invoices implements OnInit, AfterViewInit {
     content: []
   };
 
-  public invoiceResponse: PageInvoiceResponse = {
-    content: []
-  };
-
   selectedStatus = '';
   selectedStatusLabel = 'Všetky';
   statusOptions = [
@@ -75,6 +78,7 @@ export class Invoices implements OnInit, AfterViewInit {
     private invoiceBulkChangeService: InvoiceBulkChangeService,
     private axiosService: AxiosService,
     private router: Router,
+    private readonly cdr: ChangeDetectorRef,
   ) {
   }
 
@@ -128,17 +132,26 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   onFetchAllInvoices(): void {
+    this.loading = true;
+    this.error = null;
+
     this.invoiceService.findAllInvoicesByUser({
       page: this.page,
       size: this.size
-    })
-      .then(response => {
-        this.invoiceResponse = response.data;
-        console.log(this.invoiceResponse);
-        setTimeout(() => initFlowbite(), 0);
       })
-      .catch(error => {
-        console.error("Chyba: ", error);
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+        next: response => {
+          this.invoiceResponse = response;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.error = 'There was an error fetching invoices.';
+        }
       });
   }
 
@@ -159,9 +172,11 @@ export class Invoices implements OnInit, AfterViewInit {
     });
   }
 
+  // TODO IS-225 migrate this to use http client instead of axios
   onFetchCompanies() {
     this.companyService.findAllCompaniesByUser().then(response => {
       this.companyResponse = response.data;
+      this.cdr.detectChanges();
     }).catch(error => {
       console.error(error);
     });
@@ -186,27 +201,35 @@ export class Invoices implements OnInit, AfterViewInit {
     this.activeTab = tabId;
   }
 
-  async onUploadFile(): Promise<void> {
 
-    console.log(this.selectedCompanyId)
+  // TODO IS-12 when implementing AI extraction of value from invoice migrate this to use http instead of axios
+  onUploadFile(): void {
+    if (!this.selectedFile) {
+      return;
+    }
 
     this.isUploading = true;
     this.importFinished = false;
-    try {
-      if (this.selectedFile) {
-        await this.invoiceService.uploadInvoice({
-          file: this.selectedFile,
-          companyId: this.selectedCompanyId
+
+    this.invoiceService.uploadInvoice({
+      file: this.selectedFile,
+      companyId: this.selectedCompanyId
+    })
+      .pipe(
+        finalize(() => {
+          this.isUploading = false;
+          this.importFinished = true;
         })
-      }
-      this.closeUploadModal();
-      this.onFetchAllInvoices();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.isUploading = false;
-      this.importFinished = true;
-    }
+      )
+      .subscribe({
+        next: () => {
+          this.closeUploadModal();
+          this.onFetchAllInvoices();
+        },
+        error: error => {
+          console.error('Invoice upload failed:', error);
+        }
+      });
   }
 
   //select company from dropdown
@@ -221,15 +244,28 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   onCompanyChange(company: any) {
+    this.loading = true;
+    this.error = null;
+
     this.invoiceService.findAllInvoicesByCompany({
       page: this.page,
       size: this.size,
       companyId: company.id
-    }).then(response => {
-      this.invoiceResponse = response.data;
-    }).catch(error => {
-      console.error(error);
-    });
+      })
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+        next: response => {
+          this.invoiceResponse = response;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.error = 'There was an error fetching invoices.';
+        }
+      });
   }
 
   goToPreviousPage() {
@@ -251,7 +287,7 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   get IsLastPage(): boolean {
-    return this.page >= ((this.invoiceResponse?.totalPages ?? 1) - 1);
+    return this.page >= ((this.invoiceResponse.totalPages ?? 1) - 1);
   }
 
   onRowCheckboxChange(id: number | undefined): void {
@@ -264,15 +300,17 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   get allSelected(): boolean {
-    return this.invoiceResponse.content.length > 0 &&
-      this.invoiceResponse.content.every(i => i.id != null && this.selectedIds.has(i.id));
+    const invoices = this.invoiceResponse.content;
+    return invoices.length > 0 &&
+      invoices.every(i => i.id != null && this.selectedIds.has(i.id));
   }
 
   toggleSelectAll(): void {
+    const invoices = this.invoiceResponse.content;
     if (this.allSelected) {
-      this.invoiceResponse.content.forEach(i => { if (i.id != null) this.selectedIds.delete(i.id); });
+      invoices.forEach(i => { if (i.id != null) this.selectedIds.delete(i.id); });
     } else {
-      this.invoiceResponse.content.forEach(i => { if (i.id != null) this.selectedIds.add(i.id); });
+      invoices.forEach(i => { if (i.id != null) this.selectedIds.add(i.id); });
     }
   }
 
@@ -281,18 +319,26 @@ export class Invoices implements OnInit, AfterViewInit {
   }
 
   downloadSelectedPdfs() {
-    this.invoiceBulkChangeService.bulkDownloadInvoices(this.selectedIds)
-      .then((response) => {
-        const blob = new Blob([response.data]);
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'invoices.zip';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      })
-      .catch(error => {
-        console.error('Download error:', error);
+    if (this.selectedIds.size === 0) {
+      return;
+    }
+
+    this.invoiceBulkChangeService.bulkDownloadInvoices([...this.selectedIds])
+      .subscribe({
+        next: (blob: Blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+
+          link.href = url;
+          link.download = 'invoices.zip';
+          link.click();
+
+          URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          console.error('Download error:', error);
+          toast.error('Faktúry sa nepodarilo stiahnuť.');
+        }
       });
   }
 
@@ -327,20 +373,25 @@ export class Invoices implements OnInit, AfterViewInit {
 
   applyBulkAction(): void {
     if (!this.selectedAction) return;
-    const ids = Array.from(this.selectedIds);
+    const ids = [...this.selectedIds];
     const count = ids.length;
     const action = this.selectedAction;
     this.invoiceBulkChangeService.executeBulkChange(action as any, ids)
-      .then(() => {
-        this.selectedIds.clear();
-        this.goBack();
-        this.onFetchAllInvoices();
-        if (action === 'DELETE') {
-          toast.success(`Deleted ${count} invoices${count !== 1 ? 's' : ''}`, { duration: 3000 });
+      .subscribe({
+        next: () => {
+          this.selectedIds.clear();
+          this.goBack();
+          this.onFetchAllInvoices();
+
+          toast.success(
+            `Deleted ${count} invoice${count !== 1 ? 's' : ''}`,
+            { duration: 3000 }
+          );
+        },
+        error: (error) => {
+          console.error('Bulk action failed:', error);
+          toast.error('Akcia zlyhala. Skúste znova.');
         }
-      })
-      .catch(error => {
-        toast.error('Akcia zlyhala. Skúste znova.');
       });
   }
 
