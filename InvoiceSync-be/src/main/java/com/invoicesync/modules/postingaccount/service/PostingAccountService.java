@@ -23,7 +23,7 @@ public interface PostingAccountService {
    * @return list of posting accounts grouped by class
    */
   PageResponse<PostingAccountResponse> getAllPostingAccounts(int page, int size, PostingAccountType type,
-      Long companyId, Authentication connectedUser);
+      Long companyId);
 
   /**
    * Imports posting accounts from an external file (e.g., CSV, Excel) into the system.
@@ -32,7 +32,7 @@ public interface PostingAccountService {
    * @param companyId ID of the company
    * @return list of successfully added accounts
    */
-  List<AddedAccountDTO> importExternalPostingAccounts(MultipartFile file, final Long companyId);
+  List<AddedAccountDTO> importExternalPostingAccounts(MultipartFile file, Long companyId);
 
   /**
    * Saves a new posting account or updates an existing one based on the request.
@@ -40,8 +40,8 @@ public interface PostingAccountService {
    * @param request posting account data
    * @return ID of the saved posting account
    */
-  Long savePostingAccount(final PostingAccountRequest request);
+  Long savePostingAccount(PostingAccountRequest request);
 
-  void deletePostingAccount(final Long accountId, Authentication connectedUser);
+  void deletePostingAccount(Long accountId, Authentication connectedUser);
 
 }

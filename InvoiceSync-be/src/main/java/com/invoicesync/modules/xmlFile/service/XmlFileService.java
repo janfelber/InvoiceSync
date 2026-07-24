@@ -26,6 +26,7 @@ public interface XmlFileService {
    * @return paginated response of XML file imports
    */
   PageResponse<XmlFileResponseDto> finalAllXmlImportsByUser(int size, int page, Authentication connectedUser);
+
   /**
    * Processes the XML import identified by importId and generates a ZIP file.
    *
@@ -34,6 +35,6 @@ public interface XmlFileService {
    * @return byte array representing the generated ZIP file
    * @throws Exception if processing fails
    */
-  byte[] processAndGenerateZip(final Long importId, Authentication connectedUser) throws Exception;
+  byte[] processAndGenerateZip(Long importId, Authentication connectedUser) throws Exception;
 
 }

@@ -33,11 +33,9 @@ public interface ReceiptService {
    * @param size number of receipts per page
    * @param page page number (0-based)
    * @param companyId ID of the company
-   * @param connectedUser currently authenticated user
    * @return paginated response of receipts
    */
-  PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int page, int size, Long companyId,
-      Authentication connectedUser);
+  PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(int page, int size, Long companyId);
 
   /**
    * Finds an receipt by its unique ID.
@@ -55,7 +53,7 @@ public interface ReceiptService {
    * @param connectedUser currently authenticated user
    * @return ID of the newly created receipt
    */
-  Long saveReceipt(final MultipartFile qrCodeImage, final Long companyId, final Authentication connectedUser);
+  Long saveReceipt(MultipartFile qrCodeImage, Long companyId, Authentication connectedUser);
 
   /**
    * Updates an existing receipt.
@@ -71,7 +69,7 @@ public interface ReceiptService {
 
   void deleteReceiptDocument(Long documentId, Authentication connectedUser);
 
-  List<DocumentTableResponse> findDocumentsByReceipt(Long receiptId, Authentication connectedUser);
+  List<DocumentTableResponse> findDocumentsByReceipt(Long receiptId);
 
   /**
    * Deletes an existing receipt.
@@ -81,9 +79,9 @@ public interface ReceiptService {
    */
   void deleteReceiptById(Long receiptId, Authentication connectedUser);
 
-  void mergeReceiptItems(Long receiptId, MergeItemsRequest request, Authentication connectedUser);
+  void mergeReceiptItems(Long receiptId, MergeItemsRequest request);
 
-  void reassignReceipt(Long receiptId, Long newCompanyId, Authentication connectedUser);
+  void reassignReceipt(Long receiptId, Long newCompanyId);
   //
   // ReceiptDetailsDTO getReceiptById(Long id);
   //

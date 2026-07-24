@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +41,10 @@ import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
 import com.invoicesync.modules.activity.service.UserActivityService;
+import com.invoicesync.modules.auth.security.OwnedCompany;
+import com.invoicesync.modules.auth.security.OwnedInvoice;
+import com.invoicesync.modules.auth.security.OwnedInvoiceDocument;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.modules.document.model.AddDocumentData;
@@ -125,13 +128,11 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public Long saveInvoice(final MultipartFile file, final Long companyId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public Long saveInvoice(final MultipartFile file, final @OwnedCompany Long companyId,
+      final Authentication connectedUser) {
     final Company company = companyRepository.findById(companyId)
         .orElseThrow(() -> new EntityNotFoundException("Company " + companyId + " not found"));
-
-    if (!company.getCreatedBy().equals(connectedUser.getName())) {
-      throw new AccessDeniedException("You cannot add invoices to this company");
-    }
 
     limitGuardService.checkLimit(connectedUser, LimitType.INVOICE_PROCESS);
 
@@ -214,7 +215,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public Long createInvoice(final InvoiceCreate invoiceRequest, final Long companyId,
+  @RequiresOwnership
+  public Long createInvoice(final InvoiceCreate invoiceRequest, final @OwnedCompany Long companyId,
       final Authentication connectedUser) {
     final Company company = companyRepository.findById(companyId)
         .orElseThrow(() -> new EntityNotFoundException("Company " + companyId + " not found"));
@@ -230,7 +232,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public InvoiceResponse findById(final Long invoiceId) {
+  @RequiresOwnership
+  public InvoiceResponse findById(final @OwnedInvoice Long invoiceId) {
     return invoiceRepository.findById(invoiceId)
         .map(invoiceMapper::toInvoiceResponse)
         .orElseThrow(() -> new ResponseStatusException(
@@ -268,29 +271,18 @@ public class InvoiceServiceImpl implements InvoiceService {
   // }
 
   @Override
+  @RequiresOwnership
   public PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(final int page, final int size,
-      final Long companyId,
-      final Authentication connectedUser) {
+      final @OwnedCompany Long companyId) {
     final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Invoice> invoices = invoiceRepository.findAll(withCompanyId(companyId), pageable);
-
-    final List<InvoiceResponseTable> invoiceResponseTable = invoices.stream()
-        .map(invoiceMapper::toInvoiceTableResponse)
-        .toList();
 
     return PageResponse.from(invoices, invoiceMapper::toInvoiceTableResponse);
   }
 
   @Override
-  public List<DocumentTableResponse> findDocumentsByInvoiceId(final Long invoiceId,
-      final Authentication connectedUser) {
-
-    final Invoice invoice = invoiceRepository.findById(invoiceId)
-        .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
-
-    if (!invoice.getCompany().getCreatedBy().equals(connectedUser.getName())) {
-      throw new AccessDeniedException("You cannot access documents of this invoice");
-    }
+  @RequiresOwnership
+  public List<DocumentTableResponse> findDocumentsByInvoiceId(final @OwnedInvoice Long invoiceId) {
 
     final List<InvoiceDocument> documents = invoiceDocumentRepository.findByInvoiceId(invoiceId);
 
@@ -300,7 +292,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public byte[] generateInvoicePdf(final Long invoiceId) {
+  @RequiresOwnership
+  public byte[] generateInvoicePdf(final @OwnedInvoice Long invoiceId) {
     final InvoiceResponse invoice = findById(invoiceId);
     return invoicePdfService.generateInvoicePdf(invoice);
   }
@@ -315,8 +308,9 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public void uploadDocument(final MultipartFile document, final Boolean canDeleteDocument, final Long invoiceId,
-      final Authentication connectedUser,
+  @RequiresOwnership
+  public void uploadDocument(final MultipartFile document, final Boolean canDeleteDocument,
+      @OwnedInvoice final Long invoiceId, final Authentication connectedUser,
       @Nullable final AddDocumentData additionalDocumentData) {
 
     final Invoice invoice = invoiceRepository.findById(invoiceId)
@@ -345,7 +339,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public void deleteDocument(final Long documentId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public void deleteDocument(final @OwnedInvoiceDocument Long documentId, final Authentication connectedUser) {
     final InvoiceDocument invoiceDocument = invoiceDocumentRepository.findById(documentId)
         .orElseThrow(() -> new EntityNotFoundException("No document found with the ID: " + documentId));
 
@@ -373,13 +368,10 @@ public class InvoiceServiceImpl implements InvoiceService {
   }
 
   @Override
-  public void deleteInvoice(final Long invoiceId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public void deleteInvoice(final @OwnedInvoice Long invoiceId) {
     final Invoice invoice = invoiceRepository.findById(invoiceId)
         .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
-
-    if (!invoice.getCompany().getCreatedBy().equals(connectedUser.getName())) {
-      throw new AccessDeniedException("You cannot delete this invoice");
-    }
 
     for (final InvoiceDocument doc : invoice.getDocuments()) {
       final Path filePath = Paths.get(doc.getDocument());

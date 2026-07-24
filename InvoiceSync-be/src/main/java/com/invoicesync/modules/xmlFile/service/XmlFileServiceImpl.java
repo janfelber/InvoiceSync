@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.FeatureEnum;
+import com.invoicesync.modules.auth.security.OwnedXML;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.repository.UserRepository;
 import com.invoicesync.modules.xml.processing.XMLProcessor;
@@ -84,7 +86,9 @@ public class XmlFileServiceImpl implements XmlFileService {
    * @throws Exception If an error occurs
    */
   @Override
-  public byte[] processAndGenerateZip(final Long importId, final Authentication connectedUser) throws Exception {
+  @RequiresOwnership
+  public byte[] processAndGenerateZip(final @OwnedXML Long importId, final Authentication connectedUser)
+      throws Exception {
 
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
         .orElseThrow(() -> new IllegalStateException("User not found."));

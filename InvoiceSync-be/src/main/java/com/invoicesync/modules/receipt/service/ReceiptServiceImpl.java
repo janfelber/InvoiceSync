@@ -23,14 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,6 +46,10 @@ import com.invoicesync.core.utils.ParseUtils;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
 import com.invoicesync.modules.activity.service.UserActivityService;
+import com.invoicesync.modules.auth.security.OwnedCompany;
+import com.invoicesync.modules.auth.security.OwnedReceipt;
+import com.invoicesync.modules.auth.security.OwnedReceiptDocument;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.modules.document.model.AddDocumentData;
@@ -88,8 +89,6 @@ public class ReceiptServiceImpl implements ReceiptService {
 
   private final CompanyRepository companyRepository;
 
-  // private final CurrentUserService currentUserService;
-
   @Autowired
   public ReceiptServiceImpl(
       @Qualifier("ekasaWebClient") final WebClient ekasaClient,
@@ -121,8 +120,9 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(final int page, final int size, final Long companyId,
-      final Authentication connectedUser) {
+  @RequiresOwnership
+  public PageResponse<ReceiptResponseDto> findReceiptsByCompanyId(final int page, final int size,
+      final @OwnedCompany Long companyId) {
     final Pageable pageable = PageableFactory.ofDescending(page, size);
     final Page<Receipt> receipts = receiptRepository.findAll(withCompanyId(companyId), pageable);
 
@@ -130,17 +130,18 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public ReceiptDetailDto findById(final long receiptId) {
-    System.out.println(receiptId);
+  @RequiresOwnership
+  public ReceiptDetailDto findById(final @OwnedReceipt long receiptId) {
     return receiptRepository.findById(receiptId)
         .map(receiptMapper::toReceiptResponse)
-        .orElseThrow(() -> new ResponseStatusException(
-            HttpStatus.NOT_FOUND, "Receipt with ID " + receiptId + " not found."));
+        .orElseThrow();
   }
 
   @Transactional
   @Override
-  public Long saveReceipt(final MultipartFile qrCodeImage, final Long companyId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public Long saveReceipt(final MultipartFile qrCodeImage, final @OwnedCompany Long companyId,
+      final Authentication connectedUser) {
     try {
 
       final String receiptId = decodeQRCode(qrCodeImage.getInputStream());
@@ -166,7 +167,8 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public Receipt updateReceiptById(final Long receiptId, final ReceiptRequest request) {
+  @RequiresOwnership
+  public Receipt updateReceiptById(final @OwnedReceipt Long receiptId, final ReceiptRequest request) {
 
     final Receipt receipt = receiptRepository.findById(receiptId)
         .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
@@ -231,8 +233,9 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
+  @RequiresOwnership
   public void uploadReceiptDocument(final MultipartFile document, final Boolean canDeleteDocument,
-      final Long receiptId,
+      final @OwnedReceipt Long receiptId,
       final Authentication connectedUser, @Nullable final AddDocumentData additionalDocumentData) {
 
     final Receipt receipt = receiptRepository.findById(receiptId)
@@ -260,7 +263,8 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public void deleteReceiptDocument(final Long documentId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public void deleteReceiptDocument(final @OwnedReceiptDocument Long documentId, final Authentication connectedUser) {
     final ReceiptDocument receiptDocument = receiptDocumentRepository.findById(documentId)
         .orElseThrow(() -> new EntityNotFoundException("Receipt document not found"));
 
@@ -271,27 +275,16 @@ public class ReceiptServiceImpl implements ReceiptService {
       );
     }
 
-    if (receiptDocument.getReceipt().getCreatedBy() != null && receiptDocument.getReceipt().getCreatedBy()
-        .equals(connectedUser.getName())) {
-      receiptDocumentRepository.deleteById(documentId);
-      userActivityService.save(
-          UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_RECEIPT,
-              "User deleted from receipt" + receiptDocument.getReceipt().getId() + "with name "
-                  + receiptDocument.getDocumentName()));
-    } else {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this document.");
-    }
+    receiptDocumentRepository.deleteById(documentId);
+    userActivityService.save(
+        UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_RECEIPT,
+            "User deleted from receipt" + receiptDocument.getReceipt().getId() + "with name "
+                + receiptDocument.getDocumentName()));
   }
 
   @Override
-  public List<DocumentTableResponse> findDocumentsByReceipt(final Long receiptId, final Authentication connectedUser) {
-    final Receipt receipt = receiptRepository.findById(receiptId)
-        .orElseThrow(() -> new EntityNotFoundException("No receipt found with id: " + receiptId));
-
-    if (!receipt.getCreatedBy().equals(connectedUser.getName())) {
-      throw new AccessDeniedException("You cannot access documents of this receipt.");
-    }
-
+  @RequiresOwnership
+  public List<DocumentTableResponse> findDocumentsByReceipt(final @OwnedReceipt Long receiptId) {
     final List<ReceiptDocument> documents = documentRepository.findByReceiptId(receiptId);
 
     return documents.stream()
@@ -300,29 +293,19 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public void deleteReceiptById(final Long receiptId, final Authentication connectedUser) {
-    final Receipt deleteReceipt = receiptRepository.findById(receiptId)
-        .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
-
-    if (deleteReceipt.getCreatedBy() != null && deleteReceipt.getCreatedBy().equals(connectedUser.getName())) {
-      receiptRepository.deleteById(receiptId);
-      userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DELETE_RECEIPT,
-          "User deleted receipt with id" + receiptId));
-    } else {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this receipt.");
-    }
+  @RequiresOwnership
+  public void deleteReceiptById(final @OwnedReceipt Long receiptId, final Authentication connectedUser) {
+    receiptRepository.deleteById(receiptId);
+    userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DELETE_RECEIPT,
+        "User deleted receipt with id" + receiptId));
   }
 
   @Override
-  public void mergeReceiptItems(final Long receiptId, final MergeItemsRequest request,
-      final Authentication connectedUser) {
+  @RequiresOwnership
+  public void mergeReceiptItems(final @OwnedReceipt Long receiptId, final MergeItemsRequest request) {
 
     final Receipt receipt = receiptRepository.findById(receiptId)
         .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
-
-    if (!receipt.getCreatedBy().equals(connectedUser.getName())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to modify this receipt.");
-    }
 
     final List<ReceiptItem> itemsToMerge = receipt.getItems().stream()
         .filter(item -> request.itemIds().contains(item.getId()))
@@ -362,20 +345,13 @@ public class ReceiptServiceImpl implements ReceiptService {
   }
 
   @Override
-  public void reassignReceipt(final Long receiptId, final Long newCompanyId, final Authentication connectedUser) {
+  @RequiresOwnership
+  public void reassignReceipt(final @OwnedReceipt Long receiptId, final @OwnedCompany Long newCompanyId) {
     final Receipt receiptToChange = receiptRepository.findById(receiptId)
         .orElseThrow(() -> new EntityNotFoundException("Receipt not found"));
 
     final Company newCompany = companyRepository.findById(newCompanyId)
         .orElseThrow(() -> new EntityNotFoundException("Company not found"));
-
-    if (!receiptToChange.getCreatedBy().equals(connectedUser.getName())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to reassign this receipt.");
-    }
-
-    if (!newCompany.getCreatedBy().equals(connectedUser.getName())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to assign to this company.");
-    }
 
     receiptToChange.setCompany(newCompany);
     receiptRepository.save(receiptToChange);
