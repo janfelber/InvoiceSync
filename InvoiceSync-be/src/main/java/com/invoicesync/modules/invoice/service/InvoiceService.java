@@ -23,10 +23,9 @@ public interface InvoiceService {
    * @param connectedUser currently authenticated user
    * @return ID of the newly created invoice
    */
-  Long saveInvoice(final MultipartFile file, final Long companyId, final Authentication connectedUser);
+  Long saveInvoice(MultipartFile file, Long companyId, Authentication connectedUser);
 
-  Long createInvoice(final InvoiceCreate invoiceCreateRequest, final Long companyId,
-      final Authentication connectedUser);
+  Long createInvoice(InvoiceCreate invoiceCreateRequest, Long companyId, Authentication connectedUser);
 
   /**
    * Finds an invoice by its unique ID.
@@ -42,11 +41,9 @@ public interface InvoiceService {
    * @param size number of invoices per page
    * @param page page number (0-based)
    * @param companyId ID of the company
-   * @param connectedUser currently authenticated user
    * @return paginated response of invoices
    */
-  PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(int size, int page, Long companyId,
-      Authentication connectedUser);
+  PageResponse<InvoiceResponseTable> findInvoicesByCompanyId(int size, int page, Long companyId);
 
   /**
    * Retrieves a paginated list of invoices associated with the connected user.
@@ -85,18 +82,16 @@ public interface InvoiceService {
    * Deletes an invoice by its ID.
    *
    * @param invoiceId ID of the invoice to delete
-   * @param connectedUser currently authenticated user
    */
-  void deleteInvoice(Long invoiceId, Authentication connectedUser);
+  void deleteInvoice(Long invoiceId);
 
   /**
    * Retrieves a list of invoice documents by ID.
    *
    * @param invoiceId ID of the invoice
-   * @param connectedUser currently authenticated user
    * @return list response of invoice documents
    */
-  List<DocumentTableResponse> findDocumentsByInvoiceId(Long invoiceId, Authentication connectedUser);
+  List<DocumentTableResponse> findDocumentsByInvoiceId(Long invoiceId);
 
   byte[] generateInvoicePdf(Long invoiceId);
 

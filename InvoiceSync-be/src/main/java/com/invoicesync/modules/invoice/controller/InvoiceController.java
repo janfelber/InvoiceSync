@@ -63,18 +63,16 @@ public class InvoiceController {
   public ResponseEntity<PageResponse<InvoiceResponseTable>> findInvoicesByCompanyId(
       @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
       @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
-      @PathVariable("company-id") final Long companyId,
-      final Authentication connectedUser) {
+      @PathVariable("company-id") final Long companyId) {
     return ResponseEntity.ok(
-        invoiceService.findInvoicesByCompanyId(page, size, companyId, connectedUser));
+        invoiceService.findInvoicesByCompanyId(page, size, companyId));
   }
 
   @GetMapping(Api.INVOICE_GET_DOCUMENTS)
   public ResponseEntity<List<DocumentTableResponse>> findDocumentsByInvoiceId(
-      @PathVariable("invoice-id") final Long invoiceId,
-      final Authentication connectedUser) {
+      @PathVariable("invoice-id") final Long invoiceId) {
     return ResponseEntity.ok(
-        invoiceService.findDocumentsByInvoiceId(invoiceId, connectedUser)
+        invoiceService.findDocumentsByInvoiceId(invoiceId)
     );
   }
 
@@ -136,11 +134,8 @@ public class InvoiceController {
   }
 
   @DeleteMapping(Api.INVOICE_DELETE)
-  public void deleteInvoice(
-      @PathVariable("invoice-id") final Long invoiceId,
-      final Authentication connectedUser
-  ) {
-    invoiceService.deleteInvoice(invoiceId, connectedUser);
+  public void deleteInvoice(@PathVariable("invoice-id") final Long invoiceId) {
+    invoiceService.deleteInvoice(invoiceId);
   }
 
   @PostMapping(Api.INVOICE_SEND_EMAIL)

@@ -40,8 +40,8 @@ public class PostingAccountController {
       @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
       @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
       @RequestParam(name = "type", defaultValue = "INTERNAL") final PostingAccountType type,
-      @PathVariable("companyId") final Long companyId, final Authentication connectedUser) {
-    return ResponseEntity.ok(postingAccountService.getAllPostingAccounts(page, size, type, companyId, connectedUser));
+      @PathVariable("companyId") final Long companyId) {
+    return ResponseEntity.ok(postingAccountService.getAllPostingAccounts(page, size, type, companyId));
   }
 
   @GetMapping(Api.POST_ACCOUNT_GET_CLASSES)

@@ -16,6 +16,8 @@ import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.NumberConfigType;
 import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.accountingdocument.AccountDocumentNumberService;
+import com.invoicesync.modules.auth.security.OwnedCompany;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.company.mapper.CompanyMapper;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.model.CompanyBillingDto;
@@ -65,7 +67,8 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
-  public CompanyResponseDto findById(final Long companyId) {
+  @RequiresOwnership
+  public CompanyResponseDto findById(final @OwnedCompany Long companyId) {
     return companyRepository.findById(companyId)
         .map(companyMapper::toCompanyResponse)
         .orElseThrow(() -> new EntityNotFoundException("No company found with the ID: " + companyId));
@@ -78,7 +81,8 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
-  public Company updateCompany(final Long companyId, final CompanyRequest request) {
+  @RequiresOwnership
+  public Company updateCompany(final @OwnedCompany Long companyId, final CompanyRequest request) {
     final Company oldCompany = companyRepository.findById(companyId).orElse(null);
 
     if (oldCompany == null) {
@@ -122,7 +126,8 @@ public class CompanyServiceImpl implements CompanyService {
   }
 
   @Override
-  public Company deleteCompany(final Long companyId) {
+  @RequiresOwnership
+  public Company deleteCompany(final @OwnedCompany Long companyId) {
     final Company company = companyRepository.findById(companyId)
         .orElseThrow(() -> new IllegalArgumentException("Company not found"));
 

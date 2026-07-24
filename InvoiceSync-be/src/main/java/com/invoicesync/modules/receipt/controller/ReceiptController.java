@@ -93,10 +93,9 @@ public class ReceiptController {
   public ResponseEntity<PageResponse<ReceiptResponseDto>> findReceiptsByCompanyId(
       @RequestParam(name = "page", defaultValue = "" + PageableFactory.DEFAULT_PAGE, required = false) final int page,
       @RequestParam(name = "size", defaultValue = "" + PageableFactory.DEFAULT_SIZE, required = false) final int size,
-      @PathVariable("company-id") final Long companyId,
-      final Authentication connectedUser) {
+      @PathVariable("company-id") final Long companyId) {
 
-    return ResponseEntity.ok(receiptService.findReceiptsByCompanyId(page, size, companyId, connectedUser));
+    return ResponseEntity.ok(receiptService.findReceiptsByCompanyId(page, size, companyId));
   }
 
   @GetMapping(Api.RECEIPT_GET_BY_ID)
@@ -106,10 +105,9 @@ public class ReceiptController {
 
   @GetMapping(Api.RECEIPT_GET_DOCUMENTS)
   public ResponseEntity<List<DocumentTableResponse>> findDocumentsByReceiptId(
-      @PathVariable("receipt-id") final Long receiptId,
-      final Authentication connectedUser) {
+      @PathVariable("receipt-id") final Long receiptId) {
     return ResponseEntity.ok(
-        receiptService.findDocumentsByReceipt(receiptId, connectedUser)
+        receiptService.findDocumentsByReceipt(receiptId)
     );
   }
 
@@ -130,10 +128,9 @@ public class ReceiptController {
   @PostMapping(Api.RECEIPT_MERGE_ITEMS)
   public void mergeReceiptItems(
       @PathVariable("receipt-id") final Long receiptId,
-      @RequestBody final MergeItemsRequest request,
-      Authentication connectedUser
+      @RequestBody final MergeItemsRequest request
   ) {
-    receiptService.mergeReceiptItems(receiptId, request, connectedUser);
+    receiptService.mergeReceiptItems(receiptId, request);
   }
 
   @PostMapping(value = Api.RECEIPT_UPLOAD_DOCUMENT, consumes = "multipart/form-data")

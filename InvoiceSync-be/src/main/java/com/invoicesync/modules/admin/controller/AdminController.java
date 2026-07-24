@@ -3,6 +3,7 @@ package com.invoicesync.modules.admin.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(Api.ADMIN)
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
   private final AdminService adminService;

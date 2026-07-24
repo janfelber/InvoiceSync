@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.enums.PostingAccountType;
 import com.invoicesync.core.utils.AccountUtils;
+import com.invoicesync.modules.auth.security.OwnedCompany;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.repository.CompanyRepository;
 import com.invoicesync.modules.postingaccount.documents.cash.CashDocumentAccount;
@@ -118,8 +120,9 @@ public class PostingAccountServiceImpl implements PostingAccountService {
   }
 
   @Override
+  @RequiresOwnership
   public PageResponse<PostingAccountResponse> getAllPostingAccounts(final int page, final int size,
-      final PostingAccountType type, final Long companyId, final Authentication connectedUser) {
+      final PostingAccountType type, final @OwnedCompany Long companyId) {
     final Pageable pageable = PageRequest.of(page, size);
 
     Page.empty(pageable);
@@ -132,7 +135,9 @@ public class PostingAccountServiceImpl implements PostingAccountService {
   }
 
   @Override
-  public List<AddedAccountDTO> importExternalPostingAccounts(final MultipartFile file, final Long companyId) {
+  @RequiresOwnership
+  public List<AddedAccountDTO> importExternalPostingAccounts(final MultipartFile file,
+      @OwnedCompany final Long companyId) {
     final List<AddedAccountDTO> addedAccounts = new ArrayList<>();
 
     try (InputStream inputStream = file.getInputStream();
@@ -201,6 +206,7 @@ public class PostingAccountServiceImpl implements PostingAccountService {
   }
 
   @Override
+  //TODO check ownership — request.companyId() is not verified to belong to connectedUser
   public Long savePostingAccount(final PostingAccountRequest request) {
     final BaseDocumentAccountEntity account = postingAccountMapper.toPostingAccount(request);
 
@@ -211,6 +217,7 @@ public class PostingAccountServiceImpl implements PostingAccountService {
   }
 
   @Override
+  //TODO check ownership
   public void deletePostingAccount(final Long accountId, final Authentication connectedUser) {
     final InternalDocumentAccount internalDocumentAccount = internalDocumentAccountRepository.findById(accountId)
         .orElseThrow();

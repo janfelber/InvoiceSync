@@ -52,7 +52,7 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
       final Authentication connectedUser) {
     BulkActionRequest request = action.deserialize(bulkChangeRequest, objectMapper);
     switch (action) {
-      case DELETE -> deleteInvoices((BulkDeleteRequest) request, connectedUser);
+      case DELETE -> deleteInvoices((BulkDeleteRequest) request);
       default -> throw new IllegalArgumentException("Unsupported bulk action: " + action);
     }
 
@@ -96,8 +96,8 @@ public class InvoiceBulkChangeServiceImpl implements InvoiceBulkChangeService {
     }
   }
 
-  private void deleteInvoices(final BulkDeleteRequest deleteRequest, final Authentication connectedUser) {
-    deleteRequest.ids().forEach(id -> invoiceService.deleteInvoice(id, connectedUser));
+  private void deleteInvoices(final BulkDeleteRequest deleteRequest) {
+    deleteRequest.ids().forEach(invoiceService::deleteInvoice);
   }
 
 }

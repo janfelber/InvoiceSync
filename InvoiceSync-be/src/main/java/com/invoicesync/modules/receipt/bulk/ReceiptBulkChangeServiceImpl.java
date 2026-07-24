@@ -33,7 +33,7 @@ public class ReceiptBulkChangeServiceImpl implements ReceiptBulkChangeService {
     BulkActionRequest request = action.deserialize(bulkChangeRequest, objectMapper);
     switch (action) {
       case DELETE -> deleteReceipts((BulkDeleteRequest) request, connectedUser);
-      case COMPANY_REASSIGN -> reassignCompanyReceipts((BulkReassignRequest) request, connectedUser);
+      case COMPANY_REASSIGN -> reassignCompanyReceipts((BulkReassignRequest) request);
       default -> throw new IllegalArgumentException("Unsupported bulk action: " + action);
     }
   }
@@ -42,8 +42,8 @@ public class ReceiptBulkChangeServiceImpl implements ReceiptBulkChangeService {
     deleteRequest.ids().forEach(id -> receiptService.deleteReceiptById(id, connectedUser));
   }
 
-  private void reassignCompanyReceipts(BulkReassignRequest reassignRequest, final Authentication connectedUser) {
-    reassignRequest.ids().forEach(id -> receiptService.reassignReceipt(id, reassignRequest.companyId(), connectedUser));
+  private void reassignCompanyReceipts(BulkReassignRequest reassignRequest) {
+    reassignRequest.ids().forEach(id -> receiptService.reassignReceipt(id, reassignRequest.companyId()));
   }
 
 }
