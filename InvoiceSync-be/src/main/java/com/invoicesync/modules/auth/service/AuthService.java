@@ -3,17 +3,19 @@ package com.invoicesync.modules.auth.service;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.invoicesync.modules.auth.model.LoginRequest;
-import com.invoicesync.modules.auth.model.LoginResponse;
 import com.invoicesync.modules.auth.model.RegisterRequest;
+import com.invoicesync.modules.auth.model.dto.AuthResult;
 
 public interface AuthService {
 
   void registerUser(RegisterRequest registerRequest);
 
-  LoginResponse login(LoginRequest loginRequest);
+  AuthResult login(LoginRequest loginRequest, String deviceInfo);
 
-  LoginResponse refreshToken(HttpServletRequest refreshTokenRequest);
+  AuthResult refreshToken(HttpServletRequest refreshTokenRequest, String deviceInfo);
 
   void logout(HttpServletRequest logoutRequest);
+
+  void logoutAllDevices(HttpServletRequest logoutRequest);
 
 }

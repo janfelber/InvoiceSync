@@ -18,6 +18,8 @@ public final class Api {
 
   public static final String LOGOUT = "/logout";
 
+  public static final String LOGOUT_ALL = "/logout-all";
+
   public static final String AUTH_MOBILE = "/auth/mobile";
 
   public static final String AUTH_MOBILE_QR = "/qr";

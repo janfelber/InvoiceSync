@@ -13,13 +13,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.invoicesync.core.audit.CustomUserDetails;
+import com.invoicesync.core.exception.InvalidTokenException;
 import com.invoicesync.modules.auth.service.MobileAuthService;
 import com.invoicesync.modules.user.model.User;
+
+import io.jsonwebtoken.Claims;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -71,17 +75,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       }
       filterChain.doFilter(request, response);
     } else {
-      if (!jwtService.isValidToken(jwt)) {
-        filterChain.doFilter(request, response);
-        return;
-      }
+      try {
+        Claims claims = jwtService.parseAccessToken(jwt);
+        String userId = claims.getSubject();
 
-      username = jwtService.getUsernameFromToken(jwt);
-
-      if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-        if (jwtService.validateTokenForUser(jwt, userDetails)) {
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+          final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userId);
           final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
               userDetails,
               null,
@@ -92,6 +91,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           );
           SecurityContextHolder.getContext().setAuthentication(authToken);
         }
+
+      } catch (InvalidTokenException | UsernameNotFoundException e) {
+        SecurityContextHolder.clearContext();
       }
       filterChain.doFilter(request, response);
     }

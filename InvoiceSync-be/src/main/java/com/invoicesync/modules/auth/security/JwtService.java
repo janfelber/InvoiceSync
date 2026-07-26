@@ -1,8 +1,7 @@
 package com.invoicesync.modules.auth.security;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -11,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.invoicesync.modules.auth.model.TokenPair;
+import com.invoicesync.core.exception.InvalidTokenException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -33,25 +32,25 @@ public class JwtService {
   @Value("${security.jwt.refresh-token.expiration}")
   private long refreshExpirationMs;
 
-  // generate the token
+  @Value("${security.jwt.issuer}")
+  private String jwtIssuer;
+
+  @Value("${security.jwt.audience}")
+  private String jwtAudience;
+
   public String generateToken(final Authentication authentication) {
-    return generateAccessToken(authentication, jwtExpirationMs, new HashMap<>());
-  }
-
-  private String generateAccessToken(final Authentication authentication, final long expirationMs,
-      final Map<String, String> claims) {
     final UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-
     final Date now = new Date();
-    final Date expiryDate = new Date(now.getTime() + expirationMs);
+    final Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
     return Jwts.builder()
-        .header()
-        .add("typ", "JWT")
-        .and()
+        .header().add("typ", "JWT").and()
         .subject(userPrincipal.getUsername())
-        .claims(claims)
-        .issuedAt(now)
+        .id(UUID.randomUUID().toString())
+        .issuer(jwtIssuer)
+        .audience().add(jwtAudience).and()
+        .claim("tokenType", "access")
+        .issuedAt(new Date())
         .expiration(expiryDate)
         .signWith(getSignInKey())
         .compact();
@@ -62,66 +61,32 @@ public class JwtService {
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
-  // generate the referes
-  public String generateRefreshToken(final Authentication authentication) {
-    final Map<String, String> claims = new HashMap<>();
-    claims.put("tokenType", "refresh");
-
-    return generateAccessToken(authentication, refreshExpirationMs, claims);
-  }
-
-  // validate roken
-  public boolean validateTokenForUser(final String authToken, final UserDetails userDetails) {
-    final String username = getUsernameFromToken(authToken);
-
-    return username != null && username.equals(userDetails.getUsername());
-  }
-
-  public boolean isValidToken(final String token) {
-    return extractAllClaims(token) != null;
-  }
-
   public String getUsernameFromToken(final String token) {
+    return parseAccessToken(token).getSubject();
+  }
+
+  public Claims parseAccessToken(final String token) {
     final Claims claims = extractAllClaims(token);
-    if (claims != null) {
-      return claims.getSubject();
-    }
-
-    return null;
-  }
-
-  // valideate if token is refesrsh
-  public boolean isRefreshToken(final String authToken) {
-    final Claims claims = extractAllClaims(authToken);
-
-    if (claims == null) {
-      return false;
-    }
-
-    return "refresh".equals(claims.get("tokenType"));
-  }
-
-  public TokenPair generateTokenPair(final Authentication authentication) {
-    final String accessToken = generateToken(authentication);
-    final String refreshToken = generateRefreshToken(authentication);
-
-    return new TokenPair(accessToken, refreshToken);
-
-  }
-
-  private Claims extractAllClaims(final String authToken) {
-    Claims claims = null;
-    try {
-      claims = Jwts.parser()
-          .verifyWith(getSignInKey())
-          .build()
-          .parseSignedClaims(authToken)
-          .getPayload();
-    } catch (JwtException | IllegalArgumentException e) {
-      throw new RuntimeException(e);
+    if (!"access".equals(claims.get("tokenType", String.class))) {
+      throw new InvalidTokenException("Not an access token");
     }
 
     return claims;
+  }
+
+  private Claims extractAllClaims(final String token) {
+    try {
+      return Jwts.parser()
+          .verifyWith(getSignInKey())
+          .requireIssuer(jwtIssuer)
+          .requireAudience(jwtAudience)
+          .build()
+          .parseSignedClaims(token)
+          .getPayload();
+    } catch (JwtException | IllegalArgumentException e) {
+      throw new InvalidTokenException("Token invalid or expired", e);
+    }
+
   }
 
 }
