@@ -66,4 +66,14 @@ public class GlobalExceptionHandler {
         .body(Map.of("field", "email", "message", ex.getMessage()));
   }
 
+  @ExceptionHandler(InvalidRefreshTokenException.class)
+  public ResponseEntity<String> handleInvalidRefreshToken(final InvalidRefreshTokenException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token not recognized");
+  }
+
+  @ExceptionHandler(InvalidTokenException.class)
+  public ResponseEntity<String> handleInvalidToken(final InvalidTokenException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token invalid or expired");
+  }
+
 }

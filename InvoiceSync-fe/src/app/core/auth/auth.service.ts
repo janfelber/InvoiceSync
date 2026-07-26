@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, of, tap} from 'rxjs';
-import {catchError, map} from "rxjs/operators";
+import {catchError, finalize, map, shareReplay} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
 
@@ -23,6 +23,7 @@ export class AuthService {
   userRole: string | null = null;
   userFeatures: string[] = [];
   private baseUrl: string = environment.apiUrl;
+  private refreshInProgress$: Observable<LoginResponse> | null = null;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -53,7 +54,14 @@ export class AuthService {
   }
 
   refreshToken(): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
+    // Refresh tokens are single-use (rotated on every call) — if multiple requests
+    // hit 401 at the same time, they must share one in-flight refresh instead of
+    // each firing its own, or all but the first will be rejected as token reuse.
+    if (this.refreshInProgress$) {
+      return this.refreshInProgress$;
+    }
+
+    this.refreshInProgress$ = this.http.post<LoginResponse>(
       `${this.baseUrl}/auth/refresh-token`,
       {},
       { withCredentials: true }
@@ -63,8 +71,12 @@ export class AuthService {
         this.currentUser = res.user;
         this.userRole = res.user.role;
         this.userFeatures = res.user.features;
-      })
+      }),
+      shareReplay(1),
+      finalize(() => this.refreshInProgress$ = null)
     );
+
+    return this.refreshInProgress$;
   }
 
   // alls when the application starts or reloads
