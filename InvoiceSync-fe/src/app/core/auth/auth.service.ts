@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import {Observable, of, tap} from 'rxjs';
 import {catchError, finalize, map, shareReplay} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
+import {SKIP_AUTH} from "./skip-auth.token";
 
 interface User {
   role: string;
@@ -12,7 +13,6 @@ interface User {
 
 interface LoginResponse {
   accessToken: string;
-  refreshToken: string;
   user: User;
 }
 
@@ -24,14 +24,22 @@ export class AuthService {
   userFeatures: string[] = [];
   private baseUrl: string = environment.apiUrl;
   private refreshInProgress$: Observable<LoginResponse> | null = null;
+  private authChannel = new BroadcastChannel('auth');
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.authChannel.onmessage = (event) => {
+      if (event.data === 'logout') {
+        this.clearLocalState();
+        this.router.navigate(['/login']);
+      }
+    };
+  }
 
   login(credentials: { username: string; password: string }): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(
       `${this.baseUrl}/auth/login`,
       credentials,
-      { withCredentials: true }
+      { withCredentials: true, context: new HttpContext().set(SKIP_AUTH, true) }
     ).pipe(
       tap(res => {
         this.accessToken = res.accessToken;
@@ -45,7 +53,8 @@ export class AuthService {
   register(data: { fullName: string; username: string; registrationNumber: string; password: string; email: string; phoneNumber: string }): Observable<void> {
     return this.http.post<void>(
       `${this.baseUrl}/auth/register`,
-      data
+      data,
+      { context: new HttpContext().set(SKIP_AUTH, true) }
     ).pipe(
       tap(() => {
         this.router.navigate(['/login']);
@@ -64,7 +73,7 @@ export class AuthService {
     this.refreshInProgress$ = this.http.post<LoginResponse>(
       `${this.baseUrl}/auth/refresh-token`,
       {},
-      { withCredentials: true }
+      { withCredentials: true, context: new HttpContext().set(SKIP_AUTH, true) }
     ).pipe(
       tap(res => {
         this.accessToken = res.accessToken;
@@ -107,10 +116,20 @@ export class AuthService {
   }
 
   logout() {
-    this.http.post(`${this.baseUrl}/auth/logout`, {}, { withCredentials: true }).subscribe(() => {
-      this.accessToken = null;
-      this.currentUser = null;
-      this.router.navigate(['/login']);
-    });
+    this.http.post(`${this.baseUrl}/auth/logout`, {}, { withCredentials: true }).pipe(
+      catchError(() => of(null)),
+      finalize(() => {
+        this.clearLocalState();
+        this.authChannel.postMessage('logout');
+        this.router.navigate(['/login']);
+      })
+    ).subscribe();
+  }
+
+  private clearLocalState(): void {
+    this.accessToken = null;
+    this.currentUser = null;
+    this.userRole = null;
+    this.userFeatures = [];
   }
 }

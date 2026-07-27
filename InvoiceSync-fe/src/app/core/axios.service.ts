@@ -7,24 +7,9 @@ import { environment } from '../../environments/environment';
 })
 export class AxiosService {
 
-  private accessToken: string | null = null;
-
   constructor() {
     axios.defaults.baseURL = environment.apiUrl;
 
-  }
-
-  getAccessToken(): string | null {
-    return this.accessToken;
-  }
-
-  setAuthToken(token: string | null ): void {
-    if (token != null) {
-      window.localStorage.setItem("auth_token", token)
-    }
-    else {
-      window.localStorage.removeItem("auth_token")
-    }
   }
 
   request(method: string, url: string, data: any, config: any = {}): Promise<any> {
