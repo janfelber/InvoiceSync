@@ -1,40 +1,39 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import { AuthService } from "./auth/auth.service";
-import {catchError, Observable, switchMap, throwError} from "rxjs";
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, switchMap, throwError } from 'rxjs';
+import { AuthService } from './auth/auth.service';
+import { SKIP_AUTH } from './auth/skip-auth.token';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
-
-    let authReq = req;
-    if (token) {
-      authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`)
-      });
-    }
-
-    return next.handle(authReq).pipe(
-      catchError(err => {
-        if (err.status === 401 && !req.url.includes('/auth/refresh-token')) {
-          return this.authService.refreshToken().pipe(
-            switchMap(() => {
-              const newToken = this.authService.getToken();
-              return next.handle(req.clone({
-                headers: req.headers.set('Authorization', `Bearer ${newToken}`)
-              }));
-            }),
-            catchError(() => {
-              this.authService.logout();
-              return throwError(err);
-            })
-          );
-        }
-        return throwError(err);
-      })
-    );
+  if (req.context.get(SKIP_AUTH)) {
+    return next(req);
   }
-}
+
+  const token = authService.getToken();
+  const authReq = token
+    ? req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) })
+    : req;
+
+  return next(authReq).pipe(
+    catchError((err: HttpErrorResponse) => {
+      if (err.status !== 401) {
+        return throwError(() => err);
+      }
+
+      return authService.refreshToken().pipe(
+        switchMap(() => {
+          const newToken = authService.getToken();
+          return next(req.clone({
+            headers: req.headers.set('Authorization', `Bearer ${newToken}`)
+          }));
+        }),
+        catchError(() => {
+          authService.logout();
+          return throwError(() => err);
+        })
+      );
+    })
+  );
+};
