@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.invoicesync.core.audit.CustomUserDetails;
 import com.invoicesync.modules.auth.model.MobileApiKey;
 import com.invoicesync.modules.auth.model.MobileQrResponse;
@@ -68,7 +68,7 @@ public class MobileAuthServiceImpl implements MobileAuthService {
           "token", sessionToken,
           "baseUrl", "https://api.invoicesync.sk"
       ));
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       throw new RuntimeException(e);
     }
 

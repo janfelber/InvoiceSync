@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 import com.invoicesync.core.enums.PaymentType;
 import com.invoicesync.modules.receipt.model.ReceiptItemRequest;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
