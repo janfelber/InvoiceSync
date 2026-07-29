@@ -13,8 +13,8 @@ public class EkasaClientConfig {
   }
 
   @Bean(name = "openAiWebClient")
-  public WebClient openAiWebClient(final WebClient.Builder builder) {
-    return builder.baseUrl("https://api.openai.com/v1").build();
+  public WebClient openAiWebClient() {
+    return WebClient.builder().baseUrl("https://api.openai.com/v1").build();
   }
 
 }

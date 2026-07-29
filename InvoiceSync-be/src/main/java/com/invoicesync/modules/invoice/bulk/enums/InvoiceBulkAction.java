@@ -1,7 +1,7 @@
 package com.invoicesync.modules.invoice.bulk.enums;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.BulkActionRequest;
 import com.invoicesync.modules.receipt.model.request.BulkDeleteRequest;
 
@@ -29,7 +29,7 @@ public enum InvoiceBulkAction {
   public <T extends BulkActionRequest> T deserialize(String rawBody, ObjectMapper mapper) {
     try {
       return (T) mapper.readValue(rawBody, requestType);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       throw new IllegalArgumentException("Invalid request body for action " + this.name(), e);
     }
   }

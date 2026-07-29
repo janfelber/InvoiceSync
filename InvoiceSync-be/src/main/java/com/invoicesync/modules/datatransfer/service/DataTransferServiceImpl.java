@@ -26,9 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.modules.datatransfer.dto.DataTransferHeaderMappingDto;
@@ -106,8 +107,9 @@ public class DataTransferServiceImpl implements DataTransferService {
         }
 
         // Premena dát na JSON
-        final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false);
+        final ObjectMapper objectMapper = JsonMapper.builder()
+            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false)
+            .build();
         final String jsonData = objectMapper.writeValueAsString(excelData);
         System.out.println("jsonData: " + jsonData);
         dataTransfer.setData(jsonData);

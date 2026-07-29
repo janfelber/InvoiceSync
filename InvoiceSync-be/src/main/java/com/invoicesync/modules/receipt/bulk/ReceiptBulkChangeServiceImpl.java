@@ -3,7 +3,7 @@ package com.invoicesync.modules.receipt.bulk;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.BulkActionRequest;
 import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.receipt.model.request.BulkDeleteRequest;

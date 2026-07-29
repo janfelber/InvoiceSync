@@ -15,7 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.BulkActionRequest;
 import com.invoicesync.core.exception.DownloadDocumentException;
 import com.invoicesync.modules.activity.model.UserActivityType;

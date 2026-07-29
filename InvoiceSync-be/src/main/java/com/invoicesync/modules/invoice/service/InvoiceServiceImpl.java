@@ -29,9 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.LimitType;
@@ -184,7 +184,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     try {
       request = objectMapper.readValue(openApiResponse, InvoiceRequest.class);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       log.error("Failed to parse JSON response from OpenAI", e);
       throw new RuntimeException("Invalid JSON from OpenAI", e);
     }
