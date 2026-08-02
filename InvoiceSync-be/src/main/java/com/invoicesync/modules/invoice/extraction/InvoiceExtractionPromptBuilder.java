@@ -5,7 +5,6 @@ public class InvoiceExtractionPromptBuilder {
   private InvoiceExtractionPromptBuilder() {
   }
 
-  //
   private static final String PROMPT_TEMPLATE =
       """
           You are an invoice data extraction tool.

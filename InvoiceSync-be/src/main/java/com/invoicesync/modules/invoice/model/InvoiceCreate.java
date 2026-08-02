@@ -9,10 +9,15 @@ import lombok.Builder;
 
 @Builder
 public record InvoiceCreate(
+
     Long companyId,
+
     InvoiceRequestDetailsDTO invoiceDetails,
+
     PartnerDto partner,
+
     List<AccountingLineItem> items
+
 ) {
 
 }
