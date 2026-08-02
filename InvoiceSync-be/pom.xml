@@ -79,14 +79,8 @@
 
     <dependency>
       <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
-      <version>5.4.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.poi</groupId>
       <artifactId>poi</artifactId>
-      <version>5.4.0</version> <!-- alebo aktuálnu stabilnú -->
+      <version>5.4.0</version>
     </dependency>
 
     <dependency>
@@ -98,12 +92,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.stripe</groupId>
-      <artifactId>stripe-java</artifactId>
-      <version>29.1.0</version>
     </dependency>
 
     <dependency>
@@ -137,11 +125,6 @@
       <version>0.13.0</version>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-vision</artifactId>
-      <version>3.7.0</version>
-    </dependency>
 
     <dependency>
       <groupId>org.json</groupId>
@@ -173,15 +156,15 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.pdfbox</groupId>
-      <artifactId>pdfbox</artifactId>
-      <version>2.0.24</version>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client</artifactId>
+      <version>2.9.0</version>
     </dependency>
 
     <dependency>
-      <groupId>com.google.cloud</groupId>
-      <artifactId>google-cloud-storage</artifactId>
-      <version>2.20.0</version>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-gson</artifactId>
+      <version>2.2.0</version>
     </dependency>
 
     <dependency>

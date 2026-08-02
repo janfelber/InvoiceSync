@@ -78,23 +78,27 @@ public class InvoiceMapper {
         .totalPriceWithVat(request.invoiceDetails().priceWithVAT())
         .build();
 
-    final List<InvoiceItem> items = request.items().stream()
+    final List<InvoiceItem> items = request.items() == null ? List.of() : request.items().stream()
         .map(itemRequest -> {
-          final BigDecimal unitPriceWithVat = itemRequest.getUnitPriceWithVat() != null
-              ? itemRequest.getUnitPriceWithVat()
-              : BigDecimal.ZERO;
-          final BigDecimal unitPriceWithoutVat = unitPriceWithVat
-              .divide(BigDecimal.valueOf(1 + itemRequest.getVatRate() / 100.0), 2, RoundingMode.HALF_UP);
-          final BigDecimal qty = BigDecimal.valueOf(itemRequest.getQuantity());
+          final int vatRate = itemRequest.vatRate() != null ? itemRequest.vatRate() : 0;
+          final int quantity = itemRequest.quantity() != null ? itemRequest.quantity() : 0;
 
-          System.out.println(unitPriceWithVat);
+          final BigDecimal unitPriceWithVat = itemRequest.unitPrice() != null
+              && itemRequest.unitPrice().priceWithVAT() != null
+                  ? itemRequest.unitPrice().priceWithVAT()
+                  : BigDecimal.ZERO;
+          final BigDecimal unitPriceWithoutVat = itemRequest.unitPrice() != null
+              && itemRequest.unitPrice().priceWithoutVAT() != null
+                  ? itemRequest.unitPrice().priceWithoutVAT()
+                  : unitPriceWithVat.divide(BigDecimal.valueOf(1 + vatRate / 100.0), 2, RoundingMode.HALF_UP);
+          final BigDecimal qty = BigDecimal.valueOf(quantity);
 
           final InvoiceItem item = new InvoiceItem();
           item.setInvoice(invoice);
-          item.setName(itemRequest.getName());
-          item.setQuantity(itemRequest.getQuantity());
-          item.setUnitType(itemRequest.getUnitType());
-          item.setVatRate(itemRequest.getVatRate());
+          item.setName(itemRequest.name());
+          item.setQuantity(quantity);
+          item.setUnitType(itemRequest.unit());
+          item.setVatRate(vatRate);
           item.setUnitPriceWithVat(unitPriceWithVat);
           item.setUnitPriceWithoutVat(unitPriceWithoutVat);
           item.setTotalItemPriceWithVat(unitPriceWithVat.multiply(qty));
@@ -145,6 +149,8 @@ public class InvoiceMapper {
             .status(String.valueOf(invoice.getStatus()))
             .invoiceType(invoice.getInvoiceType())
             .build())
+        // TODO: add totalVatAmount (EUR) here — priceWithVAT - priceWithoutVAT — so the
+        // service is the source of truth instead of the FE recomputing it itself.
         .totalAmount(MonetaryAmount.builder()
             .priceWithVAT(invoice.getTotalPriceWithVat())
             .priceWithoutVAT(invoice.getTotalPriceWithoutVat())

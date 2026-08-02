@@ -76,14 +76,6 @@ public class InvoiceController {
     );
   }
 
-  @PostMapping(value = Api.SAVE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<Long> saveInvoice(
-      @RequestParam("file") final MultipartFile pdfFile,
-      @RequestParam("companyId") final Long companyId,
-      final Authentication connectedUser) throws IOException {
-    return ResponseEntity.ok(invoiceService.saveInvoice(pdfFile, companyId, connectedUser));
-  }
-
   @PostMapping(Api.INVOICE_CREATE)
   public ResponseEntity<Long> createInvoice(
       @RequestParam final Long companyId,
@@ -144,6 +136,14 @@ public class InvoiceController {
       final Authentication connectedUser) throws Exception {
     googleIntegrationService.sendInvoiceEmails(invoiceIds, connectedUser);
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping(Api.UPLOAD_INVOICE)
+  public void save(@PathVariable Long companyId, @RequestParam("file") MultipartFile file,
+      @RequestParam(value = "includeItems", defaultValue = "false") boolean includeItem, Authentication connectedUser)
+      throws Exception {
+
+    invoiceService.save(file.getBytes(), includeItem, companyId, connectedUser);
   }
 
 }

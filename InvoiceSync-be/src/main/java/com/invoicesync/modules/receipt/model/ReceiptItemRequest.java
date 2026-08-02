@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+//TODO rename record name and fields to something more meaningful and generic
 public record ReceiptItemRequest(
     Long id,
 

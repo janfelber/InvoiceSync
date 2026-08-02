@@ -38,6 +38,8 @@ export class Invoices implements OnInit, AfterViewInit {
   filterOpen = true;
 
   selectedFile: File | null = null;
+  modalCompanyId: number | null = null;
+  extractionMode: 'headers' | 'items' = 'headers';
 
   // @ts-ignore
   protected selectedCompanyId: 0;
@@ -173,6 +175,9 @@ export class Invoices implements OnInit, AfterViewInit {
 
   closeUploadModal() {
     this.uploadModalOpen = false;
+    this.selectedFile = null;
+    this.modalCompanyId = null;
+    this.extractionMode = 'headers';
   }
 
   onInvoiceUpload(event: any): void {
@@ -186,23 +191,31 @@ export class Invoices implements OnInit, AfterViewInit {
     this.activeTab = tabId;
   }
 
-  async onUploadFile(): Promise<void> {
+  setExtractionMode(mode: 'headers' | 'items'): void {
+    this.extractionMode = mode;
+  }
 
-    console.log(this.selectedCompanyId)
+  get canConfirmUpload(): boolean {
+    return !!this.selectedFile && !!this.modalCompanyId;
+  }
+
+  async onUploadFile(): Promise<void> {
+    if (!this.canConfirmUpload) return;
 
     this.isUploading = true;
     this.importFinished = false;
     try {
-      if (this.selectedFile) {
-        await this.invoiceService.uploadInvoice({
-          file: this.selectedFile,
-          companyId: this.selectedCompanyId
-        })
-      }
+      await this.invoiceService.uploadInvoice({
+        file: this.selectedFile!,
+        companyId: this.modalCompanyId!,
+        includeItems: this.extractionMode === 'items'
+      });
       this.closeUploadModal();
       this.onFetchAllInvoices();
+      toast.success('Faktúra bola úspešne importovaná.', { duration: 3000 });
     } catch (err) {
       console.error(err);
+      toast.error('Import faktúry zlyhal. Skúste znova.');
     } finally {
       this.isUploading = false;
       this.importFinished = true;

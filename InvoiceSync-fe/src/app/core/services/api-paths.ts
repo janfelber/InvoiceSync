@@ -62,6 +62,7 @@ export const ApiPaths = {
     DELETE_DOCUMENT_FROM_INVOICE: (documentId: number) => `/delete/document/${documentId}`,
     GENERATE_PDF: (invoiceId: number) => `/${invoiceId}/pdf`,
     BULK_DOWNLOAD: '/bulk-download',
+    EXTRACT: (companyId: number) => `/${companyId}/extract`,
   },
   data_transfer: {
     BASE: '/convert',
