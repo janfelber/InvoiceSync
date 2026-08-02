@@ -15,16 +15,6 @@ import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
 
 public interface InvoiceService {
 
-  /**
-   * Creates a new invoice from an uploaded file for a specific company.
-   *
-   * @param file uploaded invoice file
-   * @param companyId ID of the company
-   * @param connectedUser currently authenticated user
-   * @return ID of the newly created invoice
-   */
-  Long saveInvoice(MultipartFile file, Long companyId, Authentication connectedUser);
-
   Long createInvoice(InvoiceCreate invoiceCreateRequest, Long companyId, Authentication connectedUser);
 
   /**
@@ -94,5 +84,8 @@ public interface InvoiceService {
   List<DocumentTableResponse> findDocumentsByInvoiceId(Long invoiceId);
 
   byte[] generateInvoicePdf(Long invoiceId);
+
+  void save(byte[] invoicePdf, boolean includeItems, Long companyId, Authentication connectedUser)
+      throws Exception;
 
 }

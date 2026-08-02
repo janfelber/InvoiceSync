@@ -12,9 +12,4 @@ public class EkasaClientConfig {
     return WebClient.builder().baseUrl("https://ekasa.financnasprava.sk/mdu/api/v1/opd/receipt/find").build();
   }
 
-  @Bean(name = "openAiWebClient")
-  public WebClient openAiWebClient() {
-    return WebClient.builder().baseUrl("https://api.openai.com/v1").build();
-  }
-
 }

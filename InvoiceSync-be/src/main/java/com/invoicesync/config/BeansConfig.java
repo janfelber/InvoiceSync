@@ -10,11 +10,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.invoicesync.core.audit.AuditorAwareImpl;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class BeansConfig {
+
+  @Bean
+  public AuditorAwareImpl auditorAware() {
+    return new AuditorAwareImpl();
+  }
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {

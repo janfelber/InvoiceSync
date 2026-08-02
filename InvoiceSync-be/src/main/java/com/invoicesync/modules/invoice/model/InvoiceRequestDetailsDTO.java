@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import com.invoicesync.core.enums.InvoiceType;
 
+import lombok.Builder;
+
+@Builder
 public record InvoiceRequestDetailsDTO(
     String numberRequested,
 
