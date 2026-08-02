@@ -62,13 +62,12 @@ export class InvoiceService {
     )
   }
 
-  uploadInvoice(params: { file: File; companyId: number }): Promise<any> {
+  uploadInvoice(params: { file: File; companyId: number; includeItems: boolean }): Promise<any> {
     const formData = new FormData();
     formData.append('file', params.file, params.file.name);
-    formData.append('companyId', params.companyId.toString());
 
     return this.apiService.instance.post(
-      `${this.baseUrl}${ApiPaths.invoice.SAVE}`,
+      `${this.baseUrl}${ApiPaths.invoice.EXTRACT(params.companyId)}?includeItems=${params.includeItems}`,
       formData
     );
   }
