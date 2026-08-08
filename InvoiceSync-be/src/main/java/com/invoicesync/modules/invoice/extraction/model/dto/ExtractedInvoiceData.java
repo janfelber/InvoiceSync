@@ -24,6 +24,9 @@ public record ExtractedInvoiceData(
 
     List<ExtractedItemDto> items,
 
+    @JsonProperty("vat_breakdown")
+    List<ExtractedVatBreakdownDto> vatBreakdown,
+
     //TODO this could be covered one record
     @JsonProperty("invoice_total_price_without_vat")
     BigDecimal priceWithoutVAT,

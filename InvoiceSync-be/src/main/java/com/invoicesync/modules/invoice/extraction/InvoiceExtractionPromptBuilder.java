@@ -28,10 +28,11 @@ public class InvoiceExtractionPromptBuilder {
           "currency": "EUR/CZK/...",
           "invoice_total_price_without_vat": number or null
           "invoice_total_price_with_vat": number or null
+          "vat_breakdown": should be array of objects rate, sum_without_vat, sum_with_vat, sum_vat with number without % or null"
         }
         
         Do NOT return the list of invoice items or describe them.
-        Only extract the summary information shown above.
+        Only extract the summary information shown above including vat_breakdown.
         """;
   }
 
@@ -48,6 +49,7 @@ public class InvoiceExtractionPromptBuilder {
            "currency": "EUR/CZK/...",
            "invoice_total_price_without_vat": number or null
            "invoice_total_price_with_vat": number or null
+           "vat_breakdown": should be array of objects rate, sum_without_vat, sum_with_vat, sum_vat with number without % or null"
            "items": [
              {
                "name": "item name",
