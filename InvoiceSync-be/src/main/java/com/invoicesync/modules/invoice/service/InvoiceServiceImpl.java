@@ -53,7 +53,9 @@ import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
+import com.invoicesync.modules.invoice.model.InvoiceVatBreakdown;
 import com.invoicesync.modules.invoice.repository.InvoiceRepository;
+import com.invoicesync.modules.invoice.repository.InvoiceVatBreakdownRepository;
 import com.invoicesync.modules.subscription.guard.service.LimitGuardService;
 import com.invoicesync.modules.user.service.UserService;
 import com.invoicesync.partner.CompaniesRegistry;
@@ -70,6 +72,8 @@ public class InvoiceServiceImpl implements InvoiceService {
   private final InvoiceRepository invoiceRepository;
 
   private final InvoiceDocumentRepository invoiceDocumentRepository;
+
+  private final InvoiceVatBreakdownRepository invoiceVatBreakdownRepository;
 
   private final LimitGuardService limitGuardService;
 
@@ -94,6 +98,7 @@ public class InvoiceServiceImpl implements InvoiceService {
   public InvoiceServiceImpl(final InvoiceRepository invoiceRepository,
       final LimitGuardService limitGuardService,
       final CompanyRepository companyRepository,
+      final InvoiceVatBreakdownRepository invoiceVatBreakdownRepository,
       final InvoiceMapper invoiceMapper,
       final InvoiceDocumentRepository invoiceDocumentRepository,
       final FileStorageService fileStorageService,
@@ -110,6 +115,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     this.fileStorageService = fileStorageService;
     this.subjectRegistry = subjectRegistry;
     this.invoiceDocumentRepository = invoiceDocumentRepository;
+    this.invoiceVatBreakdownRepository = invoiceVatBreakdownRepository;
     this.invoicePdfService = invoicePdfService;
     this.invoiceMapper = invoiceMapper;
     this.objectMapper = objectMapper;
@@ -207,12 +213,22 @@ public class InvoiceServiceImpl implements InvoiceService {
       final ExtractionMeta metaInfo = new ExtractionMeta(invoiceExtractor.getModelName(), null, warnings);
       final ExtractInvoiceResponse extractInvoiceResponse = new ExtractInvoiceResponse(status, invoiceData, metaInfo);
 
-      System.out.println(extractInvoiceResponse);
-
       final InvoiceCreate invoiceCreate = extractionMapper.toInvoiceCreate(extractInvoiceResponse, company);
       final Invoice invoice = invoiceMapper.toCreateInvoice(invoiceCreate, company);
 
       invoiceRepository.save(invoice);
+
+      extractInvoiceResponse.invoiceData().vatBreakdown().forEach(vat -> {
+        final InvoiceVatBreakdown invoiceVatBreakdown = new InvoiceVatBreakdown();
+
+        invoiceVatBreakdown.setInvoice(invoice);
+        invoiceVatBreakdown.setVatRate(vat.vatRate());
+        invoiceVatBreakdown.setSumWithoutVAT(vat.sumWithoutVAT());
+        invoiceVatBreakdown.setSumWithVAT(vat.sumWithVAT());
+        invoiceVatBreakdown.setSumVAT(vat.sumVAT());
+        invoiceVatBreakdownRepository.save(invoiceVatBreakdown);
+      });
+
       userService.incrementUsed(connectedUser, LimitType.INVOICE_PROCESS);
 
     } catch (final Exception e) {
