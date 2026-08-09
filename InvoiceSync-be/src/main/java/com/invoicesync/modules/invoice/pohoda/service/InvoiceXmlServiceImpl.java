@@ -1,4 +1,4 @@
-package com.invoicesync.modules.invoice.service;
+package com.invoicesync.modules.invoice.pohoda.service;
 
 import static com.invoicesync.core.enums.InvoiceType.RECEIVED;
 
@@ -26,11 +26,18 @@ import org.w3c.dom.Document;
 import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.export.TemplateLoader;
 import com.invoicesync.export.XmlSerializer;
+import com.invoicesync.integration.pohoda.generated.invoice.InvoiceType;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
 import com.invoicesync.modules.activity.service.UserActivityService;
+import com.invoicesync.modules.auth.security.OwnedInvoice;
+import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.company.service.CompanyService;
+import com.invoicesync.modules.invoice.model.Invoice;
 import com.invoicesync.modules.invoice.model.InvoiceRequestDTO;
+import com.invoicesync.modules.invoice.pohoda.PohodaInvoiceMapper;
+import com.invoicesync.modules.invoice.pohoda.PohodaXmlBuilder;
+import com.invoicesync.modules.invoice.repository.InvoiceRepository;
 import com.invoicesync.modules.receipt.domain.service.ReceiptPopulator;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
@@ -63,6 +70,12 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
   private final XmlSerializer xmlSerializer;
 
   private final CompanyService companyService;
+
+  private final InvoiceRepository invoiceRepository;
+
+  private final PohodaInvoiceMapper pohodaInvoiceMapper;
+
+  private final PohodaXmlBuilder pohodaXmlBuilder;
 
   //TODO refactor to use cleaner approach with populators and template loader, also for invoices
   @Override
@@ -170,6 +183,19 @@ public class InvoiceXmlServiceImpl implements PohodaXmlService {
       userService.incrementUsed(connectedUser, LimitType.RECEIPT_EXPORT);
       return out.toByteArray();
     }
+  }
+
+  @Override
+  @RequiresOwnership
+  public byte[] generateInvoiceXml(final @OwnedInvoice Long invoiceId, final Authentication connectedUser)
+      throws Exception {
+
+    final Invoice invoice =
+        invoiceRepository.findById(invoiceId).orElseThrow(() -> new IllegalArgumentException("Invoice not found"));
+    final InvoiceType invoiceToGenerate = pohodaInvoiceMapper.toInvoiceType(invoice);
+
+    return pohodaXmlBuilder.buildInvoiceXml(invoiceToGenerate, invoice.getCompany().getRegistrationNumber(),
+        invoice.getInvoiceNumber());
   }
 
   private ReceiptPopulator resolvePopulator(final Receipt receipt) {

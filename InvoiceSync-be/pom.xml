@@ -188,6 +188,18 @@
       <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>4.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>4.0.9</version>
+      <scope>runtime</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
@@ -209,6 +221,30 @@
               <version>1.18.42</version>
             </path>
           </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>4.1.0</version>
+        <executions>
+          <execution>
+            <id>pohoda-xjc</id>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sources>
+            <source>${project.basedir}/src/main/resources/xsd/pohoda/invoice.xsd</source>
+            <source>${project.basedir}/src/main/resources/xsd/pohoda/data-package.xsd</source>
+          </sources>
+          <xjbSources>
+            <xjbSource>${project.basedir}/src/main/resources/xsd/pohoda/bindings.xjb</xjbSource>
+          </xjbSources>
+          <outputDirectory>${project.build.directory}/generated-sources/jaxb</outputDirectory>
+          <clearOutputDir>false</clearOutputDir>
         </configuration>
       </plugin>
     </plugins>

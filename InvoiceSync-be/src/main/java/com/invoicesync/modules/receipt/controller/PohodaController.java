@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.modules.invoice.model.InvoiceRequestDTO;
-import com.invoicesync.modules.invoice.service.PohodaXmlService;
+import com.invoicesync.modules.invoice.pohoda.service.PohodaXmlService;
 import com.invoicesync.modules.xml.utils.XmlHelper;
 
 import lombok.RequiredArgsConstructor;
