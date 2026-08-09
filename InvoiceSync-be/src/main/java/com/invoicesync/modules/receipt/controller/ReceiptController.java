@@ -27,7 +27,7 @@ import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.exception.LimitExceededException;
 import com.invoicesync.modules.document.model.AddDocumentData;
 import com.invoicesync.modules.document.model.DocumentTableResponse;
-import com.invoicesync.modules.invoice.service.PohodaXmlService;
+import com.invoicesync.modules.invoice.pohoda.service.PohodaXmlService;
 import com.invoicesync.modules.receipt.model.MergeItemsRequest;
 import com.invoicesync.modules.receipt.model.Receipt;
 import com.invoicesync.modules.receipt.model.ReceiptDetailDto;

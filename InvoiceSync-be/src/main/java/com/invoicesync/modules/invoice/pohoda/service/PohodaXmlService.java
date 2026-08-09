@@ -1,4 +1,4 @@
-package com.invoicesync.modules.invoice.service;
+package com.invoicesync.modules.invoice.pohoda.service;
 
 import org.springframework.security.core.Authentication;
 
@@ -12,5 +12,7 @@ public interface PohodaXmlService {
   byte[] generateReceiptXml(Long receiptId, Authentication connectedUser) throws RuntimeException;
 
   byte[] generatePohodaReceiptExcel(ReceiptRequest request, Authentication connectedUser) throws Exception;
+
+  byte[] generateInvoiceXml(Long invoiceId, Authentication connectedUser) throws Exception;
 
 }

@@ -29,6 +29,7 @@ import com.invoicesync.modules.invoice.bulk.service.InvoiceBulkChangeService;
 import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceResponse;
 import com.invoicesync.modules.invoice.model.InvoiceResponseTable;
+import com.invoicesync.modules.invoice.pohoda.service.PohodaXmlService;
 import com.invoicesync.modules.invoice.service.InvoiceService;
 
 @RestController
@@ -41,14 +42,18 @@ public class InvoiceController {
 
   private final GoogleIntegrationService googleIntegrationService;
 
+  private final PohodaXmlService pohodaXmlService;
+
   @Autowired
   public InvoiceController(
       final InvoiceService invoiceService,
       final InvoiceBulkChangeService invoiceBulkChangeService,
-      final GoogleIntegrationService googleIntegrationService) {
+      final GoogleIntegrationService googleIntegrationService,
+      final PohodaXmlService pohodaXmlService) {
     this.invoiceService = invoiceService;
     this.invoiceBulkChangeService = invoiceBulkChangeService;
     this.googleIntegrationService = googleIntegrationService;
+    this.pohodaXmlService = pohodaXmlService;
   }
 
   @GetMapping(Api.GET_BY_USER)
@@ -85,6 +90,19 @@ public class InvoiceController {
     return ResponseEntity.ok(
         invoiceService.createInvoice(invoiceCreateRequest, companyId, connectedUser)
     );
+  }
+
+  @GetMapping("/export/pohoda/{invoice-id}")
+  public ResponseEntity<byte[]> downloadInvoicePohodaXml(
+      @PathVariable("invoice-id") final Long invoiceId,
+      final Authentication connectedUser) throws Exception {
+
+    byte[] xml = pohodaXmlService.generateInvoiceXml(invoiceId, connectedUser);
+
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"invoice-" + invoiceId + ".xml\"")
+        .contentType(MediaType.APPLICATION_XML)
+        .body(xml);
   }
 
   @GetMapping(Api.INVOICE_EXPORT_PDF)

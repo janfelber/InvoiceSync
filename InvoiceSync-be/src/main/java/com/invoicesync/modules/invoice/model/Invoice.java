@@ -161,4 +161,28 @@ public class Invoice extends BaseEntity {
   @Column(name = "total_price_with_vat")
   private BigDecimal totalPriceWithVat;
 
+  /**
+   * Accounting code for the item(e.g., 431, 562, 211).
+   */
+  @Column(name = "account_value")
+  private String accountValue;
+
+  /**
+   * VAT classification code.
+   */
+  @Column(name = "classification_vat")
+  private String classificationVAT;
+
+  /**
+   * KV DPH (VAT control statement) classification code.
+   */
+  @Column(name = "classification_kv_vat")
+  private String classificationKVVAT;
+
+  /**
+   * Free-text description of the invoice.
+   */
+  @Column(name = "description")
+  private String description;
+
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings version="3.0"
+    xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- vatRateType extends vatRateEnum (text content) and also declares an attribute
+       named "value" - both would generate a "getValue()" property, so xjc refuses
+       to compile until one of them is renamed. -->
+  <jxb:bindings schemaLocation="type.xsd" node="/xsd:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="com.invoicesync.integration.pohoda.generated.type"/>
+    </jxb:schemaBindings>
+    <jxb:bindings node="//xsd:complexType[@name='vatRateType']/xsd:simpleContent/xsd:extension/xsd:attribute[@name='value']">
+      <jxb:property name="rate"/>
+    </jxb:bindings>
+  </jxb:bindings>
+
+  <!-- Each imported Stormware schema (type/print/documentresponse/invoice) declares its
+       own complexTypes independent of the others (e.g. both type.xsd and print.xsd have
+       a "numberType"). Giving each namespace its own sub-package keeps same-named types
+       from colliding, instead of forcing everything into one flat package. -->
+  <jxb:bindings schemaLocation="print.xsd" node="/xsd:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="com.invoicesync.integration.pohoda.generated.print"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+  <jxb:bindings schemaLocation="documentresponse.xsd" node="/xsd:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="com.invoicesync.integration.pohoda.generated.documentresponse"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+  <jxb:bindings schemaLocation="invoice.xsd" node="/xsd:schema">
+    <jxb:schemaBindings>
+      <jxb:package name="com.invoicesync.integration.pohoda.generated.invoice"/>
+    </jxb:schemaBindings>
+  </jxb:bindings>
+
+    <jxb:bindings schemaLocation="data-package.xsd" node="/xsd:schema">
+      <jxb:schemaBindings>
+        <jxb:package name="com.invoicesync.integration.pohoda.generated.datapack"/>
+      </jxb:schemaBindings>
+    </jxb:bindings>
+
+</jxb:bindings>
