@@ -21,7 +21,7 @@ public class InvoiceExtractionPromptBuilder {
         Return exactly the following JSON structure:
         
         {
-          "supplier_registration_number": "supplier registration number IČO",
+          "supplier_registration_number": "supplier registration number IČO or VAT without State code only numbers",
           "invoice_number": "invoice number or null",
           "issue_date": "YYYY-MM-DD or null",
           "due_date": "YYYY-MM-DD or null",

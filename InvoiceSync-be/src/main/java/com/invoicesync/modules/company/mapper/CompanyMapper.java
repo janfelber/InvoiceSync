@@ -6,7 +6,7 @@ import com.invoicesync.modules.company.model.Company;
 import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
-import com.invoicesync.partner.PartnerItem;
+import com.invoicesync.supplier.CompanyLookupResult;
 
 @Service
 public class CompanyMapper {
@@ -42,15 +42,15 @@ public class CompanyMapper {
         .build();
   }
 
-  public CompanyBillingDto toCompanyBilling(PartnerItem partner) {
+  public CompanyBillingDto toCompanyBilling(CompanyLookupResult partner) {
     return new CompanyBillingDto(
-        partner.getName(),
-        partner.getCity(),
-        partner.getStreet(),
-        partner.getZip(),
-        partner.getRegistrationNumber(),
-        partner.getTaxId(),
-        partner.getVatId()
+        partner.name(),
+        partner.city(),
+        partner.street(),
+        partner.zip(),
+        partner.registrationNumber(),
+        partner.taxId(),
+        partner.vatId()
     );
   }
 

@@ -1,17 +1,19 @@
-package com.invoicesync.partner;
-
-import com.invoicesync.core.utils.VatUtils;
+package com.invoicesync.supplier.sk;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
+
+import com.invoicesync.core.utils.VatUtils;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Setter
 @Getter
-public class PartnerItem {
+public class SlovakPartner {
+
   @XmlElement(name = "IC_DPH")
   private String vatId;
 
@@ -49,4 +51,5 @@ public class PartnerItem {
     }
     return taxId;
   }
+
 }

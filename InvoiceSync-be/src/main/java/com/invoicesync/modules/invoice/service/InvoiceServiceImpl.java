@@ -58,7 +58,7 @@ import com.invoicesync.modules.invoice.repository.InvoiceRepository;
 import com.invoicesync.modules.invoice.repository.InvoiceVatBreakdownRepository;
 import com.invoicesync.modules.subscription.guard.service.LimitGuardService;
 import com.invoicesync.modules.user.service.UserService;
-import com.invoicesync.partner.CompaniesRegistry;
+import com.invoicesync.supplier.CompaniesRegistry;
 
 import tools.jackson.databind.ObjectMapper;
 

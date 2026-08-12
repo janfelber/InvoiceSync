@@ -24,7 +24,7 @@ import com.invoicesync.modules.company.model.CompanyBillingDto;
 import com.invoicesync.modules.company.model.CompanyRequest;
 import com.invoicesync.modules.company.model.CompanyResponseDto;
 import com.invoicesync.modules.company.repository.CompanyRepository;
-import com.invoicesync.partner.CompaniesRegistry;
+import com.invoicesync.supplier.CompaniesRegistry;
 
 import lombok.AllArgsConstructor;
 
@@ -60,7 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
   public CompanyBillingDto findByRegistrationNumber(final String registrationNumber,
       final Authentication connectedUser) {
 
-    return companiesRegistry.findByIco(registrationNumber)
+    return companiesRegistry.findByRegistrationNumber(registrationNumber)
         .map(companyMapper::toCompanyBilling)
         .orElseThrow(() ->
             new EntityNotFoundException("No company found with the registration number: " + registrationNumber));
@@ -156,16 +156,16 @@ public class CompanyServiceImpl implements CompanyService {
   public Long saveCompanyByRegistrationNumber(final String registrationNumber, final Authentication connectedUser) {
     final Company newCompany = new Company();
 
-    companiesRegistry.findByIco(registrationNumber)
+    companiesRegistry.findByRegistrationNumber(registrationNumber)
         .ifPresentOrElse(
             foundCompany -> {
-              newCompany.setName(foundCompany.getName());
-              newCompany.setCity(foundCompany.getCity());
-              newCompany.setStreet(foundCompany.getStreet());
-              newCompany.setZip(foundCompany.getZip());
+              newCompany.setName(foundCompany.name());
+              newCompany.setCity(foundCompany.city());
+              newCompany.setStreet(foundCompany.street());
+              newCompany.setZip(foundCompany.zip());
               newCompany.setRegistrationNumber(registrationNumber);
-              newCompany.setTaxId(foundCompany.getTaxId());
-              newCompany.setVatId(foundCompany.getVatId());
+              newCompany.setTaxId(foundCompany.taxId());
+              newCompany.setVatId(foundCompany.vatId());
               newCompany.setCardReceiptNumber(null);
               newCompany.setCashReceiptNumber(null);
               companyRepository.save(newCompany);
