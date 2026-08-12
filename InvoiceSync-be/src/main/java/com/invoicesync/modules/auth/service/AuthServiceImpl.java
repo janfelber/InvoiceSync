@@ -39,7 +39,7 @@ import com.invoicesync.modules.auth.security.RefreshCookieProperties;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.model.UserAccessDto;
 import com.invoicesync.modules.user.repository.UserRepository;
-import com.invoicesync.partner.CompaniesRegistry;
+import com.invoicesync.supplier.CompaniesRegistry;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,7 +83,7 @@ public class AuthServiceImpl implements AuthService {
           "Registration number already exists: " + registerRequest.getRegistrationNumber());
     }
 
-    if (!companiesRegistry.findByIco(registerRequest.getRegistrationNumber()).isPresent()) {
+    if (!companiesRegistry.findByRegistrationNumber(registerRequest.getRegistrationNumber()).isPresent()) {
       throw new CompanyRegistrationNumberNotFound(
           "Registration number not found: " + registerRequest.getRegistrationNumber());
     }
@@ -197,11 +197,10 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public void logoutAllDevices(final HttpServletRequest request) {
     final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+    if (authentication == null || !(authentication.getPrincipal() instanceof final CustomUserDetails userDetails)) {
       throw new InvalidTokenException("Authentication required");
     }
 
-    final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     refreshSessionService.revokeAllForUser(userDetails.getUser().getId());
   }
 

@@ -13,9 +13,9 @@ import com.invoicesync.modules.invoice.extraction.model.dto.ExtractInvoiceRespon
 import com.invoicesync.modules.invoice.extraction.model.dto.ExtractedItemDto;
 import com.invoicesync.modules.invoice.model.InvoiceCreate;
 import com.invoicesync.modules.invoice.model.InvoiceRequestDetailsDTO;
-import com.invoicesync.partner.CompaniesRegistry;
 import com.invoicesync.shared.AccountingLineItem;
 import com.invoicesync.shared.MonetaryAmount;
+import com.invoicesync.supplier.CompaniesRegistry;
 
 @Service
 public class ExtractionMapper {
@@ -45,16 +45,16 @@ public class ExtractionMapper {
 
     PartnerDto partnerDto = new PartnerDto();
 
-    companyRepository.findByIco(extractResponse.invoiceData().supplierRegistrationNumber())
+    companyRepository.findByRegistrationNumber(extractResponse.invoiceData().supplierRegistrationNumber())
         .ifPresentOrElse(
             foundCompany -> {
-              partnerDto.setRegistrationNumber(foundCompany.getRegistrationNumber());
-              partnerDto.setTaxId(foundCompany.getTaxId());
-              partnerDto.setVatId(foundCompany.getVatId());
-              partnerDto.setCity(foundCompany.getCity());
-              partnerDto.setStreet(foundCompany.getStreet());
-              partnerDto.setZip(foundCompany.getZip());
-              partnerDto.setName(foundCompany.getName());
+              partnerDto.setRegistrationNumber(foundCompany.registrationNumber());
+              partnerDto.setTaxId(foundCompany.taxId());
+              partnerDto.setVatId(foundCompany.vatId());
+              partnerDto.setCity(foundCompany.city());
+              partnerDto.setStreet(foundCompany.street());
+              partnerDto.setZip(foundCompany.zip());
+              partnerDto.setName(foundCompany.name());
             },
             () -> {
               throw new IllegalArgumentException(
