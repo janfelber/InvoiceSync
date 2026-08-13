@@ -60,7 +60,13 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(
             req -> req
-                .requestMatchers("/auth/**", "/stripe/webhook", "/integrations/google/callback").permitAll()
+                .requestMatchers(
+                    "/auth/login",
+                    "/auth/register",
+                    "/auth/refresh-token",
+                    "/stripe/webhook",
+                    "/integrations/google/callback")
+                .permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         )

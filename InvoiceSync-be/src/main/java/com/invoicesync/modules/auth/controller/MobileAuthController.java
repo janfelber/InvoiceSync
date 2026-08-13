@@ -1,5 +1,7 @@
 package com.invoicesync.modules.auth.controller;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,7 @@ public class MobileAuthController {
   }
 
   @PostMapping(Api.AUTH_MOBILE_VERIFY)
-  public ResponseEntity<MobileVerifyResponse> verify(
-      @RequestBody MobileVerifyRequest request) {
+  public ResponseEntity<MobileVerifyResponse> verify(@Valid @RequestBody MobileVerifyRequest request) {
     return ResponseEntity.ok(mobileAuthService.verifyAndCreateApiKey(request));
   }
 
