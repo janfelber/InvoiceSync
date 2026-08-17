@@ -42,7 +42,8 @@ public class AuthController {
   @PostMapping(Api.LOGIN)
   public ResponseEntity<?> login(@Valid @RequestBody final LoginRequest request,
       final HttpServletRequest httpRequest, final HttpServletResponse response) {
-    final AuthResult result = authService.login(request, httpRequest.getHeader("User-Agent"));
+    final AuthResult result =
+        authService.login(request, httpRequest.getHeader("User-Agent"), httpRequest.getRemoteAddr());
     attachRefreshCookie(response, result);
     return ResponseEntity.ok(new LoginResponse(result.getAccessToken(), result.getUser()));
   }

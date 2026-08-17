@@ -76,4 +76,9 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token invalid or expired");
   }
 
+  @ExceptionHandler(AccountLockedException.class)
+  public ResponseEntity<String> handleAccountLocked(final AccountLockedException ex) {
+    return ResponseEntity.status(HttpStatus.LOCKED).body("Account temporarily locked due to too many failed login attempts");
+  }
+
 }
