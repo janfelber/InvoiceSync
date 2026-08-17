@@ -9,7 +9,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
+import org.jspecify.annotations.NullMarked;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.invoicesync.core.audit.CustomUserDetails;
 import com.invoicesync.core.enums.FeatureEnum;
 import com.invoicesync.core.enums.Role;
+import com.invoicesync.core.exception.AccountLockedException;
 import com.invoicesync.core.exception.CompanyRegistrationNumberExists;
 import com.invoicesync.core.exception.CompanyRegistrationNumberNotFound;
 import com.invoicesync.core.exception.InvalidRefreshTokenException;
@@ -34,6 +37,7 @@ import com.invoicesync.modules.auth.model.LoginRequest;
 import com.invoicesync.modules.auth.model.RegisterRequest;
 import com.invoicesync.modules.auth.model.dto.AuthResult;
 import com.invoicesync.modules.auth.model.dto.RefreshSessionIssueResult;
+import com.invoicesync.modules.auth.security.BruteForceProtectionService;
 import com.invoicesync.modules.auth.security.JwtService;
 import com.invoicesync.modules.auth.security.RefreshCookieProperties;
 import com.invoicesync.modules.user.model.User;
@@ -46,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@NullMarked
 @AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
@@ -54,6 +59,8 @@ public class AuthServiceImpl implements AuthService {
   private final UserActivityService userActivityService;
 
   private final RefreshSessionService refreshSessionService;
+
+  private final BruteForceProtectionService bruteForceProtectionService;
 
   private final JwtService jwtService;
 
@@ -102,13 +109,21 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public AuthResult login(final LoginRequest loginRequest, final String deviceInfo) {
-    final Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            loginRequest.getUsername(),
-            loginRequest.getPassword()
-        )
-    );
+  public AuthResult login(final LoginRequest loginRequest, final String deviceInfo, final String ipAddress) {
+    final Authentication authentication;
+
+    if (bruteForceProtectionService.isBlocked(loginRequest.getUsername())) {
+      throw new AccountLockedException("Account temporarily locked");
+    }
+
+    try {
+      authentication = authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+      );
+    } catch (BadCredentialsException e) {
+      bruteForceProtectionService.loginFailed(loginRequest.getUsername(), ipAddress);
+      throw e;
+    }
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
