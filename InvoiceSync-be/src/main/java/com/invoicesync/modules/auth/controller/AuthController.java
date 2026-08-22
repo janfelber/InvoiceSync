@@ -9,18 +9,22 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.invoicesync.core.Api;
+import com.invoicesync.core.audit.CustomUserDetails;
 import com.invoicesync.modules.auth.model.LoginRequest;
 import com.invoicesync.modules.auth.model.LoginResponse;
 import com.invoicesync.modules.auth.model.RegisterRequest;
 import com.invoicesync.modules.auth.model.dto.AuthResult;
 import com.invoicesync.modules.auth.security.RefreshCookieFactory;
 import com.invoicesync.modules.auth.service.AuthService;
+import com.invoicesync.modules.auth.service.EmailVerificationService;
+import com.invoicesync.modules.user.model.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
   private final AuthService authService;
+
+  private final EmailVerificationService emailVerificationService;
 
   private final RefreshCookieFactory refreshCookieFactory;
 
@@ -66,6 +72,22 @@ public class AuthController {
   public ResponseEntity<?> logoutAllDevices(final HttpServletRequest request, final HttpServletResponse response) {
     authService.logoutAllDevices(request);
     response.addHeader(HttpHeaders.SET_COOKIE, refreshCookieFactory.clear().toString());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/verify-email")
+  public ResponseEntity<?> verifyEmail(final @RequestBody VerificationRequest request) {
+    emailVerificationService.verifyEmail(request.token());
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/resend-verification-email")
+  public ResponseEntity<?> resendVerificationEmail(final Authentication authentication) {
+    final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    final User user = userDetails.getUser();
+    emailVerificationService.sendVerificationEmail(user.getId(), user.getEmail());
+
     return ResponseEntity.ok().build();
   }
 

@@ -9,6 +9,7 @@ import {SKIP_AUTH} from "./skip-auth.token";
 interface User {
   role: string;
   features: string[];
+  emailVerified: boolean;
 }
 
 interface LoginResponse {
@@ -59,6 +60,14 @@ export class AuthService {
       tap(() => {
         this.router.navigate(['/login']);
       })
+    );
+  }
+
+  verifyEmail(token: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/auth/verify-email`,
+      { token },
+      { context: new HttpContext().set(SKIP_AUTH, true) }
     );
   }
 
@@ -113,6 +122,14 @@ export class AuthService {
 
   getUserFeatures(): string[] {
     return this.userFeatures;
+  }
+
+  isEmailVerified(): boolean {
+    return this.currentUser?.emailVerified ?? true;
+  }
+
+  resendVerificationEmail(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/auth/resend-verification-email`, {});
   }
 
   logout() {

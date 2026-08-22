@@ -58,8 +58,7 @@ export class RegisterComponent {
 
     }).subscribe({
       next: () => {
-        toast.success('Účet bol úspešne vytvorený', { duration: 3000 });
-        this.router.navigate(['/login']);
+        this.router.navigate(['/registration-success'], { queryParams: { email: this.email } });
       },
       error: err => {
         const message = this.getErrorMessage(err);
