@@ -22,4 +22,7 @@ COPY --from=builder /builder/extracted/application/ ./
 # Start the application jar - this is not the uber jar used by the builder
 # This jar only contains application code and references to the extracted jar files
 # This layout is efficient to start up and CDS friendly
-ENTRYPOINT ["java", "-jar", "application.jar"]
+# MaxRAMPercentage is raised from the JVM's 25% default because the container has no other
+# heavy memory consumers; JAVA_OPTS lets the heap be tuned per Render plan without a rebuild.
+ENV JAVA_OPTS=""
+ENTRYPOINT ["sh", "-c", "exec java -XX:MaxRAMPercentage=75.0 $JAVA_OPTS -jar application.jar"]

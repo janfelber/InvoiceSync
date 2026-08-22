@@ -1,11 +1,17 @@
 package com.invoicesync.supplier.sk;
 
 import java.io.InputStream;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.Unmarshaller;
 
 import org.springframework.stereotype.Component;
@@ -13,42 +19,71 @@ import org.springframework.stereotype.Component;
 import com.invoicesync.supplier.CompanyLookupResult;
 import com.invoicesync.supplier.CompanyLookupSource;
 
+import lombok.extern.slf4j.Slf4j;
+
+// The source file (~230k entries, ~70MB) is too large to unmarshal into a full JAXB object
+// tree on memory-constrained hosts (blew the heap on Render). We stream it item-by-item with
+// StAX instead and keep only the compact lookup projection, discarding each SlovakPartner as
+// we go.
 //TODO move this to the service and use openAPI from opendata.financnasprava.sk
+@Slf4j
 @Component
 public class SlovakRegistrySource implements CompanyLookupSource {
 
-  private List<SlovakPartner> slovakPartners;
+  private static final String ITEM_ELEMENT = "ITEM";
+
+  private Map<String, CompanyLookupResult> partnersByRegistrationNumber = Map.of();
 
   @PostConstruct
   void init() {
     try (InputStream in = getClass().getResourceAsStream("/registry/partners.xml")) {
-      if (in == null) {
-        this.slovakPartners = List.of();
-        return;
+      if (in != null) {
+        partnersByRegistrationNumber = streamPartners(in);
       }
-      final JAXBContext context = JAXBContext.newInstance(SlovakRootRegistryXml.class);
-      final Unmarshaller unmarshaller = context.createUnmarshaller();
-      final SlovakRootRegistryXml registryXml = (SlovakRootRegistryXml) unmarshaller.unmarshal(in);
-      this.slovakPartners = registryXml.getCompanyList().getItems();
-    } catch (Exception e) {
-      this.slovakPartners = List.of();
+    } catch (Throwable e) {
+      log.warn("Failed to load Slovak company registry, lookups will return empty", e);
+      partnersByRegistrationNumber = Map.of();
     }
+  }
+
+  private Map<String, CompanyLookupResult> streamPartners(final InputStream in) throws Exception {
+    final XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(in);
+    final Unmarshaller unmarshaller = JAXBContext.newInstance(SlovakPartner.class).createUnmarshaller();
+    final Map<String, CompanyLookupResult> result = new HashMap<>();
+    try {
+      while (reader.hasNext()) {
+        if (reader.next() == XMLStreamConstants.START_ELEMENT && ITEM_ELEMENT.equals(reader.getLocalName())) {
+          final JAXBElement<SlovakPartner> element = unmarshaller.unmarshal(reader, SlovakPartner.class);
+          final SlovakPartner partner = element.getValue();
+          if (partner.getRegistrationNumber() != null) {
+            result.put(partner.getRegistrationNumber().toUpperCase(), toLookupResult(partner));
+          }
+        }
+      }
+    } finally {
+      reader.close();
+    }
+    return result;
+  }
+
+  private CompanyLookupResult toLookupResult(final SlovakPartner partner) {
+    return CompanyLookupResult.builder()
+        .registrationNumber(partner.getRegistrationNumber())
+        .name(partner.getName())
+        .taxId(partner.getTaxId())
+        .vatId(partner.getVatId())
+        .city(partner.getCity())
+        .street(partner.getStreet())
+        .zip(partner.getZip())
+        .build();
   }
 
   @Override
   public Optional<CompanyLookupResult> findByRegistrationNumber(final String registrationNumber) {
-    return slovakPartners.stream()
-        .filter(item -> registrationNumber.equalsIgnoreCase(item.getRegistrationNumber()))
-        .findFirst().map(item -> CompanyLookupResult.builder()
-            .registrationNumber(item.getRegistrationNumber())
-            .name(item.getName())
-            .taxId(item.getTaxId())
-            .vatId(item.getVatId())
-            .city(item.getCity())
-            .street(item.getStreet())
-            .zip(item.getZip())
-            .build()
-        );
+    if (registrationNumber == null) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(partnersByRegistrationNumber.get(registrationNumber.toUpperCase()));
   }
 
 }
