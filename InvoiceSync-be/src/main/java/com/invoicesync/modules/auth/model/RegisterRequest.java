@@ -22,11 +22,11 @@ public class RegisterRequest {
   private String email;
 
   @NotBlank
-  @Size(min = 8, max = 30)
+  @Size(min = 3, max = 30)
   private String username;
 
   @NotBlank
-  @Size(min = 8, max = 30)
+  @Size(min = 2, max = 30)
   private String fullName;
 
   @NotBlank
