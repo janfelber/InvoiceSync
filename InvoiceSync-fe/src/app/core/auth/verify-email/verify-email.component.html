@@ -1,0 +1,46 @@
+<section class="min-h-screen bg-gray-50 dark:bg-[#1a1b1e] flex flex-col items-center justify-center px-4 py-12">
+
+  <a class="flex items-center gap-2.5 mb-8">
+    <img class="w-8 h-8" ngSrc="assets/loginLogo.svg" alt="logo" height="48" width="48">
+    <span class="text-xl font-bold text-gray-900 dark:text-white">InvoiceSync</span>
+  </a>
+
+  <div class="w-full max-w-sm bg-white dark:bg-[#2a2b30] rounded-2xl border border-gray-200 dark:border-[#383852] p-8 flex flex-col items-center text-center">
+
+    <ng-container *ngIf="state === 'loading'">
+      <div class="w-10 h-10 rounded-full border-3 border-gray-200 dark:border-[#383852] border-t-blue-600 animate-spin mb-6"></div>
+      <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Overujeme váš email</h1>
+      <p class="text-sm text-gray-500 dark:text-slate-400">Chvíľu vydržte, potvrdzujeme vašu emailovú adresu.</p>
+    </ng-container>
+
+    <ng-container *ngIf="state === 'success'">
+      <div class="w-14 h-14 rounded-full bg-green-50 dark:bg-green-900/30 flex items-center justify-center mb-5">
+        <svg class="w-7 h-7" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Email bol overený</h1>
+      <p class="text-sm text-gray-500 dark:text-slate-400 mb-6">Váš účet je teraz aktívny. Môžete sa prihlásiť a začať používať InvoiceSync.</p>
+      <button
+        type="button"
+        (click)="goToLogin()"
+        class="w-full py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-300 focus:outline-none transition">
+        Prejsť na prihlásenie
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="state === 'error'">
+      <div class="w-14 h-14 rounded-full bg-red-50 dark:bg-red-900/30 flex items-center justify-center mb-5">
+        <svg class="w-7 h-7" fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </div>
+      <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Overenie sa nepodarilo</h1>
+      <p class="text-sm text-gray-500 dark:text-slate-400 mb-1">Tento odkaz je neplatný alebo mu vypršala platnosť.</p>
+      <p class="text-sm text-gray-500 dark:text-slate-400 mb-6">Prihláste sa pre nový overovací email.</p>
+      <a routerLink="/login" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">Prejsť na prihlásenie</a>
+    </ng-container>
+
+  </div>
+
+</section>

@@ -62,6 +62,8 @@ public class AuthServiceImpl implements AuthService {
 
   private final BruteForceProtectionService bruteForceProtectionService;
 
+  private final EmailVerificationService emailVerificationService;
+
   private final JwtService jwtService;
 
   private final UserRepository userRepository;
@@ -106,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
         .build();
 
     userRepository.save(user);
+    emailVerificationService.sendVerificationEmail(user.getId(), registerRequest.getEmail());
   }
 
   @Override
@@ -139,7 +142,8 @@ public class AuthServiceImpl implements AuthService {
         .map(Enum::name)
         .collect(Collectors.toSet());
 
-    final UserAccessDto userAccessDto = new UserAccessDto(user.getRole().name(), featureNames);
+    final UserAccessDto userAccessDto =
+        new UserAccessDto(user.getRole().name(), featureNames, user.isEmailVerified());
 
     userActivityService.save(UserActivityRecord.forType(String.valueOf(user.getId()), UserActivityType.LOGGED_IN,
         "User logged in"));
@@ -176,7 +180,8 @@ public class AuthServiceImpl implements AuthService {
         .map(Enum::name)
         .collect(Collectors.toSet());
 
-    final UserAccessDto userAccess = new UserAccessDto(user.getRole().name(), featureNames);
+    final UserAccessDto userAccess =
+        new UserAccessDto(user.getRole().name(), featureNames, user.isEmailVerified());
 
     return new AuthResult(accessToken, rotated.getRawToken(), rotated.getExpiresAt(), userAccess);
   }

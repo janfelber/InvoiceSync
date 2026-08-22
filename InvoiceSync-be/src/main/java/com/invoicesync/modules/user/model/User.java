@@ -83,6 +83,9 @@ public class User {
   @Column(name = "google_connected")
   private boolean googleConnected = false;
 
+  @Column(name = "email_verified")
+  private boolean emailVerified = false;
+
   public User(final String fullName, final String username, final String password, final Role role) {
     this.fullName = fullName;
     this.username = username;

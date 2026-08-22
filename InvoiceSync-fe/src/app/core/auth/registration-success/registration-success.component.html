@@ -1,0 +1,31 @@
+<section class="min-h-screen bg-gray-50 dark:bg-[#1a1b1e] flex flex-col items-center justify-center px-4 py-12">
+
+  <a class="flex items-center gap-2.5 mb-8">
+    <img class="w-8 h-8" ngSrc="assets/loginLogo.svg" alt="logo" height="48" width="48">
+    <span class="text-xl font-bold text-gray-900 dark:text-white">InvoiceSync</span>
+  </a>
+
+  <div class="w-full max-w-sm bg-white dark:bg-[#2a2b30] rounded-2xl border border-gray-200 dark:border-[#383852] p-8 flex flex-col items-center text-center">
+
+    <div class="w-14 h-14 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mb-5">
+      <svg class="w-7 h-7" fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.828.672-1.5 1.5-1.5h16.5c.828 0 1.5.672 1.5 1.5v10.5a1.5 1.5 0 0 1-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V6.75Z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="m3 7 8.15 5.35a1.5 1.5 0 0 0 1.7 0L21 7"/>
+      </svg>
+    </div>
+
+    <h1 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Skontrolujte si email</h1>
+    <p class="text-sm text-gray-500 dark:text-slate-400 mb-6">
+      Účet bol vytvorený. Poslali sme overovací link
+      <ng-container *ngIf="email">na <span class="font-medium text-gray-700 dark:text-slate-300">{{ email }}</span></ng-container>
+      <ng-container *ngIf="!email">na váš email</ng-container>.
+      Kliknite na link a potom sa prihláste.
+    </p>
+
+    <a routerLink="/login"
+       class="w-full py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-300 focus:outline-none transition text-center">
+      Prejsť na prihlásenie
+    </a>
+  </div>
+
+</section>
