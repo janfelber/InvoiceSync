@@ -10,4 +10,5 @@ import lombok.Data;
 public class UserAccessDto {
   private String role;
   private Set<String> features;
+  private boolean emailVerified;
 }

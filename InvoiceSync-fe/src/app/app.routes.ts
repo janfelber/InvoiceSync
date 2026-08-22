@@ -17,6 +17,10 @@ import {ContactFormComponent} from './contact-form/contact-form.component';
 import {AuthGuard} from './core/services/auth/auth.guard';
 import {LoginComponent} from './core/auth/login/login.component';
 import {RegisterComponent} from './core/auth/register/register.component';
+import {RegistrationSuccessComponent} from './core/auth/registration-success/registration-success.component';
+import {VerifyEmailComponent} from './core/auth/verify-email/verify-email.component';
+import {VerifyEmailRequiredComponent} from './core/auth/verify-email-required/verify-email-required.component';
+import {EmailVerifiedGuard} from './core/services/auth/email-verified.guard';
 import {RoleGuard} from "./core/services/auth/role.guard";
 import {AdminUsersComponent} from "./admin/admin-users/admin-users.component";
 import {AdminLayoutComponent} from "./admin/admin-layout/admin-layout.component";
@@ -32,6 +36,9 @@ import {GoogleIntegrationComponent} from "./pages/integrations/google/google-int
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'registration-success', component: RegistrationSuccessComponent},
+  {path: 'verify-email', component: VerifyEmailComponent},
+  {path: 'verify-email-required', component: VerifyEmailRequiredComponent, canActivate: [AuthGuard]},
   {path: 'pricing', component: PricingComponent, canActivate: [AuthGuard]},
   {path: 'contact', component: ContactFormComponent},
   {path: 'web/privacy', component: PrivacyPolicyComponent},
@@ -51,7 +58,7 @@ export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, EmailVerifiedGuard],
     children: [
       {path: '', component: HomeComponent, pathMatch: 'full'},
       {path: 'home', component: HomeComponent, pathMatch: 'full'},
