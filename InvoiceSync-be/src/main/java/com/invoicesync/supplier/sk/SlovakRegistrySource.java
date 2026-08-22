@@ -22,13 +22,16 @@ public class SlovakRegistrySource implements CompanyLookupSource {
   @PostConstruct
   void init() {
     try (InputStream in = getClass().getResourceAsStream("/registry/partners.xml")) {
+      if (in == null) {
+        this.slovakPartners = List.of();
+        return;
+      }
       final JAXBContext context = JAXBContext.newInstance(SlovakRootRegistryXml.class);
       final Unmarshaller unmarshaller = context.createUnmarshaller();
       final SlovakRootRegistryXml registryXml = (SlovakRootRegistryXml) unmarshaller.unmarshal(in);
-
       this.slovakPartners = registryXml.getCompanyList().getItems();
     } catch (Exception e) {
-      throw new IllegalStateException("Failed to load subject registry", e);
+      this.slovakPartners = List.of();
     }
   }
 
