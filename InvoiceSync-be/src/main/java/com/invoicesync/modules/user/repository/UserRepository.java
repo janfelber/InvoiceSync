@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
   Page<User> findByRoleNot(Role role, Pageable pageable);
 
+  Optional<User> findByEmail(String email);
+
 }

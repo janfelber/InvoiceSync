@@ -20,6 +20,8 @@ import {RegisterComponent} from './core/auth/register/register.component';
 import {RegistrationSuccessComponent} from './core/auth/registration-success/registration-success.component';
 import {VerifyEmailComponent} from './core/auth/verify-email/verify-email.component';
 import {VerifyEmailRequiredComponent} from './core/auth/verify-email-required/verify-email-required.component';
+import {ForgotPasswordComponent} from './core/auth/forgot-password/forgot-password.component';
+import {ResetPasswordComponent} from './core/auth/reset-password/reset-password.component';
 import {EmailVerifiedGuard} from './core/services/auth/email-verified.guard';
 import {RoleGuard} from "./core/services/auth/role.guard";
 import {AdminUsersComponent} from "./admin/admin-users/admin-users.component";
@@ -39,6 +41,8 @@ export const routes: Routes = [
   {path: 'registration-success', component: RegistrationSuccessComponent},
   {path: 'verify-email', component: VerifyEmailComponent},
   {path: 'verify-email-required', component: VerifyEmailRequiredComponent, canActivate: [AuthGuard]},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
   {path: 'pricing', component: PricingComponent, canActivate: [AuthGuard]},
   {path: 'contact', component: ContactFormComponent},
   {path: 'web/privacy', component: PrivacyPolicyComponent},
