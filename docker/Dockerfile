@@ -1,15 +1,16 @@
-# Builder image
-FROM eclipse-temurin:23-jre AS builder
+# Stage 1: Build the JAR from source using Maven
+FROM eclipse-temurin:23-jdk AS builder
 WORKDIR /builder
-ARG JAR_FILE=InvoiceSync-be/target/invoicesync-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} application.jar
+COPY InvoiceSync-be/pom.xml .
+COPY InvoiceSync-be/.mvn .mvn
+COPY InvoiceSync-be/mvnw .
+RUN ./mvnw dependency:go-offline
+COPY InvoiceSync-be/src ./src
+RUN ./mvnw clean package -DskipTests
 
-# Runtime image
+# Stage 2: Runtime image
 FROM eclipse-temurin:23-jre
 WORKDIR /application
-COPY --from=builder /builder/application.jar .
-
+COPY --from=builder /builder/target/*.jar application.jar
 EXPOSE 8080
-
-# Run the jar directly
 ENTRYPOINT ["java", "-jar", "application.jar"]
