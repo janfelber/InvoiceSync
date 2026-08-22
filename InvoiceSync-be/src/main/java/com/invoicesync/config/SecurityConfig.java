@@ -65,6 +65,8 @@ public class SecurityConfig {
                     "/auth/register",
                     "/auth/refresh-token",
                     "/auth/verify-email",
+                    "/auth/forgot-password",
+                    "/auth/reset-password",
                     "/stripe/webhook",
                     "/integrations/google/callback")
                 .permitAll()

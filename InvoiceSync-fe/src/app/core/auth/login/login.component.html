@@ -26,9 +26,12 @@
       </div>
 
       <div>
-        <label for="password" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-slate-300">
-          Heslo
-        </label>
+        <div class="flex items-center justify-between mb-1.5">
+          <label for="password" class="text-sm font-medium text-gray-700 dark:text-slate-300">
+            Heslo
+          </label>
+          <a routerLink="/forgot-password" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400">Zabudli ste heslo?</a>
+        </div>
         <div class="relative">
           <input
             [type]="showPassword ? 'text' : 'password'"

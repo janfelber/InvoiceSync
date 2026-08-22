@@ -71,6 +71,22 @@ export class AuthService {
     );
   }
 
+  forgotPassword(email: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/auth/forgot-password`,
+      { email },
+      { context: new HttpContext().set(SKIP_AUTH, true) }
+    );
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<void> {
+    return this.http.post<void>(
+      `${this.baseUrl}/auth/reset-password`,
+      { token, newPassword },
+      { context: new HttpContext().set(SKIP_AUTH, true) }
+    );
+  }
+
   refreshToken(): Observable<LoginResponse> {
     // Refresh tokens are single-use (rotated on every call) — if multiple requests
     // hit 401 at the same time, they must share one in-flight refresh instead of

@@ -2,6 +2,7 @@ package com.invoicesync.modules.auth.controller;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import com.invoicesync.modules.auth.model.dto.AuthResult;
 import com.invoicesync.modules.auth.security.RefreshCookieFactory;
 import com.invoicesync.modules.auth.service.AuthService;
 import com.invoicesync.modules.auth.service.EmailVerificationService;
+import com.invoicesync.modules.auth.service.PasswordResetService;
 import com.invoicesync.modules.user.model.User;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,8 @@ public class AuthController {
   private final AuthService authService;
 
   private final EmailVerificationService emailVerificationService;
+
+  private final PasswordResetService passwordResetService;
 
   private final RefreshCookieFactory refreshCookieFactory;
 
@@ -87,6 +91,24 @@ public class AuthController {
     final CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
     final User user = userDetails.getUser();
     emailVerificationService.sendVerificationEmail(user.getId(), user.getEmail());
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<?> forgotPassword(final @Valid @RequestBody ForgotPasswordRequest request) {
+    try {
+      passwordResetService.sendPasswordForgotEmail(request.email());
+    } catch (final NoSuchElementException ignored) {
+      // Do not reveal whether the email exists - respond the same way either way.
+    }
+
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<?> resetPassword(final @Valid @RequestBody ResetPasswordRequest request) {
+    passwordResetService.resetPassword(request.token(), request.newPassword());
 
     return ResponseEntity.ok().build();
   }
