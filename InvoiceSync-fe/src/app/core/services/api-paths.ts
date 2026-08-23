@@ -63,6 +63,8 @@ export const ApiPaths = {
     GENERATE_PDF: (invoiceId: number) => `/${invoiceId}/pdf`,
     BULK_DOWNLOAD: '/bulk-download',
     EXTRACT: (companyId: number) => `/${companyId}/extract`,
+    MERGE_INVOICE_ITEMS: (companyId: number) => `/${companyId}/merger`,
+    EXPORT_POHODA: (invoiceId: number) => `/export/pohoda/${invoiceId}`,
   },
   data_transfer: {
     BASE: '/convert',

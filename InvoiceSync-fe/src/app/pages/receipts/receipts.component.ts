@@ -11,7 +11,6 @@ import {ToastrService} from "ngx-toastr";
 import {toast} from "ngx-sonner";
 import {ReceiptBulkChangeService} from "../../core/services/bulk/ReceiptBulkChangeService";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {SafeHtmlPipe} from "../../shared/pipes/safe-html.pipe";
 import {SimpleSelectComponent, SelectOption} from "../../shared/simple-select/simple-select.component";
 
 @Component({
@@ -25,7 +24,6 @@ import {SimpleSelectComponent, SelectOption} from "../../shared/simple-select/si
     FormsModule,
     CurrencyPipe,
     TranslateModule,
-    SafeHtmlPipe,
     NgClass,
     SimpleSelectComponent
   ],
