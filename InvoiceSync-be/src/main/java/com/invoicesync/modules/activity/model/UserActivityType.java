@@ -4,6 +4,7 @@ public enum UserActivityType {
 
   LOGGED_IN,
   LOGGED_OUT,
+  PASSWORD_RESET,
 
   // Invoice
   BULK_INVOICE_DOWNLOAD,

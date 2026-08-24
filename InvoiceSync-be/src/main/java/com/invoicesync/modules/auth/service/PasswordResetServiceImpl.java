@@ -4,6 +4,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+
 import org.jspecify.annotations.NullMarked;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailPreparationException;
@@ -14,14 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.invoicesync.core.exception.InvalidTokenException;
+import com.invoicesync.modules.activity.model.UserActivityType;
+import com.invoicesync.modules.activity.service.UserActivityRecord;
+import com.invoicesync.modules.activity.service.UserActivityService;
 import com.invoicesync.modules.auth.model.PasswordReset;
 import com.invoicesync.modules.auth.repository.PasswordResetRepository;
 import com.invoicesync.modules.auth.security.RefreshTokenUtil;
 import com.invoicesync.modules.user.model.User;
 import com.invoicesync.modules.user.repository.UserRepository;
-
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +35,8 @@ import lombok.RequiredArgsConstructor;
 public class PasswordResetServiceImpl implements PasswordResetService {
 
   private final RefreshSessionService refreshSessionService;
+
+  private final UserActivityService userActivityService;
 
   private final UserRepository userRepository;
 
@@ -105,6 +110,8 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     refreshSessionService.revokeAllForUser(user.getId());
     passwordResetRepository.save(passwordReset);
     userRepository.save(user);
+    userActivityService.save(UserActivityRecord.forType(user.getId().toString(), UserActivityType.PASSWORD_RESET,
+        "Password reset via forgot-password flow"));
   }
 
   private String buildPasswordResetEmailHtml(final String resetUrl) {
@@ -159,7 +166,5 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         </html>
         """.formatted(resetUrl, resetUrl, resetUrl);
   }
-
-
 
 }
