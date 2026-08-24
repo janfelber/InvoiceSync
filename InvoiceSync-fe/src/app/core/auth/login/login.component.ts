@@ -26,10 +26,13 @@ export class LoginComponent {
   username = '';
   password = '';
   showPassword = false;
+  errorMessage: string | null = null;
 
   constructor(private auth: AuthService, private router: Router) {}
 
   login() {
+    this.errorMessage = null;
+
     this.auth.login({
       username: this.username,
       password: this.password
@@ -43,7 +46,11 @@ export class LoginComponent {
           this.router.navigate(['/home']);
         }
       },
-      error: err => console.error(err)
+      error: err => {
+        this.errorMessage = err.status === 423
+          ? 'Unfortunately, there was an error while trying to log in. Please try again later. If the problem persists, please contact support.'
+          : 'Unknown user or wrong password. Please try again.';
+      }
     });
   }
 }
