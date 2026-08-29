@@ -54,7 +54,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     final String rawToken = RefreshTokenUtil.generate();
     final String hashToken = RefreshTokenUtil.hash(rawToken);
 
-    final User user = userRepository.findByEmail(email).orElseThrow();
+    final User user = userRepository.findByEmailIgnoreCase(email.trim()).orElseThrow();
 
     final PasswordReset newPasswordReset = new PasswordReset();
     newPasswordReset.setTokenHash(hashToken);

@@ -6,6 +6,7 @@ import static com.invoicesync.modules.company.dto.specification.CompanySpecifica
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.NumberConfigType;
 import com.invoicesync.core.enums.PaymentType;
+import com.invoicesync.core.exception.CompanyHasLinkedDocumentsException;
 import com.invoicesync.modules.accountingdocument.AccountDocumentNumberService;
 import com.invoicesync.modules.auth.security.OwnedCompany;
 import com.invoicesync.modules.auth.security.RequiresOwnership;
@@ -131,7 +133,12 @@ public class CompanyServiceImpl implements CompanyService {
     final Company company = companyRepository.findById(companyId)
         .orElseThrow(() -> new IllegalArgumentException("Company not found"));
 
-    companyRepository.delete(company);
+    try {
+      companyRepository.delete(company);
+    } catch (final DataIntegrityViolationException ex) {
+      throw new CompanyHasLinkedDocumentsException(
+          "Company cannot be deleted because it still has invoices or receipts linked to it");
+    }
     return company;
   }
 

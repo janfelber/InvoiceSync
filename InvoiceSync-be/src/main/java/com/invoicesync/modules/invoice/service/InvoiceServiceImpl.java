@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.core.exception.DownloadDocumentException;
+import com.invoicesync.core.exception.InvoiceExtractionException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.modules.activity.model.UserActivityType;
 import com.invoicesync.modules.activity.service.UserActivityRecord;
@@ -63,6 +65,7 @@ import com.invoicesync.supplier.CompaniesRegistry;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
+@Transactional
 public class InvoiceServiceImpl implements InvoiceService {
 
   private static final Logger log = LoggerFactory.getLogger(InvoiceServiceImpl.class);
@@ -233,8 +236,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     } catch (final Exception e) {
       log.warn("Invoice extraction failed", e);
-      final ExtractionMeta metaInfo =
-          new ExtractionMeta(invoiceExtractor.getModelName(), null, List.of(e.getMessage()));
+      throw new InvoiceExtractionException("Invoice extraction failed: " + e.getMessage(), e);
     }
   }
 

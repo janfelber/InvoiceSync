@@ -7,6 +7,8 @@ import com.stripe.model.checkout.Session;
 
 public interface StripeService {
 
+  boolean tryMarkEventProcessed(String eventId);
+
   void handleSubscriptionPayment(Event event) throws StripeException;
 
   void handleSubscriptionCanceled(Event event) throws StripeException;

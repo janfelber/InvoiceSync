@@ -32,7 +32,7 @@ public class CustomerUserDetailService implements UserDetailsService {
           .orElseThrow(() -> new UsernameNotFoundException("User not found by ID: " + identifier));
     } catch (IllegalArgumentException ex) {
       // if it's not UUID its is probably login request
-      user = userRepository.findByUsername(identifier)
+      user = userRepository.findByUsernameIgnoreCase(identifier.trim())
           .orElseThrow(() -> new UsernameNotFoundException("User not found by username: " + identifier));
     }
 

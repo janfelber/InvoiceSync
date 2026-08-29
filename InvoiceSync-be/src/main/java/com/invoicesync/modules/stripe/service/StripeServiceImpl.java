@@ -6,7 +6,9 @@ import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.invoicesync.modules.stripe.repository.StripeProcessedEventRepository;
 import com.invoicesync.modules.subscription.mapper.UserSubscriptionMapper;
 import com.invoicesync.modules.subscription.model.UserSubscription;
 import com.invoicesync.modules.subscription.repository.UserSubscriptionRepository;
@@ -30,6 +32,14 @@ public class StripeServiceImpl implements StripeService {
   private final UserSubscriptionRepository userSubscriptionRepository;
 
   private final UserSubscriptionMapper userSubscriptionMapper;
+
+  private final StripeProcessedEventRepository stripeProcessedEventRepository;
+
+  @Override
+  @Transactional
+  public boolean tryMarkEventProcessed(final String eventId) {
+    return stripeProcessedEventRepository.tryInsert(eventId) == 1;
+  }
 
   // TODO move this to the subscription service
   @Override
