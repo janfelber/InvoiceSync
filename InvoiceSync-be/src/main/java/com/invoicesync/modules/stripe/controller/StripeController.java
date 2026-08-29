@@ -38,6 +38,10 @@ public class StripeController {
       return ResponseEntity.badRequest().body("Invalid signature");
     }
 
+    if (!stripeService.tryMarkEventProcessed(event.getId())) {
+      return ResponseEntity.ok("Event already processed");
+    }
+
     switch (event.getType()) {
       case "invoice.payment_succeeded":
         stripeService.handleSubscriptionPayment(event);

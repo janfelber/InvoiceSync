@@ -12,18 +12,18 @@ import com.invoicesync.modules.user.model.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-  Optional<User> findByUsername(String username);
+  Optional<User> findByUsernameIgnoreCase(String username);
 
-  Boolean existsByUsername(String username);
+  Boolean existsByUsernameIgnoreCase(String username);
 
   Optional<User> findById(UUID id);
 
   boolean existsByRegistrationNumber(String registrationNumber);
 
-  boolean existsByEmail(String email);
+  boolean existsByEmailIgnoreCase(String email);
 
   Page<User> findByRoleNot(Role role, Pageable pageable);
 
-  Optional<User> findByEmail(String email);
+  Optional<User> findByEmailIgnoreCase(String email);
 
 }

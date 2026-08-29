@@ -79,12 +79,15 @@ public class AuthServiceImpl implements AuthService {
   @Transactional
   @Override
   public void registerUser(final RegisterRequest registerRequest) {
-    if (userRepository.existsByUsername(registerRequest.getUsername())) {
-      throw new UserNameExists("Username already exists: " + registerRequest.getUsername());
+    final String username = registerRequest.getUsername().trim();
+    final String email = registerRequest.getEmail().trim();
+
+    if (userRepository.existsByUsernameIgnoreCase(username)) {
+      throw new UserNameExists("Username already exists: " + username);
     }
 
-    if (userRepository.existsByEmail(registerRequest.getEmail())) {
-      throw new RegisterEmailExists("Email already exists: " + registerRequest.getEmail());
+    if (userRepository.existsByEmailIgnoreCase(email)) {
+      throw new RegisterEmailExists("Email already exists: " + email);
     }
 
     if (userRepository.existsByRegistrationNumber(registerRequest.getRegistrationNumber())) {
@@ -98,8 +101,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     final User user = User.builder()
-        .email(registerRequest.getEmail())
-        .username(registerRequest.getUsername())
+        .email(email)
+        .username(username)
         .fullName(registerRequest.getFullName())
         .registrationNumber(registerRequest.getRegistrationNumber())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
@@ -108,7 +111,7 @@ public class AuthServiceImpl implements AuthService {
         .build();
 
     userRepository.save(user);
-    emailVerificationService.sendVerificationEmail(user.getId(), registerRequest.getEmail());
+    emailVerificationService.sendVerificationEmail(user.getId(), email);
   }
 
   @Override
@@ -130,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    final User user = userRepository.findByUsername(loginRequest.getUsername())
+    final User user = userRepository.findByUsernameIgnoreCase(loginRequest.getUsername().trim())
         .orElseThrow(() -> new RuntimeException("User not found"));
 
     final String accessToken = jwtService.generateToken(authentication);

@@ -81,4 +81,14 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.LOCKED).body("Account temporarily locked due to too many failed login attempts");
   }
 
+  @ExceptionHandler(CompanyHasLinkedDocumentsException.class)
+  public ResponseEntity<String> handleCompanyHasLinkedDocuments(final CompanyHasLinkedDocumentsException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(InvoiceExtractionException.class)
+  public ResponseEntity<String> handleInvoiceExtractionException(final InvoiceExtractionException ex) {
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
 }
