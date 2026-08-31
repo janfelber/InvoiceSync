@@ -1,63 +1,91 @@
 package com.invoicesync.core.filestorage.service;
 
-import static java.io.File.separator;
 import static java.lang.System.currentTimeMillis;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
 
+import jakarta.annotation.Nonnull;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.invoicesync.modules.invoice.model.Invoice;
-import com.invoicesync.modules.receipt.model.Receipt;
-
-import jakarta.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.Delete;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.DeleteObjectsRequest;
+import software.amazon.awssdk.services.s3.model.ObjectIdentifier;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 @Slf4j
 public class FileStorageServiceImpl implements FileStorageService {
 
-  @Value("${file.upload.documents-output-path}")
-  private String fileUploadPath;
+  private static final String FILES_SEPARATOR = "/";
+
+  private final S3Client s3Client;
+
+  @Value("${r2.bucket}")
+  private String bucket;
+
+  @Autowired
+  public FileStorageServiceImpl(S3Client s3Client) {
+    this.s3Client = s3Client;
+  }
 
   @Override
-  public String saveFile(@Nonnull final MultipartFile sourceDocument,
-      @Nonnull final Invoice invoice, @Nonnull final String connectedUserId) {
-    final String fileUploadSubPath = "users" + separator + connectedUserId + separator + invoice.getId();
+  public String saveInvoiceDocument(@Nonnull final MultipartFile sourceDocument,
+      @Nonnull final Long invoiceId, @Nonnull final String connectedUserId) {
+    final String fileUploadSubPath = connectedUserId + FILES_SEPARATOR + "invoices" + FILES_SEPARATOR + invoiceId;
     return uploadFile(sourceDocument, fileUploadSubPath);
   }
 
   @Override
-  public String saveReceiptFile(final MultipartFile document, final Receipt receiptId, final String connectedUserId) {
+  public String saveReceiptDocument(final MultipartFile document, final Long receiptId, final String connectedUserId) {
     final String fileUploadSubPath =
-        "users" + separator + connectedUserId + separator + "receipts" + separator + receiptId.getId();
+        connectedUserId + FILES_SEPARATOR + "receipts" + FILES_SEPARATOR + receiptId;
     return uploadFile(document, fileUploadSubPath);
   }
 
-  private String uploadFile(@Nonnull final MultipartFile sourceDocument, @Nonnull final String fileUploadSubPath) {
-    final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath;
-    final File targetFolder = new File(finalUploadPath);
+  @Override
+  public void deleteDocument(final String key) {
+    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+        .bucket(bucket)
+        .key(key)
+        .build();
 
-    if (!targetFolder.exists()) {
-      final boolean isFolderCreated = targetFolder.mkdirs();
-      if (!isFolderCreated) {
-        log.warn("Failed to create folder: {}", targetFolder.getAbsolutePath());
-        return null;
-      }
-    }
+    s3Client.deleteObject(deleteObjectRequest);
+  }
+
+  @Override
+  public void deleteBatchDocuments(final List<String> keys) {
+    DeleteObjectsRequest deleteObjectsRequest = DeleteObjectsRequest.builder()
+        .bucket(bucket)
+        .delete(Delete.builder()
+            .objects(keys.stream()
+                .map(key -> ObjectIdentifier.builder().key(key).build())
+                .toList())
+            .build())
+        .build();
+
+    s3Client.deleteObjects(deleteObjectsRequest);
+  }
+
+  private String uploadFile(@Nonnull final MultipartFile sourceDocument, @Nonnull final String fileUploadSubPath) {
     final String fileExtension = getFileExtension(sourceDocument.getOriginalFilename());
-    final String targetFilePath = finalUploadPath + separator + currentTimeMillis() + "." + fileExtension;
-    final Path targetPath = Paths.get(targetFilePath);
+    final String key = fileUploadSubPath + FILES_SEPARATOR + currentTimeMillis() + "." + fileExtension;
     try {
-      Files.write(targetPath, sourceDocument.getBytes());
-      log.info("File was saved to: {}", targetPath.toAbsolutePath());
-      return targetFilePath;
+      PutObjectRequest request = PutObjectRequest.builder()
+          .bucket(bucket)
+          .key(key)
+          .build();
+
+      s3Client.putObject(request, RequestBody.fromBytes(sourceDocument.getBytes()));
+      return key;
     } catch (IOException e) {
       log.error("File was not save", e);
     }
@@ -79,12 +107,5 @@ public class FileStorageServiceImpl implements FileStorageService {
     return fileName.substring(lastDotIndex + 1).toLowerCase();
 
   }
-
-  // @Override
-  // public String saveFile(@Nonnull final MultipartFile document,
-  //     @Nonnull final Invoice invoice, @Nonnull final Authentication connectedUser) {
-  //   final String fileUploadSubPath = "users" + File.separator + us
-  //   return "";
-  // }
 
 }

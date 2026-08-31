@@ -11,4 +11,6 @@ public interface InvoiceVatBreakdownRepository extends JpaRepository<InvoiceVatB
 
   List<InvoiceVatBreakdown> findByInvoice(Invoice invoice);
 
+  void deleteByInvoiceId(Long invoiceId);
+
 }

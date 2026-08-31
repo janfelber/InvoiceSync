@@ -3,10 +3,6 @@ package com.invoicesync.modules.invoice.service;
 import static com.invoicesync.modules.invoice.InvoiceSpecification.withCompanyId;
 import static com.invoicesync.modules.invoice.InvoiceSpecification.withUserId;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +25,7 @@ import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.LimitType;
 import com.invoicesync.core.exception.DownloadDocumentException;
+import com.invoicesync.core.exception.FileUploadException;
 import com.invoicesync.core.exception.InvoiceExtractionException;
 import com.invoicesync.core.filestorage.service.FileStorageService;
 import com.invoicesync.modules.activity.model.UserActivityType;
@@ -258,7 +255,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     final Invoice invoice = invoiceRepository.findById(invoiceId)
         .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
 
-    final var documentToUpload = fileStorageService.saveFile(document, invoice, connectedUser.getName());
+    final var documentToUpload = fileStorageService.saveInvoiceDocument(document, invoiceId, connectedUser.getName());
+
+    if (documentToUpload == null) {
+      throw new FileUploadException("Failed to upload document to storage");
+    }
 
     final InvoiceDocument invoiceDocument = new InvoiceDocument();
     invoiceDocument.setInvoice(invoice);
@@ -293,16 +294,7 @@ public class InvoiceServiceImpl implements InvoiceService {
       );
     }
 
-    final Path filePath = Paths.get(invoiceDocument.getDocument());
-
-    try {
-      Files.deleteIfExists(filePath);
-      log.info("Deleted file from filesystem: {}", filePath.toAbsolutePath());
-    } catch (IOException e) {
-      log.error("Failed to delete file: {}", filePath, e);
-    }
-
-    invoiceDocumentRepository.delete(invoiceDocument);
+    deleteInvoiceDocument(documentId, invoiceDocument.getDocument());
     userActivityService.save(
         UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_INVOICE,
             "User deleted document from invoice" + invoiceDocument.getInvoice().getId() + " with name "
@@ -312,22 +304,18 @@ public class InvoiceServiceImpl implements InvoiceService {
   @Override
   @RequiresOwnership
   public void deleteInvoice(final @OwnedInvoice Long invoiceId) {
-    final Invoice invoice = invoiceRepository.findById(invoiceId)
-        .orElseThrow(() -> new EntityNotFoundException("No invoice found with the ID: " + invoiceId));
+    final List<InvoiceDocument> invoiceDocuments = invoiceDocumentRepository.findByInvoiceId(invoiceId);
+    final List<String> documentsKeys = invoiceDocuments.stream().map(InvoiceDocument::getDocument).toList();
 
-    for (final InvoiceDocument doc : invoice.getDocuments()) {
-      final Path filePath = Paths.get(doc.getDocument());
-      try {
-        Files.deleteIfExists(filePath);
-        log.info("Deleted file from filesystem: {}", filePath.toAbsolutePath());
-      } catch (IOException e) {
-        log.error("Failed to delete file: {}", filePath, e);
-      }
-    }
+    fileStorageService.deleteBatchDocuments(documentsKeys);
+    invoiceDocumentRepository.deleteAll(invoiceDocuments);
+    invoiceVatBreakdownRepository.deleteByInvoiceId(invoiceId);
+    invoiceRepository.deleteById(invoiceId);
+  }
 
-    // teraz vymaž dokumenty z DB (ak nie je nastavený cascade = REMOVE)
-    invoiceDocumentRepository.deleteAll(invoice.getDocuments());
-    invoiceRepository.delete(invoice);
+  private void deleteInvoiceDocument(final Long invoiceDocumentId, final String key) {
+    invoiceDocumentRepository.deleteById(invoiceDocumentId);
+    fileStorageService.deleteDocument(key);
   }
 
 }

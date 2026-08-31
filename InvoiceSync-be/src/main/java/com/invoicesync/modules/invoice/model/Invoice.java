@@ -61,7 +61,7 @@ public class Invoice extends BaseEntity {
   /**
    * Attached documents related to the invoice (e.g., scans, PDFs).
    */
-  @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "invoice")
   private List<InvoiceDocument> documents = new ArrayList<>();
 
   /**
