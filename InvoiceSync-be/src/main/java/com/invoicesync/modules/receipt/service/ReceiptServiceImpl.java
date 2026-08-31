@@ -29,8 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -66,6 +64,9 @@ import com.invoicesync.modules.receipt.model.ReceiptItemRequest;
 import com.invoicesync.modules.receipt.model.ReceiptRequest;
 import com.invoicesync.modules.receipt.model.ReceiptResponseDto;
 import com.invoicesync.modules.receipt.repository.ReceiptRepository;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
@@ -145,7 +146,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     try {
 
       final String receiptId = decodeQRCode(qrCodeImage.getInputStream());
-      System.out.println(receiptId);
 
       final String response = sendPostRequest(receiptId);
 
@@ -235,13 +235,13 @@ public class ReceiptServiceImpl implements ReceiptService {
   @Override
   @RequiresOwnership
   public void uploadReceiptDocument(final MultipartFile document, final Boolean canDeleteDocument,
-      final @OwnedReceipt Long receiptId,
-      final Authentication connectedUser, @Nullable final AddDocumentData additionalDocumentData) {
+      final @OwnedReceipt Long receiptId, final Authentication connectedUser,
+      @Nullable final AddDocumentData additionalDocumentData) {
 
     final Receipt receipt = receiptRepository.findById(receiptId)
         .orElseThrow(() -> new EntityNotFoundException("No receipt found with id: " + receiptId));
 
-    final var documentToUpload = fileStorageService.saveReceiptFile(document, receipt, connectedUser.getName());
+    final var documentToUpload = fileStorageService.saveReceiptDocument(document, receiptId, connectedUser.getName());
 
     final ReceiptDocument receiptDocument = new ReceiptDocument();
     receiptDocument.setReceipt(receipt);
@@ -275,7 +275,7 @@ public class ReceiptServiceImpl implements ReceiptService {
       );
     }
 
-    receiptDocumentRepository.deleteById(documentId);
+    deleteReceiptDocument(documentId, receiptDocument.getDocument());
     userActivityService.save(
         UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DOCUMENT_DELETE_RECEIPT,
             "User deleted from receipt" + receiptDocument.getReceipt().getId() + "with name "
@@ -295,6 +295,11 @@ public class ReceiptServiceImpl implements ReceiptService {
   @Override
   @RequiresOwnership
   public void deleteReceiptById(final @OwnedReceipt Long receiptId, final Authentication connectedUser) {
+    final List<ReceiptDocument> receiptDocuments = documentRepository.findByReceiptId(receiptId);
+    final List<String> documentsKeys = receiptDocuments.stream().map(ReceiptDocument::getDocument).toList();
+
+    fileStorageService.deleteBatchDocuments(documentsKeys);
+    receiptDocumentRepository.deleteAll(receiptDocuments);
     receiptRepository.deleteById(receiptId);
     userActivityService.save(UserActivityRecord.forType(connectedUser.getName(), UserActivityType.DELETE_RECEIPT,
         "User deleted receipt with id" + receiptId));
@@ -357,51 +362,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     receiptRepository.save(receiptToChange);
   }
 
-  // @Override
-  // public ReceiptDetailsDTO findById(final Long receiptId) {
-  //   return receiptRepository.findById(receiptId)
-  //       .map(receipt -> {
-  //         final List<ReceiptItemDTO> itemsDTO = receipt.getItems().stream()
-  //             .map(item -> new ReceiptItemDTO(
-  //                 item.getId(),
-  //                 item.getAccountText(),
-  //                 item.getName(),
-  //                 item.getQuantity(),
-  //                 item.getPriceWithoutVAT(),
-  //                 item.getVatRate(),
-  //                 item.getPriceWithVAT(),
-  //                 item.getAccountValue()
-  //             ))
-  //             .collect(Collectors.toList());
-  //
-  //         return new ReceiptDetailsDTO(
-  //             receipt.getId(),
-  //             new ReceiptResponseDetailsDTO(
-  //                 receipt.getDate(),
-  //                 receipt.getDatePayment(),
-  //                 receipt.getDateTax(),
-  //                 receipt.getTotalPrice(),
-  //                 receipt.getAccounting(),
-  //                 receipt.getClassificationVAT(),
-  //                 receipt.getClassificationKVVAT(),
-  //                 receipt.getDescription()
-  //             ),
-  //             new PartnerDTO(
-  //                 receipt.getPartnerName(),
-  //                 receipt.getPartnerCity(),
-  //                 receipt.getPartnerStreet(),
-  //                 receipt.getPartnerZip(),
-  //                 receipt.getPartnerRegistrationNumber(),
-  //                 receipt.getPartnerTaxId(),
-  //                 receipt.getPartnerVatId()
-  //             ),
-  //             itemsDTO,
-  //             receipt.getCompany().getId()
-  //         );
-  //       })
-  //       .orElseThrow(() -> new IllegalArgumentException("Invoice with id " + receiptId + " not found"));
-  // }
-
   public String sendPostRequest(final String receiptId) {
     try {
 
@@ -416,7 +376,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
   }
 
-  //
+  private void deleteReceiptDocument(final Long documentId, final String key) {
+    receiptDocumentRepository.deleteById(documentId);
+    fileStorageService.deleteDocument(key);
+  }
+
   private String decodeQRCode(final InputStream qrCodeStream) throws IOException {
     final BufferedImage bufferedImage = ImageIO.read(qrCodeStream);
     final LuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);

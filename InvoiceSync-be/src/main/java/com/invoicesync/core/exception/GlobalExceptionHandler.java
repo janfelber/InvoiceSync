@@ -78,7 +78,8 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(AccountLockedException.class)
   public ResponseEntity<String> handleAccountLocked(final AccountLockedException ex) {
-    return ResponseEntity.status(HttpStatus.LOCKED).body("Account temporarily locked due to too many failed login attempts");
+    return ResponseEntity.status(HttpStatus.LOCKED)
+        .body("Account temporarily locked due to too many failed login attempts");
   }
 
   @ExceptionHandler(CompanyHasLinkedDocumentsException.class)
@@ -88,6 +89,11 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(InvoiceExtractionException.class)
   public ResponseEntity<String> handleInvoiceExtractionException(final InvoiceExtractionException ex) {
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(FileUploadException.class)
+  public ResponseEntity<String> handleFileUploadException(final FileUploadException ex) {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
   }
 
