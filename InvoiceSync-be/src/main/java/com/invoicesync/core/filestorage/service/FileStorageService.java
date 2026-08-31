@@ -1,9 +1,8 @@
 package com.invoicesync.core.filestorage.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
-import com.invoicesync.modules.invoice.model.Invoice;
-import com.invoicesync.modules.receipt.model.Receipt;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
 
@@ -11,11 +10,16 @@ public interface FileStorageService {
    * Saves a file associated with a specific invoice.
    *
    * @param document file to be saved
-   * @param invoice invoice entity to attach the file to
+   * @param invoiceId invoiceId id of the invoice to attach the file to
    * @param connectedUserId ID of the user performing the upload
    * @return path of the saved file
    */
-  String saveFile(MultipartFile document, Invoice invoice, String connectedUserId);
+  String saveInvoiceDocument(MultipartFile document, Long invoiceId, String connectedUserId);
 
-  String saveReceiptFile(MultipartFile document, Receipt receiptId, String connectedUserId);
+  String saveReceiptDocument(MultipartFile document, Long receiptId, String connectedUserId);
+
+  void deleteDocument(String key);
+
+  void deleteBatchDocuments(List<String> keys);
+
 }
