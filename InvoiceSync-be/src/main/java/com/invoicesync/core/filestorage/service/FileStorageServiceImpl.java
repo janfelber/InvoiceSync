@@ -29,12 +29,16 @@ public class FileStorageServiceImpl implements FileStorageService {
 
   private final S3Client s3Client;
 
+  private final FileValidator fileValidator;
+
   @Value("${r2.bucket}")
   private String bucket;
 
   @Autowired
-  public FileStorageServiceImpl(S3Client s3Client) {
+  public FileStorageServiceImpl(final S3Client s3Client,
+      final FileValidator fileValidator) {
     this.s3Client = s3Client;
+    this.fileValidator = fileValidator;
   }
 
   @Override
@@ -76,6 +80,8 @@ public class FileStorageServiceImpl implements FileStorageService {
   }
 
   private String uploadFile(@Nonnull final MultipartFile sourceDocument, @Nonnull final String fileUploadSubPath) {
+    fileValidator.validate(sourceDocument);
+
     final String fileExtension = getFileExtension(sourceDocument.getOriginalFilename());
     final String key = fileUploadSubPath + FILES_SEPARATOR + currentTimeMillis() + "." + fileExtension;
     try {

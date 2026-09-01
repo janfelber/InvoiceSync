@@ -97,4 +97,9 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
   }
 
+  @ExceptionHandler(InvalidFileTypeException.class)
+  public ResponseEntity<String> handleInvalidFileType(final InvalidFileTypeException ex) {
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
 }
