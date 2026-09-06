@@ -1,5 +1,6 @@
 package com.invoicesync.modules.stripe.service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.invoicesync.config.StripeConfig;
+import com.invoicesync.core.enums.SubscriptionPlan;
 import com.invoicesync.modules.stripe.repository.StripeProcessedEventRepository;
 import com.invoicesync.modules.subscription.mapper.UserSubscriptionMapper;
 import com.invoicesync.modules.subscription.model.UserSubscription;
@@ -26,14 +29,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StripeServiceImpl implements StripeService {
 
-  @Value("${app.frontend.url}")
-  private String frontendUrl;
-
   private final UserSubscriptionRepository userSubscriptionRepository;
 
   private final UserSubscriptionMapper userSubscriptionMapper;
 
   private final StripeProcessedEventRepository stripeProcessedEventRepository;
+
+  private final StripeConfig stripeConfig;
+
+  @Value("${app.frontend.url}")
+  private String frontendUrl;
 
   @Override
   @Transactional
@@ -57,41 +62,100 @@ public class StripeServiceImpl implements StripeService {
     }
   }
 
+  @Override
+  public void handleSubscriptionPaymentFailed(final Event event) throws StripeException {
+    final Invoice stripeInvoice = (Invoice) event.getDataObjectDeserializer().getObject().orElseThrow();
+    final String stripeSubscriptionId = stripeInvoice.getParent().getSubscriptionDetails().getSubscription();
+    final UserSubscription userSubscription =
+        userSubscriptionRepository.findByStripeSubscriptionId(stripeSubscriptionId);
+
+    if (userSubscription != null) {
+      userSubscription.setSubscriptionActive(false);
+      userSubscriptionRepository.save(userSubscription);
+    }
+  }
+
+  /**
+   * Handles {@code invoice.payment_succeeded}. Looks up the local row by
+   * {@code stripeSubscriptionId} to tell apart two cases:
+   *
+   * <ul>
+   *   <li><b>Row found</b> (renewal, or a direct paid → paid change made via
+   *       {@link #upgradeSubscription}): plan/price/limits are updated unconditionally — a plan
+   *       change must take effect on the invoice that reflects it, whether or not it's a real
+   *       renewal. Usage counters and start/end dates are reset only when
+   *       {@code billingReason == "subscription_cycle"} (an actual renewal), not on a mid-cycle
+   *       proration invoice from a plan change — otherwise switching plans back and forth could
+   *       be used to reset usage limits for free.</li>
+   *   <li><b>No row found</b> (first payment for a brand-new Stripe subscription, e.g. FREE → paid
+   *       via Checkout): deactivates whatever row is currently active for this user (FREE, or a
+   *       paid row with a missing Stripe link) and creates a fresh one from the invoice. This is
+   *       done here — atomically with creating the new row — rather than eagerly in
+   *       {@code UserSubscriptionServiceImpl.startOrUpdateSubscription}, precisely so an
+   *       abandoned/failed Checkout never leaves the user with zero active rows.</li>
+   * </ul>
+   */
   // TODO move this to the subscription service
   @Override
   public void handleSubscriptionPayment(final Event event) throws StripeException {
-    final Invoice invoice = (Invoice) event.getDataObjectDeserializer().getObject().orElseThrow();
-    final var line = invoice.getLines().getData().getFirst();
+    final Invoice stripeInvoice = (Invoice) event.getDataObjectDeserializer().getObject().orElseThrow();
+    final var line = stripeInvoice.getLines().getData().getFirst();
     final String userIdStr = line.getMetadata().get("userId");
 
-    final String stripeSubscriptionId = invoice.getParent().getSubscriptionDetails().getSubscription();
-    final UserSubscription existing = userSubscriptionRepository.findByStripeSubscriptionId(stripeSubscriptionId);
+    final String stripeSubscriptionId = stripeInvoice.getParent().getSubscriptionDetails().getSubscription();
+    final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
+    final String priceId = stripeSubscription.getItems().getData().getFirst().getPrice().getId();
+    final SubscriptionPlan newPlan = stripeConfig.getPlanForPriceId(priceId);
 
-    if (existing != null) {
-      // Renewal: update billing period and reset monthly usage counters
-      final LocalDateTime start =
-          LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()), ZoneId.systemDefault());
-      final LocalDateTime end =
-          LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()), ZoneId.systemDefault());
-      existing.setStartDate(start);
-      existing.setEndDate(end);
-      existing.setSubscriptionActive(true);
-      existing.setMonthlyUsedInvoiceExport(0);
-      existing.setMonthlyUsedInvoiceCreate(0);
-      existing.setMonthlyUsedReceiptExport(0);
-      userSubscriptionRepository.save(existing);
+    final UserSubscription userSubscription =
+        userSubscriptionRepository.findByStripeSubscriptionId(stripeSubscriptionId);
+
+    if (userSubscription != null) {
+
+      userSubscription.setSubscriptionPlan(newPlan);
+      userSubscription.setSubscriptionPrice(BigDecimal.valueOf(newPlan.getMonthlyPrice()));
+      userSubscription.setMonthlyInvoiceCreateLimit(newPlan.getMonthlyInvoiceCreateLimit());
+      userSubscription.setMonthlyInvoiceExportLimit(newPlan.getMonthlyInvoiceExportLimit());
+      userSubscription.setMonthlyReceiptExportLimit(newPlan.getMonthlyReceiptExportLimit());
+
+      if ("subscription_cycle".equals(stripeInvoice.getBillingReason())) {
+        final LocalDateTime start =
+            LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getStart()), ZoneId.systemDefault());
+        final LocalDateTime end =
+            LocalDateTime.ofInstant(Instant.ofEpochSecond(line.getPeriod().getEnd()), ZoneId.systemDefault());
+
+        userSubscription.setStartDate(start);
+        userSubscription.setEndDate(end);
+        userSubscription.setMonthlyUsedInvoiceExport(0);
+        userSubscription.setMonthlyUsedInvoiceCreate(0);
+        userSubscription.setMonthlyUsedReceiptExport(0);
+      }
+
+      userSubscription.setSubscriptionActive(true);
+      userSubscriptionRepository.save(userSubscription);
     } else {
       // New subscription: create from invoice data
-      final UserSubscription subscription = userSubscriptionMapper.fromStripeInvoice(invoice, userIdStr);
+      userSubscriptionRepository.findByCreatedByAndSubscriptionActive(userIdStr, true)
+          .ifPresent(old -> {
+            old.setSubscriptionActive(false);
+            userSubscriptionRepository.save(old);
+          });
+
+      final UserSubscription subscription = userSubscriptionMapper.fromStripeInvoice(stripeInvoice, userIdStr);
       userSubscriptionRepository.save(subscription);
     }
   }
 
   @Override
-  public void upgradeSubscription(final UserSubscription currentPlan, final String newPriceId) {
+  public void upgradeSubscription(final UserSubscription currentPlan, final String newPriceId, final
+  SubscriptionPlan newPlan) {
     {
       final String stripeSubscriptionId = currentPlan.getStripeSubscriptionId();
       final String stripeSubscriptionItemId = currentPlan.getStripeSubscriptionItemId();
+      final SubscriptionUpdateParams.ProrationBehavior updateSubMode = (newPlan.getMonthlyPrice()
+          > currentPlan.getSubscriptionPlan().getMonthlyPrice())
+          ? SubscriptionUpdateParams.ProrationBehavior.ALWAYS_INVOICE
+          : SubscriptionUpdateParams.ProrationBehavior.CREATE_PRORATIONS;
 
       try {
         // Retrieve a subscription from Stripe
@@ -105,7 +169,7 @@ public class StripeServiceImpl implements StripeService {
                 .setId(stripeSubscriptionItemId)
                 .setPrice(newPriceId)
                 .build())
-            .setProrationBehavior(SubscriptionUpdateParams.ProrationBehavior.ALWAYS_INVOICE)
+            .setProrationBehavior(updateSubMode)
             .build();
 
         subscription = subscription.update(params);

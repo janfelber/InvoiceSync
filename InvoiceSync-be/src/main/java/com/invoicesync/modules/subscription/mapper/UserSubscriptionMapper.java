@@ -57,18 +57,7 @@ public class UserSubscriptionMapper {
     final LocalDateTime endDate = LocalDateTime.ofInstant(end, ZoneId.systemDefault());
 
     final String priceId = line.getPricing().getPriceDetails().getPrice();
-    final SubscriptionPlan plan;
-    if (priceId.equals(stripeConfig.getFree())) {
-      plan = FREE;
-    } else if (priceId.equals(stripeConfig.getEssentials())) {
-      plan = SubscriptionPlan.ESSENTIALS;
-    } else if (priceId.equals(stripeConfig.getPro())) {
-      plan = SubscriptionPlan.PRO;
-    } else if (priceId.equals(stripeConfig.getEnterprise())) {
-      plan = SubscriptionPlan.ENTERPRISE;
-    } else {
-      plan = SubscriptionPlan.NONE;
-    }
+    final SubscriptionPlan plan = stripeConfig.getPlanForPriceId(priceId);
 
     final UserSubscription subscription = new UserSubscription();
     subscription.setSubscriptionPlan(plan);

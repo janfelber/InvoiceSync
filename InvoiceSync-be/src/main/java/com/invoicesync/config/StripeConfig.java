@@ -15,8 +15,11 @@ import lombok.Setter;
 public class StripeConfig {
 
   private String free;
+
   private String essentials;
+
   private String pro;
+
   private String enterprise;
 
   public String getPriceIdForPlan(final SubscriptionPlan plan) {
@@ -28,4 +31,20 @@ public class StripeConfig {
       default -> null;
     };
   }
+
+  public SubscriptionPlan getPlanForPriceId(final String priceId) {
+    if (priceId == null) {
+      return SubscriptionPlan.NONE;
+    } else if (priceId.equals(free)) {
+      return SubscriptionPlan.FREE;
+    } else if (priceId.equals(essentials)) {
+      return SubscriptionPlan.ESSENTIALS;
+    } else if (priceId.equals(pro)) {
+      return SubscriptionPlan.PRO;
+    } else if (priceId.equals(enterprise)) {
+      return SubscriptionPlan.ENTERPRISE;
+    }
+    return SubscriptionPlan.NONE;
+  }
+
 }

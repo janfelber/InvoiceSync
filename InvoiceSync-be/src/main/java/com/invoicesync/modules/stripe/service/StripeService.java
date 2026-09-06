@@ -1,5 +1,6 @@
 package com.invoicesync.modules.stripe.service;
 
+import com.invoicesync.core.enums.SubscriptionPlan;
 import com.invoicesync.modules.subscription.model.UserSubscription;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
@@ -13,8 +14,11 @@ public interface StripeService {
 
   void handleSubscriptionCanceled(Event event) throws StripeException;
 
+  void handleSubscriptionPaymentFailed(Event event) throws StripeException;
+
   Session createCheckoutSession(String userId, String newPlanPriceId);
 
-  void upgradeSubscription(UserSubscription subscriptionId, String newPlanPriceId);
+  void upgradeSubscription(UserSubscription subscriptionId, String newPlanPriceId,
+      SubscriptionPlan newPlan);
 
 }
