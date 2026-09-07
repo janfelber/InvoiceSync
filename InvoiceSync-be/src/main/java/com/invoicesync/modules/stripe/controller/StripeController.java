@@ -46,6 +46,9 @@ public class StripeController {
       case "invoice.payment_succeeded":
         stripeService.handleSubscriptionPayment(event);
         break;
+      case "invoice.payment_failed":
+        stripeService.handleSubscriptionPaymentFailed(event);
+        break;
       case "customer.subscription.deleted":
         stripeService.handleSubscriptionCanceled(event);
         break;

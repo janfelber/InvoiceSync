@@ -28,8 +28,10 @@ import com.stripe.model.Invoice;
 import com.stripe.model.InvoiceCollection;
 import com.stripe.model.PaymentMethod;
 import com.stripe.model.Subscription;
+import com.stripe.model.SubscriptionSchedule;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.InvoiceListParams;
+import com.stripe.param.SubscriptionScheduleUpdateParams;
 import com.stripe.param.SubscriptionUpdateParams;
 
 import lombok.AllArgsConstructor;
@@ -38,15 +40,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
+  private final StripeMapper stripeMapper;
+
+  private final StripeConfig priceConfig;
+
   private StripeService stripeService;
 
   private UserSubscriptionRepository userSubscriptionRepository;
 
   private UserSubscriptionMapper userSubscriptionMapper;
-
-  private final StripeMapper stripeMapper;
-
-  private final StripeConfig priceConfig;
 
   @Override
   public UserSubscriptionResponseDTO getSubscriptionPlanByUserId(final Authentication connectedUser) {
@@ -156,12 +158,64 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
     final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
 
-    final SubscriptionUpdateParams params =
-        SubscriptionUpdateParams.builder().setCancelAtPeriodEnd(true).build();
+    // Replaces the schedule's phases with just the current one (dropping any pending downgrade)
+    // instead of only setting end_behavior=CANCEL — the original phase 2 has no end_date, so
+    // end_behavior would never actually be evaluated and the subscription would silently continue
+    // onto the new plan. No direct Subscription.update() here either — Stripe rejects that while
+    // a schedule manages the subscription (InvalidRequestException: "update the schedule instead").
+    if (userSubscription.getStripeScheduleId() != null) {
 
-    stripeSubscription.update(params);
+      final SubscriptionSchedule existingSchedule =
+          SubscriptionSchedule.retrieve(userSubscription.getStripeScheduleId());
+
+      final String currentPriceId = priceConfig.getPriceIdForPlan(userSubscription.getSubscriptionPlan());
+      final long currentPeriodStart = stripeSubscription.getItems().getData().getFirst().getCurrentPeriodStart();
+      final long currentPeriodEnd = stripeSubscription.getItems().getData().getFirst().getCurrentPeriodEnd();
+
+      final SubscriptionScheduleUpdateParams params =
+          SubscriptionScheduleUpdateParams.builder()
+              .addPhase(SubscriptionScheduleUpdateParams.Phase.builder()
+                  .addItem(SubscriptionScheduleUpdateParams.Phase.Item.builder()
+                      .setPrice(currentPriceId)
+                      .setQuantity(1L)
+                      .build())
+                  .setStartDate(currentPeriodStart)
+                  .setEndDate(currentPeriodEnd)
+                  .build())
+              .setEndBehavior(SubscriptionScheduleUpdateParams.EndBehavior.CANCEL)
+              .build();
+
+      existingSchedule.update(params);
+    } else {
+      final SubscriptionUpdateParams params =
+          SubscriptionUpdateParams.builder().setCancelAtPeriodEnd(true).build();
+
+      stripeSubscription.update(params);
+    }
+
   }
 
+  /**
+   * Handles both "start a subscription" and "change plan" requests. Picks one of two Stripe
+   * mechanisms depending on whether the user already has a real Stripe subscription to work with:
+   *
+   * <ul>
+   *   <li><b>No active row, or an active row with no {@code stripeSubscriptionId}</b> (FREE —
+   *       {@link UserSubscriptionMapper#toFreeSubscription()} never sets it — or any other row
+   *       missing Stripe linkage, e.g. a missed webhook) → new Stripe Checkout Session. There is
+   *       nothing on the Stripe side to update, so Stripe has to collect the card and create the
+   *       customer/subscription from scratch.</li>
+   *   <li><b>Active row with a {@code stripeSubscriptionId}</b> (normal paid → paid change) →
+   *       direct {@link StripeService#upgradeSubscription} call (Stripe {@code Subscription.update}),
+   *       no Checkout involved.</li>
+   * </ul>
+   *
+   * <p>Note this method never deactivates the old row itself, even in the Checkout branch —
+   * that intentionally waits until payment is actually confirmed, so an abandoned/failed Checkout
+   * doesn't leave the user with no active row at all. The old row gets deactivated in
+   * {@code StripeServiceImpl.handleSubscriptionPayment}'s "new subscription" branch instead,
+   * atomically with creating the new one, once Stripe confirms the invoice was paid.</p>
+   */
   @Override
   public Map<String, Object> startOrUpdateSubscription(final String planName, final Authentication connectedUser) {
     final String userId = connectedUser.getName();
@@ -178,28 +232,16 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
     }
 
     final UserSubscription existingSub = existingSubOpt.get();
-
-    // FREE → paid: deactivate FREE plan and go through checkout
-    if (existingSub.getSubscriptionPlan() == SubscriptionPlan.FREE) {
-      existingSub.setSubscriptionActive(false);
-      userSubscriptionRepository.save(existingSub);
-      final Session session = stripeService.createCheckoutSession(userId, newPriceId);
-      return Map.of("id", session.getId());
-    }
-
-    // Paid → paid upgrade: use Stripe API directly
     final String stripeSubscriptionId = existingSub.getStripeSubscriptionId();
+
+    // No Stripe subscription to update (FREE, or paid but not yet linked) → go through checkout
     if (stripeSubscriptionId == null) {
-      // Stripe subscription not linked (webhook missed) — fall back to checkout
-      existingSub.setSubscriptionActive(false);
-      userSubscriptionRepository.save(existingSub);
       final Session session = stripeService.createCheckoutSession(userId, newPriceId);
       return Map.of("id", session.getId());
     }
 
-    stripeService.upgradeSubscription(existingSub, newPriceId);
-
-    userSubscriptionRepository.save(existingSub);
+    // Real Stripe subscription already exists → update it directly via the Stripe API
+    stripeService.upgradeSubscription(existingSub, newPriceId, newPlan);
     return Map.of("upgraded", true);
   }
 
