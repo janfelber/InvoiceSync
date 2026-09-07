@@ -34,9 +34,9 @@ public class StripeServiceImpl implements StripeService {
 
   private final UserSubscriptionRepository userSubscriptionRepository;
 
-  private final UserSubscriptionMapper userSubscriptionMapper;
-
   private final StripeProcessedEventRepository stripeProcessedEventRepository;
+
+  private final UserSubscriptionMapper userSubscriptionMapper;
 
   private final StripeConfig stripeConfig;
 

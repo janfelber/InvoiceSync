@@ -110,7 +110,6 @@ public class UserSubscription extends BaseEntity {
 
   /**
    * Price of the subscription plan.
-   *
    */
   @Column(name = "subscription_price")
   private BigDecimal subscriptionPrice;
@@ -121,6 +120,13 @@ public class UserSubscription extends BaseEntity {
   @Column(name = "total_limit")
   private Integer totalLimit;
 
+  /**
+   * Stripe Subscription Schedule id, set only while a downgrade is pending (current plan runs
+   * until period end, then switches to the new plan with no proration credit). Null the rest of
+   * the time. While non-null, Stripe rejects direct {@code Subscription.update()} calls on this
+   * subscription — any further change (upgrade, cancel, another downgrade) must go through the
+   * schedule instead, and an upgrade must {@code release()} it first.
+   */
   @Column(name = "stripe_schedule_id")
   private String stripeScheduleId;
 
