@@ -28,8 +28,10 @@ import com.stripe.model.Invoice;
 import com.stripe.model.InvoiceCollection;
 import com.stripe.model.PaymentMethod;
 import com.stripe.model.Subscription;
+import com.stripe.model.SubscriptionSchedule;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.InvoiceListParams;
+import com.stripe.param.SubscriptionScheduleUpdateParams;
 import com.stripe.param.SubscriptionUpdateParams;
 
 import lombok.AllArgsConstructor;
@@ -156,10 +158,41 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
     final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
 
-    final SubscriptionUpdateParams params =
-        SubscriptionUpdateParams.builder().setCancelAtPeriodEnd(true).build();
+    // Replaces the schedule's phases with just the current one (dropping any pending downgrade)
+    // instead of only setting end_behavior=CANCEL — the original phase 2 has no end_date, so
+    // end_behavior would never actually be evaluated and the subscription would silently continue
+    // onto the new plan. No direct Subscription.update() here either — Stripe rejects that while
+    // a schedule manages the subscription (InvalidRequestException: "update the schedule instead").
+    if (userSubscription.getStripeScheduleId() != null) {
 
-    stripeSubscription.update(params);
+      final SubscriptionSchedule existingSchedule =
+          SubscriptionSchedule.retrieve(userSubscription.getStripeScheduleId());
+
+      final String currentPriceId = priceConfig.getPriceIdForPlan(userSubscription.getSubscriptionPlan());
+      final long currentPeriodStart = stripeSubscription.getItems().getData().getFirst().getCurrentPeriodStart();
+      final long currentPeriodEnd = stripeSubscription.getItems().getData().getFirst().getCurrentPeriodEnd();
+
+      final SubscriptionScheduleUpdateParams params =
+          SubscriptionScheduleUpdateParams.builder()
+              .addPhase(SubscriptionScheduleUpdateParams.Phase.builder()
+                  .addItem(SubscriptionScheduleUpdateParams.Phase.Item.builder()
+                      .setPrice(currentPriceId)
+                      .setQuantity(1L)
+                      .build())
+                  .setStartDate(currentPeriodStart)
+                  .setEndDate(currentPeriodEnd)
+                  .build())
+              .setEndBehavior(SubscriptionScheduleUpdateParams.EndBehavior.CANCEL)
+              .build();
+
+      existingSchedule.update(params);
+    } else {
+      final SubscriptionUpdateParams params =
+          SubscriptionUpdateParams.builder().setCancelAtPeriodEnd(true).build();
+
+      stripeSubscription.update(params);
+    }
+
   }
 
   /**

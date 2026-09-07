@@ -84,7 +84,6 @@ public class UserSubscription extends BaseEntity {
   @Column(name = "monthly_used_invoice_export")
   private Integer monthlyUsedInvoiceExport;
 
-
   /**
    * Monthly limit for exporting receipts.
    */
@@ -111,7 +110,8 @@ public class UserSubscription extends BaseEntity {
 
   /**
    * Price of the subscription plan.
-   * */
+   *
+   */
   @Column(name = "subscription_price")
   private BigDecimal subscriptionPrice;
 
@@ -120,5 +120,8 @@ public class UserSubscription extends BaseEntity {
    */
   @Column(name = "total_limit")
   private Integer totalLimit;
+
+  @Column(name = "stripe_schedule_id")
+  private String stripeScheduleId;
 
 }
