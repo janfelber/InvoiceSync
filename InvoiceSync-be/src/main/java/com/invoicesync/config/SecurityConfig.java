@@ -58,6 +58,13 @@ public class SecurityConfig {
     http
         .cors(cors -> cors.configurationSource(corsConfigurationSource))
         .csrf(csrf -> csrf.disable())
+        // Spring Security already sets X-Content-Type-Options, X-Frame-Options, Cache-Control,
+        // and HSTS (over HTTPS) by default — CSP is the one header that needs explicit opt-in.
+        // Matters here because springdoc serves an actual HTML page (Swagger UI), not just JSON.
+        .headers(headers -> headers
+            .contentSecurityPolicy(csp -> csp
+                .policyDirectives("default-src 'self'; script-src 'self'; "
+                    + "style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-ancestors 'none'")))
         .authorizeHttpRequests(
             req -> req
                 .requestMatchers(
