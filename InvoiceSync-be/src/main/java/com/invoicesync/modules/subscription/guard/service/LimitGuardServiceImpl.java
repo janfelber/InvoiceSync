@@ -2,6 +2,8 @@ package com.invoicesync.modules.subscription.guard.service;
 
 import java.util.UUID;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,11 @@ import com.invoicesync.modules.user.repository.UserRepository;
 import com.invoicesync.modules.user.service.UserService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class LimitGuardServiceImpl implements LimitGuardService {
 
   private final UserService userLimitService;
@@ -24,7 +28,10 @@ public class LimitGuardServiceImpl implements LimitGuardService {
 
   public void checkLimit(final Authentication connectedUser, final LimitType type) {
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
 
     if (user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
       return;

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.invoicesync.core.common.PageResponse;
 import com.invoicesync.core.common.PageableFactory;
 import com.invoicesync.core.enums.FeatureEnum;
+import com.invoicesync.core.exception.FeatureMissingException;
 import com.invoicesync.modules.auth.security.OwnedXML;
 import com.invoicesync.modules.auth.security.RequiresOwnership;
 import com.invoicesync.modules.user.model.User;
@@ -29,9 +32,11 @@ import com.invoicesync.modules.xmlFile.model.XmlFile;
 import com.invoicesync.modules.xmlFile.repository.XmlFileRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class XmlFileServiceImpl implements XmlFileService {
 
   private final XmlFileRepository xmlFileRepository;
@@ -43,10 +48,15 @@ public class XmlFileServiceImpl implements XmlFileService {
   @Override
   public Long saveXmlFile(final MultipartFile file, final Authentication connectedUser) {
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
 
     if (!user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
-      throw new IllegalStateException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
+      log.info("[FEATURE] User {} attempted saveXmlFile without {} feature", connectedUser.getName(),
+          FeatureEnum.EKON_SPECIALTY);
+      throw new FeatureMissingException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
     }
 
     try {
@@ -66,10 +76,15 @@ public class XmlFileServiceImpl implements XmlFileService {
       final Authentication connectedUser) {
 
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
 
     if (!user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
-      throw new IllegalStateException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
+      log.info("[FEATURE] User {} attempted finalAllXmlImportsByUser without {} feature", connectedUser.getName(),
+          FeatureEnum.EKON_SPECIALTY);
+      throw new FeatureMissingException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
     }
 
     final Pageable pageable = PageableFactory.ofDescending(page, size);
@@ -91,10 +106,15 @@ public class XmlFileServiceImpl implements XmlFileService {
       throws Exception {
 
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
 
     if (!user.hasFeature(FeatureEnum.EKON_SPECIALTY)) {
-      throw new IllegalStateException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
+      log.info("[FEATURE] User {} attempted processAndGenerateZip without {} feature", connectedUser.getName(),
+          FeatureEnum.EKON_SPECIALTY);
+      throw new FeatureMissingException("User does not have " + FeatureEnum.EKON_SPECIALTY + " feature.");
     }
 
     final String xmlContent = xmlFileRepository.findById(importId)
