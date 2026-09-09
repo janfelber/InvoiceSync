@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.invoicesync.config.StripeConfig;
 import com.invoicesync.core.enums.SubscriptionPlan;
+import com.invoicesync.core.exception.NoActiveSubscriptionException;
 import com.invoicesync.modules.stripe.StripeMapper;
 import com.invoicesync.modules.stripe.model.UserBillingHistory;
 import com.invoicesync.modules.stripe.model.UserDefaultCard;
@@ -35,9 +36,11 @@ import com.stripe.param.SubscriptionScheduleUpdateParams;
 import com.stripe.param.SubscriptionUpdateParams;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
   private final StripeMapper stripeMapper;
@@ -57,21 +60,7 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
     final Optional<UserSubscription> activeSubscriptionOpt =
         userSubscriptionRepository.findByCreatedByAndSubscriptionActive(userId, true);
 
-    final UserSubscription subscription = activeSubscriptionOpt.orElseGet(() -> {
-      final UserSubscription empty = new UserSubscription();
-      empty.setSubscriptionPlan(NONE);
-      empty.setSubscriptionActive(false);
-      empty.setStartDate(null);
-      empty.setEndDate(null);
-      empty.setSubscriptionPrice(BigDecimal.ZERO);
-      empty.setMonthlyInvoiceExportLimit(NONE.getMonthlyInvoiceExportLimit());
-      empty.setMonthlyInvoiceCreateLimit(NONE.getMonthlyInvoiceCreateLimit());
-      empty.setMonthlyReceiptExportLimit(NONE.getMonthlyReceiptExportLimit());
-      empty.setMonthlyUsedInvoiceExport(0);
-      empty.setMonthlyUsedInvoiceCreate(0);
-      empty.setMonthlyUsedReceiptExport(0);
-      return empty;
-    });
+    final UserSubscription subscription = activeSubscriptionOpt.orElseGet(this::buildEmptySubscription);
 
     final SubscriptionPlan plan = subscription.getSubscriptionPlan() != null
         ? subscription.getSubscriptionPlan()
@@ -99,7 +88,11 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
   public LimitResponseDTO getUserLimits(final Authentication connectedUser) {
     final UserSubscription subscription = userSubscriptionRepository
         .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
-        .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + connectedUser.getName()));
+        .orElseGet(() -> {
+          log.info("[SUBSCRIPTION] No active subscription for userId={}, returning zero limits",
+              connectedUser.getName());
+          return buildEmptySubscription();
+        });
 
     final int totalLimit = subscription.getMonthlyInvoiceExportLimit() + subscription.getMonthlyInvoiceCreateLimit()
         + subscription.getMonthlyReceiptExportLimit();
@@ -130,7 +123,11 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
   @Override
   public void setEnterpriseSubscriptionForUser(final User user) {
     final UserSubscription subscription = userSubscriptionRepository.findByCreatedBy(String.valueOf(user.getId()))
-        .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + user.getId()));
+        .orElseThrow(() -> {
+          log.warn("[SUBSCRIPTION] Cannot set enterprise plan: no subscription record exists for userId={}",
+              user.getId());
+          return new NoActiveSubscriptionException("Subscription not found for user: " + user.getId());
+        });
 
     subscription.setSubscriptionPlan(SubscriptionPlan.ENTERPRISE);
     subscription.setSubscriptionActive(true);
@@ -147,13 +144,19 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
   public void cancelUserSubscription(final Authentication connectedUser) throws StripeException {
     final UserSubscription userSubscription = userSubscriptionRepository
         .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
-        .orElseThrow(
-            () -> new IllegalStateException("Active subscription not found for user: " + connectedUser.getName()));
+        .orElseThrow(() -> {
+          log.info("[SUBSCRIPTION] Cancel requested but no active subscription for userId={}",
+              connectedUser.getName());
+          return new NoActiveSubscriptionException(
+              "Active subscription not found for user: " + connectedUser.getName());
+        });
 
     final String stripeSubscriptionId = userSubscription.getStripeSubscriptionId();
 
     if (stripeSubscriptionId == null) {
-      throw new IllegalStateException("Cannot cancel: no Stripe subscription is linked to this plan.");
+      log.info("[SUBSCRIPTION] Cancel requested but no Stripe subscription is linked for userId={}",
+          connectedUser.getName());
+      throw new NoActiveSubscriptionException("Cannot cancel: no Stripe subscription is linked to this plan.");
     }
 
     final Subscription stripeSubscription = Subscription.retrieve(stripeSubscriptionId);
@@ -250,7 +253,11 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
     final UserSubscription subscription = userSubscriptionRepository
         .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
-        .orElseThrow(() -> new IllegalStateException("No active subscription found"));
+        .orElseGet(() -> {
+          log.info("[SUBSCRIPTION] No active subscription for userId={}, returning empty default card",
+              connectedUser.getName());
+          return buildEmptySubscription();
+        });
 
     final String stripeSubscriptionId = subscription.getStripeSubscriptionId();
 
@@ -278,7 +285,11 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
   public List<UserBillingHistory> getUserBillingHistory(final Authentication connectedUser) {
     final UserSubscription subscription = userSubscriptionRepository
         .findByCreatedByAndSubscriptionActive(connectedUser.getName(), true)
-        .orElseThrow(() -> new IllegalStateException("No active subscription found"));
+        .orElseGet(() -> {
+          log.info("[SUBSCRIPTION] No active subscription for userId={}, returning empty billing history",
+              connectedUser.getName());
+          return buildEmptySubscription();
+        });
 
     try {
       final String stripeCustomerId = subscription.getStripeCustomerId();
@@ -298,6 +309,22 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
       return List.of();
     }
 
+  }
+
+  private UserSubscription buildEmptySubscription() {
+    final UserSubscription empty = new UserSubscription();
+    empty.setSubscriptionPlan(NONE);
+    empty.setSubscriptionActive(false);
+    empty.setStartDate(null);
+    empty.setEndDate(null);
+    empty.setSubscriptionPrice(BigDecimal.ZERO);
+    empty.setMonthlyInvoiceExportLimit(NONE.getMonthlyInvoiceExportLimit());
+    empty.setMonthlyInvoiceCreateLimit(NONE.getMonthlyInvoiceCreateLimit());
+    empty.setMonthlyReceiptExportLimit(NONE.getMonthlyReceiptExportLimit());
+    empty.setMonthlyUsedInvoiceExport(0);
+    empty.setMonthlyUsedInvoiceCreate(0);
+    empty.setMonthlyUsedReceiptExport(0);
+    return empty;
   }
 
 }

@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(FeatureMissingException.class)
   public ResponseEntity<String> handleFeatureMissingException(final FeatureMissingException ex) {
-    return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
   }
 
   @ExceptionHandler(DownloadDocumentException.class)
@@ -100,6 +100,11 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(InvalidFileTypeException.class)
   public ResponseEntity<String> handleInvalidFileType(final InvalidFileTypeException ex) {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(NoActiveSubscriptionException.class)
+  public ResponseEntity<String> handleNoActiveSubscriptionException(final NoActiveSubscriptionException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
   }
 
 }

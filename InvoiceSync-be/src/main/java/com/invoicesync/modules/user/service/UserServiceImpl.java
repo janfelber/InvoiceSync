@@ -4,10 +4,13 @@ import static com.invoicesync.modules.subscription.specification.UserSubscriptio
 
 import java.util.UUID;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.invoicesync.core.enums.LimitType;
+import com.invoicesync.core.exception.NoActiveSubscriptionException;
 import com.invoicesync.modules.subscription.model.UserSubscription;
 import com.invoicesync.modules.subscription.repository.UserSubscriptionRepository;
 import com.invoicesync.modules.user.mapper.UserMapper;
@@ -16,9 +19,11 @@ import com.invoicesync.modules.user.model.UserDto;
 import com.invoicesync.modules.user.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
   private final UserSubscriptionRepository userSubscriptionRepository;
@@ -51,21 +56,31 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto getUserInfo(final UUID userId) {
-    final User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User not found."));
+    final User user = userRepository.findById(userId)
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", userId);
+          return new EntityNotFoundException("User not found: " + userId);
+        });
     return userMapper.toUserInfo(user);
   }
 
   @Override
   public String getUserName(final Authentication connectedUser) {
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
     return user.getFullName();
   }
 
   @Override
   public UserDto getCurrentUserInfo(final Authentication connectedUser) {
     final User user = userRepository.findById(UUID.fromString(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("User not found."));
+        .orElseThrow(() -> {
+          log.warn("[USER] User not found for userId={}", connectedUser.getName());
+          return new EntityNotFoundException("User not found: " + connectedUser.getName());
+        });
     return userMapper.toUserInfo(user);
   }
 
@@ -82,7 +97,10 @@ public class UserServiceImpl implements UserService {
   private UserSubscription getSubscription(final Authentication connectedUser) {
     return userSubscriptionRepository
         .findOne(withUserId(connectedUser.getName()))
-        .orElseThrow(() -> new IllegalStateException("Subscription not found for user: " + connectedUser.getName()));
+        .orElseThrow(() -> {
+          log.warn("[SUBSCRIPTION] No subscription record exists for userId={}", connectedUser.getName());
+          return new NoActiveSubscriptionException("Subscription not found for user: " + connectedUser.getName());
+        });
   }
 
 }
