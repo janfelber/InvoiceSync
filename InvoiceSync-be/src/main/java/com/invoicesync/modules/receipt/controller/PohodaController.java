@@ -15,9 +15,11 @@ import com.invoicesync.modules.invoice.pohoda.service.PohodaXmlService;
 import com.invoicesync.modules.xml.utils.XmlHelper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/pohoda")
 public class PohodaController {
 
@@ -36,7 +38,7 @@ public class PohodaController {
 
       return new ResponseEntity<>(xmlData, headers, HttpStatus.OK);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("[POHODA] Failed to generate Pohoda invoice XML", e);
 
       // Vráti detail chyby do odpovede
       return ResponseEntity

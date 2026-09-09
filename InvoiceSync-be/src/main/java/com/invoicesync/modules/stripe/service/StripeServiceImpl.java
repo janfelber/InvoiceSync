@@ -27,9 +27,11 @@ import com.stripe.param.SubscriptionUpdateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StripeServiceImpl implements StripeService {
 
   private final UserSubscriptionRepository userSubscriptionRepository;
@@ -62,6 +64,9 @@ public class StripeServiceImpl implements StripeService {
     if (userSubscription != null) {
       userSubscription.setSubscriptionActive(false);
       userSubscriptionRepository.save(userSubscription);
+    } else {
+      log.error("[STRIPE] No local subscription found for canceled stripeSubscriptionId={} (event={})",
+          subscriptionId, event.getId());
     }
   }
 
@@ -75,6 +80,9 @@ public class StripeServiceImpl implements StripeService {
     if (userSubscription != null) {
       userSubscription.setSubscriptionActive(false);
       userSubscriptionRepository.save(userSubscription);
+    } else {
+      log.error("[STRIPE] No local subscription found for failed payment, stripeSubscriptionId={} (event={})",
+          stripeSubscriptionId, event.getId());
     }
   }
 
@@ -218,6 +226,8 @@ public class StripeServiceImpl implements StripeService {
           subscription.update(params);
         }
       } catch (StripeException e) {
+        log.error("[STRIPE] Failed to upgrade subscription stripeSubscriptionId={} to newPriceId={}",
+            stripeSubscriptionId, newPriceId, e);
         throw new RuntimeException(e);
       }
     }
@@ -279,6 +289,7 @@ public class StripeServiceImpl implements StripeService {
           .build();
       return Session.create(params);
     } catch (StripeException e) {
+      log.error("[STRIPE] Failed to create checkout session for userId={} priceId={}", userId, newPriceId, e);
       throw new RuntimeException(e);
     }
   }

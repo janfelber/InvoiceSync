@@ -23,6 +23,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XMLProcessor {
 
   public static void processFile(final String xmlContent, final File fileTemplate, final OutputStream outputStream) throws Exception {
@@ -232,7 +235,8 @@ public class XMLProcessor {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("[XML] Failed to process XML for Pohoda export", e);
+      throw e;
     }
   }
 
@@ -277,7 +281,7 @@ public class XMLProcessor {
       sdf.applyPattern(targetFormat);
       return sdf.format(date);
     } catch (Exception e) {
-      System.out.println("Chyba pri formátovaní dátumu: " + e.getMessage());
+      log.warn("[XML] Failed to parse date '{}' with format '{}'", dateStr, originalFormat, e);
       return null;
     }
   }
