@@ -24,8 +24,10 @@ import com.invoicesync.modules.auth.service.MobileAuthService;
 import com.invoicesync.modules.user.model.User;
 
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
@@ -93,6 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
       } catch (InvalidTokenException | UsernameNotFoundException e) {
+        log.info("[AUTH] Rejected request with invalid/expired token: {}", e.getMessage());
         SecurityContextHolder.clearContext();
       }
       filterChain.doFilter(request, response);

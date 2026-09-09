@@ -9,7 +9,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.invoicesync.supplier.CompanyLookupResult;
 import com.invoicesync.supplier.CompanyLookupSource;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CzechCompanyLookupSource implements CompanyLookupSource {
 
   @Qualifier("aresWebClient")
@@ -41,8 +44,8 @@ public class CzechCompanyLookupSource implements CompanyLookupSource {
             .build());
       }
     } catch (Exception e) {
-      // Handle exceptions, e.g., log the error
-      System.err.println("Error fetching company info: " + e.getMessage());
+      log.warn("[EXTERNAL] Failed to fetch company info from ARES for registrationNumber={}",
+          registrationNumber, e);
     }
 
     return Optional.empty();
