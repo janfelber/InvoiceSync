@@ -75,7 +75,8 @@ public class SecurityConfig {
                     "/auth/forgot-password",
                     "/auth/reset-password",
                     "/stripe/webhook",
-                    "/integrations/google/callback")
+                    "/integrations/google/callback",
+                    "/actuator/health")
                 .permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
