@@ -119,6 +119,8 @@ public class AuthServiceImpl implements AuthService {
     final Authentication authentication;
 
     if (bruteForceProtectionService.isBlocked(loginRequest.getUsername())) {
+      log.warn("[AUTH] Login attempt on locked account username={} from ip={}", loginRequest.getUsername(),
+          ipAddress);
       throw new AccountLockedException("Account temporarily locked");
     }
 
@@ -127,6 +129,7 @@ public class AuthServiceImpl implements AuthService {
           new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
       );
     } catch (BadCredentialsException e) {
+      log.warn("[AUTH] Failed login attempt for username={} from ip={}", loginRequest.getUsername(), ipAddress);
       bruteForceProtectionService.loginFailed(loginRequest.getUsername(), ipAddress);
       throw e;
     }
