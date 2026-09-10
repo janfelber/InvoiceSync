@@ -12,11 +12,13 @@ import com.invoicesync.modules.auth.security.protection.model.LoginAttempt;
 import com.invoicesync.modules.auth.security.protection.model.LoginAttemptRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @NullMarked
 @RequiredArgsConstructor
+@Slf4j
 public class BruteForceProtectionServiceImpl implements BruteForceProtectionService {
 
   private static final int MAX_ATTEMPT = 5;
@@ -43,6 +45,8 @@ public class BruteForceProtectionServiceImpl implements BruteForceProtectionServ
         username, LocalDateTime.now().minusMinutes(LOCK_TIME_MINUTES));
 
     if (!isBlocked(username) && recentAttempts >= MAX_ATTEMPT) {
+      log.warn("[AUTH] Account locked after {} failed attempts: username={}, ipAddress={}", recentAttempts,
+          username, ipAddress);
       BanLogin banLogin = new BanLogin();
       banLogin.setUsername(username);
       banLogin.setBanUntil(LocalDateTime.now().plusMinutes(LOCK_TIME_MINUTES));
