@@ -24,9 +24,11 @@ import com.invoicesync.modules.xmlFile.dto.XmlFileResponseDto;
 import com.invoicesync.modules.xmlFile.service.XmlFileService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping(Api.XML_FILE)
 public class XmlFileController {
 
@@ -66,7 +68,7 @@ public class XmlFileController {
       // Return the zip content as a byte array for download
       return ResponseEntity.ok().headers(headers).body(zipContent);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("[XML] Failed to generate zip for importId={}", importId, e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
   }
