@@ -277,6 +277,7 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
 
       return stripeMapper.toUserDefaultCard(userDefaultPayment);
     } catch (StripeException e) {
+      log.warn("[STRIPE] Failed to fetch default card for userId={}", connectedUser.getName(), e);
       return new UserDefaultCard("", "", 0L, 0L);
     }
   }
@@ -306,6 +307,7 @@ public class UserSubscriptionServiceImpl implements UserSubscriptionService {
           .map(stripeMapper::toUserBillingHistory)
           .toList();
     } catch (StripeException e) {
+      log.warn("[STRIPE] Failed to fetch billing history for userId={}", connectedUser.getName(), e);
       return List.of();
     }
 

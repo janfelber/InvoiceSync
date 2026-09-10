@@ -36,9 +36,11 @@ import com.invoicesync.modules.receipt.model.ReceiptResponseDto;
 import com.invoicesync.modules.receipt.service.ReceiptService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping(Api.RECEIPT)
 public class ReceiptController {
 
@@ -62,6 +64,8 @@ public class ReceiptController {
     } catch (LimitExceededException e) {
       return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).build();
     } catch (Exception e) {
+      log.error("[POHODA] Failed to generate Pohoda receipt export for receiptNumber={}",
+          request.receiptNumber(), e);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
   }

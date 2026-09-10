@@ -13,7 +13,10 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class StripeController {
 
   private final StripeService stripeService;
@@ -35,6 +38,7 @@ public class StripeController {
     try {
       event = Webhook.constructEvent(payload, sigHeader, stripeWebhookSecret);
     } catch (Exception e) {
+      log.error("[STRIPE] Webhook signature verification failed", e);
       return ResponseEntity.badRequest().body("Invalid signature");
     }
 
