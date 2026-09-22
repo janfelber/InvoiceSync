@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -131,6 +132,9 @@ public class AuthServiceImpl implements AuthService {
     } catch (BadCredentialsException e) {
       log.warn("[AUTH] Failed login attempt for username={} from ip={}", loginRequest.getUsername(), ipAddress);
       bruteForceProtectionService.loginFailed(loginRequest.getUsername(), ipAddress);
+      throw e;
+    } catch (DisabledException e) {
+      log.warn("[AUTH] Login attempt on deleted account username={} from ip={}", loginRequest.getUsername(), ipAddress);
       throw e;
     }
 

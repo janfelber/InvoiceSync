@@ -18,6 +18,7 @@ import com.invoicesync.modules.user.model.User;
 public class CustomUserDetails implements UserDetails {
 
   private final User user;
+
   private final Collection<? extends GrantedAuthority> authorities;
 
   public CustomUserDetails(User user, Collection<? extends GrantedAuthority> authorities) {
@@ -65,6 +66,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return true;
+    return !user.isDeleted();
   }
+
 }

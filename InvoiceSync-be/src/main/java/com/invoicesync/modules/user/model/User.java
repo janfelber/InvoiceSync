@@ -86,6 +86,9 @@ public class User {
   @Column(name = "email_verified")
   private boolean emailVerified = false;
 
+  @Column(name = "deleted")
+  private boolean isDeleted = false;
+
   public User(final String fullName, final String username, final String password, final Role role) {
     this.fullName = fullName;
     this.username = username;

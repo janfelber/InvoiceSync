@@ -2,6 +2,7 @@ package com.invoicesync.modules.user.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,11 @@ public class UserController {
   @GetMapping(Api.USER_ME_NAME)
   public String getUserName(final Authentication connectedUser) {
     return userService.getUserName(connectedUser);
+  }
+
+  @PostMapping("/deactivate")
+  public void deactivateAccount(final Authentication connectedUser) {
+    userService.deactivateAccount(connectedUser);
   }
 
 }

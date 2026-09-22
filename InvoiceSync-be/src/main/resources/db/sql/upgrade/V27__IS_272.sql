@@ -1,0 +1,2 @@
+ALTER TABLE invoice_sync.app_user
+  ADD COLUMN deleted BOOLEAN NOT NULL DEFAULT FALSE;

@@ -46,11 +46,10 @@ public class UserServiceImpl implements UserService {
   public void incrementUsed(final Authentication connectedUser, final LimitType limitType) {
     final UserSubscription subscription = getSubscription(connectedUser);
     switch (limitType) {
-      case INVOICE_PROCESS ->
-          subscription.setMonthlyUsedInvoiceExport(subscription.getMonthlyUsedInvoiceExport() + 1);
+      case INVOICE_PROCESS -> subscription.setMonthlyUsedInvoiceExport(subscription.getMonthlyUsedInvoiceExport() + 1);
       case RECEIPT_EXPORT -> subscription.setMonthlyUsedReceiptExport(subscription.getMonthlyUsedReceiptExport() + 1);
       case INVOICE_CREATE -> subscription.setMonthlyUsedInvoiceCreate(subscription.getMonthlyUsedInvoiceCreate() + 1);
-    };
+    }
     userSubscriptionRepository.save(subscription);
   }
 
@@ -82,6 +81,17 @@ public class UserServiceImpl implements UserService {
           return new EntityNotFoundException("User not found: " + connectedUser.getName());
         });
     return userMapper.toUserInfo(user);
+  }
+
+  @Override
+  public void deactivateAccount(final Authentication connectedUser) {
+    final User user = userRepository.findById(UUID.fromString(connectedUser.getName())).orElseThrow(() -> {
+      log.warn("[USER] User not found for userId={}", connectedUser.getName());
+      return new EntityNotFoundException("User not found: " + connectedUser.getName());
+    });
+
+    user.setDeleted(true);
+    userRepository.save(user);
   }
 
   @Override

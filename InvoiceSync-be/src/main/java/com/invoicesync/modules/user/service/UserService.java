@@ -41,4 +41,6 @@ public interface UserService {
 
   UserDto getCurrentUserInfo(Authentication connectedUser);
 
+  void deactivateAccount(Authentication connectedUser);
+
 }
