@@ -102,10 +102,5 @@ export class InvoiceService {
     );
   }
 
-  mergeInvoiceItems(invoiceId: number, request: MergeItemsRequest): Promise<any> {
-    return this.apiService.instance.post(
-      `${this.baseUrl}${ApiPaths.invoice.MERGE_INVOICE_ITEMS(invoiceId)}`,
-      request
-    );
-  }
+
 }
